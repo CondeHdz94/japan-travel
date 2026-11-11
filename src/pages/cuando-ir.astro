@@ -1,0 +1,479 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Temperaturas medias de Tokio (°C, aprox.). Gente y precio: 1 bajo · 2 medio · 3 alto (orientativo).
+const meses = [
+  { m: 'Ene', lo: 2, hi: 10, gente: 1, precio: 1, tag: '雪', nota: 'Frío seco, nieve en el norte' },
+  { m: 'Feb', lo: 2, hi: 10, gente: 1, precio: 1, tag: '梅', nota: 'Ciruelos, lo más barato' },
+  { m: 'Mar', lo: 5, hi: 14, gente: 3, precio: 3, tag: '桜', nota: 'Empiezan los cerezos (fin de mes)' },
+  { m: 'Abr', lo: 10, hi: 19, gente: 3, precio: 3, tag: '桜', nota: 'Cerezos + Golden Week al final' },
+  { m: 'May', lo: 15, hi: 23, gente: 2, precio: 2, tag: '緑', nota: 'Verde y templado tras el 6 de mayo' },
+  { m: 'Jun', lo: 19, hi: 26, gente: 1, precio: 1, tag: '梅雨', nota: 'Temporada de lluvias' },
+  { m: 'Jul', lo: 23, hi: 30, gente: 2, precio: 2, tag: '祭', nota: 'Calor húmedo, festivales' },
+  { m: 'Ago', lo: 24, hi: 31, gente: 3, precio: 3, tag: '台風', nota: 'Bochorno, Obon y tifones' },
+  { m: 'Sep', lo: 21, hi: 27, gente: 1, precio: 1, tag: '台風', nota: 'Todavía tifones' },
+  { m: 'Oct', lo: 15, hi: 22, gente: 2, precio: 2, tag: '秋', nota: 'Seco y fresco' },
+  { m: 'Nov', lo: 9, hi: 17, gente: 3, precio: 2, tag: '紅葉', nota: 'Hojas rojas de otoño' },
+  { m: 'Dic', lo: 4, hi: 12, gente: 2, precio: 2, tag: '灯', nota: 'Luces; Año Nuevo es caro' },
+];
+const MAX = 34;
+const pct = (t: number) => (t / MAX) * 100;
+
+const ventanas = [
+  {
+    id: 'cerezos',
+    kanji: '桜',
+    nombre: 'Cerezos',
+    fechas: '25 mar – 10 abr',
+    pro: 'La postal de Japón. Clima fresco y agradable.',
+    contra:
+      'Lo más caro y lo más lleno del año. La floración dura una semana y se mueve según el clima: se puede fallar por días.',
+    veredicto: 'Para 2027 ya va muy justo: quedan unos cuatro meses para visa, vuelos y ahorro de 5 personas.',
+    estado: 'warn',
+    etiqueta: 'Apretado',
+  },
+  {
+    id: 'primavera',
+    kanji: '緑',
+    nombre: 'Primavera tardía',
+    fechas: '10 may – 5 jun',
+    pro: 'Templado (15–25 °C), verde, menos gente y precios normales apenas pasa Golden Week.',
+    contra: 'Sin cerezos ni hojas rojas. A principios de junio arrancan las lluvias.',
+    veredicto: 'La opción cómoda y económica. Da seis meses para organizarse.',
+    estado: 'ok',
+    etiqueta: 'Buena opción',
+  },
+  {
+    id: 'otono',
+    kanji: '紅葉',
+    nombre: 'Otoño',
+    fechas: '20 oct – 30 nov',
+    pro: 'Hojas rojas (momiji), cielo despejado, clima seco y fresco. Tan bonito como los cerezos y dura más.',
+    contra: 'Kioto se llena en noviembre. Hace frío en la noche para alguien de Cali (5–10 °C).',
+    veredicto: 'El mejor balance, y da casi un año para ahorrar, sacar visa y cazar tiquetes.',
+    estado: 'ok',
+    etiqueta: 'Recomendada',
+  },
+  {
+    id: 'invierno',
+    kanji: '雪',
+    nombre: 'Invierno',
+    fechas: '15 ene – 28 feb',
+    pro: 'Lo más barato y vacío. Nieve, onsen, monos en aguas termales, Fuji despejado.',
+    contra: 'Frío de verdad (0–10 °C), días cortos, hay que comprar ropa de invierno.',
+    veredicto: 'Solo si el plan es nieve o el presupuesto manda. Sería ya para 2028.',
+    estado: 'soft',
+    etiqueta: 'De nicho',
+  },
+];
+
+const opciones = [
+  { v: 2, t: 'Me encanta' },
+  { v: 1, t: 'Me sirve' },
+  { v: 0, t: 'No puedo' },
+];
+
+const evitar = [
+  { q: 'Golden Week', d: '29 abr – 5 may', p: 'Todo Japón viaja al tiempo: trenes y hoteles agotados.' },
+  { q: 'Obon', d: '≈ 13 – 16 ago', p: 'Segundo pico de viajes internos, con el peor calor.' },
+  { q: 'Tsuyu (lluvias)', d: 'jun – mediados de jul', p: 'Llueve casi a diario en Tokio, Kioto y Osaka.' },
+  { q: 'Tifones', d: 'ago – sep', p: 'Riesgo de vuelos y trenes cancelados.' },
+  { q: 'Año Nuevo', d: '28 dic – 4 ene', p: 'Muchos sitios cierran y los precios se disparan.' },
+];
+---
+
+<Base title="Cuándo ir" description="El año japonés mes a mes para escoger la fecha del viaje.">
+  <header class="page-head">
+    <span class="kanji" aria-hidden="true">時</span>
+    <div>
+      <span class="mono">01 · toki · el tiempo</span>
+      <h1>Cuándo ir</h1>
+      <p>
+        La fecha decide el precio, el clima y las fotos. Este es el año japonés de un vistazo, y
+        las cuatro ventanas que vale la pena discutir en el grupo.
+      </p>
+    </div>
+  </header>
+
+  <section class="anio" aria-labelledby="anio-t">
+    <div class="anio-head wrap">
+      <h2 id="anio-t" class="mono">El año en Tokio</h2>
+      <p class="mono leyenda">
+        <span><i class="bar"></i> Rango de temperatura</span>
+        <span><i class="dot on"></i> Gente</span>
+        <span>¥ Precio</span>
+      </p>
+    </div>
+    <div class="scroll">
+      <ol class="meses">
+        {
+          meses.map((x) => (
+            <li>
+              <span class="tag" aria-hidden="true">{x.tag}</span>
+              <div class="termo" role="img" aria-label={`${x.m}: entre ${x.lo} y ${x.hi} grados`}>
+                <span
+                  class="rango"
+                  style={`bottom:${pct(x.lo)}%;height:${pct(x.hi - x.lo)}%`}
+                >
+                  <b class="mono">{x.hi}°</b>
+                  <b class="mono">{x.lo}°</b>
+                </span>
+              </div>
+              <strong>{x.m}</strong>
+              <span class="dots" aria-label={`Gente: ${x.gente} de 3`}>
+                {[1, 2, 3].map((i) => <i class:list={['dot', { on: i <= x.gente }]} />)}
+              </span>
+              <span class="mono yen" aria-label={`Precio: ${x.precio} de 3`}>
+                {'¥'.repeat(x.precio)}
+              </span>
+              <span class="nota">{x.nota}</span>
+              <div class="puedo" data-marca={`mes:${x.m.toLowerCase()}`}>
+                <button type="button" class="poner" data-poner="1" aria-pressed="false">
+                  Puedo
+                </button>
+                <span data-sellos></span>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+    <p class="wrap pie">
+      <b>¿Cuándo puedes viajar?</b> Marca «Puedo» en cada mes en que te den vacaciones o permiso,
+      sin pensar todavía en si te gusta o no.
+    </p>
+    <p class="wrap pie mono">
+      Cali vive entre 19 y 30 °C todo el año: cualquier cosa por debajo de 10 °C nos va a parecer
+      nevera.
+    </p>
+  </section>
+
+  <section class="sec">
+    <header>
+      <span class="mono">Candidatas</span>
+      <h2>Cuatro ventanas para votar</h2>
+    </header>
+    <div>
+      <p class="invita">
+        <span>Para votar y ver qué prefieren los demás,</span>
+        <button type="button" data-entrar>entra con tu nombre →</button>
+      </p>
+      <div class="ventanas">
+      {
+        ventanas.map((v) => (
+          <article>
+            <span class="vk" aria-hidden="true">{v.kanji}</span>
+            <div>
+              <h3>
+                {v.nombre} <span class:list={['chip', v.estado]}>{v.etiqueta}</span>
+              </h3>
+              <p class="mono fechas">{v.fechas}</p>
+              <p><b>A favor.</b> {v.pro}</p>
+              <p><b>En contra.</b> {v.contra}</p>
+              <p class="ver">{v.veredicto}</p>
+              <ul class="voto" data-marca={`ventana:${v.id}`} aria-label={`Tu voto: ${v.nombre}`}>
+                {
+                  opciones.map((o) => (
+                    <li>
+                      <button type="button" class="poner" data-poner={o.v} aria-pressed="false">
+                        {o.t}
+                      </button>
+                      <span data-sellos data-valor={o.v} />
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </article>
+        ))
+      }
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <header>
+      <span class="mono">Ojo</span>
+      <h2>Fechas para esquivar</h2>
+    </header>
+    <table>
+      <tbody>
+        {
+          evitar.map((e) => (
+            <tr>
+              <th scope="row">{e.q}</th>
+              <td class="mono">{e.d}</td>
+              <td>{e.p}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sec">
+    <header>
+      <span class="mono">Nota</span>
+      <h2>Sobre estos datos</h2>
+    </header>
+    <div>
+      <p>
+        Las temperaturas son promedios históricos aproximados de Tokio; gente y precio son una
+        escala orientativa. El pronóstico oficial de cerezos para 2027 todavía no ha salido: la
+        Japan Meteorological Corporation suele publicar el primero a mediados de diciembre. Las
+        fechas de floración de arriba son estimaciones de guías de viaje.
+      </p>
+      <p class="mono">
+        Fuentes:
+        <a href="https://livejapan.com/en/article-a0001033/amp/">Live Japan</a> ·
+        <a href="https://www.japanhighlights.com/japan/plan-a-cherry-blossom-trip">Japan Highlights</a> ·
+        <a href="https://selfguidejapan.com/blog/japan-cherry-blossom-forecast-2027">Self Guide Japan</a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .anio {
+    border-bottom: 1px solid var(--ink);
+    padding-block: 2rem;
+  }
+  .anio-head {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .anio-head h2 {
+    color: var(--shu);
+    font-weight: 500;
+  }
+  .leyenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+    margin: 0;
+    max-width: none;
+    color: var(--ink-soft);
+  }
+  .leyenda .bar {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.9rem;
+    background: var(--ink);
+    vertical-align: -0.15em;
+    margin-right: 0.3rem;
+  }
+  .scroll {
+    overflow-x: auto;
+    padding-inline: var(--gutter);
+  }
+  .meses {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(5.2rem, 1fr));
+    min-width: 63rem;
+    border-left: 1px solid var(--hair);
+  }
+  .meses li {
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    gap: 0.45rem;
+    padding: 0.75rem 0.4rem 1rem;
+    border-right: 1px solid var(--hair);
+    text-align: center;
+  }
+  .tag {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--shu);
+    height: 3.2rem;
+    writing-mode: vertical-rl;
+  }
+  .termo {
+    position: relative;
+    width: 100%;
+    height: 11rem;
+    background: repeating-linear-gradient(
+      to top,
+      transparent 0 calc(100% / 6.8 - 1px),
+      var(--hair) calc(100% / 6.8 - 1px) calc(100% / 6.8)
+    );
+  }
+  .rango {
+    position: absolute;
+    left: 50%;
+    width: 0.7rem;
+    margin-left: -0.35rem;
+    background: var(--ink);
+    border-radius: 99px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .rango b {
+    font-weight: 500;
+    font-size: 0.68rem;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  .rango b:first-child {
+    transform: translateY(-1.3rem);
+  }
+  .rango b:last-child {
+    transform: translateY(1.3rem);
+  }
+  .meses strong {
+    font-family: var(--f-display);
+    font-size: 1.25rem;
+    margin-top: 1rem;
+  }
+  .dots {
+    display: flex;
+    gap: 3px;
+  }
+  .dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border: 1px solid var(--ink);
+    border-radius: 50%;
+  }
+  .dot.on {
+    background: var(--ink);
+  }
+  .yen {
+    min-height: 1.1rem;
+    letter-spacing: 0.05em;
+  }
+  .nota {
+    font-size: 0.74rem;
+    line-height: 1.3;
+    color: var(--ink-soft);
+    min-height: 3.9em; /* tres renglones: así los botones quedan a la misma altura */
+  }
+  .puedo {
+    display: grid;
+    justify-items: center;
+    gap: 0.4rem;
+    margin-top: 0.4rem;
+    min-height: 4rem;
+    align-content: start;
+  }
+  /* la columna es angosta: marcado se nota por el relleno, sin el ✓ que lo ensancha */
+  .puedo .poner[aria-pressed='true']::before {
+    content: none;
+  }
+  .puedo [data-sellos] {
+    justify-content: center;
+  }
+  .voto {
+    list-style: none;
+    margin: 1.1rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.45rem;
+  }
+  .voto li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 1.9rem;
+    flex-wrap: nowrap;
+  }
+  .voto .poner {
+    min-width: 7.2rem;
+    text-align: left;
+  }
+  .pie {
+    margin: 1.5rem 0 0;
+    max-width: none;
+    color: var(--ink-soft);
+  }
+
+  .ventanas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    border-top: 1px solid var(--ink);
+    border-left: 1px solid var(--ink);
+  }
+  .ventanas article {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+  .vk {
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: 3rem;
+    line-height: 1;
+    writing-mode: vertical-rl;
+    color: var(--shu);
+  }
+  .ventanas h3 {
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .fechas {
+    color: var(--ink-soft);
+    margin: 0.4rem 0 1rem;
+  }
+  .ventanas p {
+    font-size: 0.95rem;
+    margin-bottom: 0.6em;
+  }
+  .ver {
+    margin-top: 1rem;
+    padding-top: 0.8rem;
+    border-top: 1px dashed var(--ink);
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: 1.05rem !important;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  tr {
+    border-bottom: 1px solid var(--hair);
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 0.8rem 1rem 0.8rem 0;
+    vertical-align: baseline;
+  }
+  th {
+    font-family: var(--f-display);
+    font-size: 1.15rem;
+    white-space: nowrap;
+  }
+  td.mono {
+    color: var(--shu);
+    white-space: nowrap;
+  }
+  @media (max-width: 720px) {
+    tr {
+      display: grid;
+      padding: 0.7rem 0;
+    }
+    th,
+    td {
+      padding: 0.1rem 0;
+    }
+  }
+</style>

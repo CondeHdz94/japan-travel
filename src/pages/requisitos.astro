@@ -1,0 +1,316 @@
+---
+import Base from '../layouts/Base.astro';
+
+type Estado = 'ok' | 'warn';
+const E = { ok: 'Confirmado', warn: 'Por confirmar' } as const;
+
+const visa: { t: string; d: string; e: Estado }[] = [
+  {
+    t: 'Sí se necesita visa',
+    d: 'Los colombianos con pasaporte ordinario necesitan visa de corta estadía para turismo (hasta 90 días). Ojo: hay páginas de terceros que dicen que no; la Embajada dice que sí.',
+    e: 'ok',
+  },
+  {
+    t: 'Es gratis',
+    d: 'La Embajada del Japón no cobra el trámite a ciudadanos colombianos.',
+    e: 'ok',
+  },
+  {
+    t: 'Se tramita antes, en Colombia',
+    d: 'En la Embajada del Japón en Bogotá. No se puede sacar al llegar a Japón ni desde un tercer país donde uno esté de turista.',
+    e: 'ok',
+  },
+  {
+    t: 'Qué piden',
+    d: 'Pasaporte vigente, formulario, foto, itinerario, reservas de vuelo y hospedaje, y soporte económico (extractos, carta laboral). No hay un monto mínimo publicado: hay que demostrar que alcanza para el viaje.',
+    e: 'warn',
+  },
+  {
+    t: 'Desde Cali',
+    d: 'Falta averiguar si hay que ir en persona a Bogotá, si un solo parcero puede radicar los papeles de todos o si se puede por agencia o eVisa.',
+    e: 'warn',
+  },
+  {
+    t: 'Tiempos',
+    d: 'Cuánto se demora la respuesta y con cuánta anticipación máxima se puede pedir (la visa suele tener vigencia de 3 meses desde que la expiden).',
+    e: 'warn',
+  },
+];
+
+const rutas: { via: string; cod: string; d: string; e: Estado; veredicto: string; tono: string }[] = [
+  {
+    via: 'Estados Unidos',
+    cod: 'MIA · DFW · LAX',
+    d: 'Suelen ser los tiquetes más baratos, pero EE. UU. exige visa incluso para hacer escala. Nadie del grupo la tiene.',
+    e: 'ok',
+    veredicto: 'Descartada',
+    tono: 'warn',
+  },
+  {
+    via: 'Europa',
+    cod: 'MAD · CDG · AMS · FRA',
+    d: 'Colombianos entran sin visa al espacio Schengen. Bogotá–Madrid/París/Ámsterdam/Fráncfort y de ahí a Tokio. Viaje largo (28–35 h). Revisar si ya aplica el permiso ETIAS para 2027.',
+    e: 'warn',
+    veredicto: 'La más segura',
+    tono: 'ok',
+  },
+  {
+    via: 'Estambul',
+    cod: 'IST',
+    d: 'Turkish Airlines vuela desde Bogotá y conecta a Tokio. Según Cancillería, Turquía no exige visa ni visa de tránsito a colombianos.',
+    e: 'warn',
+    veredicto: 'Buena alternativa',
+    tono: 'ok',
+  },
+  {
+    via: 'Ciudad de México',
+    cod: 'MEX',
+    d: 'Aeroméxico tiene vuelo directo México–Tokio: es la ruta más corta. No piden visa, pero sí hay controles duros a colombianos (más de 50.000 inadmitidos en 2024) y un prerregistro en discusión.',
+    e: 'warn',
+    veredicto: 'Corta, con riesgo',
+    tono: 'soft',
+  },
+  {
+    via: 'Canadá',
+    cod: 'YYZ · YVR',
+    d: 'Los colombianos necesitan visa o permiso de tránsito para hacer escala en Canadá.',
+    e: 'warn',
+    veredicto: 'Trámite extra',
+    tono: 'soft',
+  },
+];
+
+const papeles = [
+  { id: 'pasaporte', t: 'Pasaporte', d: 'Vigente, con al menos 6 meses de sobra a la fecha del viaje y hojas libres.' },
+  { id: 'visa', t: 'Visa japonesa', d: 'Aprobada y estampada antes de comprar nada no reembolsable.' },
+  { id: 'tiquetes', t: 'Tiquetes', d: 'Ida y regreso; inmigración puede pedir el de salida.' },
+  { id: 'hospedajes', t: 'Hospedajes', d: 'Reservas de todas las noches, a mano en el celular y en papel.' },
+  { id: 'seguro', t: 'Seguro de viaje', d: 'No es obligatorio, pero la salud en Japón es cara. Muy recomendado.' },
+  { id: 'vjw', t: 'Visit Japan Web', d: 'Registro en línea de inmigración y aduana; da un QR para el aeropuerto.' },
+  { id: 'plata', t: 'Plata', d: 'Tarjeta sin cobro por compras internacionales y algo de yenes en efectivo.' },
+];
+
+const fuentes = [
+  ['Embajada del Japón en Colombia · visa de corta estadía (PDF)', 'https://www.colombia.emb-japan.go.jp/files/100407421.pdf'],
+  ['Embajada del Japón en Colombia · tránsito (PDF)', 'https://www.colombia.emb-japan.go.jp/files/100398448.pdf'],
+  ['Cancillería · países que exigen visa a colombianos (mayo 2026)', 'https://cancilleria.gov.co/sites/default/files/DOCUMENTOS-2026/Visas/Lista-Paises-exigen-visa-mayo-2026.pdf'],
+  ['Cancillería · Colombia y México, trato en aeropuertos', 'https://cancilleria.gov.co/sala-de-prensa/noticias/colombia-y-mexico-avanzan-en-medidas-para-mejorar-el-trato-ciudadanos-colombianos-en-aeropuertos'],
+  ['El Espectador · inadmisiones en México', 'https://www.elespectador.com/mundo/america/maltrato-a-colombianos-en-aeropuertos-de-mexico-ambos-paises-acordaron-medidas-para-abordar-este-problema/'],
+  ['El Tiempo · visa de tránsito para Canadá', 'https://www.eltiempo.com/mundo/mas-regiones/visa-de-transito-para-canada-asi-es-el-tramite-para-colombianos-775789'],
+  ['Skyscanner · Bogotá a Japón', 'https://www.espanol.skyscanner.com/rutas/bog/jp/bogota-a-japon.html'],
+];
+---
+
+<Base title="Requisitos" description="Visa, rutas y papeles para viajar de Cali a Japón.">
+  <header class="page-head">
+    <span class="kanji" aria-hidden="true">書</span>
+    <div>
+      <span class="mono">02 · sho · los papeles</span>
+      <h1>Requisitos</h1>
+      <p>
+        Lo que hay que tener resuelto antes de montarse al avión. Primera pasada de la
+        investigación, hecha en noviembre de 2026: lo marcado «por confirmar» toca verificarlo en
+        la fuente oficial.
+      </p>
+    </div>
+  </header>
+
+  <section class="sec">
+    <header>
+      <span class="mono">A · Visa</span>
+      <h2>Visa de turista japonesa</h2>
+    </header>
+    <ul class="lista">
+      {
+        visa.map((v) => (
+          <li>
+            <h3>{v.t}</h3>
+            <p>{v.d}</p>
+            <span class:list={['chip', v.e]}>{E[v.e]}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="sec">
+    <header>
+      <span class="mono">B · Ruta</span>
+      <h2>Por dónde volar sin visa americana</h2>
+      <p class="aside">
+        No hay vuelos directos Colombia–Japón. Desde Cali casi todo conecta primero por Bogotá.
+      </p>
+    </header>
+    <ol class="rutas">
+      {
+        rutas.map((r) => (
+          <li>
+            <div class="via">
+              <h3>{r.via}</h3>
+              <span class="mono">{r.cod}</span>
+            </div>
+            <p>{r.d}</p>
+            <div class="est">
+              <span class:list={['chip', r.tono]}>{r.veredicto}</span>
+              <span class:list={['chip', r.e]}>{E[r.e]}</span>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="sec">
+    <header>
+      <span class="mono">C · Papeles</span>
+      <h2>Lo que cada uno debe tener</h2>
+      <p class="aside">
+        Aquí no se sube ningún documento: solo marcas lo que ya tienes. Sello lleno, listo; sello punteado, pendiente. Los archivos van en
+        un Drive privado.
+      </p>
+    </header>
+    <div>
+      <p class="invita">
+        <span>Para llevar tu lista y ver cómo va el grupo,</span>
+        <button type="button" data-entrar>entra con tu nombre →</button>
+      </p>
+      <ol class="papeles">
+        {
+          papeles.map((p, i) => (
+            <li data-marca={`papel:${p.id}`}>
+              <span class="mono">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{p.t}</h3>
+              <p>{p.d}</p>
+              <div class="tengo">
+                <button type="button" class="poner" data-poner="1" aria-pressed="false">
+                  Ya lo tengo
+                </button>
+                <span data-sellos data-fantasmas />
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec">
+    <header>
+      <span class="mono">Fuentes</span>
+      <h2>De dónde sale esto</h2>
+    </header>
+    <ul class="fuentes">
+      {
+        fuentes.map(([t, u]) => (
+          <li>
+            <a href={u} rel="noopener">{t}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .aside {
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    margin-top: 0.8rem;
+  }
+  ul,
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  h3 {
+    font-size: 1.3rem;
+    line-height: 1.2;
+  }
+  li p {
+    margin: 0;
+    font-size: 0.98rem;
+  }
+
+  .lista li {
+    display: grid;
+    grid-template-columns: minmax(10rem, 16rem) 1fr auto;
+    gap: 0.5rem 1.5rem;
+    align-items: baseline;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .lista li:first-child {
+    padding-top: 0;
+  }
+
+  .rutas li {
+    display: grid;
+    grid-template-columns: minmax(10rem, 16rem) 1fr;
+    gap: 0.5rem 1.5rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .rutas li:first-child {
+    padding-top: 0;
+  }
+  .via .mono {
+    color: var(--ink-soft);
+  }
+  .est {
+    grid-column: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .papeles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    border-top: 1px solid var(--ink);
+    border-left: 1px solid var(--ink);
+  }
+  .papeles li {
+    padding: 1.1rem 1.25rem 1.4rem;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+  .papeles li {
+    display: flex;
+    flex-direction: column;
+  }
+  .papeles li p {
+    flex: 1;
+  }
+  .tengo {
+    display: flex;
+    flex-direction: column; /* sellos siempre en su propia fila: no dependen del ancho */
+    align-items: flex-start;
+    gap: 0.5rem 0.75rem;
+    margin-top: 1rem;
+    padding-top: 0.8rem;
+    border-top: 1px dashed var(--ink);
+  }
+  .papeles > li > .mono {
+    color: var(--shu);
+  }
+  .papeles h3 {
+    margin: 0.4rem 0 0.5rem;
+  }
+
+  .fuentes li {
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--hair);
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 720px) {
+    .lista li,
+    .rutas li {
+      grid-template-columns: 1fr;
+    }
+    .est {
+      grid-column: 1;
+    }
+  }
+</style>

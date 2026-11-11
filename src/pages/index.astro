@@ -1,0 +1,276 @@
+---
+import Base from '../layouts/Base.astro';
+import { secciones } from '../data/secciones';
+
+const boleto = [
+  { k: 'Origen', v: 'CLO', s: 'Cali, Colombia' },
+  { k: 'Destino', v: 'TYO', s: 'Tokio, Japón' },
+  { k: 'Año', v: '2027', s: 'Fecha por definir' },
+  { k: 'Pasajeros', v: '4–5', s: 'Los parceros' },
+  { k: 'Distancia', v: '14.400', s: 'km, más o menos' },
+];
+---
+
+<Base title="Inicio">
+  <section class="hero">
+    <p class="mono kicker">Cuaderno de viaje · Edición n.º 1</p>
+    <h1>
+      <span class="l1">Cali</span>
+      <span class="l2"><i aria-hidden="true">→</i> 日本</span>
+    </h1>
+    <div class="sello" aria-label="Estado: en planeación">
+      <span>計画中</span>
+      <small class="mono">En planeación</small>
+    </div>
+    <p class="lead">
+      Catorce mil kilómetros, un océano y por lo menos una escala. Aquí vamos armando la vuelta
+      entre todos: cuándo, por dónde, con qué papeles y con cuánta plata.
+    </p>
+  </section>
+
+  <dl class="boleto">
+    {
+      boleto.map((b) => (
+        <div>
+          <dt class="mono">{b.k}</dt>
+          <dd>
+            <strong>{b.v}</strong>
+            <span>{b.s}</span>
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+
+  <section class="indice" aria-labelledby="indice-t">
+    <h2 id="indice-t" class="mono">Índice</h2>
+    <ol>
+      {
+        secciones.map((s) => {
+          const Tag = s.href ? 'a' : 'div';
+          return (
+            <li>
+              <Tag class:list={['fila', { off: !s.href }]} href={s.href}>
+                <span class="n mono">{s.n}</span>
+                <span class="k" aria-hidden="true">
+                  {s.kanji}
+                  <small class="mono">{s.lectura}</small>
+                </span>
+                <span class="t">
+                  <strong>{s.titulo}</strong>
+                  <span>{s.desc}</span>
+                </span>
+                <span class="go mono">{s.href ? 'Abrir →' : 'Pronto'}</span>
+              </Tag>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    padding: clamp(2rem, 6vw, 4.5rem) var(--gutter) clamp(2rem, 5vw, 3.5rem);
+    overflow: hidden;
+  }
+  .kicker {
+    color: var(--ink-soft);
+    margin-bottom: 1.5rem;
+  }
+  h1 {
+    font-weight: 800;
+    font-size: clamp(4.5rem, 19vw, 17rem);
+    line-height: 0.86;
+    letter-spacing: -0.045em;
+  }
+  h1 span {
+    display: block;
+  }
+  h1 .l2 {
+    padding-left: clamp(1.5rem, 12vw, 12rem);
+    letter-spacing: -0.02em;
+  }
+  h1 i {
+    font-style: normal;
+    color: var(--shu);
+    font-weight: 500;
+  }
+  .lead {
+    margin-top: clamp(1.5rem, 4vw, 3rem);
+    font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+    max-width: 46ch;
+  }
+
+  .sello {
+    position: absolute;
+    top: clamp(4.5rem, 9vw, 7rem);
+    right: var(--gutter);
+    display: grid;
+    justify-items: center;
+    gap: 0.4rem;
+    padding: 0.7rem 0.6rem 0.5rem;
+    border: 3px solid var(--shu);
+    color: var(--shu);
+    border-radius: 4px;
+    transform: rotate(7deg);
+    animation: sellar 0.5s 0.4s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+  }
+  .sello span {
+    writing-mode: vertical-rl;
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: clamp(1.4rem, 3vw, 2.4rem);
+    letter-spacing: 0.15em;
+    line-height: 1;
+  }
+  .sello small {
+    font-size: 0.55rem;
+  }
+  @keyframes sellar {
+    from {
+      opacity: 0;
+      transform: rotate(-8deg) scale(1.8);
+    }
+  }
+
+  /* boleto */
+  .boleto {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    margin: 0;
+    border-block: 1px solid var(--ink);
+    background: var(--paper-2);
+  }
+  .boleto > div {
+    padding: 1rem var(--gutter) 1.1rem;
+    padding-right: 1rem;
+    border-right: 1px dashed var(--ink);
+  }
+  .boleto > div + div {
+    padding-left: 1.25rem;
+  }
+  .boleto > div:last-child {
+    border-right: 0;
+  }
+  .boleto dt {
+    color: var(--ink-soft);
+  }
+  .boleto dd {
+    margin: 0.3rem 0 0;
+  }
+  .boleto strong {
+    display: block;
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+    line-height: 1.1;
+  }
+  .boleto dd span {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  /* índice */
+  .indice h2 {
+    padding: 2.5rem var(--gutter) 0.8rem;
+    color: var(--shu);
+    font-weight: 500;
+  }
+  .indice ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--ink);
+  }
+  .fila {
+    display: grid;
+    grid-template-columns: 3rem clamp(4.5rem, 10vw, 8rem) 1fr auto;
+    align-items: center;
+    gap: clamp(0.75rem, 2vw, 2rem);
+    padding: 1.1rem var(--gutter);
+    border-bottom: 1px solid var(--ink);
+    text-decoration: none;
+    transition:
+      background 0.25s,
+      color 0.25s;
+  }
+  .n {
+    color: var(--ink-soft);
+  }
+  .k {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(2.6rem, 6vw, 4.5rem);
+    line-height: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    transition: color 0.25s;
+  }
+  .k small {
+    font-size: 0.6rem;
+    color: var(--ink-soft);
+  }
+  .t strong {
+    display: block;
+    font-family: var(--f-display);
+    font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+    line-height: 1.2;
+  }
+  .t span {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+  a.fila:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  a.fila:hover .k {
+    color: var(--shu);
+  }
+  a.fila:hover :is(.t span, .n, .k small) {
+    color: #b9b1a2;
+  }
+  .fila.off {
+    opacity: 0.45;
+  }
+
+  @media (max-width: 720px) {
+    .boleto {
+      grid-template-columns: 1fr 1fr;
+    }
+    .boleto > div,
+    .boleto > div + div {
+      padding: 0.8rem var(--gutter);
+      border-right: 0;
+      border-bottom: 1px dashed var(--ink);
+    }
+    .boleto > div:last-child {
+      grid-column: 1 / -1;
+      border-bottom: 0;
+    }
+    .fila {
+      grid-template-columns: 3.2rem 1fr;
+    }
+    .n,
+    .k small,
+    .go {
+      display: none;
+    }
+    /* el sello baja al lado de «Cali», donde no pisa ni el antetítulo ni 日本 */
+    .sello {
+      top: 4.6rem;
+      padding: 0.45rem 0.35rem;
+      border-width: 2px;
+    }
+    .sello span {
+      font-size: 1.05rem;
+    }
+    .sello small {
+      display: none;
+    }
+  }
+</style>

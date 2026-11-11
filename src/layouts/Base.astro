@@ -1,0 +1,123 @@
+---
+import '@fontsource/shippori-mincho/500.css';
+import '@fontsource/shippori-mincho/700.css';
+import '@fontsource/shippori-mincho/800.css';
+import '@fontsource/zen-kaku-gothic-new/400.css';
+import '@fontsource/zen-kaku-gothic-new/500.css';
+import '@fontsource/zen-kaku-gothic-new/700.css';
+import '@fontsource/dm-mono/400.css';
+import '@fontsource/dm-mono/500.css';
+import '../styles/global.css';
+import { secciones } from '../data/secciones';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Cuaderno de viaje de los parceros: Cali → Japón 2027.',
+} = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const nav = secciones.filter((s) => s.href);
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script is:inline>
+      // Antes de pintar: si este dispositivo ya tiene sesión, se reserva el espacio de los sellos.
+      try {
+        document.documentElement.dataset.sesion = localStorage.getItem('grupo') ? 'si' : 'no';
+      } catch {}
+    </script>
+    <title>{title} · Cali → Japón</title>
+  </head>
+  <body>
+    <aside class="spine" aria-hidden="true">
+      <span>日本旅行<b>・</b>計画帳</span>
+      <span>二〇二七</span>
+    </aside>
+
+    <div class="shell">
+      <header class="top">
+        <a class="mark" href="/">
+          <span class="hanko">旅</span>
+          <span>Cali → Japón<small>Cuaderno de viaje · 2027</small></span>
+        </a>
+        <nav class="mono" aria-label="Secciones">
+          {
+            nav.map((s) => (
+              <a href={s.href} aria-current={path === s.href ? 'page' : undefined}>
+                {s.titulo}
+              </a>
+            ))
+          }
+        </nav>
+        <div id="quien" class="quien"></div>
+      </header>
+
+      <main>
+        <slot />
+      </main>
+
+      <footer class="foot mono">
+        <span>Hecho en Cali, con rumbo a 東京</span>
+        <span>La info de visas y vuelos cambia: confirmar siempre en la fuente oficial</span>
+      </footer>
+    </div>
+
+    <dialog id="registro" class="registro" aria-labelledby="registro-t">
+      <form method="dialog">
+        <button type="button" class="cerrar mono" data-cerrar aria-label="Cerrar">Cerrar ✕</button>
+        <span class="mono">Registro de viajero · 旅人</span>
+        <h2 id="registro-t">¿Quién eres?</h2>
+        <p>
+          Entra con tu nombre y la clave del viaje. Con eso quedan guardadas tus marcas y ves las
+          del resto del grupo.
+        </p>
+        <label>
+          <span class="mono">Tu nombre</span>
+          <input name="nombre" autofocus required minlength="2" maxlength="20" autocomplete="nickname" />
+        </label>
+        <p class="kana" data-kana aria-label="Tu nombre en katakana"></p>
+        <label>
+          <span class="mono">Clave del viaje</span>
+          <input name="clave" type="password" required autocomplete="current-password" />
+        </label>
+        <p role="alert" class="error"></p>
+        <button type="submit" class="sellar">Entrar <span aria-hidden="true">→</span></button>
+      </form>
+    </dialog>
+
+    <dialog id="perfil" class="registro" aria-labelledby="perfil-t">
+      <form method="dialog">
+        <button type="button" class="cerrar mono" data-cerrar aria-label="Cerrar">Cerrar ✕</button>
+        <span class="mono">Tu sello · 判子</span>
+        <h2 id="perfil-t">Tu nombre</h2>
+        <p>Si lo cambias, tus marcas y tu color se quedan contigo.</p>
+        <label>
+          <span class="mono">Nombre</span>
+          <input name="nombre" autofocus required minlength="2" maxlength="20" autocomplete="nickname" />
+        </label>
+        <p class="kana" data-kana aria-label="Tu nombre en katakana"></p>
+        <p role="alert" class="error"></p>
+        <button type="submit" class="sellar">Guardar</button>
+        <div class="salida mono">
+          <button type="button" data-salir>Salir de este dispositivo</button>
+          <button type="button" data-borrarme>Borrarme del grupo</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script>
+      import '../scripts/grupo';
+    </script>
+  </body>
+</html>
