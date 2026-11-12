@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { db, estado, nombreValido } from '../../lib/db';
+import { db, estado, formaLibre, nombreValido, personaLlamada } from '../../lib/db';
 import { abrirSesion, claveCorrecta, json } from '../../lib/sesion';
 
 export const prerender = false;
@@ -13,19 +13,26 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   if (!nombre) return json({ error: 'El nombre debe tener entre 2 y 20 letras.' }, 400);
 
   const c = await db();
-  const ya = await c.execute({ sql: 'SELECT id FROM personas WHERE nombre = ?', args: [nombre] });
+  const ya = await personaLlamada(c, nombre);
   let id: number;
-  if (ya.rows.length) {
-    id = Number(ya.rows[0].id);
+  if (ya !== null) {
+    id = ya;
   } else {
     const total = await c.execute('SELECT COUNT(*) AS n FROM personas');
     if (Number(total.rows[0].n) >= MAX_PERSONAS)
       return json({ error: 'El grupo ya está completo.' }, 403);
-    const nuevo = await c.execute({
-      sql: 'INSERT INTO personas (nombre) VALUES (?) RETURNING id',
-      args: [nombre],
-    });
-    id = Number(nuevo.rows[0].id);
+    try {
+      const nuevo = await c.execute({
+        sql: 'INSERT INTO personas (nombre, forma) VALUES (?, ?) RETURNING id',
+        args: [nombre, await formaLibre(c)],
+      });
+      id = Number(nuevo.rows[0].id);
+    } catch (e) {
+      // dos registros al tiempo con el mismo nombre: el segundo entra como el primero
+      const ganador = await personaLlamada(c, nombre);
+      if (ganador === null) throw e;
+      id = ganador;
+    }
   }
 
   abrirSesion(cookies, id);

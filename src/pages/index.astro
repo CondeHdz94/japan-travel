@@ -11,7 +11,7 @@ const boleto = [
 ];
 ---
 
-<Base title="Inicio">
+<Base title="Inicio" intro>
   <section class="hero">
     <p class="mono kicker">Cuaderno de viaje · Edición n.º 1</p>
     <h1>
@@ -133,6 +133,47 @@ const boleto = [
     from {
       opacity: 0;
       transform: rotate(-8deg) scale(1.8);
+    }
+  }
+
+  /* ───── entrada: la portada se arma mientras la tinta se recoge en el sello ───── */
+  :global(html[data-intro='si']) .sello {
+    animation-play-state: paused;
+  }
+  :global(html[data-intro='sale']) .sello {
+    animation-delay: 0.95s;
+  }
+  :global(html[data-intro='sale']) h1 span {
+    animation: sube 1s 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  }
+  :global(html[data-intro='sale']) h1 .l2 {
+    animation-delay: 0.34s;
+  }
+  :global(html[data-intro='sale']) :is(.kicker, .lead, .boleto > div) {
+    animation: aparece 0.7s 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  }
+  :global(html[data-intro='sale']) .lead {
+    animation-delay: 0.7s;
+  }
+  :global(html[data-intro='sale']) .boleto > div:nth-child(1) { animation-delay: 0.8s; }
+  :global(html[data-intro='sale']) .boleto > div:nth-child(2) { animation-delay: 0.87s; }
+  :global(html[data-intro='sale']) .boleto > div:nth-child(3) { animation-delay: 0.94s; }
+  :global(html[data-intro='sale']) .boleto > div:nth-child(4) { animation-delay: 1.01s; }
+  :global(html[data-intro='sale']) .boleto > div:nth-child(5) { animation-delay: 1.08s; }
+  @keyframes sube {
+    from {
+      transform: translateY(100%);
+      clip-path: inset(-20% -20% 100% -20%);
+    }
+    to {
+      transform: none;
+      clip-path: inset(-20%);
+    }
+  }
+  @keyframes aparece {
+    from {
+      opacity: 0;
+      transform: translateY(0.8rem);
     }
   }
 

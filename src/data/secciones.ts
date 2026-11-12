@@ -30,6 +30,7 @@ export const secciones: Seccion[] = [
     lectura: 'tokoro',
     titulo: 'Lugares',
     desc: 'La lista de sitios que cada uno propone, para votar y armar la ruta.',
+    href: '/lugares',
   },
   {
     n: '04',

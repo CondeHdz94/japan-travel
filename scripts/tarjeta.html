@@ -1,0 +1,144 @@
+<!doctype html>
+<!--
+  La tarjeta que sale al pegar el enlace del sitio en WhatsApp (public/tarjeta.png, 1200 × 630).
+  Es una foto de esta página. Para volver a sacarla, desde la raíz del proyecto (PowerShell):
+
+    & "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --headless=new --hide-scrollbars `
+      --virtual-time-budget=8000 --window-size=1200,630 `
+      "--screenshot=$PWD\public\tarjeta.png" "file:///$($PWD -replace '\\','/')/scripts/tarjeta.html"
+
+  Y después `node scripts/iconos.mjs`, que la comprime.
+-->
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Tarjeta para compartir</title>
+    <link rel="stylesheet" href="../node_modules/@fontsource/shippori-mincho/700.css" />
+    <link rel="stylesheet" href="../node_modules/@fontsource/shippori-mincho/800.css" />
+    <link rel="stylesheet" href="../node_modules/@fontsource/dm-mono/500.css" />
+    <style>
+      :root {
+        --paper: #f1ece1;
+        --ink: #191714;
+        --ink-soft: #5e574c;
+        --shu: #d2391f;
+        --f-display: 'Shippori Mincho', serif;
+        --f-mono: 'DM Mono', monospace;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 96px 1fr;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--f-display);
+      }
+      /* grano de papel, igual al del sitio */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        opacity: 0.22;
+        mix-blend-mode: multiply;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .36 0 0 0 0 .3 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      }
+      .lomo {
+        border-right: 2px solid var(--ink);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 44px 0;
+        font-weight: 700;
+        font-size: 30px;
+        letter-spacing: 0.3em;
+      }
+      .lomo span {
+        writing-mode: vertical-rl;
+      }
+      .lomo b {
+        color: var(--shu);
+      }
+      main {
+        display: grid;
+        grid-template-rows: 1fr auto;
+        padding: 0 72px;
+        min-width: 0;
+      }
+      .centro {
+        display: flex;
+        align-items: center;
+        gap: 48px;
+      }
+      .hanko {
+        flex: none;
+        display: grid;
+        place-items: center;
+        width: 190px;
+        height: 190px;
+        background: var(--shu);
+        color: var(--paper);
+        font-weight: 800;
+        font-size: 124px;
+        line-height: 1;
+        border-radius: 14px;
+        transform: rotate(-4deg);
+      }
+      .mono {
+        font-family: var(--f-mono);
+        font-weight: 500;
+        font-size: 26px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+      .ojo {
+        color: var(--shu);
+      }
+      h1 {
+        font-weight: 800;
+        font-size: 100px;
+        line-height: 1.05;
+        letter-spacing: -0.01em;
+        margin: 10px 0 14px;
+        white-space: nowrap;
+      }
+      .jp {
+        font-weight: 700;
+        font-size: 40px;
+        color: var(--ink-soft);
+        letter-spacing: 0.12em;
+      }
+      .pie {
+        display: flex;
+        justify-content: space-between;
+        padding: 26px 0 34px;
+        border-top: 2px solid var(--ink);
+        color: var(--ink-soft);
+        font-size: 19px;
+      }
+    </style>
+  </head>
+  <body>
+    <aside class="lomo"><span>日本旅行<b>・</b>計画帳</span><span>二〇二七</span></aside>
+    <main>
+      <div class="centro">
+        <div class="hanko">旅</div>
+        <div>
+          <span class="mono ojo">Cuaderno de viaje · 2027</span>
+          <h1>Cali → Japón</h1>
+          <span class="jp">カリから日本へ</span>
+        </div>
+      </div>
+      <div class="pie mono">
+        <span>Cuándo ir · Requisitos · Lugares</span>
+        <span>El viaje de los parceros</span>
+      </div>
+    </main>
+  </body>
+</html>

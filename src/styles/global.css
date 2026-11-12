@@ -321,20 +321,34 @@ button {
 
 /* sello personal */
 .sello-p {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
+  position: relative;
+  display: inline-grid;
+  justify-items: center;
+  align-content: center;
+  row-gap: 2px;
   flex: none;
+  /* la caja es la misma para todas las formas: cambiar de forma no mueve nada */
   width: 1.6rem;
   height: 2.4rem;
   padding: 0.2rem 0.15rem;
-  border: 2px solid currentColor;
-  border-radius: 99px;
   line-height: 1;
   /* cada sello trae su propio giro (--giro), como puesto a mano */
   transform: rotate(var(--giro, -6deg));
+}
+/* el contorno lo dibuja un svg que llena la caja (las formas están en src/data/formas.ts) */
+.sello-p svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+.sello-p b,
+.sello-p i {
+  position: relative; /* por encima del contorno, que puede llevar relleno */
 }
 .sello-p.nuevo {
   animation: caer 0.3s cubic-bezier(0.2, 1.5, 0.4, 1);
@@ -364,21 +378,83 @@ button {
   letter-spacing: -0.03em;
 }
 .sello-p b + i {
-  align-self: stretch;
+  justify-self: stretch;
   text-align: center;
   border-top: 1px solid currentColor;
   padding-top: 2px;
 }
-.sello-p i:only-child {
+/* nombre sin sílaba en katakana: solo la inicial, en grande */
+.sello-p svg + i {
   font-family: var(--f-display);
   font-weight: 800;
   font-size: 0.85rem;
 }
 .sello-p.fantasma {
-  border-style: dashed;
-  border-width: 1px;
   opacity: 0.35;
   animation: none;
+}
+.sello-p.fantasma svg {
+  stroke-width: 1.25;
+  stroke-dasharray: 3 2.5;
+}
+
+/* ajustes por forma: dónde cabe el texto dentro de cada silueta */
+.f-kaku {
+  padding: 0.32rem 0.3rem;
+}
+.f-kikko {
+  padding: 0.4rem 0.15rem;
+}
+.f-ema {
+  padding: 0.55rem 0.15rem 0.2rem;
+}
+.f-arco {
+  padding: 0.45rem 0.15rem 0.2rem;
+}
+.f-sumiire {
+  padding: 0.3rem 0.15rem;
+}
+/* círculo y cuadrado: la sílaba adentro y la inicial suelta debajo */
+.f-maru,
+.f-masu {
+  padding: 0;
+  grid-template-rows: 1.55rem auto;
+  align-content: start;
+  row-gap: 0;
+}
+.f-maru b,
+.f-masu b,
+.f-maru svg + i,
+.f-masu svg + i {
+  align-self: center;
+}
+.f-maru b + i,
+.f-masu b + i {
+  border-top: 0;
+  padding-top: 0.14rem;
+}
+/* calabaza: la inicial en la cabeza y la sílaba en la panza */
+.f-hyotan {
+  padding: 0;
+  grid-template-rows: 1rem 1.4rem;
+  align-content: start;
+  row-gap: 0;
+}
+.f-hyotan b,
+.f-hyotan svg + i {
+  grid-row: 2;
+  align-self: center;
+}
+.f-hyotan b + i {
+  grid-row: 1;
+  align-self: center;
+  justify-self: center;
+  border-top: 0;
+  padding-top: 0.06rem;
+  font-size: 0.5rem;
+}
+.f-hyotan b + i.largo {
+  font-size: 0.38rem;
 }
 .sello-p[data-tinta='0'] { color: var(--shu); }
 .sello-p[data-tinta='1'] { color: var(--ai); }
@@ -411,15 +487,19 @@ button {
 }
 /* donde el ancho es justo, los sellos se montan un poco, como en un papel muy sellado */
 .puedo [data-sellos],
-.voto [data-sellos] {
+.voto [data-sellos],
+[data-sellos].juntos {
   column-gap: 0;
 }
-.puedo .sello-p,
-.voto .sello-p {
-  background: var(--paper);
+/* el de encima tapa al de abajo, pero solo con su silueta: no con toda la caja */
+.puedo .sello-p svg,
+.voto .sello-p svg,
+.juntos .sello-p svg {
+  fill: var(--paper);
 }
 .puedo .sello-p + .sello-p,
-.voto .sello-p + .sello-p {
+.voto .sello-p + .sello-p,
+.juntos .sello-p + .sello-p {
   margin-left: -0.25rem;
 }
 
@@ -553,8 +633,22 @@ button {
 }
 
 @media (max-width: 720px) {
-  /* en móvil la cabecera va en una sola fila: sello del sitio, secciones y mi sello */
-  .mark > span:not(.hanko),
+  /* en móvil: arriba el sitio y mi sello; debajo, las secciones en una fila que se desliza */
+  .top {
+    flex-wrap: wrap;
+    row-gap: 0.6rem;
+    padding-bottom: 0;
+  }
+  .top nav {
+    order: 3;
+    flex: 1 0 100%;
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 0.5rem var(--gutter);
+    border-top: 1px solid var(--hair);
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
   .quien .yo {
     display: none;
   }
@@ -585,6 +679,64 @@ button {
 .quien button[data-perfil]:hover .yo {
   color: var(--shu);
 }
+/* escoger la forma del sello: dos filas de seis, con el sello propio en cada forma */
+.registro .formas {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.registro .formas legend {
+  padding: 0;
+  margin-bottom: 0.5rem;
+}
+.registro .formas [data-formas] {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  row-gap: 0.35rem;
+  min-height: 7.2rem; /* el alto de las dos filas: el perfil no crece al pintarlas */
+}
+.registro .formas label {
+  position: relative;
+  display: grid;
+  place-items: center;
+  gap: 0;
+  padding: 0.35rem 0 0.55rem;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+.registro .formas input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.registro .formas .sello-p {
+  opacity: 0.45;
+  transition:
+    opacity 0.15s,
+    transform 0.2s;
+}
+.registro .formas label:hover .sello-p {
+  opacity: 0.8;
+}
+.registro .formas label:has(:checked) {
+  border-bottom-color: var(--shu);
+}
+.registro .formas label:has(:checked) .sello-p {
+  opacity: 1;
+  transform: rotate(-6deg);
+}
+.registro .formas label:has(:focus-visible) {
+  outline: 2px solid var(--shu);
+  outline-offset: 2px;
+}
+
 .registro .salida {
   display: flex;
   flex-wrap: wrap;
@@ -617,4 +769,37 @@ button {
   color: var(--shu);
   min-height: 1.2em;
   margin-top: -0.3rem;
+}
+
+/* ojo para ver la clave */
+.registro .con-ojo {
+  position: relative;
+  display: block;
+}
+.registro .con-ojo input {
+  width: 100%;
+  padding-right: 2.6rem;
+}
+.registro .con-ojo button {
+  position: absolute;
+  right: -0.4rem;
+  bottom: 0.15rem;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-soft);
+}
+.registro .con-ojo button:hover,
+.registro .con-ojo button[aria-pressed='true'] {
+  color: var(--shu);
+}
+.registro .con-ojo .tachado {
+  display: none;
+}
+.registro .con-ojo button[aria-pressed='true'] .tachado {
+  display: inline;
 }

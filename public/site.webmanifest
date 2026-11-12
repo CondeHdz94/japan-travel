@@ -1,0 +1,14 @@
+{
+  "name": "Cali → Japón · Cuaderno de viaje 2027",
+  "short_name": "Japón 2027",
+  "description": "Cuaderno de viaje de los parceros: Cali → Japón 2027.",
+  "lang": "es",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f1ece1",
+  "theme_color": "#f1ece1",
+  "icons": [
+    { "src": "/icono-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icono-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

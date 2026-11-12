@@ -1,0 +1,872 @@
+---
+import Base from '../layouts/Base.astro';
+import { SEMILLAS, TEMAS, TEMPORADAS, ZONAS, etiquetaMeses, type Lugar } from '../data/lugares';
+import creditos from '../data/fotos.json';
+import { propuestos, sellosPorLugar, type LugarPropuesto } from '../lib/lugares';
+import { sesion } from '../lib/sesion';
+
+// Se arma en el servidor en cada visita: con sesión se suman los lugares que propuso el grupo
+// y se ordena por sellos. Sin sesión solo se ve el catálogo inicial.
+export const prerender = false;
+Astro.response.headers.set('cache-control', 'private, no-store');
+
+type Ficha = Lugar & Partial<Pick<LugarPropuesto, 'persona' | 'enlace' | 'imagen'>>;
+const fotos = creditos as Record<string, { archivo: string; autor: string; licencia: string; fuente: string }>;
+
+const yo = sesion(Astro.cookies);
+let delGrupo: LugarPropuesto[] = [];
+let sellos = new Map<string, number>();
+if (yo) {
+  try {
+    [delGrupo, sellos] = await Promise.all([propuestos(), sellosPorLugar()]);
+  } catch {
+    // sin base de datos igual se muestra el catálogo
+  }
+}
+
+const todos: Ficha[] = [...SEMILLAS, ...delGrupo];
+const n = (l: Ficha) => sellos.get(l.id) ?? 0;
+
+// Dentro de cada tema: primero los más sellados; a igualdad, el orden del catálogo.
+// El orden se fija al cargar: votar no reacomoda las tarjetas bajo el dedo.
+const porTema = TEMAS.map((tema) => ({
+  tema,
+  lugares: todos
+    .map((l, i) => ({ l, i }))
+    .filter((x) => x.l.tema === tema.id)
+    .sort((a, b) => n(b.l) - n(a.l) || a.i - b.i)
+    .map((x) => x.l),
+}));
+
+const zonaDe = Object.fromEntries(ZONAS.map((z) => [z.id, z.nombre]));
+const foto = (l: Ficha) => l.imagen ?? (fotos[l.id] ? `/lugares/${fotos[l.id].archivo}` : undefined);
+const mapa = (l: Ficha) =>
+  l.enlace ??
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${l.nombre} ${l.jp ?? ''} Japan`)}`;
+const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
+---
+
+<Base title="Lugares" description="Lugares y eventos de Japón para votar entre todos.">
+  <header class="page-head">
+    <span class="kanji" aria-hidden="true">所</span>
+    <div>
+      <span class="mono">03 · tokoro · los lugares</span>
+      <h1>Lugares</h1>
+      <p>
+        {todos.length} sitios y eventos para ir armando la ruta. Ponle tu sello a los que quieres
+        conocer: la foto se pone a color cuando es tuyo. Si falta alguno, proponlo.
+      </p>
+    </div>
+  </header>
+
+  <div class="barra">
+    <nav class="temas" aria-label="Temas">
+      {
+        porTema.map(({ tema, lugares }) => (
+          <a href={`#${tema.id}`} data-ir-tema={tema.id}>
+            <b aria-hidden="true">{tema.kanji}</b>
+            <span>{tema.corto}</span>
+            <small class="mono">{lugares.length}</small>
+          </a>
+        ))
+      }
+    </nav>
+    <div class="filtros">
+      <label>
+        <span class="oculto">Zona</span>
+        <select id="f-zona">
+          <option value="">Todas las zonas</option>
+          {ZONAS.map((z) => <option value={z.id}>{z.nombre}</option>)}
+        </select>
+      </label>
+      <label>
+        <span class="oculto">Temporada</span>
+        <select id="f-temp">
+          <option value="">Todo el año</option>
+          {TEMPORADAS.map((t) => <option value={t.id} data-meses={t.meses.join(',')}>En {t.nombre.toLowerCase()}</option>)}
+        </select>
+      </label>
+      <button type="button" class="poner solo-mios" id="f-mios" aria-pressed="false">Mis sellos</button>
+      <span class="mono total"><b id="f-total">{todos.length}</b> a la vista</span>
+      <button type="button" class="proponer" data-proponer="">＋ Proponer lugar</button>
+    </div>
+  </div>
+
+  <p class="vacio wrap" id="vacio" hidden>
+    No hay nada con ese filtro. <button type="button" id="limpiar">Quitar filtros</button>
+  </p>
+
+  {
+    porTema.map(({ tema, lugares }) => (
+      <section class="tema" id={tema.id}>
+        <header>
+          <span class="k" aria-hidden="true">{tema.kanji}</span>
+          <div>
+            <h2>{tema.nombre}</h2>
+            <p>{tema.desc}</p>
+          </div>
+          <span class="mono cuenta"><b data-visibles>{lugares.length}</b> lugares</span>
+        </header>
+        <div class="rejilla">
+          {
+            lugares.map((l) => (
+              <article
+                class="lugar"
+                id={l.id}
+                data-zona={l.zona}
+                data-meses={l.meses?.join(',')}
+                data-marca={`lugar:${l.id}`}
+              >
+                <div class="foto">
+                  {foto(l) ? (
+                    <img src={foto(l)} alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+                  ) : (
+                    <span class="sin-foto" aria-hidden="true">{tema.kanji}</span>
+                  )}
+                  {l.meses && <span class="cuando mono">{etiquetaMeses(l.meses)}</span>}
+                </div>
+                <div class="cuerpo">
+                  <p class="meta mono">
+                    <span>{zonaDe[l.zona]}</span>
+                    <a href={mapa(l)} target="_blank" rel="noopener noreferrer">
+                      {l.enlace ? 'Enlace' : 'Mapa'} ↗
+                    </a>
+                  </p>
+                  <h3>{l.nombre}</h3>
+                  {l.jp && <p class="jp" lang="ja">{l.jp}</p>}
+                  {l.desc && <p class="desc">{l.desc}</p>}
+                  {l.persona && (
+                    <p class="propuso mono">
+                      <span>Lo propuso</span>
+                      <span data-sello-de={l.persona} />
+                      {l.persona === yo && (
+                        <button type="button" data-quitar={l.id}>Quitar</button>
+                      )}
+                    </p>
+                  )}
+                </div>
+                <div class="pie">
+                  <button type="button" class="poner" data-poner="1" aria-pressed="false">Quiero ir</button>
+                  <span class="juntos" data-sellos />
+                </div>
+              </article>
+            ))
+          }
+          <button type="button" class="nueva" data-proponer={tema.id}>
+            <span aria-hidden="true">＋</span>
+            Proponer otro en {tema.corto.toLowerCase()}
+          </button>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="sec creditos">
+    <header>
+      <span class="mono">Fotos</span>
+      <h2>Créditos</h2>
+    </header>
+    <details>
+      <summary>Las fotos del catálogo son de Wikimedia Commons, de uso libre con atribución. Ver autores</summary>
+      <ul>
+        {
+          conCredito.map((l) => (
+            <li>
+              <a href={fotos[l.id].fuente} target="_blank" rel="noopener noreferrer">{l.nombre}</a>
+              <span> — {fotos[l.id].autor.slice(0, 80)} · {fotos[l.id].licencia}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </details>
+  </section>
+
+  <button type="button" class="novedad mono" id="novedad" hidden>Hay lugares nuevos · Actualizar ↻</button>
+
+  <dialog id="proponer" class="registro" aria-labelledby="proponer-t">
+    <form method="dialog">
+      <button type="button" class="cerrar mono" data-cerrar aria-label="Cerrar">Cerrar ✕</button>
+      <span class="mono">Nuevo lugar · 新しい場所</span>
+      <h2 id="proponer-t">Proponer</h2>
+      <label>
+        <span class="mono">Nombre del lugar o evento</span>
+        <input name="nombre" autofocus required minlength="2" maxlength="60" autocomplete="off" />
+      </label>
+      <div class="dos">
+        <label>
+          <span class="mono">Tema</span>
+          <select name="tema" required>
+            {TEMAS.map((t) => <option value={t.id}>{t.nombre}</option>)}
+          </select>
+        </label>
+        <label>
+          <span class="mono">Zona</span>
+          <select name="zona" required>
+            {ZONAS.map((z) => <option value={z.id}>{z.nombre}</option>)}
+          </select>
+        </label>
+      </div>
+      <label>
+        <span class="mono">¿Por qué vale la pena?</span>
+        <textarea name="nota" rows="2" maxlength="240"></textarea>
+      </label>
+      <label>
+        <span class="mono">¿Cuándo se puede?</span>
+        <select name="temporada">
+          <option value="">Todo el año</option>
+          {TEMPORADAS.map((t) => <option value={t.id}>Solo en {t.nombre.toLowerCase()}</option>)}
+        </select>
+      </label>
+      <label>
+        <span class="mono">Enlace (opcional)</span>
+        <input name="enlace" type="url" inputmode="url" placeholder="https://" maxlength="500" />
+      </label>
+      <label>
+        <span class="mono">Enlace de una foto (opcional)</span>
+        <input name="imagen" type="url" inputmode="url" placeholder="https://" maxlength="500" />
+      </label>
+      <p role="alert" class="error"></p>
+      <button type="submit" class="sellar">Proponer <span aria-hidden="true">→</span></button>
+    </form>
+  </dialog>
+</Base>
+
+<script>
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T | null;
+  const zona = $<HTMLSelectElement>('f-zona')!;
+  const temp = $<HTMLSelectElement>('f-temp')!;
+  const mios = $<HTMLButtonElement>('f-mios')!;
+  const total = $('f-total')!;
+  const vacio = $('vacio')!;
+  const dlg = $<HTMLDialogElement>('proponer')!;
+  const form = dlg.querySelector('form')!;
+  const aviso = dlg.querySelector<HTMLElement>('[role=alert]')!;
+  const conSesion = () => document.documentElement.dataset.sesion === 'si';
+
+  /** Muestra u oculta tarjetas según los filtros y actualiza los conteos. */
+  function filtrar() {
+    const z = zona.value;
+    const meses = temp.selectedOptions[0]?.dataset.meses?.split(',');
+    const soloMios = mios.getAttribute('aria-pressed') === 'true';
+    let suma = 0;
+
+    for (const tema of document.querySelectorAll<HTMLElement>('.tema')) {
+      let n = 0;
+      for (const c of tema.querySelectorAll<HTMLElement>('.lugar')) {
+        const enZona = !z || c.dataset.zona === z;
+        const enFecha = !meses || !c.dataset.meses || c.dataset.meses.split(',').some((m) => meses.includes(m));
+        const mio = !soloMios || !!c.querySelector('.poner[aria-pressed="true"]');
+        const ver = enZona && enFecha && mio;
+        c.hidden = !ver;
+        if (ver) n++;
+      }
+      tema.hidden = n === 0;
+      tema.querySelector('[data-visibles]')!.textContent = String(n);
+      const enBarra = document.querySelector<HTMLElement>(`[data-ir-tema="${tema.id}"]`);
+      if (enBarra) {
+        enBarra.querySelector('small')!.textContent = String(n);
+        enBarra.classList.toggle('apagado', n === 0);
+      }
+      suma += n;
+    }
+    total.textContent = String(suma);
+    vacio.hidden = suma > 0;
+
+    // los filtros quedan en la dirección: se pueden compartir y sobreviven a una recarga
+    const q = new URLSearchParams();
+    if (z) q.set('zona', z);
+    if (temp.value) q.set('t', temp.value);
+    if (soloMios) q.set('mios', '1');
+    history.replaceState(null, '', `${location.pathname}${q.size ? `?${q}` : ''}${location.hash}`);
+  }
+
+  // estado inicial desde la dirección (p. ej. /lugares?t=otono viene de «Cuándo ir»)
+  const q = new URLSearchParams(location.search);
+  if ([...zona.options].some((o) => o.value === q.get('zona'))) zona.value = q.get('zona')!;
+  if ([...temp.options].some((o) => o.value === q.get('t'))) temp.value = q.get('t')!;
+  const quiereMios = q.get('mios') === '1';
+  if (zona.value || temp.value) filtrar();
+
+  zona.addEventListener('change', filtrar);
+  temp.addEventListener('change', filtrar);
+  mios.addEventListener('click', () => {
+    if (!conSesion()) return document.querySelector<HTMLElement>('#quien [data-entrar]')?.click();
+    mios.setAttribute('aria-pressed', String(mios.getAttribute('aria-pressed') !== 'true'));
+    filtrar();
+  });
+  $('limpiar')!.addEventListener('click', () => {
+    zona.value = '';
+    temp.value = '';
+    mios.setAttribute('aria-pressed', 'false');
+    filtrar();
+  });
+  // «mis sellos» depende de que los sellos ya estén pintados
+  if (quiereMios) {
+    const aplicar = () => {
+      if (!conSesion()) return false;
+      mios.setAttribute('aria-pressed', 'true');
+      filtrar();
+      return true;
+    };
+    requestAnimationFrame(() => {
+      if (aplicar()) return;
+      // Dispositivo recién ingresado: todavía no hay estado guardado y la sesión se confirma
+      // cuando responde el servidor. Se espera a ese momento (los sellos se pintan en la misma pasada).
+      const ojo = new MutationObserver(() => aplicar() && ojo.disconnect());
+      ojo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-sesion'] });
+    });
+  }
+
+  // Una foto que no carga (el enlace de un lugar propuesto se cayó) se cambia por el kanji
+  // del tema, igual que las tarjetas sin foto.
+  function sinFoto(img: HTMLImageElement) {
+    const s = document.createElement('span');
+    s.className = 'sin-foto';
+    s.setAttribute('aria-hidden', 'true');
+    s.textContent = img.closest('.tema')?.querySelector('.k')?.textContent ?? '';
+    // los estilos de la página son de alcance local: el nuevo elemento hereda la marca de la foto
+    for (const a of img.attributes) if (a.name.startsWith('data-astro-cid-')) s.setAttribute(a.name, '');
+    img.replaceWith(s);
+  }
+  document.addEventListener(
+    'error',
+    (ev) => {
+      const el = ev.target;
+      if (el instanceof HTMLImageElement && el.closest('.foto')) sinFoto(el);
+    },
+    true,
+  );
+  // las que fallaron antes de que este código arrancara: se vuelven a pedir para que avisen
+  for (const img of document.querySelectorAll<HTMLImageElement>('.foto img'))
+    if (img.complete && img.naturalWidth === 0) img.src = img.src;
+
+  async function enviar(ruta: string, datos: unknown) {
+    const r = await fetch(`/api/${ruta}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(datos),
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error ?? 'Algo falló. Intenta de nuevo.');
+    return j;
+  }
+
+  /** Recarga conservando filtros y saltando, si se pide, a una tarjeta. */
+  function recargar(ancla = '') {
+    history.replaceState(null, '', `${location.pathname}${location.search}${ancla ? `#${ancla}` : ''}`);
+    // al recargar, el navegador vuelve a donde estaba el scroll y se salta el ancla:
+    // se le pide que no lo haga y la página nueva se encarga de ir a la tarjeta
+    if (ancla) history.scrollRestoration = 'manual';
+    location.reload();
+  }
+  if (history.scrollRestoration === 'manual') {
+    history.scrollRestoration = 'auto';
+    document.getElementById(location.hash.slice(1))?.scrollIntoView();
+  }
+
+  document.addEventListener('click', (ev) => {
+    const el = ev.target as Element;
+
+    const p = el.closest<HTMLElement>('[data-proponer]');
+    if (p) {
+      if (!conSesion()) return document.querySelector<HTMLElement>('#quien [data-entrar]')?.click();
+      if (p.dataset.proponer) (form.elements.namedItem('tema') as HTMLSelectElement).value = p.dataset.proponer;
+      if (zona.value) (form.elements.namedItem('zona') as HTMLSelectElement).value = zona.value;
+      aviso.textContent = '';
+      dlg.showModal();
+      return;
+    }
+
+    // quitar pide dos toques
+    const b = el.closest<HTMLElement>('[data-quitar]');
+    if (b) {
+      if (!b.classList.contains('seguro')) {
+        b.classList.add('seguro');
+        b.textContent = '¿Seguro?';
+        return;
+      }
+      enviar('quitar-lugar', { id: b.dataset.quitar })
+        .then(() => recargar())
+        .catch((e) => (b.textContent = (e as Error).message));
+    }
+  });
+
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const boton = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    boton.disabled = true;
+    try {
+      const { id } = await enviar('lugares', Object.fromEntries(new FormData(form)));
+      recargar(id);
+    } catch (e) {
+      aviso.textContent = (e as Error).message;
+      boton.disabled = false;
+    }
+  });
+
+  // alguien propuso un lugar mientras esta página estaba abierta: se ofrece recargar, sin forzarlo
+  const novedad = $('novedad')!;
+  document.addEventListener('grupo:lugares-nuevos', () => (novedad.hidden = false));
+  novedad.addEventListener('click', () => recargar());
+
+  // al entrar o salir cambia lo que el servidor muestra (los lugares del grupo)
+  document.addEventListener('grupo:sesion', () => recargar());
+</script>
+
+<style>
+  .oculto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  /* ───── barra fija: temas y filtros ───── */
+  .barra {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--paper);
+    border-bottom: 1px solid var(--ink);
+  }
+  .temas {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: 1px solid var(--hair);
+    padding-inline: calc(var(--gutter) - 0.9rem);
+  }
+  .temas a {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    padding: 0.5rem 0.9rem;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .temas b {
+    font-family: var(--f-display);
+    font-size: 1.15rem;
+    color: var(--shu);
+  }
+  .temas span {
+    font-size: 0.88rem;
+    font-weight: 500;
+  }
+  .temas small {
+    color: var(--ink-soft);
+    font-size: 0.6rem;
+  }
+  .temas a.apagado {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+  .filtros {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    padding: 0.55rem var(--gutter);
+  }
+  /* todos los controles de la fila miden lo mismo y comparten eje */
+  .filtros label {
+    display: flex;
+  }
+  .filtros select,
+  .filtros .solo-mios,
+  .filtros .proponer {
+    box-sizing: border-box;
+    height: 2rem;
+    line-height: 1;
+    font-size: 0.68rem;
+  }
+  .filtros .solo-mios {
+    padding-block: 0;
+  }
+  .filtros select {
+    font-family: var(--f-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--ink);
+    border-radius: 99px;
+    padding: 0 0.5rem 0 0.7rem;
+    cursor: pointer;
+  }
+  .total {
+    line-height: 1;
+    /* la mono se ve un pelo alta frente al texto de los botones */
+    position: relative;
+    top: 1px;
+    color: var(--ink-soft);
+    margin-left: 0.25rem;
+    white-space: nowrap;
+  }
+  .total b {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .proponer {
+    margin-left: auto;
+    font-family: var(--f-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    background: var(--shu);
+    color: var(--paper);
+    border: 0;
+    border-radius: 99px;
+    padding: 0 0.9rem;
+  }
+  .proponer:hover {
+    background: var(--ink);
+  }
+  :global([data-sesion='no']) .solo-mios {
+    display: none;
+  }
+
+  .vacio {
+    padding-block: 3rem;
+    max-width: none;
+    font-family: var(--f-display);
+    font-size: 1.4rem;
+  }
+  .vacio button {
+    background: none;
+    border: 0;
+    padding: 0;
+    text-decoration: underline;
+    text-decoration-color: var(--shu);
+    text-underline-offset: 0.2em;
+  }
+
+  /* ───── tema ───── */
+  .tema {
+    padding: clamp(2rem, 5vw, 3.5rem) var(--gutter);
+    border-bottom: 1px solid var(--ink);
+    scroll-margin-top: 5.5rem;
+  }
+  .tema > header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: end;
+    gap: clamp(0.9rem, 2vw, 1.5rem);
+    margin-bottom: 1.5rem;
+  }
+  .k {
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: clamp(3.5rem, 8vw, 6rem);
+    line-height: 0.85;
+    color: var(--shu);
+  }
+  .tema h2 {
+    font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+  }
+  .tema > header p {
+    margin: 0.4rem 0 0;
+    color: var(--ink-soft);
+  }
+  .cuenta {
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  /* ───── tarjetas ───── */
+  .rejilla {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    border-top: 1px solid var(--ink);
+    border-left: 1px solid var(--ink);
+  }
+  .lugar {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    scroll-margin-top: 6rem;
+  }
+  .lugar[hidden] {
+    display: none;
+  }
+  .lugar:target {
+    outline: 3px solid var(--shu);
+    outline-offset: -3px;
+  }
+
+  .foto {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: var(--paper-2);
+    border-bottom: 1px solid var(--ink);
+  }
+  /* impresa en el papel, a una tinta… */
+  .foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.1);
+    mix-blend-mode: multiply;
+    transition: filter 0.45s;
+  }
+  /* …y a color cuando lleva mi sello (o al pasar el cursor) */
+  .lugar:has(.poner[aria-pressed='true']) .foto img {
+    filter: none;
+    mix-blend-mode: normal;
+  }
+  @media (hover: hover) {
+    .lugar:hover .foto img {
+      filter: none;
+      mix-blend-mode: normal;
+    }
+  }
+  .sin-foto {
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: 6rem;
+    line-height: 1;
+    color: var(--ink);
+    opacity: 0.1;
+  }
+  .cuando {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 0.25rem 0.6rem;
+    background: var(--shu);
+    color: var(--paper);
+    font-size: 0.62rem;
+  }
+
+  .cuerpo {
+    flex: 1;
+    padding: 0.85rem 1rem 0.3rem;
+  }
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin: 0;
+    font-size: 0.62rem;
+    color: var(--ink-soft);
+  }
+  .meta a {
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .lugar h3 {
+    font-size: 1.3rem;
+    line-height: 1.15;
+    margin-top: 0.4rem;
+  }
+  .jp {
+    margin: 0.2rem 0 0;
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+  }
+  .desc {
+    margin: 0.5rem 0 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .propuso {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.7rem 0 0;
+    font-size: 0.62rem;
+    color: var(--ink-soft);
+    min-height: 2.5rem;
+  }
+  .propuso button {
+    margin-left: auto;
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+  .propuso button:hover,
+  .propuso button.seguro {
+    color: var(--shu);
+  }
+  .pie {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 1rem 0.85rem;
+  }
+  /* el ✓ de «marcado» ensancha el botón: se le reserva ese ancho para que mi sello
+     no corra los sellos de los demás (igual que en las ventanas de «Cuándo ir») */
+  .pie .poner {
+    min-width: 6.7rem;
+    text-align: left;
+  }
+  /* Los sellos van siempre en un solo renglón: si no caben a su paso normal se montan más,
+     en vez de bajar a un segundo renglón que haría crecer la tarjeta (pasaba en celular
+     del cuarto sello en adelante). Cada sello ocupa un carril de máximo 1.35rem y se sale
+     de él hacia la derecha; el relleno guarda el ancho del último. */
+  .pie .juntos {
+    flex: 1;
+    min-width: 0;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1.35rem);
+    justify-content: start;
+    padding-right: 1.6rem;
+    margin-right: -1rem;
+  }
+  .pie .juntos :global(.sello-p + .sello-p) {
+    margin-left: 0;
+  }
+
+  .nueva {
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 0.4rem;
+    min-height: 9rem;
+    padding: 1rem;
+    border: 0;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    background: repeating-linear-gradient(-45deg, transparent 0 7px, var(--hair) 7px 8px);
+    font-family: var(--f-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .nueva span {
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--shu);
+  }
+  .nueva:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .novedad {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 30;
+    padding: 0.7rem 1.1rem;
+    border: 0;
+    border-radius: 99px;
+    background: var(--ink);
+    color: var(--paper);
+    box-shadow: 4px 4px 0 var(--shu);
+  }
+  .novedad[hidden] {
+    display: none;
+  }
+
+  /* ───── créditos ───── */
+  .creditos summary {
+    cursor: pointer;
+  }
+  .creditos ul {
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0;
+    columns: 2 22rem;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+  .creditos li {
+    padding: 0.15rem 0;
+    break-inside: avoid;
+  }
+
+  /* ───── formulario ───── */
+  .dos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  #proponer select,
+  #proponer textarea {
+    font: inherit;
+    padding: 0.4rem 0;
+    border: 0;
+    border-bottom: 1px solid var(--ink);
+    border-radius: 0;
+    background: transparent;
+    color: var(--ink);
+    width: 100%;
+    resize: vertical;
+  }
+  #proponer select:focus,
+  #proponer textarea:focus {
+    outline: none;
+    border-bottom: 2px solid var(--shu);
+  }
+  #proponer h2 {
+    font-size: 1.9rem;
+  }
+
+  @media (max-width: 720px) {
+    .filtros {
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .filtros > * {
+      flex: none;
+    }
+    .total {
+      display: none;
+    }
+    .tema > header {
+      grid-template-columns: auto 1fr;
+      align-items: center;
+    }
+    .filtros select {
+      padding-inline: 0.55rem 0.2rem;
+    }
+    .cuenta {
+      display: none;
+    }
+    /* tarjeta acostada: foto a la izquierda, texto a la derecha, sello abajo */
+    .rejilla {
+      grid-template-columns: 1fr;
+    }
+    .lugar {
+      display: grid;
+      grid-template-columns: 36% 1fr;
+    }
+    .foto {
+      aspect-ratio: auto;
+      min-height: 8.5rem;
+      border-bottom: 0;
+      border-right: 1px solid var(--ink);
+      grid-row: 1 / 3;
+    }
+    .foto img {
+      position: absolute;
+      inset: 0;
+    }
+    .sin-foto {
+      font-size: 4rem;
+    }
+    .lugar h3 {
+      font-size: 1.15rem;
+    }
+    .nueva {
+      min-height: 5rem;
+    }
+  }
+</style>

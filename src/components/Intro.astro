@@ -1,0 +1,243 @@
+---
+// Entrada del cuaderno: se traza la ruta Cali → Tokio, el sol se riega como tinta
+// y termina encogido en el sello (hanko) de la cabecera.
+// Solo se monta donde Base recibe `intro`; el <head> decide antes de pintar si se reproduce.
+---
+
+<div id="intro" class="intro">
+  <div class="papel" aria-hidden="true">
+    <svg class="ruta">
+      <path class="guia"></path>
+      <path class="trazo"></path>
+      <circle class="origen" r="5"></circle>
+      <circle class="punta" r="3.5"></circle>
+    </svg>
+    <p class="cab mono">Cuaderno de viaje · Edición n.º 1<span>二〇二七</span></p>
+    <div class="lugar o">
+      <strong>CLO</strong>
+      <span class="mono">Cali · 3°27′N 76°31′O</span>
+    </div>
+    <div class="lugar d">
+      <strong>TYO</strong>
+      <span class="mono">東京 · 35°41′N 139°41′E</span>
+    </div>
+    <div class="km">
+      <strong>0</strong>
+      <span class="mono">km · de Cali a Tokio</span>
+    </div>
+  </div>
+  <canvas aria-hidden="true"></canvas>
+  <div class="tabi" aria-hidden="true"><span>旅</span></div>
+  <p class="lema mono" aria-hidden="true">Tabi · el viaje empieza aquí</p>
+  <button type="button" class="saltar mono">Saltar →</button>
+</div>
+
+<style is:global>
+  .intro {
+    display: none;
+  }
+  /* el scroll vuelve justo cuando la tinta aún tapa todo: el reacomodo por la barra no se ve */
+  html[data-intro='si'],
+  html:has(.intro.ya:not(.cierra)) {
+    overflow: hidden;
+  }
+  /* el sello de la cabecera no existe hasta que la tinta llega a él */
+  html[data-intro='si'] .top .hanko,
+  html:has(.intro.ya) .top .hanko {
+    visibility: hidden;
+  }
+  html[data-intro='si'] .intro,
+  .intro.viva {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 90; /* debajo del grano de papel (100): la textura también cae sobre la intro */
+    overflow: hidden;
+    transition: opacity 0.35s;
+  }
+  .intro .papel {
+    position: absolute;
+    inset: 0;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .intro canvas,
+  .intro .ruta {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .intro .ruta path {
+    fill: none;
+    stroke-linecap: round;
+  }
+  .intro .guia {
+    stroke: var(--hair);
+    stroke-width: 1;
+    stroke-dasharray: 2 7;
+  }
+  .intro .trazo {
+    stroke: var(--ink);
+    stroke-width: 1.75;
+  }
+  .intro .origen,
+  .intro .punta {
+    fill: var(--ink);
+  }
+
+  /* todo lo rotulado entra con la clase .ya, cuando las fuentes están listas */
+  .intro :is(.cab, .lugar, .km, .saltar, .guia, .origen) {
+    opacity: 0;
+    transition:
+      opacity 0.6s,
+      translate 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .intro :is(.cab, .lugar, .km) {
+    translate: 0 0.5rem;
+  }
+  .intro.ya :is(.cab, .lugar, .km, .saltar, .guia, .origen) {
+    opacity: 1;
+    translate: 0 0;
+  }
+  .intro.ya .lugar.d {
+    transition-delay: 0.55s;
+  }
+  .intro.ya .km {
+    transition-delay: 0.35s;
+  }
+  .intro.ya .saltar {
+    transition-delay: 0.9s;
+  }
+
+  .intro .cab {
+    position: absolute;
+    top: 1.4rem;
+    left: var(--gutter);
+    margin: 0;
+    color: var(--ink-soft);
+  }
+  .intro .cab span {
+    margin-left: 1.2em;
+    font-family: var(--f-display);
+    letter-spacing: 0.3em;
+    color: var(--shu);
+  }
+  .intro .lugar {
+    position: absolute;
+    display: grid;
+    gap: 0.15rem;
+    line-height: 1;
+  }
+  .intro .lugar strong {
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: clamp(1.6rem, 3.4vw, 2.8rem);
+    letter-spacing: -0.02em;
+  }
+  .intro .lugar .mono {
+    color: var(--ink-soft);
+    font-size: 0.62rem;
+    white-space: nowrap;
+  }
+  .intro .lugar.o {
+    left: calc(var(--ox) - 0.2rem);
+    top: calc(var(--oy) + 1.1rem);
+  }
+  .intro .lugar.d {
+    left: var(--sx);
+    top: calc(var(--sy) + var(--r) + 1.1rem);
+    justify-items: center;
+    text-align: center;
+    transform: translateX(-50%);
+  }
+  .intro .km {
+    position: absolute;
+    right: var(--gutter);
+    bottom: 1.6rem;
+    display: grid;
+    justify-items: end;
+    line-height: 1;
+  }
+  .intro .km strong {
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: clamp(3.2rem, 11vw, 9rem);
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+  .intro .km .mono {
+    color: var(--ink-soft);
+    margin-top: 0.5rem;
+  }
+  .intro .saltar {
+    position: absolute;
+    left: var(--gutter);
+    bottom: 1.6rem;
+    padding: 0.4rem 0;
+    background: none;
+    border: 0;
+    border-bottom: 1px solid currentColor;
+    color: var(--ink-soft);
+  }
+  .intro .saltar:hover {
+    color: var(--shu);
+  }
+  .intro.roja .saltar {
+    color: var(--paper);
+  }
+
+  .intro .tabi {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    color: var(--paper);
+    font-family: var(--f-display);
+    font-weight: 700;
+    line-height: 1.1;
+    white-space: nowrap;
+    will-change: transform, opacity;
+  }
+  /* el punto (0,0) de .tabi es el centro del kanji: así escala y viaja sobre su propio centro */
+  .intro .tabi span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+  .intro .lema {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(50% + var(--f) * 0.62);
+    margin: 0;
+    max-width: none;
+    text-align: center;
+    color: var(--paper);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .intro.roja .lema {
+    opacity: 0.9;
+    transition-delay: 0.25s;
+  }
+  .intro.cierra :is(.lema, .saltar) {
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+  .intro.cierra {
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  import { reproducir } from '../scripts/intro';
+
+  const el = document.getElementById('intro');
+  if (el && document.documentElement.dataset.intro === 'si') reproducir(el);
+</script>

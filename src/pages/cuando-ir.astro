@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { SEMILLAS } from '../data/lugares';
 
 // Temperaturas medias de Tokio (°C, aprox.). Gente y precio: 1 bajo · 2 medio · 3 alto (orientativo).
 const meses = [
@@ -66,6 +67,19 @@ const ventanas = [
     etiqueta: 'De nicho',
   },
 ];
+
+// Qué hay de temporada en cada ventana: lugares y eventos del catálogo que solo se dan en esos
+// meses (se dejan por fuera los que duran medio año, que no distinguen una ventana de otra).
+const enVentana: Record<string, { meses: number[]; filtro: string }> = {
+  cerezos: { meses: [3, 4], filtro: 'primavera' },
+  primavera: { meses: [5, 6], filtro: 'primavera' },
+  otono: { meses: [10, 11], filtro: 'otono' },
+  invierno: { meses: [1, 2], filtro: 'invierno' },
+};
+const deTemporada = (id: string) =>
+  SEMILLAS.filter(
+    (l) => l.meses && l.meses.length <= 4 && l.meses.some((m) => enVentana[id].meses.includes(m)),
+  ).sort((a, b) => a.meses!.length - b.meses!.length); // primero lo más puntual
 
 const opciones = [
   { v: 2, t: 'Me encanta' },
@@ -171,6 +185,14 @@ const evitar = [
               <p><b>A favor.</b> {v.pro}</p>
               <p><b>En contra.</b> {v.contra}</p>
               <p class="ver">{v.veredicto}</p>
+              {deTemporada(v.id).length > 0 && (
+                <p class="temporada">
+                  <span class="mono">Solo en estas fechas</span>
+                  {deTemporada(v.id).slice(0, 4).map((l) => l.nombre).join(' · ')}
+                  {deTemporada(v.id).length > 4 && ` y ${deTemporada(v.id).length - 4} más`}.{' '}
+                  <a href={`/lugares?t=${enVentana[v.id].filtro}`}>Ver lugares →</a>
+                </p>
+              )}
               <ul class="voto" data-marca={`ventana:${v.id}`} aria-label={`Tu voto: ${v.nombre}`}>
                 {
                   opciones.map((o) => (
@@ -373,6 +395,15 @@ const evitar = [
   }
   .puedo [data-sellos] {
     justify-content: center;
+  }
+  .temporada {
+    font-size: 0.88rem !important;
+    color: var(--ink-soft);
+  }
+  .temporada .mono {
+    display: block;
+    color: var(--shu);
+    margin-bottom: 0.2rem;
   }
   .voto {
     list-style: none;

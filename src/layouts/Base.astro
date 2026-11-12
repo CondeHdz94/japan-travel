@@ -10,17 +10,24 @@ import '@fontsource/dm-mono/500.css';
 import '../styles/global.css';
 import { secciones } from '../data/secciones';
 
+import Intro from '../components/Intro.astro';
+
 interface Props {
   title: string;
   description?: string;
+  /** Monta la animación de entrada (una vez por sesión del navegador). */
+  intro?: boolean;
 }
 
 const {
   title,
   description = 'Cuaderno de viaje de los parceros: Cali → Japón 2027.',
+  intro = false,
 } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const nav = secciones.filter((s) => s.href);
+// la tarjeta para compartir necesita la dirección completa (`site` en astro.config.mjs)
+const tarjeta = new URL('/tarjeta.png', Astro.site ?? Astro.url).href;
 ---
 
 <!doctype html>
@@ -30,16 +37,51 @@ const nav = secciones.filter((s) => s.href);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#f1ece1" />
+    <!-- el sello 旅 de la cabecera; los demás tamaños salen de favicon.svg con scripts/iconos.mjs -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <!-- lo que se ve al pegar el enlace en WhatsApp -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Cali → Japón" />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:title" content={`${title} · Cali → Japón`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={tarjeta} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
     <script is:inline>
       // Antes de pintar: si este dispositivo ya tiene sesión, se reserva el espacio de los sellos.
       try {
         document.documentElement.dataset.sesion = localStorage.getItem('grupo') ? 'si' : 'no';
       } catch {}
     </script>
+    {
+      intro && (
+        <script is:inline>
+          // Antes de pintar: la entrada va una vez por sesión (o siempre con ?intro), nunca con movimiento reducido.
+          try {
+            const pedida = new URLSearchParams(location.search).has('intro');
+            const quieta = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if ((pedida || !sessionStorage.getItem('intro')) && !quieta) {
+              document.documentElement.dataset.intro = 'si';
+              // si algo falla y nadie la cierra, la página no se queda tapada
+              setTimeout(() => {
+                if (document.documentElement.dataset.intro === 'si')
+                  document.documentElement.dataset.intro = 'sale';
+              }, 9000);
+            }
+          } catch {}
+        </script>
+      )
+    }
     <title>{title} · Cali → Japón</title>
   </head>
   <body>
+    {intro && <Intro />}
     <aside class="spine" aria-hidden="true">
       <span>日本旅行<b>・</b>計画帳</span>
       <span>二〇二七</span>
@@ -89,7 +131,16 @@ const nav = secciones.filter((s) => s.href);
         <p class="kana" data-kana aria-label="Tu nombre en katakana"></p>
         <label>
           <span class="mono">Clave del viaje</span>
-          <input name="clave" type="password" required autocomplete="current-password" />
+          <span class="con-ojo">
+            <input name="clave" type="password" required autocomplete="current-password" />
+            <button type="button" data-ver-clave aria-pressed="false" aria-label="Mostrar la clave">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" />
+                <circle cx="12" cy="12" r="3" />
+                <path class="tachado" d="M4 4l16 16" />
+              </svg>
+            </button>
+          </span>
         </label>
         <p role="alert" class="error"></p>
         <button type="submit" class="sellar">Entrar <span aria-hidden="true">→</span></button>
@@ -107,6 +158,10 @@ const nav = secciones.filter((s) => s.href);
           <input name="nombre" autofocus required minlength="2" maxlength="20" autocomplete="nickname" />
         </label>
         <p class="kana" data-kana aria-label="Tu nombre en katakana"></p>
+        <fieldset class="formas">
+          <legend class="mono">La forma de tu sello</legend>
+          <div data-formas></div>
+        </fieldset>
         <p role="alert" class="error"></p>
         <button type="submit" class="sellar">Guardar</button>
         <div class="salida mono">

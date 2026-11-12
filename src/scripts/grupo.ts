@@ -9,10 +9,13 @@
 //   data-entrar               abre el registro
 
 import { kana, primeraKana } from './kana';
+import { FORMAS, formaDe } from '../data/formas';
 
 interface Persona {
   id: number;
   nombre: string;
+  /** Forma del sello (puede faltar en un estado guardado por una versión anterior). */
+  forma?: string;
 }
 interface Marca {
   p: number;
@@ -61,7 +64,7 @@ function giroFijo(clave: string): number {
 const giroNuevo = () => (Math.random() < 0.5 ? -1 : 1) * Math.round(3 + Math.random() * 10);
 
 let E: Estado = recordado();
-let pendiente: (() => void) | null = null;
+let pendiente: (() => unknown) | null = null;
 
 const dlg = document.getElementById('registro') as HTMLDialogElement | null;
 const form = dlg?.querySelector('form') ?? null;
@@ -94,6 +97,12 @@ function fuera() {
   perfil?.close();
   E = VACIO;
   pintar();
+  avisarSesion();
+}
+
+/** Avisa a las páginas que dependen de la sesión en el servidor (p. ej. Lugares) para que se recarguen. */
+function avisarSesion() {
+  document.dispatchEvent(new CustomEvent('grupo:sesion'));
 }
 
 async function api(ruta: string, body?: unknown): Promise<any> {
@@ -130,8 +139,15 @@ function iniciales(): Map<number, string> {
 
 function sello(p: Persona, ini: Map<number, string>, fantasma = false, giro = -6): HTMLElement {
   const s = document.createElement('span');
-  s.className = fantasma ? 'sello-p fantasma' : 'sello-p';
+  const forma = formaDe(p.forma);
+  s.className = `sello-p f-${forma.id}${fantasma ? ' fantasma' : ''}`;
   s.style.setProperty('--giro', `${giro}deg`);
+  // el contorno: un dibujo que llena la caja del sello, igual de grande para todas las formas
+  const contorno = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  contorno.setAttribute('viewBox', '0 0 32 48');
+  contorno.setAttribute('aria-hidden', 'true');
+  contorno.innerHTML = forma.trazo;
+  s.append(contorno);
   s.dataset.tinta = String(E.personas.findIndex((x) => x.id === p.id) % TINTAS);
   const enKana = kana(p.nombre);
   const nombre = enKana ? `${p.nombre} · ${enKana}` : p.nombre;
@@ -150,6 +166,33 @@ function sello(p: Persona, ini: Map<number, string>, fantasma = false, giro = -6
   s.append(l);
   return s;
 }
+
+/** Llena el perfil con las formas de sello para escoger, cada una con mi sílaba y mi tinta. */
+function pintarFormas() {
+  const zona = perfil?.querySelector<HTMLElement>('[data-formas]');
+  if (!zona || !E.yo) return;
+  const ini = iniciales();
+  const mia = formaDe(E.yo.forma).id;
+  zona.replaceChildren(
+    ...FORMAS.map((f) => {
+      const opcion = document.createElement('label');
+      opcion.title = `${f.nombre}: ${f.pista}`;
+      const radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = 'forma';
+      radio.value = f.id;
+      radio.checked = f.id === mia;
+      radio.setAttribute('aria-label', `${f.nombre} (${f.pista})`);
+      const muestra = sello({ ...E.yo!, forma: f.id }, ini, false, 0);
+      muestra.removeAttribute('title');
+      opcion.append(radio, muestra);
+      return opcion;
+    }),
+  );
+}
+
+// al cerrar el perfil no quedan sellos de muestra en la página
+perfil?.addEventListener('close', () => perfil.querySelector('[data-formas]')?.replaceChildren());
 
 const valorDe = (p: number, t: string, c: string) =>
   E.marcas.find((m) => m.p === p && m.t === t && m.c === c)?.v;
@@ -189,6 +232,12 @@ function pintar(animar = false) {
     quien.append(b);
   }
 
+  // sello de una persona puntual (p. ej. quien propuso un lugar)
+  for (const hueco of document.querySelectorAll<HTMLElement>('[data-sello-de]')) {
+    const p = E.personas.find((x) => x.id === Number(hueco.dataset.selloDe));
+    hueco.replaceChildren(...(p ? [sello(p, ini, false, giroFijo(`de:${p.id}`))] : []));
+  }
+
   for (const caja of document.querySelectorAll<HTMLElement>('[data-marca]')) {
     const [t, c] = caja.dataset.marca!.split(':');
     const mio = E.yo ? valorDe(E.yo.id, t, c) : undefined;
@@ -209,7 +258,7 @@ function pintar(animar = false) {
         const cuenta = v !== undefined && (filtro === undefined || v === Number(filtro));
         const fantasma = !cuenta;
         if (fantasma && !('fantasmas' in zona.dataset)) return;
-        const k = [p.id, fantasma ? 'f' : 's', p.nombre, ini.get(p.id), i % TINTAS].join('|');
+        const k = [p.id, fantasma ? 'f' : 's', p.nombre, ini.get(p.id), i % TINTAS, p.forma].join('|');
         let n = puestos.get(k);
         if (n) puestos.delete(k);
         else {
@@ -239,28 +288,123 @@ function poner(t: string, c: string, v: number, alternar = true) {
   const actual = valorDe(yo, t, c);
   const nuevo = alternar && actual === v ? null : v;
   const resto = E.marcas.filter((m) => !(m.p === yo && m.t === t && m.c === c));
+  const antes = E;
   E = { ...E, marcas: nuevo === null ? resto : [...resto, { p: yo, t, c, v: nuevo }] };
   pintar(true);
-  api('marca', { tipo: t, clave: c, valor: nuevo }).catch(cargar);
+  // mientras mi cambio viaja al servidor, se ignoran las consultas de fondo: traerían el estado viejo
+  version++;
+  escribiendo++;
+  return api('marca', { tipo: t, clave: c, valor: nuevo })
+    .catch(() => cargar(antes)) // no quedó guardado: se devuelve el sello
+    .finally(() => {
+      escribiendo--;
+      version++;
+    });
 }
 
-async function cargar() {
+/**
+ * Trae el estado del servidor. Si no se puede (sin red, servidor caído) se queda con
+ * `respaldo`: un tropiezo de conexión no cierra la sesión ni borra lo que ya se veía.
+ */
+async function cargar(respaldo: Estado = E) {
   try {
     E = await api('estado');
   } catch {
-    E = VACIO;
+    E = respaldo;
   }
   pintar();
+  avisarLugaresNuevos();
 }
+
+// ───── en vivo: se consulta el estado cada pocos segundos mientras la pestaña está a la vista ─────
+// Solo en páginas que muestran sellos del grupo. En el Inicio, por ejemplo, no hay nada que
+// actualizar: ahí basta la consulta única al cargar, que confirma la sesión para la cabecera.
+const enVivo = !!document.querySelector('[data-marca], [data-sello-de]');
+const CADA_MS = 6000;
+// Si nadie toca la página en un rato, se deja de consultar: una pestaña olvidada abierta
+// todo el día gastaría sola buena parte del cupo gratis de Vercel y Turso.
+const DESCANSO_MS = 5 * 60 * 1000;
+let actividad = Date.now();
+function hayAlguien() {
+  const dormida = Date.now() - actividad > DESCANSO_MS;
+  actividad = Date.now();
+  if (dormida) refrescar(); // al volver, se pone al día de una
+}
+for (const ev of ['pointerdown', 'pointermove', 'keydown', 'scroll', 'touchstart'])
+  window.addEventListener(ev, hayAlguien, { passive: true });
+let escribiendo = 0; // cambios míos en camino
+let version = 0; // sube con cada cambio mío; descarta respuestas que salieron antes
+let reloj: number | undefined;
+
+const huella = (e: Estado) =>
+  JSON.stringify([e.yo, e.personas, e.marcas.map((m) => `${m.p}|${m.t}|${m.c}|${m.v}`).sort()]);
+
+async function refrescar() {
+  if (!enVivo || !E.yo || escribiendo || document.hidden) return;
+  if (Date.now() - actividad > DESCANSO_MS) return;
+  const alSalir = version;
+  let nuevo: Estado;
+  try {
+    nuevo = await api('estado');
+  } catch {
+    return; // sin red: se intenta en la próxima vuelta
+  }
+  if (escribiendo || alSalir !== version) return;
+  if (huella(nuevo) === huella(E)) return;
+  const seguia = !!nuevo.yo;
+  E = nuevo;
+  pintar(true); // los sellos que llegan de otros caen con animación
+  if (!seguia) avisarSesion(); // me sacaron o cambió la clave
+  avisarLugaresNuevos();
+}
+
+function latir() {
+  clearInterval(reloj);
+  if (!enVivo || document.hidden) return;
+  refrescar();
+  reloj = window.setInterval(refrescar, CADA_MS);
+}
+document.addEventListener('visibilitychange', latir);
+
+/** Si alguien selló un lugar propuesto que esta página aún no muestra, se avisa para recargar. */
+function avisarLugaresNuevos() {
+  if (!document.querySelector('[data-marca^="lugar:"]')) return;
+  const falta = E.marcas.some(
+    (m) => m.t === 'lugar' && m.c.startsWith('u') && !document.querySelector(`[data-marca="lugar:${m.c}"]`),
+  );
+  if (falta) document.dispatchEvent(new CustomEvent('grupo:lugares-nuevos'));
+}
+
+// Escape cierra el registro igual que «Cerrar»: también se olvida el voto que lo abrió
+dlg?.addEventListener('cancel', () => (pendiente = null));
 
 function abrir() {
   if (!dlg) return;
   if (aviso) aviso.textContent = '';
+  // la clave siempre arranca oculta
+  const ojo = dlg.querySelector<HTMLElement>('[data-ver-clave]');
+  if (ojo) verClave(ojo, false);
   dlg.showModal();
+}
+
+/** Muestra u oculta lo escrito en el campo de la clave. */
+function verClave(boton: HTMLElement, ver: boolean) {
+  const campo = boton.parentElement?.querySelector('input');
+  if (!campo) return;
+  campo.type = ver ? 'text' : 'password';
+  boton.setAttribute('aria-pressed', String(ver));
+  boton.setAttribute('aria-label', ver ? 'Ocultar la clave' : 'Mostrar la clave');
 }
 
 document.addEventListener('click', (ev) => {
   const el = ev.target as Element;
+
+  const ojo = el.closest<HTMLElement>('[data-ver-clave]');
+  if (ojo) {
+    verClave(ojo, ojo.getAttribute('aria-pressed') !== 'true');
+    ojo.parentElement?.querySelector('input')?.focus();
+    return;
+  }
 
   if (el.closest('[data-entrar]')) return abrir();
 
@@ -268,6 +412,7 @@ document.addEventListener('click', (ev) => {
     const campo = perfil.querySelector('input[name=nombre]') as HTMLInputElement;
     campo.value = E.yo.nombre;
     pintarKana(campo);
+    pintarFormas();
     if (avisoPerfil) avisoPerfil.textContent = '';
     desarmarBorrado();
     perfil.showModal();
@@ -324,9 +469,10 @@ form?.addEventListener('submit', async (ev) => {
     E = await api('entrar', { nombre: datos.get('nombre'), clave: datos.get('clave') });
     dlg?.close();
     pintar();
-    pendiente?.();
+    await pendiente?.();
     pendiente = null;
     form.reset();
+    avisarSesion();
   } catch (e) {
     if (aviso) aviso.textContent = (e as Error).message;
   } finally {
@@ -339,7 +485,8 @@ formPerfil?.addEventListener('submit', async (ev) => {
   const boton = formPerfil.querySelector<HTMLButtonElement>('button[type=submit]');
   if (boton) boton.disabled = true;
   try {
-    E = await api('renombrar', { nombre: new FormData(formPerfil).get('nombre') });
+    const datos = new FormData(formPerfil);
+    E = await api('renombrar', { nombre: datos.get('nombre'), forma: datos.get('forma') ?? undefined });
     perfil?.close();
     pintar();
   } catch (e) {
@@ -350,4 +497,4 @@ formPerfil?.addEventListener('submit', async (ev) => {
 });
 
 pintar();
-cargar();
+cargar().then(latir);

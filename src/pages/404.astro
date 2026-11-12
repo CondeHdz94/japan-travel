@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Página perdida" description="Esta página no está en el cuaderno.">
+  <header class="page-head">
+    <span class="kanji" aria-hidden="true">迷</span>
+    <div>
+      <span class="mono">404 · mayoi · perdidos</span>
+      <h1>Por aquí no es</h1>
+      <p>
+        Esta página no está en el cuaderno: o el enlace quedó mal copiado, o esa sección todavía
+        no existe. Nada grave, hasta en la estación de Shinjuku se pierde uno.
+      </p>
+      <p><a href="/">Volver al inicio →</a></p>
+    </div>
+  </header>
+</Base>
+
+<style>
+  .page-head p + p {
+    margin-top: 1.2rem;
+  }
+</style>
