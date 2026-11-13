@@ -23,7 +23,6 @@ const pct = (t: number) => (t / MAX) * 100;
 const ventanas = [
   {
     id: 'cerezos',
-    kanji: '桜',
     nombre: 'Cerezos',
     fechas: '25 mar – 10 abr',
     pro: 'La postal de Japón. Clima fresco y agradable.',
@@ -34,8 +33,18 @@ const ventanas = [
     etiqueta: 'Apretado',
   },
   {
+    id: 'abril',
+    nombre: 'Abril tardío',
+    fechas: '11 – 28 abr',
+    pro: 'Ya pasó el pico de los cerezos en Tokio y Kioto, pero en el norte y en la montaña siguen. Coincide con el Festival de Takayama (14 y 15 de abril), las flores azules de Hitachi y el arranque de las glicinas de Ashikaga.',
+    contra:
+      'No es la postal de los cerezos en Kioto. Si se corre unos días choca con Golden Week, y las glicinas pueden quedar a medio abrir.',
+    veredicto: 'Primavera con menos pelea. Da unos cinco meses para organizarse: más holgado que los cerezos, pero igual toca moverse ya.',
+    estado: 'ok',
+    etiqueta: 'Alternativa',
+  },
+  {
     id: 'primavera',
-    kanji: '緑',
     nombre: 'Primavera tardía',
     fechas: '10 may – 5 jun',
     pro: 'Templado (15–25 °C), verde, menos gente y precios normales apenas pasa Golden Week.',
@@ -45,21 +54,30 @@ const ventanas = [
     etiqueta: 'Buena opción',
   },
   {
+    id: 'verano',
+    nombre: 'Verano de festivales',
+    fechas: '20 jul – 10 ago',
+    pro: 'La temporada de los grandes festivales: Gion Matsuri en Kioto (todo julio; el último desfile es el 24), fuegos artificiales del Sumida (último sábado de julio) y Nebuta en Aomori (2 al 7 de agosto). Y es la única época en que se puede subir el Fuji.',
+    contra:
+      'Calor húmedo de más de 30 °C, más pesado que el de Cali. Agosto es de los meses con más tifones y en la mitad viene Obon; el Awa Odori (11 al 15 de agosto) cae justo ahí.',
+    veredicto: 'Solo si al grupo le pica el Fuji o los festivales. Da unos ocho meses para organizarse.',
+    estado: 'soft',
+    etiqueta: 'Para fiesteros',
+  },
+  {
     id: 'otono',
-    kanji: '紅葉',
     nombre: 'Otoño',
-    fechas: '20 oct – 30 nov',
+    fechas: '20 oct – 7 dic',
     pro: 'Hojas rojas (momiji), cielo despejado, clima seco y fresco. Tan bonito como los cerezos y dura más.',
-    contra: 'Kioto se llena en noviembre. Hace frío en la noche para alguien de Cali (5–10 °C).',
+    contra: 'Kioto se llena, y allá el rojo llega tarde: el promedio oficial es el 5 de diciembre. Hace frío en la noche para alguien de Cali (5–10 °C).',
     veredicto: 'El mejor balance, y da casi un año para ahorrar, sacar visa y cazar tiquetes.',
     estado: 'ok',
     etiqueta: 'Recomendada',
   },
   {
     id: 'invierno',
-    kanji: '雪',
     nombre: 'Invierno',
-    fechas: '15 ene – 28 feb',
+    fechas: '15 ene – 28 feb 2028',
     pro: 'Lo más barato y vacío. Nieve, onsen, monos en aguas termales, Fuji despejado.',
     contra: 'Frío de verdad (0–10 °C), días cortos, hay que comprar ropa de invierno.',
     veredicto: 'Solo si el plan es nieve o el presupuesto manda. Sería ya para 2028.',
@@ -70,29 +88,46 @@ const ventanas = [
 
 // Qué hay de temporada en cada ventana: lugares y eventos del catálogo que solo se dan en esos
 // meses (se dejan por fuera los que duran medio año, que no distinguen una ventana de otra).
-const enVentana: Record<string, { meses: number[]; filtro: string }> = {
+// Abril tardío comparte mes con los cerezos: ahí se nombran a mano los que caen en esas fechas.
+const enVentana: Record<string, { meses: number[]; filtro: string; ids?: string[] }> = {
   cerezos: { meses: [3, 4], filtro: 'primavera' },
+  abril: { meses: [4], filtro: 'primavera', ids: ['takayama-matsuri', 'hitachi', 'ashikaga'] },
   primavera: { meses: [5, 6], filtro: 'primavera' },
+  verano: { meses: [7, 8], filtro: 'verano' },
   otono: { meses: [10, 11], filtro: 'otono' },
   invierno: { meses: [1, 2], filtro: 'invierno' },
 };
-const deTemporada = (id: string) =>
-  SEMILLAS.filter(
-    (l) => l.meses && l.meses.length <= 4 && l.meses.some((m) => enVentana[id].meses.includes(m)),
+const deTemporada = (id: string) => {
+  const { meses, ids } = enVentana[id];
+  if (ids) return ids.map((i) => SEMILLAS.find((l) => l.id === i)!);
+  return SEMILLAS.filter(
+    (l) => l.meses && l.meses.length <= 4 && l.meses.some((m) => meses.includes(m)),
   ).sort((a, b) => a.meses!.length - b.meses!.length); // primero lo más puntual
+};
+
+// El sello de cada papelito: el kanji de lo que trae esa época, distinto en cada ventana
+// para reconocerla de un vistazo. Su significado sale al pasar el mouse y en el lector de pantalla.
+const sello: Record<string, { k: string; dice: string }> = {
+  cerezos: { k: '桜', dice: 'cerezo' },
+  abril: { k: '藤', dice: 'glicina' },
+  primavera: { k: '緑', dice: 'verde' },
+  verano: { k: '祭', dice: 'festival' },
+  otono: { k: '紅葉', dice: 'hojas rojas' },
+  invierno: { k: '雪', dice: 'nieve' },
+};
 
 const opciones = [
-  { v: 2, t: 'Me encanta' },
-  { v: 1, t: 'Me sirve' },
-  { v: 0, t: 'No puedo' },
+  { v: 2, t: 'Me encanta', k: '好' },
+  { v: 1, t: 'Me sirve', k: '可' },
+  { v: 0, t: 'No puedo', k: '否' },
 ];
 
 const evitar = [
-  { q: 'Golden Week', d: '29 abr – 5 may', p: 'Todo Japón viaja al tiempo: trenes y hoteles agotados.' },
-  { q: 'Obon', d: '≈ 13 – 16 ago', p: 'Segundo pico de viajes internos, con el peor calor.' },
-  { q: 'Tsuyu (lluvias)', d: 'jun – mediados de jul', p: 'Llueve casi a diario en Tokio, Kioto y Osaka.' },
-  { q: 'Tifones', d: 'ago – sep', p: 'Riesgo de vuelos y trenes cancelados.' },
-  { q: 'Año Nuevo', d: '28 dic – 4 ene', p: 'Muchos sitios cierran y los precios se disparan.' },
+  { q: 'Golden Week', d: '29 abr – 5 may', p: 'Todo Japón viaja al tiempo: trenes y hoteles agotados. En 2027 los festivos son el 29 de abril y del 3 al 5 de mayo.' },
+  { q: 'Obon', d: '≈ 13 – 16 ago', p: 'Segundo pico de viajes internos, con el peor calor. No es festivo oficial: las fechas son las de costumbre.' },
+  { q: 'Tsuyu (lluvias)', d: '≈ 7 jun – 19 jul', p: 'Promedio en Tokio y Kioto; algunos años se corre una o dos semanas. Llueve casi a diario.' },
+  { q: 'Tifones', d: 'ago – sep', p: 'Los meses con más tifones cerca de Japón: riesgo de vuelos y trenes cancelados.' },
+  { q: 'Año Nuevo', d: '29 dic – 3 ene', p: 'Las oficinas públicas cierran por ley y muchos sitios también; los precios se disparan.' },
 ];
 ---
 
@@ -104,7 +139,7 @@ const evitar = [
       <h1>Cuándo ir</h1>
       <p>
         La fecha decide el precio, el clima y las fotos. Este es el año japonés de un vistazo, y
-        las cuatro ventanas que vale la pena discutir en el grupo.
+        las ventanas que vale la pena discutir en el grupo para 15 días de viaje.
       </p>
     </div>
   </header>
@@ -165,46 +200,64 @@ const evitar = [
   <section class="sec">
     <header>
       <span class="mono">Candidatas</span>
-      <h2>Cuatro ventanas para votar</h2>
+      <h2>Seis ventanas para votar</h2>
     </header>
-    <div>
+    <div class="candidatas">
       <p class="invita">
         <span>Para votar y ver qué prefieren los demás,</span>
         <button type="button" data-entrar>entra con tu nombre →</button>
       </p>
       <div class="ventanas">
       {
-        ventanas.map((v) => (
+        ventanas.map((v, n) => (
           <article>
-            <span class="vk" aria-hidden="true">{v.kanji}</span>
-            <div>
-              <h3>
-                {v.nombre} <span class:list={['chip', v.estado]}>{v.etiqueta}</span>
-              </h3>
-              <p class="mono fechas">{v.fechas}</p>
-              <p><b>A favor.</b> {v.pro}</p>
-              <p><b>En contra.</b> {v.contra}</p>
-              <p class="ver">{v.veredicto}</p>
-              {deTemporada(v.id).length > 0 && (
-                <p class="temporada">
-                  <span class="mono">Solo en estas fechas</span>
-                  {deTemporada(v.id).slice(0, 4).map((l) => l.nombre).join(' · ')}
-                  {deTemporada(v.id).length > 4 && ` y ${deTemporada(v.id).length - 4} más`}.{' '}
-                  <a href={`/lugares?t=${enVentana[v.id].filtro}`}>Ver lugares →</a>
-                </p>
-              )}
-              <ul class="voto" data-marca={`ventana:${v.id}`} aria-label={`Tu voto: ${v.nombre}`}>
-                {
-                  opciones.map((o) => (
-                    <li>
-                      <button type="button" class="poner" data-poner={o.v} aria-pressed="false">
-                        {o.t}
-                      </button>
-                      <span data-sellos data-valor={o.v} />
-                    </li>
-                  ))
-                }
-              </ul>
+            <div class="papel">
+              <p class="tira">
+                <span lang="ja">旅みくじ</span>
+                <span class="mono">N.º {String(n + 1).padStart(2, '0')}</span>
+              </p>
+              <div class="cab">
+                <div>
+                  <h3>{v.nombre}</h3>
+                  <span class="mono fechas">{v.fechas}</span>
+                  <span class:list={['chip', v.estado]}>{v.etiqueta}</span>
+                </div>
+                <span class="estacion" lang="ja" title={sello[v.id].dice} aria-label={sello[v.id].dice}>
+                  {sello[v.id].k}
+                </span>
+              </div>
+              <p class="oraculo">{v.veredicto}</p>
+              <div class="lineas">
+                <p><span lang="ja" aria-label="A favor">吉</span><span>{v.pro}</span></p>
+                <p class="malo"><span lang="ja" aria-label="En contra">凶</span><span>{v.contra}</span></p>
+              </div>
+              {/* siempre está, aunque vacía: cada parte de la tarjeta ocupa su fila en la rejilla */}
+              <p class="temporada">
+                {deTemporada(v.id).length > 0 && (
+                  <>
+                    <span class="mono">Solo en estas fechas</span>
+                    {deTemporada(v.id).slice(0, 4).map((l) => l.nombre).join(' · ')}
+                    {deTemporada(v.id).length > 4 && ` y ${deTemporada(v.id).length - 4} más`}.{' '}
+                    <a href={`/lugares?t=${enVentana[v.id].filtro}`}>Ver lugares →</a>
+                  </>
+                )}
+              </p>
+              <div class="pie-voto">
+                <p class="mono titulo">Tu voto · <span lang="ja">投票</span></p>
+                <ul class="voto" data-marca={`ventana:${v.id}`} aria-label={`Tu voto: ${v.nombre}`}>
+                  {
+                    opciones.map((o) => (
+                      <li>
+                        <button type="button" class="poner" data-poner={o.v} aria-pressed="false">
+                          <span lang="ja" aria-hidden="true">{o.k}</span>
+                          {o.t}
+                        </button>
+                        <span data-sellos data-valor={o.v} />
+                      </li>
+                    ))
+                  }
+                </ul>
+              </div>
             </div>
           </article>
         ))
@@ -241,15 +294,29 @@ const evitar = [
     <div>
       <p>
         Las temperaturas son promedios históricos aproximados de Tokio; gente y precio son una
-        escala orientativa. El pronóstico oficial de cerezos para 2027 todavía no ha salido: la
-        Japan Meteorological Corporation suele publicar el primero a mediados de diciembre. Las
-        fechas de floración de arriba son estimaciones de guías de viaje.
+        escala orientativa. Cerezos, lluvias y tifones salen de los promedios 1991–2020 del
+        servicio meteorológico de Japón: en Tokio los cerezos abren hacia el 24 de marzo y están
+        en plena flor hacia el 31; en Kioto, el 26 de marzo y el 4 de abril.
+      </p>
+      <p>
+        El pronóstico de cerezos para 2027 todavía no ha salido: el de 2026 lo publicó la Japan
+        Meteorological Corporation en diciembre de 2025. Los festivales caen en las mismas fechas
+        cada año, pero las de 2027 y la temporada para subir el Fuji (en 2026 fue de julio al 10
+        de septiembre) están <b>por confirmar</b> hasta que las anuncien.
       </p>
       <p class="mono">
         Fuentes:
+        <a href="https://www.data.jma.go.jp/tokyo/shosai/kanyoho/sakura/sakura.html">Cerezos en Tokio (JMA)</a> ·
+        <a href="https://www.data.jma.go.jp/kyoto/2_data/seibutsu/index.html">Cerezos y hojas rojas en Kioto (JMA)</a> ·
+        <a href="https://www.data.jma.go.jp/cpd/baiu/index.html">Lluvias (JMA)</a> ·
+        <a href="https://www.data.jma.go.jp/typhoon/statistics/average/average.html">Tifones (JMA)</a> ·
+        <a href="https://www8.cao.go.jp/chosei/shukujitsu/gaiyou.html">Festivos de Japón (Oficina del Gabinete)</a> ·
+        <a href="https://www.kankou-gifu.jp/event/detail_8488.html">Festival de Takayama (Gifu)</a> ·
+        <a href="https://www.pref.ibaraki.jp/soshiki/eigyo/promo/20260522.html">Hitachi (Ibaraki)</a> ·
+        <a href="https://www.sumidagawa-hanabi.com/">Fuegos del Sumida</a> ·
+        <a href="https://www.fujisan-climb.jp/">Subir el Fuji</a> ·
         <a href="https://livejapan.com/en/article-a0001033/amp/">Live Japan</a> ·
-        <a href="https://www.japanhighlights.com/japan/plan-a-cherry-blossom-trip">Japan Highlights</a> ·
-        <a href="https://selfguidejapan.com/blog/japan-cherry-blossom-forecast-2027">Self Guide Japan</a>
+        <a href="https://www.japanhighlights.com/japan/plan-a-cherry-blossom-trip">Japan Highlights</a>
       </p>
     </div>
   </section>
@@ -405,74 +472,245 @@ const evitar = [
     color: var(--shu);
     margin-bottom: 0.2rem;
   }
-  .voto {
-    list-style: none;
-    margin: 1.1rem 0 0;
-    padding: 0;
-    display: grid;
-    gap: 0.45rem;
-  }
-  .voto li {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    min-height: 1.9rem;
-    flex-wrap: nowrap;
-  }
-  .voto .poner {
-    min-width: 7.2rem;
-    text-align: left;
-  }
   .pie {
     margin: 1.5rem 0 0;
     max-width: none;
     color: var(--ink-soft);
   }
 
+  /* ───── ventanas: papelitos de la fortuna (omikuji) ─────
+     Angostos y altos: una columna por cada ~19rem, hasta tres. Cada papel parte su contenido
+     en seis filas compartidas con los de su misma fila (subgrid): la frase, el 吉/凶, las
+     fechas y el voto arrancan a la misma altura en todos. Si sobra espacio en la última fila,
+     se raya, como en Lugares. */
+  .candidatas {
+    container-type: inline-size;
+  }
   .ventanas {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
-    border-top: 1px solid var(--ink);
-    border-left: 1px solid var(--ink);
-  }
-  .ventanas article {
-    display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 1fr;
     gap: 1.25rem;
-    padding: 1.5rem;
-    border-right: 1px solid var(--ink);
-    border-bottom: 1px solid var(--ink);
   }
-  .vk {
-    font-family: var(--f-display);
-    font-weight: 800;
-    font-size: 3rem;
-    line-height: 1;
-    writing-mode: vertical-rl;
-    color: var(--shu);
+  .ventanas::after {
+    grid-row: span 6;
+    background: repeating-linear-gradient(-45deg, transparent 0 7px, var(--hair) 7px 8px);
   }
-  .ventanas h3 {
-    font-size: 1.6rem;
+  @container (38rem <= width < 57rem) {
+    .ventanas {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .ventanas:has(> article:last-child:nth-child(2n + 1))::after {
+      content: '';
+    }
+  }
+  @container (width >= 57rem) {
+    .ventanas {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .ventanas:has(> article:last-child:nth-child(3n + 1))::after {
+      content: '';
+      grid-column: span 2;
+      grid-row: span 6;
+    }
+    .ventanas:has(> article:last-child:nth-child(3n + 2))::after {
+      content: '';
+    }
+  }
+  .ventanas article,
+  .papel {
+    display: grid;
+    grid-row: span 6;
+    grid-template-rows: subgrid;
+    row-gap: 0;
+  }
+  .papel {
+    grid-row: 1 / -1;
+    padding: 1.35rem 1.5rem 0;
+    border: 1px solid var(--ink);
+    outline: 1px solid var(--hair);
+    outline-offset: -5px;
+    background: var(--paper);
+    box-shadow:
+      0 1px 0 var(--hair),
+      0 8px 18px -12px rgba(25, 23, 20, 0.35);
+  }
+  .papel p {
+    margin: 0;
+    max-width: none;
+  }
+  /* encabezado: la tira del papel y el título con su suerte */
+  .tira {
     display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.6rem;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--ink);
+    color: var(--ink-soft);
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.35em;
+  }
+  .tira .mono {
+    letter-spacing: 0.12em;
+    font-size: 0.64rem;
+  }
+  .cab {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    align-items: start;
+    margin-top: 1.4rem;
+  }
+  .cab h3 {
+    font-size: 1.6rem;
   }
   .fechas {
+    display: block;
+    margin-top: 0.45rem;
     color: var(--ink-soft);
-    margin: 0.4rem 0 1rem;
   }
-  .ventanas p {
-    font-size: 0.95rem;
-    margin-bottom: 0.6em;
+  .cab .chip {
+    margin-top: 0.8rem;
   }
-  .ver {
-    margin-top: 1rem;
-    padding-top: 0.8rem;
-    border-top: 1px dashed var(--ink);
+  /* el sello de la época: lo único bermellón del papel, como el sello 旅 de la cabecera */
+  .estacion {
+    padding: 0.55rem 0.45rem;
+    border-radius: 2px;
+    background: var(--shu);
+    color: var(--paper);
+    writing-mode: vertical-rl;
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: 1.75rem;
+    line-height: 1;
+    letter-spacing: 0.08em;
+  }
+  /* la frase del oráculo */
+  .oraculo {
+    margin-block: 1.6rem !important;
+    text-align: center;
     font-family: var(--f-display);
     font-weight: 500;
-    font-size: 1.05rem !important;
+    font-size: 1.15rem;
+    line-height: 1.5;
+    text-wrap: balance;
+  }
+  .oraculo::before,
+  .oraculo::after {
+    color: var(--ink-soft);
+  }
+  .oraculo::before {
+    content: '「';
+  }
+  .oraculo::after {
+    content: '」';
+  }
+  /* a favor (吉) y en contra (凶) */
+  .lineas {
+    display: grid;
+    align-content: start;
+    gap: 1rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--hair);
+  }
+  .lineas p {
+    display: grid;
+    grid-template-columns: 1.6rem 1fr;
+    gap: 0.6rem;
+    font-size: 0.94rem;
+    line-height: 1.62;
+  }
+  .lineas p > span:first-child {
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: 1.05rem;
+    line-height: 1.45;
+  }
+  .lineas .malo > span:first-child {
+    color: var(--ink-soft);
+  }
+  .temporada {
+    align-self: start;
+    margin-block: 1.5rem 1.6rem !important;
+  }
+
+  /* ───── el voto: tres casillas de borde a borde del papel (好 · 可 · 否) ───── */
+  .pie-voto {
+    align-self: end;
+    margin-inline: -1.5rem;
+    border-top: 1px dashed var(--ink);
+  }
+  .pie-voto .titulo {
+    padding: 1.1rem 1.5rem 0.5rem;
+    color: var(--ink-soft);
+  }
+  .voto {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--hair);
+  }
+  .voto li {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-width: 0;
+    padding-bottom: 0.6rem;
+  }
+  .voto li + li {
+    border-left: 1px solid var(--hair);
+  }
+  .voto .poner {
+    display: grid;
+    justify-items: center;
+    gap: 0.15rem;
+    width: 100%;
+    padding: 0.55rem 0.2rem 0.5rem;
+    border: 0;
+    border-bottom: 1px solid var(--hair);
+    border-radius: 0;
+    background: none;
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    line-height: 1.3;
+  }
+  .voto .poner span {
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: 1.15rem;
+    letter-spacing: 0;
+    color: var(--ink-soft);
+  }
+  .voto .poner:hover {
+    background: var(--paper-2);
+  }
+  .voto .poner[aria-pressed='true'] {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .voto .poner[aria-pressed='true'] span {
+    color: var(--paper);
+  }
+  /* la casilla marcada ya se nota por el relleno: sin el ✓ */
+  .voto .poner[aria-pressed='true']::before {
+    content: none;
+  }
+  /* Los sellos, siempre en una sola línea y con su alto reservado (votar no mueve nada):
+     cada uno tiene un carril que se encoge si no caben, y el sello, de ancho fijo, se monta
+     sobre el anterior lo justo. Con espacio de sobra no se montan. */
+  .voto [data-sellos] {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1.75rem);
+    justify-content: center;
+    align-items: center;
+    min-height: 3.3rem;
+    padding: 0.6rem 0.9rem 0;
+  }
+  .voto [data-sellos] :global(.sello-p) {
+    margin: 0;
   }
 
   table {

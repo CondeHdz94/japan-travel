@@ -679,7 +679,7 @@ test.describe('nada salta', () => {
     for (const n of nombres) {
       const v = await grupo.entrar(n);
       for (const m of ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic']) await v.marcar('mes', m, 1);
-      for (const w of ['cerezos', 'primavera', 'otono', 'invierno']) await v.marcar('ventana', w, 2);
+      for (const w of ['cerezos', 'abril', 'primavera', 'verano', 'otono', 'invierno']) await v.marcar('ventana', w, 2);
       for (const p of ['pasaporte', 'visa', 'tiquetes', 'hospedajes', 'seguro', 'vjw', 'plata']) await v.marcar('papel', p, 1);
     }
 

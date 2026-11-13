@@ -3,5 +3,5 @@
 // (pruebas/paginas.spec.ts avisa si se olvida).
 
 export const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
-export const VENTANAS = ['cerezos', 'primavera', 'otono', 'invierno'];
+export const VENTANAS = ['cerezos', 'abril', 'primavera', 'verano', 'otono', 'invierno'];
 export const PAPELES = ['pasaporte', 'visa', 'tiquetes', 'hospedajes', 'seguro', 'vjw', 'plata'];

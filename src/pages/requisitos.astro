@@ -32,7 +32,7 @@ const visa: { t: string; d: string; e: Estado }[] = [
   },
   {
     t: 'Tiempos',
-    d: 'Cuánto se demora la respuesta y con cuánta anticipación máxima se puede pedir (la visa suele tener vigencia de 3 meses desde que la expiden).',
+    d: 'Según la Embajada, se pide con cita previa, desde tres meses antes de llegar a Japón y hasta 13 días hábiles antes de salir; el estudio toma unos 10 días hábiles. Falta leerlo directo en su página, que cambia seguido.',
     e: 'warn',
   },
 ];
@@ -49,7 +49,7 @@ const rutas: { via: string; cod: string; d: string; e: Estado; veredicto: string
   {
     via: 'Europa',
     cod: 'MAD · CDG · AMS · FRA',
-    d: 'Colombianos entran sin visa al espacio Schengen. Bogotá–Madrid/París/Ámsterdam/Fráncfort y de ahí a Tokio. Viaje largo (28–35 h). Revisar si ya aplica el permiso ETIAS para 2027.',
+    d: 'Colombianos entran sin visa al espacio Schengen. Bogotá–Madrid/París/Ámsterdam/Fráncfort y de ahí a Tokio. Viaje largo (28–35 h). El permiso ETIAS de la Unión Europea todavía no tiene fecha de arranque: revisar antes de comprar.',
     e: 'warn',
     veredicto: 'La más segura',
     tono: 'ok',
@@ -65,7 +65,7 @@ const rutas: { via: string; cod: string; d: string; e: Estado; veredicto: string
   {
     via: 'Ciudad de México',
     cod: 'MEX',
-    d: 'Aeroméxico tiene vuelo directo México–Tokio: es la ruta más corta. No piden visa, pero sí hay controles duros a colombianos (más de 50.000 inadmitidos en 2024) y un prerregistro en discusión.',
+    d: 'Aeroméxico tiene vuelo directo México–Tokio: es la ruta más corta. No piden visa, pero hay que llenar un prerregistro electrónico obligatorio antes de viajar, y los controles a colombianos son duros (más de 50.000 inadmitidos en 2024).',
     e: 'warn',
     veredicto: 'Corta, con riesgo',
     tono: 'soft',
@@ -73,8 +73,8 @@ const rutas: { via: string; cod: string; d: string; e: Estado; veredicto: string
   {
     via: 'Canadá',
     cod: 'YYZ · YVR',
-    d: 'Los colombianos necesitan visa o permiso de tránsito para hacer escala en Canadá.',
-    e: 'warn',
+    d: 'Colombia está en la lista de países que necesitan visa para Canadá: hasta para una escala de 48 horas o menos se necesita visa de tránsito. No aplica ningún programa de tránsito sin visa.',
+    e: 'ok',
     veredicto: 'Trámite extra',
     tono: 'soft',
   },
@@ -93,6 +93,9 @@ const papeles = [
 const fuentes = [
   ['Embajada del Japón en Colombia · visa de corta estadía (PDF)', 'https://www.colombia.emb-japan.go.jp/files/100407421.pdf'],
   ['Embajada del Japón en Colombia · tránsito (PDF)', 'https://www.colombia.emb-japan.go.jp/files/100398448.pdf'],
+  ['Embajada del Japón en Colombia · preguntas frecuentes de visa', 'https://www.colombia.emb-japan.go.jp/itpr_es/rtaFAQ.html'],
+  ['Gobierno de Canadá · tránsito por Canadá', 'https://www.canada.ca/en/immigration-refugees-citizenship/services/visit-canada/transit.html'],
+  ['Cancillería · prerregistro para viajar a México', 'https://cancilleria.gov.co/sala-de-prensa/noticias/antes-de-viajar-mexico-diligencie-el-pre-registro'],
   ['Cancillería · países que exigen visa a colombianos (mayo 2026)', 'https://cancilleria.gov.co/sites/default/files/DOCUMENTOS-2026/Visas/Lista-Paises-exigen-visa-mayo-2026.pdf'],
   ['Cancillería · Colombia y México, trato en aeropuertos', 'https://cancilleria.gov.co/sala-de-prensa/noticias/colombia-y-mexico-avanzan-en-medidas-para-mejorar-el-trato-ciudadanos-colombianos-en-aeropuertos'],
   ['El Espectador · inadmisiones en México', 'https://www.elespectador.com/mundo/america/maltrato-a-colombianos-en-aeropuertos-de-mexico-ambos-paises-acordaron-medidas-para-abordar-este-problema/'],

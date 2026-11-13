@@ -76,7 +76,7 @@ no mueve nada; donde los sellos se montan, cada uno tapa al de abajo solo con su
 | `tipo` | `clave` | `valor` |
 | :-- | :-- | :-- |
 | `mes` | `ene`…`dic` | 1 = puedo viajar |
-| `ventana` | `cerezos`, `primavera`, `otono`, `invierno` | 2 me encanta · 1 me sirve · 0 no puedo |
+| `ventana` | `cerezos`, `abril`, `primavera`, `verano`, `otono`, `invierno` | 2 me encanta · 1 me sirve · 0 no puedo |
 | `papel` | `pasaporte`, `visa`, … | 1 = ya lo tengo |
 | `lugar` | id del catálogo, o `u<id>` si lo propuso el grupo | 1 = quiero ir |
 

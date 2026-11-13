@@ -207,7 +207,7 @@ test.describe('entrada animada del Inicio', () => {
 });
 
 test.describe('contenido de Cuándo ir', () => {
-  test('doce meses, cuatro ventanas, cinco fechas a evitar', async ({ page }) => {
+  test('doce meses, seis ventanas, cinco fechas a evitar', async ({ page }) => {
     await abrir(page, '/cuando-ir', 'no');
     await expect(page.locator('.meses > li')).toHaveCount(12);
     await expect(page.locator('.meses strong')).toHaveText(
@@ -217,7 +217,7 @@ test.describe('contenido de Cuándo ir', () => {
       // las mismas claves que acepta la API (src/data/claves.ts)
       MESES.map((m) => `mes:${m}`),
     );
-    await expect(page.locator('.ventanas article')).toHaveCount(4);
+    await expect(page.locator('.ventanas article')).toHaveCount(6);
     expect(await page.locator('.ventanas [data-marca]').evaluateAll((es) => es.map((e) => e.getAttribute('data-marca')))).toEqual(
       VENTANAS.map((v) => `ventana:${v}`),
     );
@@ -271,7 +271,7 @@ test.describe('contenido de Requisitos', () => {
     expect(await page.locator('.papeles [data-marca]').evaluateAll((es) => es.map((e) => e.getAttribute('data-marca')))).toEqual(
       PAPELES.map((p) => `papel:${p}`),
     );
-    await expect(page.locator('.fuentes a')).toHaveCount(7);
+    await expect(page.locator('.fuentes a')).toHaveCount(10);
   });
 
   test('cada dato lleva su sello de «Confirmado» o «Por confirmar»', async ({ page }) => {

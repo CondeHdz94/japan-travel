@@ -326,7 +326,7 @@ test.describe('marca', () => {
     const inventadas = [
       ['mes', 'xyz'],
       ['mes', 'octubre'],
-      ['ventana', 'verano'],
+      ['ventana', 'navidad'],
       ['papel', 'cedula'],
       ['lugar', 'no-existe'],
     ];
@@ -338,13 +338,13 @@ test.describe('marca', () => {
   test('todas las claves que usan las páginas se aceptan', async ({ grupo }) => {
     const ana = await grupo.entrar('Ana');
     const meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
-    const ventanas = ['cerezos', 'primavera', 'otono', 'invierno'];
+    const ventanas = ['cerezos', 'abril', 'primavera', 'verano', 'otono', 'invierno'];
     const papeles = ['pasaporte', 'visa', 'tiquetes', 'hospedajes', 'seguro', 'vjw', 'plata'];
     for (const c of meses) expect((await ana.marcar('mes', c, 1)).status(), c).toBe(200);
     for (const c of ventanas) expect((await ana.marcar('ventana', c, 2)).status(), c).toBe(200);
     for (const c of papeles) expect((await ana.marcar('papel', c, 1)).status(), c).toBe(200);
     for (const l of SEMILLAS) expect((await ana.marcar('lugar', l.id, 1)).status(), l.id).toBe(200);
-    expect((await ana.estado()).marcas).toHaveLength(12 + 4 + 7 + SEMILLAS.length);
+    expect((await ana.estado()).marcas).toHaveLength(12 + 6 + 7 + SEMILLAS.length);
   });
 
   test('no se puede sellar un lugar propuesto que no existe (o que ya quitaron)', async ({ grupo }) => {
