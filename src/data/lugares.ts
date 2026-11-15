@@ -2,7 +2,8 @@
 // esto es la base para que la sección no arranque vacía.
 //
 // `wiki` es el título del artículo de Wikipedia en inglés de donde sale la foto
-// (ver scripts/fotos-lugares.mjs). `meses` solo va si el lugar depende de la época.
+// (ver scripts/fotos-lugares.mjs) y al que lleva el nombre del lugar, en español si existe
+// (ver scripts/articulos-lugares.mjs). `meses` solo va si el lugar depende de la época.
 
 export interface Tema {
   id: string;
@@ -82,6 +83,8 @@ export interface Lugar {
   desc: string;
   meses?: number[];
   wiki?: string;
+  /** el artículo de `wiki` no es de este lugar (sirvió solo para la foto): el nombre no lleva enlace */
+  sinArticulo?: boolean;
   /** búsqueda en Wikimedia Commons, cuando la imagen del artículo es un logo o un mapa */
   foto?: string;
 }
@@ -94,7 +97,7 @@ export const SEMILLAS: Lugar[] = [
   { id: 'ikebukuro', nombre: 'Ikebukuro', jp: '池袋', tema: 'otaku', zona: 'tokio', wiki: 'Ikebukuro', desc: 'Pokémon Center Mega Tokyo, la tienda insignia de Animate y pisos enteros de gashapon.' },
   { id: 'museo-ghibli', nombre: 'Museo Ghibli', jp: '三鷹の森ジブリ美術館', tema: 'otaku', zona: 'tokio', wiki: 'Ghibli Museum', desc: 'El museo de Miyazaki en Mitaka. Las entradas son con fecha y hora y se agotan: hay que comprarlas con mucha anticipación.' },
   { id: 'gundam-odaiba', nombre: 'Gundam Unicornio de Odaiba', jp: 'ユニコーンガンダム', tema: 'otaku', zona: 'tokio', wiki: 'DiverCity Tokyo Plaza', desc: 'Estatua a escala real, de casi 20 metros, que se transforma con luces varias veces al día. Gratis.' },
-  { id: 'museo-doraemon', foto: 'Fujiko F. Fujio Museum', nombre: 'Museo Fujiko F. Fujio', jp: '藤子・F・不二雄ミュージアム', tema: 'otaku', zona: 'kanto', wiki: 'Fujiko F. Fujio Museum', desc: 'El museo de Doraemon en Kawasaki. Entrada con reserva previa.' },
+  { id: 'museo-doraemon', foto: 'Fujiko F. Fujio Museum', nombre: 'Museo Fujiko F. Fujio', jp: '藤子・F・不二雄ミュージアム', tema: 'otaku', zona: 'kanto', wiki: 'Fujiko F. Fujio Museum', sinArticulo: true, desc: 'El museo de Doraemon en Kawasaki. Entrada con reserva previa.' },
   { id: 'ghibli-park', nombre: 'Ghibli Park', jp: 'ジブリパーク', tema: 'otaku', zona: 'chubu', wiki: 'Ghibli Park', desc: 'El parque de Ghibli cerca de Nagoya: la casa de Totoro, el castillo ambulante, el pueblo de Mononoke. Con reserva.' },
   { id: 'museo-nintendo', foto: 'Nintendo Museum Uji', nombre: 'Museo Nintendo', jp: 'ニンテンドーミュージアム', tema: 'otaku', zona: 'kansai', wiki: 'Nintendo Museum', desc: 'La historia de Nintendo en su antigua fábrica de Uji, cerca de Kioto. Las entradas se consiguen por sorteo o reserva anticipada.' },
   { id: 'super-nintendo-world', foto: 'Super Nintendo World Universal Studios Japan', nombre: 'Super Nintendo World', tema: 'otaku', zona: 'kansai', wiki: 'Super Nintendo World', desc: 'El Reino Champiñón de verdad, dentro de Universal Studios Japan en Osaka. Mario Kart, Donkey Kong y pulseras para golpear bloques.' },
@@ -133,7 +136,7 @@ export const SEMILLAS: Lugar[] = [
 
   // ───── montes y rutas ─────
   { id: 'kawaguchiko', foto: 'Mount Fuji from Lake Kawaguchiko autumn', nombre: 'Lago Kawaguchi y el Fuji', jp: '河口湖', tema: 'naturaleza', zona: 'kanto', wiki: 'Lake Kawaguchi', desc: 'La mejor vista del Fuji desde abajo. Ojo: el monte se tapa de nubes seguido, sobre todo en verano.' },
-  { id: 'chureito', nombre: 'Pagoda Chureito', jp: '忠霊塔', tema: 'naturaleza', zona: 'kanto', wiki: 'Chureito Pagoda', desc: 'La foto: pagoda roja con el Fuji detrás. Casi 400 escalones.' },
+  { id: 'chureito', foto: 'Chureito Pagoda', nombre: 'Pagoda Chureito', jp: '忠霊塔', tema: 'naturaleza', zona: 'kanto', wiki: 'Arakurayama Sengen Park', desc: 'La foto: pagoda roja con el Fuji detrás. Casi 400 escalones.' },
   { id: 'hakone', nombre: 'Hakone', jp: '箱根', tema: 'naturaleza', zona: 'kanto', wiki: 'Hakone', desc: 'Aguas termales, teleférico sobre un valle volcánico y barco por el lago Ashi con el Fuji al fondo.' },
   { id: 'takao', nombre: 'Monte Takao', jp: '高尾山', tema: 'naturaleza', zona: 'tokio', wiki: 'Mount Takao', desc: 'Caminata fácil de medio día a una hora del centro de Tokio. Con suerte se ve el Fuji desde la cima.' },
   { id: 'arashiyama', nombre: 'Arashiyama y el bosque de bambú', jp: '嵐山', tema: 'naturaleza', zona: 'kansai', wiki: 'Arashiyama', desc: 'El sendero entre bambúes gigantes al oeste de Kioto. Muy temprano o se vuelve un trancón de gente.' },
@@ -160,7 +163,7 @@ export const SEMILLAS: Lugar[] = [
   // ───── arte y museos ─────
   { id: 'naoshima', nombre: 'Naoshima', jp: '直島', tema: 'arte', zona: 'oeste', wiki: 'Naoshima, Kagawa', desc: 'La isla del arte: la calabaza de Kusama en el muelle, museos de Tadao Ando bajo tierra y casas viejas convertidas en obras.' },
   { id: 'teshima', nombre: 'Museo de Arte de Teshima', jp: '豊島美術館', tema: 'arte', zona: 'oeste', wiki: 'Teshima Art Museum', desc: 'Una gota de concreto gigante y vacía, donde solo hay agua moviéndose por el piso. Isla vecina de Naoshima.' },
-  { id: 'teamlab', foto: 'teamLab Planets Tokyo', nombre: 'teamLab', jp: 'チームラボ', tema: 'arte', zona: 'tokio', wiki: 'TeamLab', desc: 'Arte digital inmersivo: en Planets se camina descalzo por agua; Borderless es un laberinto de proyecciones. Con reserva.' },
+  { id: 'teamlab', foto: 'teamLab Planets Tokyo', nombre: 'teamLab', jp: 'チームラボ', tema: 'arte', zona: 'tokio', wiki: 'TeamLab (art collective)', desc: 'Arte digital inmersivo: en Planets se camina descalzo por agua; Borderless es un laberinto de proyecciones. Con reserva.' },
   { id: 'museo-nacional-tokio', nombre: 'Museo Nacional de Tokio', jp: '東京国立博物館', tema: 'arte', zona: 'tokio', wiki: 'Tokyo National Museum', desc: 'Armaduras de samurái, katanas, biombos y budas. El museo más grande del país, en el parque de Ueno.' },
   { id: 'museo-espadas', nombre: 'Museo de la Espada Japonesa', jp: '刀剣博物館', tema: 'arte', zona: 'tokio', wiki: 'Japanese Sword Museum', desc: 'Pequeño y solo de katanas, en Ryōgoku, al lado del estadio de sumo.' },
   { id: 'hakone-esculturas', nombre: 'Museo al Aire Libre de Hakone', jp: '彫刻の森美術館', tema: 'arte', zona: 'kanto', wiki: 'Hakone Open-Air Museum', desc: 'Esculturas gigantes en una ladera con montañas de fondo, un pabellón de Picasso y un baño de pies termal.' },
@@ -200,7 +203,7 @@ export const SEMILLAS: Lugar[] = [
   { id: 'tottori', nombre: 'Dunas de Tottori', jp: '鳥取砂丘', tema: 'raro', zona: 'oeste', wiki: 'Tottori Sand Dunes', desc: 'Un desierto frente al mar, con camellos y un museo de esculturas de arena.' },
   { id: 'nagoro', nombre: 'Nagoro, el pueblo de los muñecos', jp: '名頃', tema: 'raro', zona: 'oeste', wiki: 'Nagoro', desc: 'Una aldea casi vacía donde una vecina fue reemplazando a los que se iban con muñecos de tamaño real.' },
   { id: 'tashirojima', nombre: 'Tashirojima, la isla de los gatos', jp: '田代島', tema: 'raro', zona: 'norte', wiki: 'Tashirojima', desc: 'Más gatos que personas, y un santuario dedicado a ellos.' },
-  { id: 'zao-zorros', nombre: 'Pueblo de zorros de Zaō', jp: '蔵王キツネ村', tema: 'raro', zona: 'norte', wiki: 'Zao Fox Village', desc: 'Un bosque cercado donde más de cien zorros andan sueltos entre los visitantes.' },
+  { id: 'zao-zorros', foto: 'Zao Fox Village', nombre: 'Pueblo de zorros de Zaō', jp: '蔵王キツネ村', tema: 'raro', zona: 'norte', wiki: 'Miyagi Zao Fox Village', desc: 'Un bosque cercado donde más de cien zorros andan sueltos entre los visitantes.' },
   { id: 'gunkanjima', nombre: 'Gunkanjima', jp: '軍艦島', tema: 'raro', zona: 'sur', wiki: 'Hashima Island', desc: 'La isla acorazado: una ciudad minera de concreto abandonada en el mar, frente a Nagasaki. Se visita en tour en barco.' },
   { id: 'beppu', nombre: 'Infiernos de Beppu', jp: '別府地獄', tema: 'raro', zona: 'sur', wiki: 'Hells of Beppu', desc: 'Pozos termales para mirar, no para meterse: uno azul cobalto, uno rojo sangre, uno de lodo hirviendo.' },
 

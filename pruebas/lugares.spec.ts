@@ -9,6 +9,8 @@ const LUGAR = { nombre: 'Mirador de prueba', tema: 'raro', zona: 'tokio' };
 
 const visibles = (page: Page) => page.locator('article.lugar:visible');
 const tarjeta = (page: Page, id: string) => page.locator(`article.lugar[data-marca="lugar:${id}"]`);
+// «Proponer»: en escritorio va en la barra de filtros; en celular, flotante a la mano del pulgar
+const proponer = (page: Page) => page.locator('.filtros [data-proponer], .flotante[data-proponer]').filter({ visible: true });
 
 /** Lo que dicen los contadores de la página, para compararlo con lo que de verdad se ve. */
 async function conteos(page: Page) {
@@ -77,6 +79,17 @@ test.describe('catálogo', () => {
     expect(malas).toEqual([]);
   });
 
+  test('el nombre lleva a leer sobre el lugar, en español cuando hay', async ({ page }) => {
+    await abrir(page, '/lugares', 'no');
+    const ghibli = page.locator('#museo-ghibli h3 a');
+    await expect(ghibli).toHaveAttribute('href', 'https://es.wikipedia.org/wiki/Museo_Ghibli');
+    await expect(ghibli).toHaveAttribute('target', '_blank');
+    await expect(ghibli).toHaveAccessibleName('Museo Ghibli');
+    // sin artículo propio, el nombre queda sin enlace
+    await expect(page.locator('#museo-doraemon h3 a')).toHaveCount(0);
+    await expect(page.locator('#museo-doraemon h3')).toHaveText('Museo Fujiko F. Fujio');
+  });
+
   test('las fotos cargan de verdad (ninguna rota)', async ({ page }) => {
     await abrir(page, '/lugares', 'no');
     await page.locator('article.lugar img').evaluateAll((imgs) => imgs.forEach((i) => ((i as HTMLImageElement).loading = 'eager')));
@@ -113,17 +126,20 @@ test.describe('catálogo', () => {
     await expect(page.locator('.creditos li').first()).toBeVisible();
   });
 
-  test('no se desborda a lo ancho, ni con la barra de filtros', async ({ page }) => {
+  test('no se desborda a lo ancho, ni con la barra de filtros', async ({ page, isMobile }) => {
     await abrir(page, '/lugares', 'no');
     expect(await desborde(page)).toBeLessThanOrEqual(0);
     await entrarEn(page, 'Maximiliano Fernando');
     await abrir(page, '/lugares', 'si');
     expect(await desborde(page)).toBeLessThanOrEqual(0);
-    // todos los controles de filtro se pueden alcanzar
-    for (const sel of ['#f-zona', '#f-temp', '#f-mios', '.filtros [data-proponer]']) {
-      await page.locator(sel).scrollIntoViewIfNeeded();
-      await expect(page.locator(sel)).toBeInViewport();
+    // todos los controles de filtro se pueden alcanzar, y «Proponer» también
+    for (const control of [...['#f-zona', '#f-temp', '#f-mios'].map((sel) => page.locator(sel)), proponer(page)]) {
+      await expect(control).toHaveCount(1);
+      await control.scrollIntoViewIfNeeded();
+      await expect(control).toBeInViewport();
     }
+    // en celular, «Proponer» es el botón flotante: el de la barra no se ve
+    await expect(proponer(page)).toHaveClass(isMobile ? /flotante/ : /proponer/);
   });
 });
 
@@ -325,7 +341,7 @@ test.describe('sellar lugares', () => {
 test.describe('proponer', () => {
   test('sin sesión, «Proponer» abre el registro', async ({ page }) => {
     await abrir(page, '/lugares', 'no');
-    await page.locator('.filtros [data-proponer]').click();
+    await proponer(page).click();
     await expect(page.locator('#registro')).toBeVisible();
     await expect(page.locator('#proponer')).toBeHidden();
   });
@@ -333,7 +349,7 @@ test.describe('proponer', () => {
   test('proponer un lugar completo: aparece en su tema, resaltado, con mi sello y «Quitar»', async ({ page }) => {
     const id = await entrarEn(page, 'Camilo');
     await abrir(page, '/lugares', 'si');
-    await page.locator('.filtros [data-proponer]').click();
+    await proponer(page).click();
     const d = page.locator('#proponer');
     await expect(d).toBeVisible();
     await d.locator('[name=nombre]').fill('Parque de los Gatos');
@@ -354,8 +370,10 @@ test.describe('proponer', () => {
     await expect(t.locator('.desc')).toHaveText('Queda al lado del mar y casi no va nadie.');
     await expect(t.locator('.meta span')).toHaveText('Sur');
     await expect(t.locator('.cuando')).toHaveText('Jun–Sep');
-    await expect(t.locator('.meta a')).toHaveAttribute('href', 'https://example.com/gatos');
-    await expect(t.locator('.meta a')).toContainText('Enlace');
+    // el enlace que puso va en el nombre; «Mapa» sigue llevando al mapa
+    await expect(t.locator('h3 a')).toHaveAttribute('href', 'https://example.com/gatos');
+    await expect(t.locator('.meta a')).toHaveAttribute('href', /^https:\/\/www\.google\.com\/maps\/search\//);
+    await expect(t.locator('.meta a')).toContainText('Mapa');
     await expect(t.locator('.sin-foto')).toBeVisible();
     await expect(t.locator('[data-sello-de] .sello-p')).toHaveCount(1);
     await expect(t.locator('[data-sello-de] .sello-p')).toHaveAttribute('title', /Camilo/);
@@ -390,7 +408,7 @@ test.describe('proponer', () => {
     page.on('request', (r) => {
       if (r.url().endsWith('/api/lugares')) envios++;
     });
-    await page.locator('.filtros [data-proponer]').click();
+    await proponer(page).click();
     const d = page.locator('#proponer');
     await d.locator('button[type=submit]').click();
     await expect(d).toBeVisible();
@@ -407,14 +425,14 @@ test.describe('proponer', () => {
 
     // cerrar y abrir: el aviso no queda pegado
     await d.locator('[data-cerrar]').click();
-    await page.locator('.filtros [data-proponer]').click();
+    await proponer(page).click();
     await expect(d.locator('[role=alert]')).toBeEmpty();
   });
 
   test('doble toque en «Proponer» no crea el lugar dos veces', async ({ page }) => {
     await entrarEn(page, 'Camilo');
     await abrir(page, '/lugares', 'si');
-    await page.locator('.filtros [data-proponer]').click();
+    await proponer(page).click();
     const d = page.locator('#proponer');
     await d.locator('[name=nombre]').fill('Solo una vez');
     await d.locator('button[type=submit]').dblclick();

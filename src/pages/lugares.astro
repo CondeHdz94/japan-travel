@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { SEMILLAS, TEMAS, TEMPORADAS, ZONAS, etiquetaMeses, type Lugar } from '../data/lugares';
 import creditos from '../data/fotos.json';
+import articulos from '../data/articulos.json';
 import { propuestos, sellosPorLugar, type LugarPropuesto } from '../lib/lugares';
 import { sesion } from '../lib/sesion';
 
@@ -40,8 +41,10 @@ const porTema = TEMAS.map((tema) => ({
 
 const zonaDe = Object.fromEntries(ZONAS.map((z) => [z.id, z.nombre]));
 const foto = (l: Ficha) => l.imagen ?? (fotos[l.id] ? `/lugares/${fotos[l.id].archivo}` : undefined);
+// El nombre lleva a leer sobre el lugar (Wikipedia, o el enlace de quien lo propuso);
+// «Mapa» siempre lleva a Google Maps, también en los propuestos.
+const leer = (l: Ficha) => l.enlace ?? (articulos as Record<string, string>)[l.id];
 const mapa = (l: Ficha) =>
-  l.enlace ??
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${l.nombre} ${l.jp ?? ''} Japan`)}`;
 const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
 ---
@@ -75,14 +78,14 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
       <label>
         <span class="oculto">Zona</span>
         <select id="f-zona">
-          <option value="">Todas las zonas</option>
+          <option value="" data-corto="Zona">Todas las zonas</option>
           {ZONAS.map((z) => <option value={z.id}>{z.nombre}</option>)}
         </select>
       </label>
       <label>
         <span class="oculto">Temporada</span>
         <select id="f-temp">
-          <option value="">Todo el año</option>
+          <option value="" data-corto="Temporada">Todo el año</option>
           {TEMPORADAS.map((t) => <option value={t.id} data-meses={t.meses.join(',')}>En {t.nombre.toLowerCase()}</option>)}
         </select>
       </label>
@@ -128,11 +131,15 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
                 <div class="cuerpo">
                   <p class="meta mono">
                     <span>{zonaDe[l.zona]}</span>
-                    <a href={mapa(l)} target="_blank" rel="noopener noreferrer">
-                      {l.enlace ? 'Enlace' : 'Mapa'} ↗
-                    </a>
+                    <a href={mapa(l)} target="_blank" rel="noopener noreferrer">Mapa ↗</a>
                   </p>
-                  <h3>{l.nombre}</h3>
+                  <h3>
+                    {leer(l) ? (
+                      <a class="leer" href={leer(l)} target="_blank" rel="noopener noreferrer"><span>{l.nombre}</span></a>
+                    ) : (
+                      l.nombre
+                    )}
+                  </h3>
                   {l.jp && <p class="jp" lang="ja">{l.jp}</p>}
                   {l.desc && <p class="desc">{l.desc}</p>}
                   {l.persona && (
@@ -181,6 +188,11 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
     </details>
   </section>
 
+  <button type="button" class="flotante" data-proponer="" aria-label="Proponer lugar" title="Proponer lugar">
+    <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true">
+      <path d="M10 2v16M2 10h16" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+    </svg>
+  </button>
   <button type="button" class="novedad mono" id="novedad" hidden>Hay lugares nuevos · Actualizar ↻</button>
 
   <dialog id="proponer" class="registro" aria-labelledby="proponer-t">
@@ -286,6 +298,15 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
   if ([...temp.options].some((o) => o.value === q.get('t'))) temp.value = q.get('t')!;
   const quiereMios = q.get('mios') === '1';
   if (zona.value || temp.value) filtrar();
+
+  // en celular el valor por defecto dice solo de qué es el filtro («Zona», «Temporada») para que quepa
+  const celular = matchMedia('(max-width: 720px)');
+  const porDefecto = [zona, temp].map((s) => s.options[0]);
+  const largos = porDefecto.map((o) => o.text);
+  const nombrarPorDefecto = () =>
+    porDefecto.forEach((o, i) => (o.text = celular.matches ? o.dataset.corto! : largos[i]));
+  nombrarPorDefecto();
+  celular.addEventListener('change', nombrarPorDefecto);
 
   zona.addEventListener('change', filtrar);
   temp.addEventListener('change', filtrar);
@@ -489,11 +510,25 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--ink);
-    background: transparent;
+    /* flecha propia: la nativa cada navegador la pone donde quiere, pegada al borde.
+       Queda al mismo margen que el texto del otro lado, con su espacio reservado */
+    appearance: none;
+    --flecha: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23191714' stroke-width='1.4'/%3E%3C/svg%3E");
+    background: var(--flecha) no-repeat right 0.9rem center / 0.62rem auto transparent;
     border: 1px solid var(--ink);
     border-radius: 99px;
-    padding: 0 0.5rem 0 0.7rem;
+    padding: 0 2rem 0 0.9rem;
     cursor: pointer;
+  }
+  /* un menú con algo escogido se rellena, igual que «Mis sellos» activo: se ve qué filtro está puesto */
+  .filtros select:not(:has(option[value='']:checked)) {
+    --flecha: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23f1ece1' stroke-width='1.4'/%3E%3C/svg%3E");
+    background-color: var(--ink);
+    color: var(--paper);
+  }
+  .filtros option {
+    background: var(--paper);
+    color: var(--ink);
   }
   .total {
     line-height: 1;
@@ -665,6 +700,40 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
     line-height: 1.15;
     margin-top: 0.4rem;
   }
+  /* el nombre lleva a leer sobre el lugar: quieto se ve como título, con la flechita de
+     «sale del sitio» que usan todos los enlaces de afuera; al pasar se subraya en bermellón */
+  .leer {
+    text-decoration: none;
+    /* agranda la zona de toque en celular sin mover el renglón (en línea no empuja nada) */
+    padding-block: 0.2em;
+  }
+  .leer:hover {
+    color: inherit;
+  }
+  .leer span {
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color 0.15s;
+  }
+  .leer:hover span,
+  .leer:focus-visible span {
+    text-decoration-color: var(--shu);
+  }
+  /* el espacio duro la amarra a la última palabra: nunca queda sola en otro renglón */
+  .leer::after {
+    content: '\00a0↗' / '';
+    font-family: var(--f-mono);
+    font-weight: 400;
+    font-size: 0.6em;
+    vertical-align: 0.35em;
+    color: var(--ink-soft);
+  }
+  .leer:hover::after,
+  .leer:focus-visible::after {
+    color: var(--shu);
+  }
   .jp {
     margin: 0.2rem 0 0;
     font-family: var(--f-display);
@@ -775,6 +844,50 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
     display: none;
   }
 
+  /* proponer en celular: a la mano del pulgar, con la misma sombra dura del aviso y los diálogos */
+  .flotante {
+    display: none;
+  }
+  @media (max-width: 720px) {
+    .filtros .proponer {
+      display: none;
+    }
+    .flotante {
+      position: fixed;
+      right: 1rem;
+      bottom: calc(1rem + env(safe-area-inset-bottom));
+      z-index: 30;
+      display: grid;
+      place-items: center;
+      width: 3.5rem;
+      height: 3.5rem;
+      padding: 0;
+      border: 1px solid var(--ink);
+      border-radius: 50%;
+      background: var(--shu);
+      color: var(--paper);
+      box-shadow: 4px 4px 0 var(--ink);
+      font-size: 1.6rem;
+      line-height: 1;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 0.12s, box-shadow 0.12s;
+    }
+    /* al tocarlo se hunde como un sello contra el papel */
+    .flotante:active {
+      transform: translate(3px, 3px);
+      box-shadow: 1px 1px 0 var(--ink);
+    }
+    /* el aviso de lugares nuevos se apila encima, sin tapar el botón */
+    .novedad {
+      bottom: calc(1rem + 3.5rem + 0.9rem + env(safe-area-inset-bottom));
+    }
+    /* el final de la página nunca queda debajo del botón */
+    :global(body) {
+      padding-bottom: 5rem;
+    }
+  }
+
   /* ───── créditos ───── */
   .creditos summary {
     cursor: pointer;
@@ -820,12 +933,25 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
   }
 
   @media (max-width: 720px) {
+    /* los tres controles caben sin deslizar: los menús se reparten el ancho y «Mis sellos» va completo */
     .filtros {
-      overflow-x: auto;
-      scrollbar-width: none;
+      gap: 0.5rem;
     }
-    .filtros > * {
+    .filtros label {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+    .filtros select {
+      width: 100%;
+      min-width: 0;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    /* ancho reservado para «✓ Mis sellos»: al activarlo los menús no se encogen */
+    .filtros .solo-mios {
       flex: none;
+      min-width: 7.4rem;
     }
     .total {
       display: none;
@@ -834,8 +960,10 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
       grid-template-columns: auto 1fr;
       align-items: center;
     }
+    /* en celular, márgenes un poco más justos pero iguales a lado y lado */
     .filtros select {
-      padding-inline: 0.55rem 0.2rem;
+      padding-inline: 0.8rem 1.75rem;
+      background-position: right 0.8rem center;
     }
     .cuenta {
       display: none;

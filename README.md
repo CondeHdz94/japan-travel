@@ -153,7 +153,17 @@ en el puerto 4399, con clave y base propias (`.data/pruebas.db`): no leen el `.e
   El script toma la imagen principal del artículo indicado en `wiki`; si es un logo o un mapa,
   el campo `foto` permite dar una búsqueda en Commons. Deja las imágenes en `public/lugares/`
   y los créditos en `src/data/fotos.json`, que se muestran al final de la página.
-- Para agregar un lugar al catálogo: añadirlo a `SEMILLAS` y correr el script.
+- El nombre de cada lugar lleva a leer sobre él: al artículo de `wiki` en Wikipedia en español
+  si existe, y si no en inglés; en los propuestos, al enlace que puso quien lo propuso. «Mapa»
+  siempre lleva a Google Maps. Los enlaces a Wikipedia se resuelven una vez con:
+
+  ```sh
+  node scripts/articulos-lugares.mjs
+  ```
+
+  y quedan en `src/data/articulos.json`. Si `wiki` se usó solo para la foto y el artículo es de
+  otra cosa, `sinArticulo: true` deja el nombre sin enlace; si no existe el artículo, también.
+- Para agregar un lugar al catálogo: añadirlo a `SEMILLAS` y correr los dos scripts.
 
 ## Estructura
 
@@ -192,3 +202,4 @@ pública del sitio está en `site`, en `astro.config.mjs`: si cambia, se cambia 
 - Un lugar propuesto no se puede editar, solo quitar y volver a crear.
 - Las copias de Preview en Vercel no tienen variables de entorno: no funcionan hasta crear una
   base de pruebas para ellas.
+scripts/articulos-lugares.mjs resuelve a qué artículo de Wikipedia lleva cada lugar
