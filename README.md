@@ -23,7 +23,7 @@ No hay framework de interfaz: lo interactivo es TypeScript sin dependencias.
 
 | Ruta | Estado | Qué tiene |
 | :-- | :-- | :-- |
-| `/` | Lista | Portada, «boleto» del viaje, índice y animación de entrada |
+| `/` | Lista | Portada, «boleto» del viaje con los pasajeros, índice, animación de entrada y llegadas al viaje |
 | `/cuando-ir` | Lista | El año en Tokio mes a mes, cuatro ventanas candidatas para votar, fechas a evitar |
 | `/requisitos` | Lista | Visa, rutas sin visa americana y checklist personal de papeles |
 | `/lugares` | Lista | Catálogo de 116 lugares y eventos por tema, con filtros, votos y propuestas del grupo |
@@ -61,15 +61,43 @@ y no sube al repo.
 ## Cómo funciona el grupo
 
 **Entrar.** Nombre + clave del viaje, sin cuentas ni correos. Si el nombre no existe se crea el
-viajero; si existe, se entra como él (sin distinguir mayúsculas ni tildes: «Andrés» y «andres»
-son el mismo). La sesión es una cookie firmada con la clave. Cualquiera con la clave puede
-entrar con el nombre de otro: es una decisión consciente para un grupo de amigos.
+viajero. Si ya existe (sin distinguir mayúsculas, tildes ni espacios: «Andrés» y «andres» son el
+mismo), el registro pregunta «Ya hay alguien llamado Andrés en el viaje. ¿Eres tú?»: «Sí, soy
+yo» entra como esa persona; «No, soy otra persona» pide otro nombre. Así un segundo «Juan» no
+queda convertido en el primero. «Juan», «Juan Camilo» y «Juan Pablo» son nombres distintos. La
+sesión es una cookie firmada con la clave. Cualquiera con la clave puede entrar con el nombre de
+otro: es una decisión consciente para un grupo de amigos (la pregunta evita equivocaciones, no
+suplantaciones).
 
 **Sellos.** Cada viajero tiene un sello con la primera sílaba de su nombre en katakana
-(`src/scripts/kana.ts` hace la transcripción por sonido) y su inicial latina. Hay 12 formas de
-sello (`src/data/formas.ts`): al entrar por primera vez se asigna la primera que nadie tenga, y
-cada quien la cambia desde su perfil. Todas se dibujan en la misma caja, así que cambiar de forma
-no mueve nada; donde los sellos se montan, cada uno tapa al de abajo solo con su silueta.
+(`src/scripts/kana.ts` hace la transcripción por sonido) y sus iniciales: una por palabra
+(«Juan» → J, «Juan Camilo» → JC); si dos chocan, se alarga la última palabra («Ana» y «Andrés»
+→ Ana y And). Hay 12 formas de sello (`src/data/formas.ts`) y 6 colores: al entrar se asignan
+la primera forma y el primer color que nadie tenga. La forma se cambia desde el perfil; el color
+es fijo, así que si alguien se sale, los demás no cambian de color. Todas las formas se dibujan
+en la misma caja, así que cambiar de forma no mueve nada; donde los sellos se montan, cada uno
+tapa al de abajo solo con su silueta.
+
+**Llegadas al viaje.** Dos momentos, en `src/scripts/llegadas.ts` (lo dibuja) y `grupo.ts`
+(decide cuándo):
+
+- *«Ya vas a bordo»*: quien se registra ve caer su sello en grande, y aterriza donde hizo clic
+  (el voto que le pidió entrar, el boleto del Inicio o, si no, la cabecera). Nunca lo saca de
+  la página. En Lugares, la página se recarga al terminar.
+- *Desde tu última visita*: al abrir el Inicio, los que entraron después de mi «visto» caen
+  juntos con un solo anuncio («Laura y Santiago se montaron al viaje») y vuelan a la casilla
+  Pasajeros del boleto; si no se ve, la página baja lo justo. «Visto» es el id más alto que ya se
+  me anunció; se guarda por persona en la base, así que vale para todos mis aparatos, y solo
+  cuando de verdad se mostró. Quien se registra arranca con su propio id: no se le anuncian los
+  que ya estaban.
+
+Arranca cuando termina de caer el sello 計画中 (después de la intro, si la hay), más 0,6 s, y
+solo con el estado fresco del servidor. Solo se salta a propósito («Saltar», un toque o
+Escape): el scroll no lo salta, y mientras dura la página se queda quieta sin esconder la barra
+de scroll. Hay versión tranquila, sin golpe (los sellos caen en el boleto cuando se ve y abajo
+dice «Nuevos: …»), si hay movimiento reducido, si el estado llega más de 2 s tarde, si ya se
+bajó del titular o si se hizo clic o se tecleó algo antes. Sin red no se anuncia nada. El Inicio
+no consulta en vivo: quien llegue mientras está abierto sale en la próxima visita.
 
 **Marcas.** Todo lo que se vota es una fila `(persona, tipo, clave, valor)`:
 
@@ -94,6 +122,9 @@ no mueve nada; donde los sellos se montan, cada uno tapa al de abajo solo con su
 - `data-sellos` — donde se pintan los sellos (`data-valor` filtra; `data-fantasmas` muestra los pendientes)
 - `data-sello-de="idPersona"` — el sello de una persona puntual
 - `data-entrar` — abre el registro
+- En el Inicio: `data-pasajeros` (los sellos de todo el grupo), `data-cuenta-pasajeros`
+  («Van 3 de 4–5»), `data-portada` (si sigue a la vista, las llegadas van en grande) y
+  `data-llegadas-despues` (las llegadas esperan a que ese elemento termine de animarse)
 
 **En vivo.** Las páginas con sellos consultan `/api/estado` cada 6 segundos mientras la pestaña
 está visible. Se pausa si nadie toca la página en 5 minutos. El Inicio solo consulta una vez, al cargar.
@@ -110,8 +141,9 @@ Todas en `src/pages/api/`, responden JSON.
 
 | Ruta | Qué hace |
 | :-- | :-- |
-| `GET estado` | Quién soy, quiénes somos y todas las marcas (vacío sin sesión) |
-| `POST entrar` | `{nombre, clave}` → abre sesión |
+| `GET estado` | Quién soy, quiénes somos (con forma y color), todas las marcas y mi `visto` (vacío sin sesión) |
+| `POST entrar` | `{nombre, clave, soyYo?}` → abre sesión; `nuevo: true` si se registró. Si el nombre ya existe y no viene `soyYo: true`, responde 409 con `existe` (para el «¿eres tú?») |
+| `POST visto` | `{hasta}` → ya se me anunció hasta ese viajero. Solo sube, y nunca más allá del último que existe |
 | `POST salir` | Cierra la sesión de este dispositivo |
 | `POST renombrar` | `{nombre, forma?}` → cambia mi nombre (y la forma de mi sello, si viene) conservando marcas |
 | `POST borrarme` | Me saca del grupo, con mis marcas y los lugares que propuse |
@@ -137,6 +169,7 @@ en el puerto 4399, con clave y base propias (`.data/pruebas.db`): no leen el `.e
 | `api.spec.ts` | Toda la API: sesión, marcas, renombrar, borrarse, proponer y quitar, privacidad |
 | `paginas.spec.ts` | Cada página: carga limpia, cabecera, enlaces, desborde, entrada animada |
 | `grupo.spec.ts` | Registro, sellos, en vivo, perfil, sin conexión y «nada salta» |
+| `llegadas.spec.ts` | Bienvenida, llegadas desde mi última visita con varios viajeros y aparatos, «¿eres tú?» y el boleto |
 | `lugares.spec.ts` | Filtros, sellos, proponer, quitar y avisos en vivo |
 
 ## Lugares y fotos
@@ -169,6 +202,7 @@ en el puerto 4399, con clave y base propias (`.data/pruebas.db`): no leen el `.e
 
 ```text
 scripts/fotos-lugares.mjs    baja y comprime las fotos del catálogo
+scripts/articulos-lugares.mjs resuelve a qué artículo de Wikipedia lleva cada lugar
 scripts/iconos.mjs           saca los íconos a partir de public/favicon.svg
 scripts/tarjeta.html         la tarjeta que sale al compartir el enlace (public/tarjeta.png)
 public/                      íconos, manifiesto y tarjeta para compartir
@@ -179,7 +213,7 @@ src/
 ├── layouts/Base.astro       cabecera, lomo vertical, registro y perfil
 ├── lib/                     base de datos, sesión, consultas de lugares
 ├── pages/                   páginas y API
-├── scripts/                 grupo.ts (sellos y sesión), kana.ts, intro.ts
+├── scripts/                 grupo.ts (sellos y sesión), llegadas.ts (el momento de una llegada), kana.ts, intro.ts
 └── styles/global.css        sistema visual y estilos de sellos
 ```
 
@@ -202,4 +236,3 @@ pública del sitio está en `site`, en `astro.config.mjs`: si cambia, se cambia 
 - Un lugar propuesto no se puede editar, solo quitar y volver a crear.
 - Las copias de Preview en Vercel no tienen variables de entorno: no funcionan hasta crear una
   base de pruebas para ellas.
-scripts/articulos-lugares.mjs resuelve a qué artículo de Wikipedia lleva cada lugar

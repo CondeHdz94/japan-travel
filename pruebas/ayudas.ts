@@ -17,9 +17,10 @@ export const CLAVE = 'clave-de-pruebas';
 const BASE_DATOS = 'file:.data/pruebas.db';
 
 export interface Estado {
-  yo: { id: number; nombre: string; forma: string } | null;
-  personas: { id: number; nombre: string; forma: string }[];
+  yo: { id: number; nombre: string; forma: string; tinta: number } | null;
+  personas: { id: number; nombre: string; forma: string; tinta: number }[];
   marcas: { p: number; t: string; c: string; v: number }[];
+  visto?: number;
 }
 
 /** Borra todo lo que haya en la base de pruebas. Nunca toca .data/local.db. */
@@ -59,7 +60,7 @@ export interface Viajero {
 export interface Grupo {
   /** Cliente de la API sin sesión (o con las cabeceras que se le den). */
   anonimo(cabeceras?: Record<string, string>): Promise<APIRequestContext>;
-  /** Entra (o se registra) con ese nombre. */
+  /** Entra (o se registra) con ese nombre. Si ya existe, entra como esa persona («soy yo»). */
   entrar(nombre: string): Promise<Viajero>;
 }
 
@@ -84,7 +85,7 @@ export const test = base.extend<{ limpieza: void; grupo: Grupo; errores: string[
       anonimo,
       async entrar(nombre) {
         const api = await anonimo();
-        const r = await api.post('/api/entrar', { data: { nombre, clave: CLAVE } });
+        const r = await api.post('/api/entrar', { data: { nombre, clave: CLAVE, soyYo: true } });
         expect(r.status(), `entrar como ${nombre}`).toBe(200);
         const e: Estado = await r.json();
         return {
@@ -135,7 +136,7 @@ export const test = base.extend<{ limpieza: void; grupo: Grupo; errores: string[
 
 /** Abre sesión en el navegador de la prueba (por la API, sin pasar por el formulario). */
 export async function entrarEn(page: Page, nombre: string): Promise<number> {
-  const r = await page.context().request.post('/api/entrar', { data: { nombre, clave: CLAVE } });
+  const r = await page.context().request.post('/api/entrar', { data: { nombre, clave: CLAVE, soyYo: true } });
   expect(r.status(), `entrar como ${nombre}`).toBe(200);
   return (await r.json()).yo.id;
 }
@@ -155,6 +156,18 @@ export async function llenarRegistro(page: Page, nombre: string, clave = CLAVE) 
   await d.locator('[name=nombre]').fill(nombre);
   await d.locator('[name=clave]').fill(clave);
   await d.locator('button[type=submit]').click();
+}
+
+/** En el registro abierto, responde «Sí, soy yo» a la pregunta de nombre repetido. */
+export async function confirmarQueSoyYo(page: Page) {
+  const d = page.locator('#registro');
+  await expect(d.locator('[data-confirma]')).toBeVisible();
+  await d.locator('[data-soy-yo]').click();
+}
+
+/** Espera a que termine el momento de una llegada (si lo hay) y que la capa desaparezca. */
+export async function sinMomento(page: Page) {
+  await expect(page.locator('.llegada')).toHaveCount(0, { timeout: 10_000 });
 }
 
 /** Estado del grupo visto desde el navegador de la prueba. */

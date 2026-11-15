@@ -803,3 +803,128 @@ button {
 .registro .con-ojo button[aria-pressed='true'] .tachado {
   display: inline;
 }
+
+/* «¿eres tú?»: aparece en lugar del botón de entrar cuando el nombre ya está en el viaje */
+.registro form[data-confirmando] > button[type='submit'] {
+  display: none;
+}
+.registro .confirma {
+  display: grid;
+  gap: 0.8rem;
+  padding: 0.9rem 1rem 1rem;
+  border: 1px dashed var(--ink);
+  background: var(--paper-2);
+}
+.registro .confirma[hidden] {
+  display: none;
+}
+.registro .confirma p {
+  color: var(--ink);
+  font-size: 1rem;
+}
+.registro .confirma strong {
+  font-family: var(--f-display);
+}
+.registro .confirma .opciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.2rem;
+}
+.registro .confirma .otro {
+  background: none;
+  border: 0;
+  padding: 0.3rem 0;
+  text-decoration: underline;
+  text-decoration-color: var(--shu);
+  text-underline-offset: 0.2em;
+}
+
+/* ───── llegadas al viaje (src/scripts/llegadas.ts) ───── */
+
+/* un sello que va volando: ocupa su puesto, pero todavía no se ve */
+.sello-p.esperando {
+  visibility: hidden;
+}
+
+/* solo para lectores de pantalla */
+.solo-lector {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* la capa del momento: debajo del grano de papel (100), como la intro */
+.llegada {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 1.4rem;
+  padding: 1rem var(--gutter) 4.5rem;
+  cursor: pointer;
+  overflow: hidden;
+}
+.llegada .velo {
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+  opacity: 0;
+}
+.llegada .caen {
+  position: relative;
+  display: flex;
+  gap: calc(var(--k) * 0.32rem);
+}
+/* cada sello grande: la caja de un sello normal, agrandada */
+.llegada .cae {
+  display: grid;
+  place-items: center;
+  width: calc(1.6rem * var(--k));
+  height: calc(2.4rem * var(--k));
+  will-change: transform;
+}
+.llegada .cae .sello-p {
+  transform: rotate(var(--giro, -6deg)) scale(var(--k));
+}
+.llegada .cae .sello-p svg {
+  stroke-width: 2;
+}
+.llegada .dice {
+  position: relative;
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  max-width: min(40rem, 100%);
+  text-align: center;
+  opacity: 0;
+}
+.llegada .dice strong {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(1.45rem, 3.4vw, 2.6rem);
+  line-height: 1.12;
+  text-wrap: balance;
+}
+.llegada .dice span {
+  color: var(--ink-soft);
+}
+.llegada .saltar {
+  position: absolute;
+  left: var(--gutter);
+  bottom: 1.6rem;
+  padding: 0.4rem 0;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  color: var(--ink-soft);
+  opacity: 0;
+}
+.llegada .saltar:hover {
+  color: var(--shu);
+}

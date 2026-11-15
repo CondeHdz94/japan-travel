@@ -143,6 +143,14 @@ const tarjeta = new URL('/tarjeta.png', Astro.site ?? Astro.url).href;
           </span>
         </label>
         <p role="alert" class="error"></p>
+        <!-- si el nombre ya está en el viaje: así un segundo «Juan» no queda convertido en el primero -->
+        <div class="confirma" data-confirma role="group" aria-labelledby="confirma-t" hidden>
+          <p id="confirma-t">Ya hay alguien llamado <strong data-existe></strong> en el viaje. ¿Eres tú?</p>
+          <div class="opciones">
+            <button type="button" class="sellar" data-soy-yo>Sí, soy yo</button>
+            <button type="button" class="otro" data-soy-otro>No, soy otra persona</button>
+          </div>
+        </div>
         <button type="submit" class="sellar">Entrar <span aria-hidden="true">→</span></button>
       </form>
     </dialog>

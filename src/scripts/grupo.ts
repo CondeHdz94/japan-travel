@@ -7,15 +7,24 @@
 //     data-valor="n"            …solo los que marcaron ese valor
 //     data-fantasmas            …y los que faltan, en tenue
 //   data-entrar               abre el registro
+//
+// Y en el Inicio, para las llegadas al viaje:
+//   data-pasajeros            los sellos de todo el grupo (la casilla «Pasajeros» del boleto)
+//   data-cuenta-pasajeros     «Van 3 de 4–5», o quiénes son nuevos
+//   data-portada              si sigue a la vista, las llegadas se presentan en grande
+//   data-llegadas-despues     las llegadas esperan a que este termine de caer (el sello 計画中)
 
 import { kana, primeraKana } from './kana';
 import { FORMAS, formaDe } from '../data/formas';
+import { anunciar, hayMomento, momento, movimientoReducido, type Llegada } from './llegadas';
 
 interface Persona {
   id: number;
   nombre: string;
   /** Forma del sello (puede faltar en un estado guardado por una versión anterior). */
   forma?: string;
+  /** Color fijo del sello (ídem). */
+  tinta?: number;
 }
 interface Marca {
   p: number;
@@ -27,10 +36,19 @@ interface Estado {
   yo: Persona | null;
   personas: Persona[];
   marcas: Marca[];
+  /** El id más alto que ya se me anunció. */
+  visto?: number;
+  /** Solo al registrarse: es una persona nueva. */
+  nuevo?: boolean;
 }
 
 const VACIO: Estado = { yo: null, personas: [], marcas: [] };
 const TINTAS = 6;
+
+/** Personas cuyos sellos van volando: ocupan su puesto, pero todavía no se ven. */
+const esperando = new Set<number>();
+/** Texto temporal bajo los pasajeros (p. ej. «Nuevos: Santi y Vale»). */
+let avisoPasajeros: string | null = null;
 
 // Copia local del último estado: la página se pinta de una, sin esperar al servidor,
 // y así los sellos no "aparecen" después moviendo el contenido.
@@ -96,6 +114,7 @@ function desarmarBorrado() {
 function fuera() {
   perfil?.close();
   E = VACIO;
+  esperando.clear();
   pintar();
   avisarSesion();
 }
@@ -121,26 +140,37 @@ async function api(ruta: string, body?: unknown): Promise<any> {
   return j;
 }
 
-/** Inicial de cada persona; si dos comparten inicial, se alarga hasta distinguirlas. */
+/**
+ * Las letras de abajo del sello. Un nombre de una palabra lleva su inicial («Juan» → J); uno de
+ * varias, la inicial de cada palabra («Juan Camilo» → JC, «Juan Pablo» → JP), como se dice en
+ * Colombia. Si aun así dos chocan, se alarga la última palabra hasta distinguirlos
+ * («Ana» y «Andrés» → Ana y And).
+ */
 function iniciales(): Map<number, string> {
+  const letras = (p: Persona, extra: number) => {
+    const ps = p.nombre.toLowerCase().split(' ').filter(Boolean);
+    const ultima = ps.pop() ?? '';
+    const antes = ps.map((x) => x.charAt(0).toUpperCase()).join('');
+    const fin = ultima.slice(0, 1 + extra);
+    return antes + fin.charAt(0).toUpperCase() + fin.slice(1);
+  };
   const m = new Map<number, string>();
   for (const p of E.personas) {
-    const yo = p.nombre.toLowerCase();
-    let n = 1;
-    while (
-      n < 3 &&
-      E.personas.some((o) => o.id !== p.id && o.nombre.toLowerCase().startsWith(yo.slice(0, n)))
-    )
-      n++;
-    m.set(p.id, yo.charAt(0).toUpperCase() + yo.slice(1, n));
+    let extra = 0;
+    while (extra < 2 && E.personas.some((o) => o.id !== p.id && letras(o, extra) === letras(p, extra))) extra++;
+    m.set(p.id, letras(p, extra));
   }
   return m;
 }
 
+/** Color del sello: el guardado; en un estado viejo, el de su puesto en la lista. */
+const tintaDe = (p: Persona) => p.tinta ?? Math.max(0, E.personas.findIndex((x) => x.id === p.id)) % TINTAS;
+
 function sello(p: Persona, ini: Map<number, string>, fantasma = false, giro = -6): HTMLElement {
   const s = document.createElement('span');
   const forma = formaDe(p.forma);
-  s.className = `sello-p f-${forma.id}${fantasma ? ' fantasma' : ''}`;
+  s.className = `sello-p f-${forma.id}${fantasma ? ' fantasma' : ''}${!fantasma && esperando.has(p.id) ? ' esperando' : ''}`;
+  s.dataset.de = String(p.id);
   s.style.setProperty('--giro', `${giro}deg`);
   // el contorno: un dibujo que llena la caja del sello, igual de grande para todas las formas
   const contorno = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -148,7 +178,7 @@ function sello(p: Persona, ini: Map<number, string>, fantasma = false, giro = -6
   contorno.setAttribute('aria-hidden', 'true');
   contorno.innerHTML = forma.trazo;
   s.append(contorno);
-  s.dataset.tinta = String(E.personas.findIndex((x) => x.id === p.id) % TINTAS);
+  s.dataset.tinta = String(tintaDe(p));
   const enKana = kana(p.nombre);
   const nombre = enKana ? `${p.nombre} · ${enKana}` : p.nombre;
   s.title = fantasma ? `${nombre}: pendiente` : nombre;
@@ -253,12 +283,12 @@ function pintar(animar = false) {
       for (const n of zona.children) puestos.set((n as HTMLElement).dataset.k ?? '', n as HTMLElement);
 
       const nodos: HTMLElement[] = [];
-      E.personas.forEach((p, i) => {
+      E.personas.forEach((p) => {
         const v = valorDe(p.id, t, c);
         const cuenta = v !== undefined && (filtro === undefined || v === Number(filtro));
         const fantasma = !cuenta;
         if (fantasma && !('fantasmas' in zona.dataset)) return;
-        const k = [p.id, fantasma ? 'f' : 's', p.nombre, ini.get(p.id), i % TINTAS, p.forma].join('|');
+        const k = [p.id, fantasma ? 'f' : 's', p.nombre, ini.get(p.id), tintaDe(p), p.forma].join('|');
         let n = puestos.get(k);
         if (n) puestos.delete(k);
         else {
@@ -280,7 +310,77 @@ function pintar(animar = false) {
       });
     }
   }
+
+  pintarPasajeros(ini);
 }
+
+/** La casilla «Pasajeros» del boleto: un sello por viajero, en orden de llegada. */
+function pintarPasajeros(ini: Map<number, string>) {
+  const fila = document.querySelector<HTMLElement>('[data-pasajeros]');
+  if (!fila) return;
+  // como en las zonas de sellos: se reutilizan los que ya están, así no repiten su animación
+  const puestos = new Map<string, HTMLElement>();
+  for (const n of fila.children) puestos.set((n as HTMLElement).dataset.k ?? '', n as HTMLElement);
+  const nodos = E.personas.map((p) => {
+    const k = [p.id, p.nombre, ini.get(p.id), tintaDe(p), p.forma].join('|');
+    let n = puestos.get(k);
+    if (n) puestos.delete(k);
+    else {
+      n = sello(p, ini, false, giroFijo(`pasajero:${p.id}`));
+      n.dataset.k = k;
+    }
+    return n;
+  });
+  for (const viejo of puestos.values()) viejo.remove();
+  nodos.forEach((n, i) => {
+    if (fila.children[i] !== n) fila.insertBefore(n, fila.children[i] ?? null);
+  });
+  pintarCuenta();
+}
+
+/** «Van 3 de 4–5» bajo los pasajeros (solo cuenta los sellos que ya se ven). */
+function pintarCuenta() {
+  const cuenta = document.querySelector<HTMLElement>('[data-cuenta-pasajeros]');
+  if (!cuenta) return;
+  const n = E.personas.filter((p) => !esperando.has(p.id)).length;
+  cuenta.textContent = avisoPasajeros ?? (n > 5 ? `Van ${n}` : `Van ${n} de 4–5`);
+  cuenta.classList.toggle('nuevos', !!avisoPasajeros);
+}
+
+/**
+ * Muestra los sellos de alguien que estaban esperando. El de `destino` se asienta (acaba de
+ * aterrizar ahí); los demás caen en su puesto. Sin `destino`, todos caen; con `animar` en falso,
+ * aparecen sin más.
+ */
+function mostrar(id: number, destino: Element | null, animar = true) {
+  esperando.delete(id);
+  for (const s of document.querySelectorAll<HTMLElement>(`.sello-p.esperando[data-de="${id}"]`)) {
+    s.classList.remove('esperando');
+    if (!animar || movimientoReducido()) continue;
+    s.animate(
+      s === destino
+        ? [{ scale: 1.14 }, { scale: 1 }]
+        : [{ opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1 }],
+      { duration: s === destino ? 240 : 300, easing: 'cubic-bezier(0.2, 1.5, 0.4, 1)' },
+    );
+  }
+  pintarCuenta();
+}
+
+/** Un sello grande para el momento, con el mismo giro que tendrá donde aterriza. */
+function selloQueCae(p: Persona, destino: HTMLElement | null): HTMLElement {
+  const giro = parseFloat(destino?.style.getPropertyValue('--giro') ?? '') || -6;
+  const s = sello(p, iniciales(), false, giro);
+  s.classList.remove('esperando');
+  return s;
+}
+
+const nombres = (ps: Persona[]) =>
+  ps.length === 1
+    ? ps[0].nombre
+    : ps.length > 3
+      ? `${ps[0].nombre}, ${ps[1].nombre} y ${ps.length - 2} más`
+      : `${ps.slice(0, -1).map((p) => p.nombre).join(', ')} y ${ps.at(-1)!.nombre}`;
 
 function poner(t: string, c: string, v: number, alternar = true) {
   if (!E.yo) return;
@@ -307,13 +407,138 @@ function poner(t: string, c: string, v: number, alternar = true) {
  * `respaldo`: un tropiezo de conexión no cierra la sesión ni borra lo que ya se veía.
  */
 async function cargar(respaldo: Estado = E) {
+  let fresco = false;
   try {
     E = await api('estado');
+    fresco = true;
   } catch {
     E = respaldo;
   }
+  // los nuevos solo cuentan con el estado fresco: la copia local puede estar vieja
+  const nuevos = fresco && enInicio ? llegaronDesdeMiVisita() : [];
+  for (const p of nuevos) esperando.add(p.id);
   pintar();
   avisarLugaresNuevos();
+  if (nuevos.length) presentar(nuevos);
+}
+
+// ───── llegadas en el Inicio: los que entraron desde mi última visita ─────
+const enInicio = !!document.querySelector('[data-pasajeros]');
+
+const llegaronDesdeMiVisita = () =>
+  E.yo && E.visto !== undefined ? E.personas.filter((p) => p.id > E.visto!) : [];
+
+// Si la persona ya está haciendo otra cosa (un clic, una tecla que no es de scroll), no se le
+// impone el golpe. Un poco de scroll no cuenta: lo que importa es si el titular sigue a la vista.
+const TECLAS_SCROLL = [' ', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End'];
+let hizoOtraCosa = false;
+if (enInicio)
+  for (const ev of ['click', 'keydown'])
+    addEventListener(
+      ev,
+      (e) => {
+        if (document.documentElement.dataset.intro === 'si') return; // saltar la intro no cuenta
+        if (e instanceof KeyboardEvent && TECLAS_SCROLL.includes(e.key)) return;
+        if (e.target instanceof Element && e.target.closest('.llegada')) return;
+        hizoOtraCosa = true;
+      },
+      { capture: true },
+    );
+
+/**
+ * Cuándo puede arrancar: después de la intro (si la hay) y de que 計画中 termine de caer, más
+ * un respiro. Así nunca se pisan dos sellos. Se mide desde que abre la página, en paralelo con
+ * la consulta al servidor.
+ */
+let portadaLista = 0;
+const portada: Promise<void> = enInicio
+  ? (async () => {
+      const raiz = document.documentElement;
+      if (raiz.dataset.intro === 'si')
+        await new Promise<void>((listo) => {
+          const mo = new MutationObserver(() => {
+            if (raiz.dataset.intro !== 'si') {
+              mo.disconnect();
+              listo();
+            }
+          });
+          mo.observe(raiz, { attributes: true, attributeFilter: ['data-intro'] });
+        });
+      await new Promise(requestAnimationFrame); // que el navegador aplique los estilos de la entrada
+      const sello = document.querySelector('[data-llegadas-despues]');
+      const cayendo = sello?.getAnimations().filter((a) => a.playState !== 'finished') ?? [];
+      if (cayendo.length)
+        await Promise.race([
+          Promise.all(cayendo.map((a) => a.finished.catch(() => {}))),
+          new Promise((r) => setTimeout(r, 3000)),
+        ]);
+      await new Promise((r) => setTimeout(r, 600));
+      portadaLista = performance.now();
+    })()
+  : Promise.resolve();
+
+async function presentar(nuevos: Persona[]) {
+  await portada;
+  // el estado llegó más de 2 s tarde: ya no se interrumpe con el golpe
+  const tarde = performance.now() - portadaLista > 2000;
+  if (document.hidden)
+    await new Promise<void>((listo) => {
+      const f = () => {
+        if (document.hidden) return;
+        document.removeEventListener('visibilitychange', f);
+        listo();
+      };
+      document.addEventListener('visibilitychange', f);
+    });
+  const titulo = `${nombres(nuevos)} ${nuevos.length > 1 ? 'se montaron' : 'se montó'} al viaje`;
+  // «ya bajó del titular»: menos de la mitad del titular a la vista (un poco de scroll no cuenta)
+  const portadaEl = document.querySelector('[data-portada]');
+  const titular = portadaEl?.querySelector('h1') ?? portadaEl;
+  const r = titular?.getBoundingClientRect();
+  const aLaVista = !r || r.bottom > r.height / 2;
+  if (movimientoReducido() || tarde || hizoOtraCosa || !aLaVista || hayMomento()) return enLinea(nuevos, titulo);
+
+  const destino = (id: number) => () =>
+    document.querySelector<HTMLElement>(`[data-pasajeros] .sello-p[data-de="${id}"]`);
+  const llegadas: Llegada[] = nuevos.map((p) => ({
+    sello: selloQueCae(p, destino(p.id)()),
+    destino: destino(p.id),
+    aterriza: () => mostrar(p.id, destino(p.id)()),
+  }));
+  await momento(llegadas, titulo, `Desde tu última visita · van ${E.personas.length}`, { bajar: true });
+  guardarVisto(nuevos);
+}
+
+/** Sin golpe: los sellos caen en el boleto cuando se ve, y abajo dice quiénes son nuevos. */
+function enLinea(nuevos: Persona[], titulo: string) {
+  anunciar(titulo);
+  const celda = document.querySelector('[data-pasajeros]');
+  if (!celda) return;
+  const obs = new IntersectionObserver(
+    async ([e]) => {
+      if (!e.isIntersecting) return;
+      obs.disconnect();
+      avisoPasajeros = `Nuevos: ${nombres(nuevos)}`;
+      for (const [i, p] of nuevos.entries()) {
+        if (!movimientoReducido()) await new Promise((r) => setTimeout(r, i ? 160 : 300));
+        mostrar(p.id, null);
+      }
+      guardarVisto(nuevos);
+      await new Promise((r) => setTimeout(r, 6000));
+      avisoPasajeros = null;
+      pintarCuenta();
+    },
+    { threshold: 0.9 },
+  );
+  obs.observe(celda);
+}
+
+/** Ya se mostraron: no se vuelven a anunciar, ni aquí ni en mis otros aparatos. */
+function guardarVisto(nuevos: Persona[]) {
+  const hasta = Math.max(...nuevos.map((p) => p.id));
+  E = { ...E, visto: Math.max(E.visto ?? 0, hasta) };
+  recordar();
+  api('visto', { hasta }).catch(() => {}); // si falla, sale otra vez la próxima: mejor que perderlo
 }
 
 // ───── en vivo: se consulta el estado cada pocos segundos mientras la pestaña está a la vista ─────
@@ -378,8 +603,25 @@ function avisarLugaresNuevos() {
 // Escape cierra el registro igual que «Cerrar»: también se olvida el voto que lo abrió
 dlg?.addEventListener('cancel', () => (pendiente = null));
 
-function abrir() {
+/** Desde dónde se abrió el registro: ahí aterriza el sello de quien llega. */
+type Origen = { voto: HTMLElement } | 'boleto' | 'cabecera';
+let origen: Origen = 'cabecera';
+
+const confirma = dlg?.querySelector<HTMLElement>('[data-confirma]') ?? null;
+/** Muestra (o esconde) la pregunta «¿eres tú?» del registro. */
+function preguntar(existe: string | null) {
+  if (!form || !confirma) return;
+  form.toggleAttribute('data-confirmando', !!existe);
+  confirma.hidden = !existe;
+  const quien = confirma.querySelector('[data-existe]');
+  if (quien) quien.textContent = existe ?? '';
+  if (existe) confirma.querySelector<HTMLElement>('[data-soy-yo]')?.focus();
+}
+
+function abrir(desde: Origen = 'cabecera') {
   if (!dlg) return;
+  origen = desde;
+  preguntar(null);
   if (aviso) aviso.textContent = '';
   // la clave siempre arranca oculta
   const ojo = dlg.querySelector<HTMLElement>('[data-ver-clave]');
@@ -406,7 +648,18 @@ document.addEventListener('click', (ev) => {
     return;
   }
 
-  if (el.closest('[data-entrar]')) return abrir();
+  const entrar = el.closest<HTMLElement>('[data-entrar]');
+  if (entrar) return abrir(entrar.closest('.pasajeros') ? 'boleto' : 'cabecera');
+
+  if (el.closest('[data-soy-yo]')) return entrarAlViaje(true);
+  if (el.closest('[data-soy-otro]')) {
+    preguntar(null);
+    if (aviso) aviso.textContent = 'Escoge otro nombre: tu segundo nombre o la inicial del apellido sirven.';
+    const campo = form?.querySelector<HTMLInputElement>('[name=nombre]');
+    campo?.focus();
+    campo?.select();
+    return;
+  }
 
   if (el.closest('[data-perfil]') && perfil && E.yo) {
     const campo = perfil.querySelector('input[name=nombre]') as HTMLInputElement;
@@ -455,30 +708,83 @@ document.addEventListener('click', (ev) => {
     else {
       // se guarda la intención y se aplica apenas entre
       pendiente = () => poner(t, c, v, false);
-      abrir();
+      abrir({ voto: caja });
     }
   }
 });
 
-form?.addEventListener('submit', async (ev) => {
+// cambiar el nombre después de la pregunta «¿eres tú?» la quita: ya es otro nombre
+form?.querySelector('[name=nombre]')?.addEventListener('input', () => preguntar(null));
+
+form?.addEventListener('submit', (ev) => {
   ev.preventDefault();
+  entrarAlViaje(false);
+});
+
+/**
+ * Entra con lo que hay en el registro. Si el nombre ya está en el viaje, el servidor no deja
+ * entrar de una: se pregunta «¿eres tú?», y solo con `soyYo` se entra como esa persona.
+ */
+async function entrarAlViaje(soyYo: boolean) {
+  if (!form) return;
   const datos = new FormData(form);
-  const boton = form.querySelector<HTMLButtonElement>('button[type=submit]');
-  if (boton) boton.disabled = true;
+  const botones = form.querySelectorAll<HTMLButtonElement>('button[type=submit], [data-soy-yo]');
+  for (const b of botones) b.disabled = true;
   try {
-    E = await api('entrar', { nombre: datos.get('nombre'), clave: datos.get('clave') });
+    const r = await fetch('/api/entrar', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ nombre: datos.get('nombre'), clave: datos.get('clave'), soyYo }),
+    });
+    const j = await r.json().catch(() => ({}));
+    if (r.status === 409 && j.existe) {
+      if (aviso) aviso.textContent = '';
+      return preguntar(j.existe);
+    }
+    if (!r.ok) throw new Error(j.error ?? 'Algo falló. Intenta de nuevo.');
+
+    E = j;
+    const yo = E.yo!;
+    // se guarda ya: si el voto pendiente falla, el estado se recarga del servidor y ese no lo trae
+    const nuevo = !!E.nuevo;
+    // a quien llega le cae su sello: mientras vuela, sus sellos ocupan el puesto sin verse
+    const conMomento = nuevo && !movimientoReducido();
+    if (conMomento) esperando.add(yo.id);
     dlg?.close();
     pintar();
     await pendiente?.();
     pendiente = null;
     form.reset();
+    preguntar(null);
+    if (nuevo) await bienvenida(yo, conMomento);
+    // después de la bienvenida: hay páginas que se recargan al cambiar la sesión (Lugares)
     avisarSesion();
   } catch (e) {
     if (aviso) aviso.textContent = (e as Error).message;
   } finally {
-    if (boton) boton.disabled = false;
+    for (const b of botones) b.disabled = false;
   }
-});
+}
+
+/** «Ya vas a bordo»: el sello de quien llega cae y aterriza donde hizo clic. */
+async function bienvenida(yo: Persona, conMomento: boolean) {
+  const titulo = `Ya vas a bordo, ${yo.nombre}`;
+  const enKana = kana(yo.nombre);
+  const sub = `Asiento ${E.personas.findIndex((p) => p.id === yo.id) + 1}${enKana ? ` · ${enKana}` : ''}`;
+  if (!conMomento) return anunciar(`${titulo}. ${sub}`);
+
+  const mio = `.sello-p[data-de="${yo.id}"]:not(.fantasma)`;
+  const enCabecera = () => document.querySelector<HTMLElement>(`#quien ${mio}`);
+  const desde = origen;
+  // el voto que abrió el registro (si se guardó), el boleto o, si no, la cabecera
+  const destino = () =>
+    (typeof desde === 'object'
+      ? desde.voto.querySelector<HTMLElement>(mio)
+      : desde === 'boleto'
+        ? document.querySelector<HTMLElement>(`[data-pasajeros] ${mio}`)
+        : null) ?? enCabecera();
+  await momento([{ sello: selloQueCae(yo, destino()), destino, aterriza: () => mostrar(yo.id, destino()) }], titulo, sub);
+}
 
 formPerfil?.addEventListener('submit', async (ev) => {
   ev.preventDefault();

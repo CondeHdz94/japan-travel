@@ -128,7 +128,7 @@ test.describe('entrar', () => {
     expect(r.status()).toBe(403);
     expect((await r.json()).error).toMatch(/completo/);
 
-    const viejo = await api.post('/api/entrar', { data: { nombre: 'viajero 3', clave: CLAVE } });
+    const viejo = await api.post('/api/entrar', { data: { nombre: 'viajero 3', clave: CLAVE, soyYo: true } });
     expect(viejo.status()).toBe(200);
     expect((await viejo.json()).personas).toHaveLength(12);
   });
@@ -141,14 +141,132 @@ test.describe('entrar', () => {
     expect((await api.post('/api/entrar', { data: { nombre: 'Nuevo', clave: CLAVE } })).status()).toBe(200);
   });
 
-  test('dos registros simultáneos con el mismo nombre no rompen nada', async ({ grupo }) => {
+  test('dos registros simultáneos con el mismo nombre: uno entra y al otro se le pregunta', async ({ grupo }) => {
     const [a, b] = await Promise.all([grupo.anonimo(), grupo.anonimo()]);
     const rs = await Promise.all(
       [a, b].map((api) => api.post('/api/entrar', { data: { nombre: 'Gemelo', clave: CLAVE } })),
     );
-    expect(rs.map((r) => r.status())).toEqual([200, 200]);
-    const [ea, eb] = await Promise.all(rs.map((r) => r.json()));
-    expect(ea.yo.id).toBe(eb.yo.id);
+    expect(rs.map((r) => r.status()).sort()).toEqual([200, 409]);
+    const otro = await rs.find((r) => r.status() === 409)!.json();
+    expect(otro.existe).toBe('Gemelo');
+    const e = await rs.find((r) => r.status() === 200)!.json();
+    expect(e.personas).toHaveLength(1);
+  });
+});
+
+test.describe('nombre repetido: «¿eres tú?»', () => {
+  test('un nombre que ya está no entra de una: se pregunta, y no se crea nadie', async ({ grupo }) => {
+    await grupo.entrar('Juan');
+    const api = await grupo.anonimo();
+    for (const nombre of ['Juan', 'juan', '  JUÁN ']) {
+      const r = await api.post('/api/entrar', { data: { nombre, clave: CLAVE } });
+      expect(r.status(), nombre).toBe(409);
+      const j = await r.json();
+      // se responde con el nombre como lo escribió esa persona
+      expect(j.existe).toBe('Juan');
+      expect(j.error).toMatch(/Ya hay alguien llamado Juan/);
+    }
+    // no quedó sesión ni otro viajero
+    expect(await (await api.get('/api/estado')).json()).toEqual(VACIO);
+    const juan = await grupo.entrar('Juan');
+    expect((await juan.estado()).personas).toHaveLength(1);
+  });
+
+  test('«sí, soy yo» entra como esa persona, sin bienvenida', async ({ grupo }) => {
+    const juan = await grupo.entrar('Juan');
+    await juan.marcar('mes', 'oct', 1);
+    const api = await grupo.anonimo();
+    const r = await api.post('/api/entrar', { data: { nombre: 'juan', clave: CLAVE, soyYo: true } });
+    expect(r.status()).toBe(200);
+    const e = await r.json();
+    expect(e.yo.id).toBe(juan.id);
+    expect(e.nuevo).toBe(false);
+    expect(e.marcas).toHaveLength(1);
+  });
+
+  test('nombres parecidos son personas distintas: Juan, Juan Camilo y Juan Pablo', async ({ grupo }) => {
+    await grupo.entrar('Juan');
+    const api = await grupo.anonimo();
+    for (const nombre of ['Juan Camilo', 'Juan Pablo']) {
+      const r = await api.post('/api/entrar', { data: { nombre, clave: CLAVE } });
+      expect(r.status(), nombre).toBe(200);
+      expect((await r.json()).nuevo).toBe(true);
+    }
+    const e = await (await api.get('/api/estado')).json();
+    expect(e.personas.map((p: { nombre: string }) => p.nombre)).toEqual(['Juan', 'Juan Camilo', 'Juan Pablo']);
+  });
+
+  test('un soyYo con un nombre que no existe simplemente registra', async ({ grupo }) => {
+    const r = await (await grupo.anonimo()).post('/api/entrar', { data: { nombre: 'Nueva', clave: CLAVE, soyYo: true } });
+    expect(r.status()).toBe(200);
+    expect((await r.json()).nuevo).toBe(true);
+  });
+});
+
+test.describe('llegadas: lo que ya se me anunció («visto»)', () => {
+  test('a quien llega no se le anuncian los de antes; a los de antes, sí el que llega', async ({ grupo }) => {
+    const ana = await grupo.entrar('Ana');
+    const beto = await grupo.entrar('Beto');
+    // el «visto» de cada quien arranca en su propio id
+    expect((await ana.estado()).visto).toBe(ana.id);
+    const eb = await beto.estado();
+    expect(eb.visto).toBe(beto.id);
+    expect(eb.personas.filter((p) => p.id > eb.visto!)).toEqual([]);
+    // Ana entró primero: para ella, Beto es nuevo
+    const ea = await ana.estado();
+    expect(ea.personas.filter((p) => p.id > ea.visto!).map((p) => p.nombre)).toEqual(['Beto']);
+  });
+
+  test('visto solo sube, nunca más allá del último que existe, y vale en todos los aparatos', async ({ grupo }) => {
+    const ana = await grupo.entrar('Ana');
+    const beto = await grupo.entrar('Beto');
+    const otroAparato = await grupo.entrar('Ana');
+    expect((await ana.api.post('/api/visto', { data: { hasta: beto.id } })).status()).toBe(200);
+    expect((await otroAparato.estado()).visto).toBe(beto.id);
+    // bajar no se puede
+    await ana.api.post('/api/visto', { data: { hasta: 1 } });
+    expect((await ana.estado()).visto).toBe(beto.id);
+    // ni dar por visto a alguien que no ha llegado
+    await ana.api.post('/api/visto', { data: { hasta: beto.id + 50 } });
+    expect((await ana.estado()).visto).toBe(beto.id);
+    const caro = await grupo.entrar('Caro');
+    const e = await ana.estado();
+    expect(e.personas.filter((p) => p.id > e.visto!).map((p) => p.id)).toEqual([caro.id]);
+  });
+
+  test('visto: sin sesión 401; con un valor raro 400', async ({ grupo }) => {
+    const anonimo = await grupo.anonimo();
+    expect((await anonimo.post('/api/visto', { data: { hasta: 1 } })).status()).toBe(401);
+    const ana = await grupo.entrar('Ana');
+    for (const hasta of [0, -3, 1.5, '2', null]) expect((await ana.api.post('/api/visto', { data: { hasta } })).status(), String(hasta)).toBe(400);
+  });
+
+  test('cambiar de nombre no es una llegada; salirse y volver sí (con otro id)', async ({ grupo }) => {
+    const ana = await grupo.entrar('Ana');
+    const beto = await grupo.entrar('Beto');
+    await ana.api.post('/api/visto', { data: { hasta: beto.id } });
+    await beto.api.post('/api/renombrar', { data: { nombre: 'Roberto' } });
+    let e = await ana.estado();
+    expect(e.personas.filter((p) => p.id > e.visto!)).toEqual([]);
+    await beto.api.post('/api/borrarme');
+    const otraVez = await grupo.entrar('Roberto');
+    e = await ana.estado();
+    expect(e.personas.filter((p) => p.id > e.visto!).map((p) => p.id)).toEqual([otraVez.id]);
+  });
+});
+
+test.describe('color del sello', () => {
+  test('cada quien recibe el primer color libre y lo conserva aunque se salga alguien de antes', async ({ grupo }) => {
+    const ana = await grupo.entrar('Ana');
+    const beto = await grupo.entrar('Beto');
+    const caro = await grupo.entrar('Caro');
+    expect((await caro.estado()).personas.map((p) => p.tinta)).toEqual([0, 1, 2]);
+    await ana.api.post('/api/borrarme');
+    expect((await caro.estado()).personas.map((p) => [p.nombre, p.tinta])).toEqual([['Beto', 1], ['Caro', 2]]);
+    // quien llega después toma el color que quedó libre
+    const diana = await grupo.entrar('Diana');
+    expect((await diana.estado()).yo?.tinta).toBe(0);
+    expect((await beto.estado()).yo?.tinta).toBe(1);
   });
 });
 
@@ -168,10 +286,10 @@ test.describe('estado y sesión', () => {
     await ana.marcar('mes', 'oct', 1);
     await beto.marcar('ventana', 'otono', 2);
     const e = await beto.estado();
-    expect(e.yo).toEqual({ id: beto.id, nombre: 'Beto', forma: 'maru' });
+    expect(e.yo).toEqual({ id: beto.id, nombre: 'Beto', forma: 'maru', tinta: 1 });
     expect(e.personas).toEqual([
-      { id: ana.id, nombre: 'Ana', forma: 'koban' },
-      { id: beto.id, nombre: 'Beto', forma: 'maru' },
+      { id: ana.id, nombre: 'Ana', forma: 'koban', tinta: 0 },
+      { id: beto.id, nombre: 'Beto', forma: 'maru', tinta: 1 },
     ]);
     expect(e.marcas).toHaveLength(2);
     expect(e.marcas).toContainEqual({ p: ana.id, t: 'mes', c: 'oct', v: 1 });
@@ -389,7 +507,7 @@ test.describe('renombrar', () => {
     const r = await ana.api.post('/api/renombrar', { data: { nombre: '  Ana   María ' } });
     expect(r.status()).toBe(200);
     const e: Estado = await r.json();
-    expect(e.yo).toEqual({ id: ana.id, nombre: 'Ana María', forma: 'koban' });
+    expect(e.yo).toEqual({ id: ana.id, nombre: 'Ana María', forma: 'koban', tinta: 0 });
     expect(e.marcas).toEqual([{ p: ana.id, t: 'mes', c: 'oct', v: 1 }]);
     // el nombre viejo queda libre y sería otra persona
     expect((await grupo.entrar('Ana')).id).not.toBe(ana.id);
@@ -457,9 +575,9 @@ test.describe('forma del sello', () => {
     const ana = await grupo.entrar('Ana');
     const r = await ana.api.post('/api/renombrar', { data: { nombre: 'Ana', forma: 'ema' } });
     expect(r.status()).toBe(200);
-    expect((await r.json()).yo).toEqual({ id: ana.id, nombre: 'Ana', forma: 'ema' });
+    expect((await r.json()).yo).toEqual({ id: ana.id, nombre: 'Ana', forma: 'ema', tinta: 0 });
     await ana.api.post('/api/renombrar', { data: { nombre: 'Anita' } });
-    expect((await ana.estado()).yo).toEqual({ id: ana.id, nombre: 'Anita', forma: 'ema' });
+    expect((await ana.estado()).yo).toEqual({ id: ana.id, nombre: 'Anita', forma: 'ema', tinta: 0 });
     // volver a entrar no la cambia
     expect((await (await grupo.entrar('Anita')).estado()).yo?.forma).toBe('ema');
   });
@@ -478,7 +596,7 @@ test.describe('forma del sello', () => {
       expect(r.status(), JSON.stringify(forma)).toBe(400);
       expect((await r.json()).error).toMatch(/forma/);
     }
-    expect((await ana.estado()).yo).toEqual({ id: ana.id, nombre: 'Ana', forma: 'koban' });
+    expect((await ana.estado()).yo).toEqual({ id: ana.id, nombre: 'Ana', forma: 'koban', tinta: 0 });
   });
 });
 
@@ -498,7 +616,8 @@ test.describe('borrarme', () => {
     expect(await ana.estado()).toEqual(VACIO);
 
     const e = await beto.estado();
-    expect(e.personas).toEqual([{ id: beto.id, nombre: 'Beto', forma: 'maru' }]);
+    // Beto conserva su color aunque Ana, que estaba antes, ya no esté
+    expect(e.personas).toEqual([{ id: beto.id, nombre: 'Beto', forma: 'maru', tinta: 1 }]);
     expect(e.marcas).toHaveLength(2);
     expect(e.marcas).toContainEqual({ p: beto.id, t: 'lugar', c: deBeto, v: 1 });
     expect(e.marcas).toContainEqual({ p: beto.id, t: 'mes', c: 'oct', v: 1 });

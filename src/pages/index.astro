@@ -6,19 +6,19 @@ const boleto = [
   { k: 'Origen', v: 'CLO', s: 'Cali, Colombia' },
   { k: 'Destino', v: 'TYO', s: 'Tokio, Japón' },
   { k: 'Año', v: '2027', s: 'Fecha por definir' },
-  { k: 'Pasajeros', v: '4–5', s: 'Los parceros' },
+  // Pasajeros va aparte: con sesión lleva los sellos del grupo
   { k: 'Distancia', v: '14.400', s: 'km, más o menos' },
 ];
 ---
 
 <Base title="Inicio" intro>
-  <section class="hero">
+  <section class="hero" data-portada>
     <p class="mono kicker">Cuaderno de viaje · Edición n.º 1</p>
     <h1>
       <span class="l1">Cali</span>
       <span class="l2"><i aria-hidden="true">→</i> 日本</span>
     </h1>
-    <div class="sello" aria-label="Estado: en planeación">
+    <div class="sello" aria-label="Estado: en planeación" data-llegadas-despues>
       <span>計画中</span>
       <small class="mono">En planeación</small>
     </div>
@@ -30,7 +30,32 @@ const boleto = [
 
   <dl class="boleto">
     {
-      boleto.map((b) => (
+      boleto.slice(0, 3).map((b) => (
+        <div>
+          <dt class="mono">{b.k}</dt>
+          <dd>
+            <strong>{b.v}</strong>
+            <span>{b.s}</span>
+          </dd>
+        </div>
+      ))
+    }
+    <div class="pasajeros">
+      <dt class="mono">Pasajeros</dt>
+      <dd>
+        <!-- sin sesión no se ven nombres: solo cuántos se esperan, y la invitación a subirse -->
+        <div class="sin-sesion">
+          <strong>4–5</strong>
+          <div class="pie"><button type="button" class="subete" data-entrar>¿Vas? Súbete →</button></div>
+        </div>
+        <div class="con-sesion">
+          <span class="a-bordo" data-pasajeros></span>
+          <div class="pie"><span class="cuenta" data-cuenta-pasajeros></span></div>
+        </div>
+      </dd>
+    </div>
+    {
+      boleto.slice(3).map((b) => (
         <div>
           <dt class="mono">{b.k}</dt>
           <dd>
@@ -209,9 +234,53 @@ const boleto = [
     font-size: clamp(1.6rem, 3.2vw, 2.6rem);
     line-height: 1.1;
   }
-  .boleto dd span {
+  .boleto dd > span,
+  .boleto .cuenta {
     font-size: 0.85rem;
     color: var(--ink-soft);
+  }
+
+  /* pasajeros: con sesión, los sellos del grupo en el lugar de la cifra; sin sesión, la cifra.
+     Las dos versiones miden lo mismo, así que entrar o salir no mueve el boleto. */
+  /* el texto de abajo va en la misma caja de línea que el de las otras casillas: queda alineado */
+  .pie {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  /* todas las casillas usan el mismo renglón (el alto de un sello): los textos de abajo quedan parejos */
+  .boleto strong,
+  .a-bordo {
+    display: flex;
+    align-items: center;
+    height: max(2.7rem, calc(clamp(1.6rem, 3.2vw, 2.6rem) * 1.1));
+  }
+  :global([data-sesion='si']) .sin-sesion,
+  :global(html:not([data-sesion='si'])) .con-sesion {
+    display: none !important;
+  }
+  /* montados como en un papel muy sellado: cada uno tapa al anterior solo con su silueta */
+  .a-bordo :global(.sello-p + .sello-p) {
+    margin-left: -0.25rem;
+  }
+  .a-bordo :global(.sello-p svg) {
+    fill: var(--paper-2);
+  }
+  .cuenta:global(.nuevos) {
+    color: var(--shu);
+  }
+  .subete {
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: var(--shu);
+    text-underline-offset: 0.2em;
+  }
+  .subete:hover {
+    color: var(--shu);
   }
 
   /* índice */

@@ -1,7 +1,7 @@
 // El grupo en el navegador: entrar, sellar, ver a los demás en vivo, perfil, y que nada salte.
 
 import type { Page } from '@playwright/test';
-import { CLAVE, abrir, entrarEn, estadoDe, expect, llenarRegistro, plano, test } from './ayudas';
+import { CLAVE, abrir, confirmarQueSoyYo, entrarEn, estadoDe, expect, llenarRegistro, plano, sinMomento, test } from './ayudas';
 
 const mes = (page: Page, m: string) => page.locator(`[data-marca="mes:${m}"]`);
 const sellosDe = (caja: ReturnType<typeof mes>) => caja.locator('[data-sellos] .sello-p:not(.fantasma)');
@@ -149,6 +149,7 @@ test.describe('registro', () => {
     await abrir(page, '/cuando-ir', 'no');
     await mes(page, 'oct').locator('[data-poner]').click();
     await llenarRegistro(page, 'Camilo');
+    await confirmarQueSoyYo(page);
     await expect(mes(page, 'oct').locator('[data-poner]')).toHaveAttribute('aria-pressed', 'true');
     await page.waitForTimeout(500);
     expect((await camilo.estado()).marcas).toHaveLength(1);
@@ -509,7 +510,7 @@ test.describe('perfil', () => {
     await expect(sellosDe(mes(page, 'oct'))).toHaveCount(1);
     await expect(sellosDe(mes(page, 'oct'))).toHaveAttribute('title', /Juancho/);
     const e = await estadoDe(page);
-    expect(e.yo).toEqual({ id, nombre: 'Juancho', forma: 'koban' });
+    expect(e.yo).toEqual({ id, nombre: 'Juancho', forma: 'koban', tinta: 0 });
     expect(e.marcas).toHaveLength(1);
   });
 
@@ -534,7 +535,7 @@ test.describe('perfil', () => {
     await expect(page.locator('#quien .sello-p')).toHaveClass(/f-ema/);
     await expect(sellosDe(mes(page, 'oct'))).toHaveClass(/f-ema/);
     await expect(page.locator('#perfil .sello-p')).toHaveCount(0); // las muestras del perfil no se quedan
-    expect((await estadoDe(page)).yo).toEqual({ id, nombre: 'Camilo', forma: 'ema' });
+    expect((await estadoDe(page)).yo).toEqual({ id, nombre: 'Camilo', forma: 'ema', tinta: 0 });
     expect(await plano(page, 'main h1, main h2, .meses li, footer')).toEqual(antes);
 
     // al volver a abrir, la escogida es la nueva

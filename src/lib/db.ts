@@ -49,25 +49,48 @@ async function abrir(): Promise<Client> {
     ],
     'write',
   );
-  // Bases creadas antes de que existieran las formas de sello: se les agrega la columna.
+  // Bases creadas antes de que existieran estas columnas: se agregan.
+  //   forma  la forma del sello
+  //   tinta  el color del sello, fijo: no cambia si alguien de antes se sale del grupo
+  //   visto  el id más alto que ya se le anunció a la persona (las llegadas al viaje)
+  for (const col of ['forma TEXT', 'tinta INTEGER', 'visto INTEGER']) await columna(c, col);
+  // Quien ya estaba conserva el color que tenía (el de su puesto en la lista) y no recibe
+  // como «nuevos» a los que entraron antes de que existieran las llegadas.
+  await c.batch(
+    [
+      `UPDATE personas SET tinta = (SELECT COUNT(*) FROM personas p WHERE p.id < personas.id) % ${TINTAS}
+       WHERE tinta IS NULL`,
+      'UPDATE personas SET visto = (SELECT MAX(id) FROM personas) WHERE visto IS NULL',
+    ],
+    'write',
+  );
+  return c;
+}
+
+async function columna(c: Client, definicion: string) {
+  const nombre = definicion.split(' ')[0];
   try {
-    await c.execute('SELECT forma FROM personas LIMIT 0');
+    await c.execute(`SELECT ${nombre} FROM personas LIMIT 0`);
   } catch {
     try {
-      await c.execute('ALTER TABLE personas ADD COLUMN forma TEXT');
+      await c.execute(`ALTER TABLE personas ADD COLUMN ${definicion}`);
     } catch (e) {
       // otro arranque al tiempo ya la agregó
       if (!/duplicate column/i.test(String(e))) throw e;
     }
   }
-  return c;
 }
+
+/** Cuántos colores de sello hay (los de `.sello-p[data-tinta]` en global.css). */
+export const TINTAS = 6;
 
 export interface Persona {
   id: number;
   nombre: string;
   /** Forma de su sello: un id de `src/data/formas.ts`. */
   forma: string;
+  /** Color de su sello, de 0 a TINTAS − 1. */
+  tinta: number;
 }
 export interface Marca {
   p: number;
@@ -79,6 +102,8 @@ export interface Estado {
   yo: Persona | null;
   personas: Persona[];
   marcas: Marca[];
+  /** El id más alto que ya se me anunció: quien tenga uno mayor llegó desde mi última visita. Sin sesión no viene. */
+  visto?: number;
 }
 
 const VACIO: Estado = { yo: null, personas: [], marcas: [] };
@@ -89,21 +114,24 @@ export async function estado(yoId: number | null): Promise<Estado> {
   const c = await db();
   const [ps, ms] = await c.batch(
     [
-      'SELECT id, nombre, forma FROM personas ORDER BY id',
+      'SELECT id, nombre, forma, tinta, visto FROM personas ORDER BY id',
       'SELECT persona, tipo, clave, valor FROM marcas',
     ],
     'read',
   );
-  const personas = ps.rows.map((r) => ({
+  const personas = ps.rows.map((r, i) => ({
     id: Number(r.id),
     nombre: String(r.nombre),
     forma: formaGuardada(Number(r.id), r.forma),
+    tinta: r.tinta === null ? i % TINTAS : Number(r.tinta),
   }));
   const yo = personas.find((p) => p.id === yoId) ?? null;
   if (!yo) return VACIO;
+  const mia = ps.rows.find((r) => Number(r.id) === yoId);
   return {
     yo,
     personas,
+    visto: Number(mia?.visto ?? yoId),
     marcas: ms.rows.map((r) => ({
       p: Number(r.persona),
       t: String(r.tipo),
@@ -126,6 +154,14 @@ export async function formaLibre(c: Client): Promise<string> {
   const r = await c.execute('SELECT id, forma FROM personas');
   const usadas = new Set(r.rows.map((x) => formaGuardada(Number(x.id), x.forma)));
   return (FORMAS.find((f) => !usadas.has(f.id)) ?? FORMAS[r.rows.length % FORMAS.length]).id;
+}
+
+/** Color para un viajero nuevo: el primero que nadie tenga; si ya están todos, se repiten. */
+export async function tintaLibre(c: Client): Promise<number> {
+  const r = await c.execute('SELECT tinta FROM personas');
+  const usadas = new Set(r.rows.map((x) => Number(x.tinta)));
+  for (let t = 0; t < TINTAS; t++) if (!usadas.has(t)) return t;
+  return r.rows.length % TINTAS;
 }
 
 /**
