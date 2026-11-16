@@ -15,6 +15,7 @@
 //   data-llegadas-despues     las llegadas esperan a que este termine de caer (el sello 計画中)
 
 import { kana, primeraKana } from './kana';
+import { giroFijo, iniciales as inicialesDe } from './sello';
 import { FORMAS, formaDe } from '../data/formas';
 import { anunciar, hayMomento, momento, movimientoReducido, type Llegada } from './llegadas';
 
@@ -70,14 +71,6 @@ function recordar() {
   }
 }
 
-/** Giro estable para un sello ya puesto: el mismo en cada visita. */
-function giroFijo(clave: string): number {
-  // FNV-1a: mezcla bien claves casi iguales (personas con ids seguidos)
-  let h = 0x811c9dc5;
-  for (const ch of clave) h = Math.imul(h ^ ch.charCodeAt(0), 0x01000193);
-  h ^= h >>> 15;
-  return ((h >>> 0) % 21) - 10;
-}
 /** Giro al azar para un sello recién puesto: entre 3° y 13°, a un lado o al otro. */
 const giroNuevo = () => (Math.random() < 0.5 ? -1 : 1) * Math.round(3 + Math.random() * 10);
 
@@ -140,28 +133,8 @@ async function api(ruta: string, body?: unknown): Promise<any> {
   return j;
 }
 
-/**
- * Las letras de abajo del sello. Un nombre de una palabra lleva su inicial («Juan» → J); uno de
- * varias, la inicial de cada palabra («Juan Camilo» → JC, «Juan Pablo» → JP), como se dice en
- * Colombia. Si aun así dos chocan, se alarga la última palabra hasta distinguirlos
- * («Ana» y «Andrés» → Ana y And).
- */
-function iniciales(): Map<number, string> {
-  const letras = (p: Persona, extra: number) => {
-    const ps = p.nombre.toLowerCase().split(' ').filter(Boolean);
-    const ultima = ps.pop() ?? '';
-    const antes = ps.map((x) => x.charAt(0).toUpperCase()).join('');
-    const fin = ultima.slice(0, 1 + extra);
-    return antes + fin.charAt(0).toUpperCase() + fin.slice(1);
-  };
-  const m = new Map<number, string>();
-  for (const p of E.personas) {
-    let extra = 0;
-    while (extra < 2 && E.personas.some((o) => o.id !== p.id && letras(o, extra) === letras(p, extra))) extra++;
-    m.set(p.id, letras(p, extra));
-  }
-  return m;
-}
+/** Las letras de abajo del sello de cada quien (ver sello.ts). */
+const iniciales = () => inicialesDe(E.personas);
 
 /** Color del sello: el guardado; en un estado viejo, el de su puesto en la lista. */
 const tintaDe = (p: Persona) => p.tinta ?? Math.max(0, E.personas.findIndex((x) => x.id === p.id)) % TINTAS;

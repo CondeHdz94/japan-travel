@@ -1,0 +1,30 @@
+---
+// El sello personal, pintado desde el servidor: el mismo dibujo que arma src/scripts/grupo.ts.
+import { formaDe } from '../data/formas';
+import { kana, primeraKana } from '../scripts/kana';
+import { giroFijo } from '../scripts/sello';
+
+interface Props {
+  persona: { id: number; nombre: string; forma?: string; tinta?: number };
+  /** Las iniciales que le tocan dentro del grupo (ver iniciales() en scripts/sello.ts). */
+  ini: string;
+  fantasma?: boolean;
+  /** Clave para el giro: el mismo sello en el mismo sitio siempre queda igual de torcido. */
+  clave?: string;
+}
+const { persona: p, ini, fantasma = false, clave = '' } = Astro.props;
+
+const forma = formaDe(p.forma);
+const silaba = primeraKana(p.nombre);
+const enKana = kana(p.nombre);
+const nombre = enKana ? `${p.nombre} · ${enKana}` : p.nombre;
+---
+
+<span
+  class:list={['sello-p', `f-${forma.id}`, { fantasma }]}
+  data-tinta={p.tinta ?? 0}
+  style={`--giro:${giroFijo(`${p.id}:${clave}`)}deg`}
+  title={fantasma ? `${nombre}: pendiente` : nombre}
+><svg viewBox="0 0 32 48" aria-hidden="true" set:html={forma.trazo} />{
+    silaba && <b class:list={{ dos: silaba.length > 1 }}>{silaba}</b>
+  }<i class:list={{ largo: ini.length > 2 }}>{ini}</i></span>

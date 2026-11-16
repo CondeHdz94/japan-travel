@@ -5,7 +5,7 @@ import { defineConfig } from '@playwright/test';
 const PUERTO = 4399;
 const URL = `http://localhost:${PUERTO}`;
 
-const navegador = /(paginas|grupo|lugares|llegadas)\.spec\.ts/;
+const navegador = /(paginas|grupo|lugares|llegadas|decisiones)\.spec\.ts/;
 
 export default defineConfig({
   testDir: 'pruebas',

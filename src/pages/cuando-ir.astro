@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { SEMILLAS } from '../data/lugares';
+import { VENTANAS_VIAJE } from '../data/ventanas';
 
 // Temperaturas medias de Tokio (°C, aprox.). Gente y precio: 1 bajo · 2 medio · 3 alto (orientativo).
 const meses = [
@@ -20,71 +21,8 @@ const meses = [
 const MAX = 34;
 const pct = (t: number) => (t / MAX) * 100;
 
-const ventanas = [
-  {
-    id: 'cerezos',
-    nombre: 'Cerezos',
-    fechas: '25 mar – 10 abr',
-    pro: 'La postal de Japón. Clima fresco y agradable.',
-    contra:
-      'Lo más caro y lo más lleno del año. La floración dura una semana y se mueve según el clima: se puede fallar por días.',
-    veredicto: 'Para 2027 ya va muy justo: quedan unos cuatro meses para visa, vuelos y ahorro de 5 personas.',
-    estado: 'warn',
-    etiqueta: 'Apretado',
-  },
-  {
-    id: 'abril',
-    nombre: 'Abril tardío',
-    fechas: '11 – 28 abr',
-    pro: 'Ya pasó el pico de los cerezos en Tokio y Kioto, pero en el norte y en la montaña siguen. Coincide con el Festival de Takayama (14 y 15 de abril), las flores azules de Hitachi y el arranque de las glicinas de Ashikaga.',
-    contra:
-      'No es la postal de los cerezos en Kioto. Si se corre unos días choca con Golden Week, y las glicinas pueden quedar a medio abrir.',
-    veredicto: 'Primavera con menos pelea. Da unos cinco meses para organizarse: más holgado que los cerezos, pero igual toca moverse ya.',
-    estado: 'ok',
-    etiqueta: 'Alternativa',
-  },
-  {
-    id: 'primavera',
-    nombre: 'Primavera tardía',
-    fechas: '10 may – 5 jun',
-    pro: 'Templado (15–25 °C), verde, menos gente y precios normales apenas pasa Golden Week.',
-    contra: 'Sin cerezos ni hojas rojas. A principios de junio arrancan las lluvias.',
-    veredicto: 'La opción cómoda y económica. Da seis meses para organizarse.',
-    estado: 'ok',
-    etiqueta: 'Buena opción',
-  },
-  {
-    id: 'verano',
-    nombre: 'Verano de festivales',
-    fechas: '20 jul – 10 ago',
-    pro: 'La temporada de los grandes festivales: Gion Matsuri en Kioto (todo julio; el último desfile es el 24), fuegos artificiales del Sumida (último sábado de julio) y Nebuta en Aomori (2 al 7 de agosto). Y es la única época en que se puede subir el Fuji.',
-    contra:
-      'Calor húmedo de más de 30 °C, más pesado que el de Cali. Agosto es de los meses con más tifones y en la mitad viene Obon; el Awa Odori (11 al 15 de agosto) cae justo ahí.',
-    veredicto: 'Solo si al grupo le pica el Fuji o los festivales. Da unos ocho meses para organizarse.',
-    estado: 'soft',
-    etiqueta: 'Para fiesteros',
-  },
-  {
-    id: 'otono',
-    nombre: 'Otoño',
-    fechas: '20 oct – 7 dic',
-    pro: 'Hojas rojas (momiji), cielo despejado, clima seco y fresco. Tan bonito como los cerezos y dura más.',
-    contra: 'Kioto se llena, y allá el rojo llega tarde: el promedio oficial es el 5 de diciembre. Hace frío en la noche para alguien de Cali (5–10 °C).',
-    veredicto: 'El mejor balance, y da casi un año para ahorrar, sacar visa y cazar tiquetes.',
-    estado: 'ok',
-    etiqueta: 'Recomendada',
-  },
-  {
-    id: 'invierno',
-    nombre: 'Invierno',
-    fechas: '15 ene – 28 feb 2028',
-    pro: 'Lo más barato y vacío. Nieve, onsen, monos en aguas termales, Fuji despejado.',
-    contra: 'Frío de verdad (0–10 °C), días cortos, hay que comprar ropa de invierno.',
-    veredicto: 'Solo si el plan es nieve o el presupuesto manda. Sería ya para 2028.',
-    estado: 'soft',
-    etiqueta: 'De nicho',
-  },
-];
+// las seis ventanas (src/data/ventanas.ts): las mismas que resume Decisiones
+const ventanas = VENTANAS_VIAJE;
 
 // Qué hay de temporada en cada ventana: lugares y eventos del catálogo que solo se dan en esos
 // meses (se dejan por fuera los que duran medio año, que no distinguen una ventana de otra).
@@ -103,17 +41,6 @@ const deTemporada = (id: string) => {
   return SEMILLAS.filter(
     (l) => l.meses && l.meses.length <= 4 && l.meses.some((m) => meses.includes(m)),
   ).sort((a, b) => a.meses!.length - b.meses!.length); // primero lo más puntual
-};
-
-// El sello de cada papelito: el kanji de lo que trae esa época, distinto en cada ventana
-// para reconocerla de un vistazo. Su significado sale al pasar el mouse y en el lector de pantalla.
-const sello: Record<string, { k: string; dice: string }> = {
-  cerezos: { k: '桜', dice: 'cerezo' },
-  abril: { k: '藤', dice: 'glicina' },
-  primavera: { k: '緑', dice: 'verde' },
-  verano: { k: '祭', dice: 'festival' },
-  otono: { k: '紅葉', dice: 'hojas rojas' },
-  invierno: { k: '雪', dice: 'nieve' },
 };
 
 const opciones = [
@@ -222,8 +149,8 @@ const evitar = [
                   <span class="mono fechas">{v.fechas}</span>
                   <span class:list={['chip', v.estado]}>{v.etiqueta}</span>
                 </div>
-                <span class="estacion" lang="ja" title={sello[v.id].dice} aria-label={sello[v.id].dice}>
-                  {sello[v.id].k}
+                <span class="estacion" lang="ja" title={v.dice} aria-label={v.dice}>
+                  {v.kanji}
                 </span>
               </div>
               <p class="oraculo">{v.veredicto}</p>

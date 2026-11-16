@@ -27,6 +27,7 @@ No hay framework de interfaz: lo interactivo es TypeScript sin dependencias.
 | `/cuando-ir` | Lista | El año en Tokio mes a mes, cuatro ventanas candidatas para votar, fechas a evitar |
 | `/requisitos` | Lista | Visa, rutas sin visa americana y checklist personal de papeles |
 | `/lugares` | Lista | Catálogo de 116 lugares y eventos por tema, con filtros, votos y propuestas del grupo |
+| `/decisiones` | Lista | Los votos de todos cruzados: ventana que va ganando, meses, lugares fijos, posible reparto de días, papeles y lo que me falta |
 | Itinerario, Presupuesto, Apps | Pendientes | Aparecen en el índice como «Pronto» |
 
 ## Correrlo en local
@@ -129,11 +130,29 @@ no consulta en vivo: quien llegue mientras está abierto sale en la próxima vis
 **En vivo.** Las páginas con sellos consultan `/api/estado` cada 6 segundos mientras la pestaña
 está visible. Se pausa si nadie toca la página en 5 minutos. El Inicio solo consulta una vez, al cargar.
 
+**Decisiones.** `/decisiones` no tiene votos propios: se arma en el servidor en cada visita con
+todas las marcas, usando las cuentas de `src/lib/decisiones.ts` (funciones puras). No consulta en vivo:
+lo que voten los demás sale al volver a abrirla. Las reglas:
+
+- *Ventanas.* 好 vale 2 y 可 vale 1; se ordenan por puntos sobre lo posible entre quienes votaron.
+  Un solo 否 tacha la ventana. Si a la que va adelante le falta un voto, se avisa cuál pasaría
+  adelante si ese voto fuera «No puedo». Con menos de la mitad del grupo votando no se anuncia
+  ganadora («es temprano»); si hay empate se nombran todas.
+- *No cuadra.* Votos a una ventana sin ninguno de sus meses marcado como «Puedo».
+- *Lugares.* Fijos: los quiere todo el grupo o todos menos uno (mínimo dos). Con fuerza: dos o
+  más. Planes personales: uno solo. Lo que solo se da en otros meses se marca contra la ventana
+  que va adelante.
+- *Días.* Los 15 días se reparten entre zonas en proporción a los votos de lo que quieren dos o
+  más (mayor residuo). Es una posible opción, no un plan.
+- *Tu parte.* Mis pendientes, cada uno con su enlace: si mi voto decide la ventana, qué ventanas
+  me faltan, meses, lugares y el papel más urgente.
+
 **Sin saltos.** El espacio de los sellos se reserva de antemano, el último estado se guarda en
 `localStorage` para pintar de una, y en Lugares el orden por votos se fija al cargar.
 
 **Privacidad.** Sin sesión se ve la información, pero no los nombres, los sellos ni los lugares
-propuestos por el grupo. Los documentos sensibles nunca se suben: el sitio solo los recuerda.
+propuestos por el grupo. Decisiones, sin sesión, solo muestra cómo se cuenta. Los documentos
+sensibles nunca se suben: el sitio solo los recuerda.
 
 ## API
 
@@ -171,6 +190,8 @@ en el puerto 4399, con clave y base propias (`.data/pruebas.db`): no leen el `.e
 | `grupo.spec.ts` | Registro, sellos, en vivo, perfil, sin conexión y «nada salta» |
 | `llegadas.spec.ts` | Bienvenida, llegadas desde mi última visita con varios viajeros y aparatos, «¿eres tú?» y el boleto |
 | `lugares.spec.ts` | Filtros, sellos, proponer, quitar y avisos en vivo |
+| `decisiones.unidad.spec.ts` | Las cuentas de Decisiones, iniciales y giro de los sellos (sin navegador) |
+| `decisiones.spec.ts` | Decisiones: privacidad, la que va adelante, mi parte, temprano, empate, todas tachadas y lugares |
 
 ## Lugares y fotos
 
@@ -208,12 +229,12 @@ scripts/tarjeta.html         la tarjeta que sale al compartir el enlace (public/
 public/                      íconos, manifiesto y tarjeta para compartir
 public/lugares/              fotos del catálogo
 src/
-├── components/Intro.astro   animación de entrada del Inicio
-├── data/                    secciones, catálogo de lugares, créditos de fotos, formas de sello
+├── components/              Intro.astro (entrada del Inicio) y Sello.astro (el sello pintado en el servidor)
+├── data/                    secciones, ventanas, catálogo de lugares, créditos de fotos, formas de sello
 ├── layouts/Base.astro       cabecera, lomo vertical, registro y perfil
-├── lib/                     base de datos, sesión, consultas de lugares
+├── lib/                     base de datos, sesión, consultas de lugares, cuentas de Decisiones
 ├── pages/                   páginas y API
-├── scripts/                 grupo.ts (sellos y sesión), llegadas.ts (el momento de una llegada), kana.ts, intro.ts
+├── scripts/                 grupo.ts (sellos y sesión), sello.ts (iniciales y giro), llegadas.ts, kana.ts, intro.ts
 └── styles/global.css        sistema visual y estilos de sellos
 ```
 

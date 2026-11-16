@@ -1,0 +1,1783 @@
+---
+import Base from '../layouts/Base.astro';
+import Sello from '../components/Sello.astro';
+import { SEMILLAS, TEMAS, ZONAS, type Lugar } from '../data/lugares';
+import { VENTANAS_VIAJE } from '../data/ventanas';
+import creditos from '../data/fotos.json';
+import { estado } from '../lib/db';
+import { propuestos, type LugarPropuesto } from '../lib/lugares';
+import { sesion } from '../lib/sesion';
+import { iniciales } from '../scripts/sello';
+import {
+  contarLugares,
+  contarMeses,
+  contarPapeles,
+  contarVentanas,
+  lider,
+  MESES_DE_VENTANA,
+  miParte,
+  noCuadran,
+  quorum,
+  repartirDias,
+  temprano,
+  type Marca,
+  type Persona,
+} from '../lib/decisiones';
+
+// Se arma en el servidor en cada visita, con los votos del momento: no se actualiza en vivo.
+// Sin sesión no se ve nada del grupo (ni nombres ni votos), solo cómo se cuenta.
+export const prerender = false;
+Astro.response.headers.set('cache-control', 'private, no-store');
+
+const yoId = sesion(Astro.cookies);
+let personas: Persona[] = [];
+let marcas: Marca[] = [];
+let delGrupo: LugarPropuesto[] = [];
+let yo: Persona | null = null;
+if (yoId) {
+  const [e, ls] = await Promise.all([estado(yoId), propuestos()]);
+  yo = e.yo;
+  personas = e.personas;
+  marcas = e.marcas;
+  delGrupo = ls;
+}
+const ini = iniciales(personas);
+const sello = (p: Persona) => ({ persona: p, ini: ini.get(p.id) ?? '?' });
+
+// ───── las cuentas ─────
+const n = personas.length;
+const ventanas = contarVentanas(personas, marcas);
+const { primera, empatadas, siFalla, todasTachadas } = lider(ventanas);
+const qVentanas = quorum(personas, marcas, 'ventana');
+const qLugares = quorum(personas, marcas, 'lugar');
+// con menos de la mitad del grupo votando no se anuncia ganadora
+const esTemprano = temprano(qVentanas.votaron.length, n);
+const ganadora = esTemprano ? null : primera;
+const meses = contarMeses(personas, marcas);
+// lo que no cuadra, una fila por persona
+const sueltos = noCuadran(personas, marcas);
+const raros = personas
+  .map((p) => ({ persona: p, votos: sueltos.filter((r) => r.persona.id === p.id) }))
+  .filter((x) => x.votos.length > 0);
+const catalogo: Lugar[] = [...SEMILLAS, ...delGrupo];
+// la temporada se compara con la que va adelante; si hay empate o es temprano, con ninguna
+const contraVentana = ganadora && !empatadas.length ? ganadora.id : null;
+const lugares = contarLugares(personas, marcas, catalogo, contraVentana);
+const DIAS = 15;
+const conVotos = [...lugares.fijos, ...lugares.fuerza];
+const reparto = repartirDias(conVotos, DIAS);
+const papeles = contarPapeles(personas, marcas);
+const totalConVotos = conVotos.length + lugares.personales.reduce((s, x) => s + x.lugares.length, 0);
+// si a la que va adelante le falta mi voto, el aviso me habla a mí
+const faltoYo = !!primera?.faltan.some((p) => p.id === yo?.id);
+const otrosFaltan = primera?.faltan.filter((p) => p.id !== yo?.id) ?? [];
+// lo que va adelante (una, o varias si van empatadas): lo único bermellón de la tabla y la franja
+const delante = new Set(esTemprano ? [] : empatadas.length ? empatadas.map((x) => x.id) : primera ? [primera.id] : []);
+const mia = yo ? miParte(yo, personas, marcas) : null;
+
+// ───── textos ─────
+const V = Object.fromEntries(VENTANAS_VIAJE.map((v) => [v.id, { ...v, k: v.kanji }]));
+// en la franja de meses: dos carriles, porque Abril tardío se monta sobre Cerezos
+const carril: Record<string, number> = { cerezos: 1, abril: 2, primavera: 1, verano: 1, otono: 1, invierno: 1 };
+const MES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+const MES_LARGO = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const VOTO = { 2: { k: '好', t: 'Me encanta' }, 1: { k: '可', t: 'Me sirve' }, 0: { k: '否', t: 'No puedo' } } as const;
+const ZONA = Object.fromEntries(ZONAS.map((z) => [z.id, z.nombre]));
+const KANJI_ZONA: Record<string, string> = { tokio: '東京', kanto: '関東', chubu: '中部', kansai: '関西', oeste: '西', norte: '北', sur: '南' };
+const PAPEL: Record<string, string> = {
+  pasaporte: 'Pasaporte',
+  visa: 'Visa japonesa',
+  tiquetes: 'Tiquetes',
+  hospedajes: 'Hospedajes',
+  seguro: 'Seguro de viaje',
+  vjw: 'Visit Japan Web',
+  plata: 'Plata',
+};
+
+const y = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} y ${xs.at(-1)}`);
+const nombres = (ps: Persona[]) => y(ps.map((p) => p.nombre));
+const o = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} ni ${xs.at(-1)}`);
+const dos = (x: number) => String(x).padStart(2, '0');
+const plural = (k: number, uno: string, varios: string) => `${k} ${k === 1 ? uno : varios}`;
+
+// completo es quien votó ventanas, marcó meses y votó lugares
+const completos = personas.filter(
+  (p) => !qVentanas.faltan.includes(p) && !meses.faltan.includes(p) && !qLugares.faltan.includes(p),
+);
+const pendientes = personas.filter((p) => !completos.includes(p));
+const urgente = papeles.find((x) => x.tienen.length > 0 && x.faltan.length > 0) ?? papeles[0];
+
+// el acta: qué va en la casilla de Cuándo
+const cuando = esTemprano
+  ? { v: '—', s: `es temprano · votaron ${qVentanas.votaron.length} de ${n}` }
+  : empatadas.length
+    ? { v: 'Empate', s: y(empatadas.map((x) => V[x.id].corto)) }
+    : primera
+      ? { v: V[primera.id].corto, s: primera.faltan.length ? `va adelante · falta${primera.faltan.length === 1 ? '' : 'n'} ${primera.faltan.length}` : 'va adelante' }
+      : todasTachadas
+        ? { v: 'Ninguna', s: 'todas tienen un «No puedo»' }
+        : { v: '—', s: 'nadie ha votado' };
+
+// mis pendientes, en el orden en que conviene hacerlos
+const pendientesMios = mia
+  ? [
+      mia.decido && {
+        clave: 'decido',
+        texto: mia.decido.siNo
+          ? `Tu voto decide: si pones «No puedo» en ${V[mia.decido.ventana].corto}, pasa adelante ${V[mia.decido.siNo].nombre}.`
+          : `Tu voto decide: si pones «No puedo» en ${V[mia.decido.ventana].corto}, no queda ninguna ventana en pie.`,
+        href: '/cuando-ir',
+      },
+      mia.ventanas.filter((v) => v !== mia.decido?.ventana).length > 0 && {
+        clave: 'ventanas',
+        texto:
+          mia.ventanas.length === VENTANAS_VIAJE.length && !mia.decido
+            ? 'No has votado ninguna ventana.'
+            : `Te falta votar ${y(mia.ventanas.filter((v) => v !== mia.decido?.ventana).map((v) => V[v].nombre))}.`,
+        href: '/cuando-ir',
+      },
+      mia.meses && { clave: 'meses', texto: 'No has marcado en qué meses puedes viajar.', href: '/cuando-ir' },
+      mia.lugares && { clave: 'lugares', texto: 'No has votado ningún lugar.', href: '/lugares' },
+      mia.papel && { clave: 'papel', texto: `Te falta el ${PAPEL[mia.papel].toLowerCase()}, lo más urgente de los papeles.`, href: '/requisitos' },
+    ].filter((x): x is { clave: string; texto: string; href: string } => !!x)
+  : [];
+
+// días de cada zona, para la franja
+let dia = 1;
+const tramos = reparto.map((z) => {
+  const t = { ...z, desde: dia, hasta: dia + z.dias - 1 };
+  dia += z.dias;
+  return t;
+});
+const fotos = creditos as Record<string, { archivo: string }>;
+const foto = (l: Lugar) =>
+  (l as LugarPropuesto).imagen ?? (fotos[l.id] ? `/lugares/${fotos[l.id].archivo}` : undefined);
+const kanjiTema = (l: Lugar) => TEMAS.find((t) => t.id === l.tema)?.kanji ?? '所';
+const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
+  c.temporada === 'si' ? 'De temporada' : c.temporada === 'no' ? `No da en ${V[contraVentana!].corto.toLowerCase()}` : null;
+---
+
+<Base title="Decisiones" description="Los votos del grupo, puestos juntos para decidir.">
+  <header class="page-head">
+    <span class="kanji" aria-hidden="true">決</span>
+    <div>
+      <span class="mono">04 · kime · lo que vamos decidiendo</span>
+      <h1>Decisiones</h1>
+      <p>
+        Los votos de todos, puestos juntos: qué va ganando, qué está trabado y qué falta para
+        decidir. Nada está cerrado todavía: esto cambia cada vez que alguien vota.
+      </p>
+    </div>
+  </header>
+
+  {
+    !yo && (
+      <section class="sin-sesion wrap">
+        <p>
+          <span>Lo que va decidiendo el grupo solo se ve con sesión.</span>{' '}
+          <button type="button" data-entrar>Entra con tu nombre →</button>
+        </p>
+      </section>
+    )
+  }
+
+  {
+    yo && (
+      <>
+  <!-- el acta: lo que va, de un vistazo -->
+  <dl class="acta">
+    <div>
+      <dt class="mono">Cuándo</dt>
+      <dd>
+        <strong>{cuando.v}</strong>
+        <span>{cuando.s}</span>
+      </dd>
+    </div>
+    <div>
+      <dt class="mono">Lugares</dt>
+      <dd>
+        <strong>{plural(lugares.fijos.length, 'fijo', 'fijos')}</strong>
+        <span>de {totalConVotos} con votos</span>
+      </dd>
+    </div>
+    <div>
+      <dt class="mono">Zonas</dt>
+      <dd>
+        <strong>{reparto.length ? plural(reparto.length, 'zona', 'zonas') : '—'}</strong>
+        <span>{reparto.length ? 'posible ruta' : 'faltan votos en común'}</span>
+      </dd>
+    </div>
+    <div>
+      <dt class="mono">{PAPEL[urgente.id]}</dt>
+      <dd>
+        <strong>{urgente.tienen.length} de {n}</strong>
+        <span>ya lo tienen</span>
+      </dd>
+    </div>
+    <div>
+      <dt class="mono">Votaron en todo</dt>
+      <dd>
+        <span class="fila-sellos juntos" aria-label={pendientes.length ? `Completos: ${nombres(completos) || 'nadie'}. Faltan: ${nombres(pendientes)}` : 'Votaron todos'}>
+          {completos.map((p) => <Sello {...sello(p)} clave="acta" />)}
+          {pendientes.map((p) => <Sello {...sello(p)} fantasma clave="acta" />)}
+        </span>
+        <span>{pendientes.length ? `${completos.length} de ${n} · falta ${nombres(pendientes)}` : 'todos, sin falta'}</span>
+      </dd>
+    </div>
+  </dl>
+
+  <!-- lo que me toca a mí: cada pendiente lleva a donde se hace -->
+  <section class="tu-parte wrap" aria-labelledby="tu-parte-t">
+    <h2 id="tu-parte-t" class="mono">Tu parte</h2>
+    {
+      pendientesMios.length ? (
+        <ul>
+          {pendientesMios.map((x) => (
+            <li class:list={{ decide: x.clave === 'decido' }} data-pendiente={x.clave}>
+              <a href={x.href}>
+                <span>{x.texto}</span>
+                <span class="ir" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p data-pendiente="nada">Ya votaste en todo. Lo que falta es de los demás.</p>
+      )
+    }
+  </section>
+
+  <!-- ───── 01 · cuándo ───── -->
+  <section class="sec" aria-labelledby="cuando-t">
+    <header>
+      <span class="mono">01 · Cuándo</span>
+      <h2 id="cuando-t">La ventana que va ganando</h2>
+      <p class="quorum">
+        Votaron {qVentanas.votaron.length} de {n}.{' '}
+        <a href="/cuando-ir">Ir a votar →</a>
+      </p>
+    </header>
+
+    <div class="cuerpo">
+      {
+        esTemprano ? (
+          <p class="ojo veredicto-vacio" data-veredicto="temprano">
+            <span class="mono">Es temprano</span>
+            <span>
+              Votaron {qVentanas.votaron.length} de {n}: con menos de la mitad del grupo no se anuncia
+              ganadora. {qVentanas.faltan.length > 0 && <>Falta {nombres(qVentanas.faltan)}.</>}
+            </span>
+          </p>
+        ) : empatadas.length ? (
+          <div class="veredicto" data-veredicto="empate">
+            <span class="estacion" lang="ja" aria-hidden="true">{empatadas.map((x) => V[x.id].k).join('')}</span>
+            <div>
+              <p class="mono va">Van empatadas</p>
+              <h3>{y(empatadas.map((x) => V[x.id].nombre))}</h3>
+              <p class="dice">
+                {empatadas[0].puntos} puntos cada una, y nadie ha dicho que no puede. Los votos que
+                faltan las desempatan.
+              </p>
+            </div>
+          </div>
+        ) : primera ? (
+          <div class="veredicto" data-veredicto="primera">
+            <span class="estacion" lang="ja" aria-hidden="true">{V[primera.id].k}</span>
+            <div>
+              <p class="mono va">Va adelante</p>
+              <h3>{V[primera.id].nombre}</h3>
+              <p class="mono fechas">{V[primera.id].fechas}</p>
+              <p class="dice">
+                {primera.puntos} de {2 * (n - primera.faltan.length)} puntos posibles, y nadie ha
+                dicho que no puede.
+              </p>
+            </div>
+            {primera.faltan.length > 0 && (
+              <p class="ojo">
+                <span class="mono">Ojo</span>
+                <span>
+                  {faltoYo ? (
+                    otrosFaltan.length ? <>Falta tu voto y el de <b>{nombres(otrosFaltan)}</b>. Si alguno pone «No puedo»,{' '}</> : <>Falta tu voto. Si pones «No puedo»,{' '}</>
+                  ) : (
+                    <>Falta el voto de <b>{nombres(primera.faltan)}</b>. Si {primera.faltan.length === 1 ? 'pone' : 'alguno pone'} «No puedo»,{' '}</>
+                  )}
+                  {V[primera.id].corto} queda tachada
+                  {siFalla ? <> y pasa adelante <b>{V[siFalla.id].nombre}</b>.</> : ' y no queda ninguna en pie.'}
+                </span>
+              </p>
+            )}
+          </div>
+        ) : (
+          <p class="ojo veredicto-vacio" data-veredicto={todasTachadas ? 'ninguna' : 'nada'}>
+            <span class="mono">{todasTachadas ? 'Ninguna' : 'Sin votos'}</span>
+            <span>
+              {todasTachadas
+                ? 'Todas las ventanas con votos tienen un «No puedo». Toca revisar esos votos o buscar otra fecha.'
+                : 'Nadie ha votado ventanas todavía.'}
+            </span>
+          </p>
+        )
+      }
+
+      <h3 class="sub">Tabla de posiciones</h3>
+      <p class="mono regla">
+        <span lang="ja">好</span> 2 puntos · <span lang="ja">可</span> 1 · un solo <span lang="ja">否</span> tacha la ventana: tenemos que poder todos
+      </p>
+      <div class="tabla" role="table" aria-label="Ventanas por puntos">
+        <div class="fila cabeza mono" role="row">
+          <span role="columnheader">N.º</span>
+          <span role="columnheader">Ventana</span>
+          <span role="columnheader"><b lang="ja">好</b> Me encanta</span>
+          <span role="columnheader"><b lang="ja">可</b> Me sirve</span>
+          <span role="columnheader"><b lang="ja">否</b> No puedo</span>
+          <span role="columnheader">Falta</span>
+          <span role="columnheader">Puntos</span>
+        </div>
+        {
+          ventanas.map((v, i) => (
+            <div class:list={['fila', { primera: delante.has(v.id), tachada: v.tachada }]} role="row">
+              <span class="pos mono" role="cell">{v.tachada ? '—' : dos(i + 1)}</span>
+              <span class="nombre" role="cell">
+                <span class="mini-estacion" lang="ja" aria-hidden="true">{V[v.id].k}</span>
+                <span>
+                  <strong>{V[v.id].nombre}</strong>
+                  <span class="mono">{V[v.id].fechas}</span>
+                  {v.tachada && <span class="veto mono">No puede{v.votos[0].length > 1 && 'n'}: {nombres(v.votos[0])}</span>}
+                </span>
+              </span>
+              <span class="celdas">
+                {([2, 1, 0] as const).map((val) => (
+                  <span class:list={['celda', `v${val}`]} role="cell">
+                    <b class="etq" lang="ja" aria-hidden="true">{VOTO[val].k}</b>
+                    <span class="solo-lector">{VOTO[val].t}: {nombres(v.votos[val]) || 'nadie'}</span>
+                    <span class="fila-sellos juntos" aria-hidden="true">
+                      {v.votos[val].map((p) => <Sello {...sello(p)} clave={`${v.id}:${val}`} />)}
+                    </span>
+                  </span>
+                ))}
+                <span class="celda falta" role="cell">
+                  <b class="etq mono" aria-hidden="true">Falta</b>
+                  <span class="solo-lector">Falta: {nombres(v.faltan) || 'nadie'}</span>
+                  <span class="fila-sellos juntos" aria-hidden="true">
+                    {v.faltan.map((p) => <Sello {...sello(p)} fantasma clave={`${v.id}:f`} />)}
+                  </span>
+                </span>
+              </span>
+              <span class="puntos" role="cell">
+                <span class="medidor" aria-hidden="true">
+                  {Array.from({ length: v.tope }, (_, k) => (
+                    <i
+                      class:list={{
+                        lleno: k < v.puntos,
+                        posible: k >= v.puntos && k < v.puntos + 2 * v.faltan.length,
+                      }}
+                    />
+                  ))}
+                </span>
+                <span class="cifra">
+                  <b>{v.puntos}</b>
+                  <span class="mono">de {2 * (n - v.faltan.length)}</span>
+                </span>
+              </span>
+            </div>
+          ))
+        }
+      </div>
+      <p class="mono leyenda">
+        <span><i class="seg lleno"></i> Puntos</span>
+        <span><i class="seg posible"></i> Los que pueden llegar</span>
+        <span><i class="seg"></i> Perdidos</span>
+      </p>
+
+      <h3 class="sub">¿Qué meses podemos todos?</h3>
+      <p class="nota">
+        Cruce de los «Puedo» de cada uno con las seis ventanas. En gris, los meses en que pueden
+        todos los que ya marcaron.
+      </p>
+      <div class="meses-grupo" style={`--filas:${n}`} role="img" aria-label={`Meses en que pueden todos los que marcaron: ${MES_LARGO.filter((_, i) => meses.todos[i]).join(', ')}`}>
+        {meses.todos.map((t, i) => t && <span class="todos" style={`--m:${i + 1}`} />)}
+        {Object.entries(MESES_DE_VENTANA).map(([id, ms]) => (
+          <span
+            class:list={['banda', { primera: delante.has(id), tachada: ventanas.find((v) => v.id === id)?.tachada }]}
+            style={`--desde:${Math.min(...ms)};--hasta:${Math.max(...ms)};--carril:${carril[id]}`}
+          >
+            <span class="txt">{V[id].corto}</span>
+            <span class="bk" lang="ja" aria-hidden="true">{V[id].k}</span>
+          </span>
+        ))}
+        {MES.map((m, i) => (
+          <span class="mes mono" style={`--m:${i + 1}`}>{m}</span>
+        ))}
+        {personas.map((p, f) => (
+          <>
+            <span class="quien-es" style={`--f:${f + 1}`}>
+              <Sello {...sello(p)} fantasma={!meses.puede.has(p.id)} clave="meses" />
+            </span>
+            {MES.map((_, i) => (
+              <span
+                class:list={['casilla', { si: meses.puede.get(p.id)?.has(i + 1), sin: !meses.puede.has(p.id) }]}
+                style={`--m:${i + 1};--f:${f + 1}`}
+              />
+            ))}
+          </>
+        ))}
+        {meses.porMes.map((c, i) => (
+          <span class:list={['cuenta mono', { 'es-todos': meses.todos[i] }]} style={`--m:${i + 1}`}>
+            {c}
+          </span>
+        ))}
+      </div>
+      {meses.faltan.length > 0 && (
+        <p class="mono pendiente">{nombres(meses.faltan)} todavía no ha marcado meses.</p>
+      )}
+
+      {
+        raros.length > 0 && (
+          <div class="no-cuadra">
+            <h3 class="sub">No cuadra</h3>
+            <p class="nota">Votos a una ventana sin ninguno de sus meses marcado: o falta un «Puedo», o sobra el voto.</p>
+            <ul>
+              {raros.map(({ persona, votos }) => (
+                <li>
+                  <Sello {...sello(persona)} clave="raro" />
+                  <span>
+                    <b>{persona.nombre}</b> votó por {y(votos.map((r) => V[r.ventana].nombre))}, pero no
+                    marcó {o([...new Set(votos.flatMap((r) => r.meses))].sort((a, b) => a - b).map((m) => MES_LARGO[m - 1]))}.
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- ───── 02 · lugares ───── -->
+  <section class="sec" aria-labelledby="lugares-t">
+    <header>
+      <span class="mono">02 · Lugares</span>
+      <h2 id="lugares-t">Lo que vamos a ver</h2>
+      <p class="quorum">
+        Votaron {qLugares.votaron.length} de {n}.{' '}
+        <a href="/lugares">Ir a votar →</a>
+      </p>
+    </header>
+
+    <div class="cuerpo">
+      <div class="grupo-lugares idea">
+        <h3 class="sub">Una forma de repartir los {DIAS} días</h3>
+        <p class="mono umbral">Posible opción · no es fija</p>
+      </div>
+      {
+        tramos.length ? (
+          <>
+            <p class="nota">
+              Sale de los votos de lo que quieren dos o más
+              {contraVentana && `, y solo de lo que se da en ${V[contraVentana].corto.toLowerCase()}`}. Es para hacerse
+              una idea de cuánto pesa cada zona, no un plan: no cuenta vuelos ni trayectos, y la ruta de verdad se
+              arma en el Itinerario.
+            </p>
+            <div class="dias" style={`--dias:${DIAS}`}>
+              <ol class="numeros mono" aria-hidden="true">
+                {Array.from({ length: DIAS }, (_, i) => <li>{i + 1}</li>)}
+              </ol>
+              <ol class="tramos">
+                {tramos.map((t) => (
+                  <li style={`--desde:${t.desde};--hasta:${t.hasta}`} aria-label={`${ZONA[t.zona]}: ${plural(t.dias, 'día', 'días')}`}>
+                    <span class="k" lang="ja" aria-hidden="true">{KANJI_ZONA[t.zona]}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+            <ul class="zonas">
+              {tramos.map((t) => (
+                <li>
+                  <span class="k" lang="ja" aria-hidden="true">{KANJI_ZONA[t.zona]}</span>
+                  <span>
+                    <strong>{ZONA[t.zona]}</strong>
+                    <span class="mono">
+                      {plural(t.dias, 'día', 'días')} · {t.desde === t.hasta ? `día ${t.desde}` : `días ${t.desde}–${t.hasta}`}
+                    </span>
+                    <span class="por">{t.lugares.map((c) => c.lugar.nombre).join(' · ')}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <p class="vacio">
+            Cuando al menos dos personas quieran ir al mismo sitio, aquí sale cuánto pesa cada zona en los
+            {DIAS} días.
+          </p>
+        )
+      }
+
+      {
+        contraVentana && lugares.fueraDeFecha.length > 0 && (
+          <p class="ojo">
+            <span class="mono">Si es {V[contraVentana].corto.toLowerCase()}</span>
+            <span>
+              {lugares.fueraDeFecha.length === 1
+                ? 'Se cae uno que tiene votos, porque no se da en esas fechas: '
+                : `Se caen ${lugares.fueraDeFecha.length} que tienen votos, porque no se dan en esas fechas: `}
+              {y(lugares.fueraDeFecha.map((c) => `${c.lugar.nombre} (${c.quieren.length})`))}.
+            </span>
+          </p>
+        )
+      }
+
+      <div class="grupo-lugares">
+        <h3 class="sub">Fijos</h3>
+        <p class="mono umbral">
+          {lugares.umbralFijo >= n ? 'Los quieren todos' : `Los quieren ${lugares.umbralFijo} o más`}
+        </p>
+      </div>
+      {
+        lugares.fijos.length ? (
+          <ul class="fijos">
+            {lugares.fijos.map((c) => (
+              <li class:list={{ fuera: c.temporada === 'no' }} data-lugar={c.lugar.id}>
+                <span class="foto">
+                  {foto(c.lugar) ? (
+                    <img src={foto(c.lugar)} alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+                  ) : (
+                    <span class="sin-foto" aria-hidden="true">{kanjiTema(c.lugar)}</span>
+                  )}
+                </span>
+                <span class="txt">
+                  <span class="mono zona">{ZONA[c.lugar.zona]}</span>
+                  <a href={`/lugares#${c.lugar.id}`}>{c.lugar.nombre}</a>
+                  {temporadaDe(c) && <span class:list={['chip', c.temporada === 'si' ? 'ok' : 'warn']}>{temporadaDe(c)}</span>}
+                </span>
+                <span class="votos">
+                  <span class="fila-sellos juntos" aria-label={`Lo quieren ${nombres(c.quieren)}`}>
+                    {c.quieren.map((p) => <Sello {...sello(p)} clave={c.lugar.id} />)}
+                  </span>
+                  <span class="mono">{c.quieren.length} de {n}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="vacio">Todavía no hay un lugar que quiera casi todo el grupo.</p>
+        )
+      }
+
+      {
+        lugares.umbralFijo > 2 && (
+          <>
+            <div class="grupo-lugares">
+              <h3 class="sub">Con fuerza</h3>
+              <p class="mono umbral">
+                {lugares.umbralFijo - 1 === 2 ? 'Los quieren 2' : `Los quieren de 2 a ${lugares.umbralFijo - 1}`}
+              </p>
+            </div>
+            {lugares.fuerza.length ? (
+              <ul class="fuerza">
+                {lugares.fuerza.map((c) => (
+                  <li class:list={{ fuera: c.temporada === 'no' }} data-lugar={c.lugar.id}>
+                    <span class="foto">
+                      {foto(c.lugar) ? (
+                        <img src={foto(c.lugar)} alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+                      ) : (
+                        <span class="sin-foto" aria-hidden="true">{kanjiTema(c.lugar)}</span>
+                      )}
+                    </span>
+                    <span class="txt">
+                      <a href={`/lugares#${c.lugar.id}`}>{c.lugar.nombre}</a>
+                      <span class="mono zona">
+                        {ZONA[c.lugar.zona]}
+                        {temporadaDe(c) && <span class:list={['chip', c.temporada === 'si' ? 'ok' : 'warn']}>{temporadaDe(c)}</span>}
+                      </span>
+                    </span>
+                    <span class="fila-sellos juntos" aria-label={`Lo quieren ${nombres(c.quieren)}`}>
+                      {c.quieren.map((p) => <Sello {...sello(p)} clave={c.lugar.id} />)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="vacio">Nada todavía.</p>
+            )}
+          </>
+        )
+      }
+
+      <div class="grupo-lugares">
+        <h3 class="sub">Planes personales</h3>
+        <p class="mono umbral">Lo quiere uno solo: para un día libre</p>
+      </div>
+      {
+        lugares.personales.length ? (
+          <ul class="personales">
+            {lugares.personales.map(({ persona, lugares: ls }) => (
+              <li>
+                <Sello {...sello(persona)} clave="personal" />
+                <span>
+                  <strong>{persona.nombre}</strong>
+                  <span class="lista">
+                    {ls.map((c, i) => (
+                      <>
+                        {i > 0 && ' · '}
+                        <a
+                          href={`/lugares#${c.lugar.id}`}
+                          class:list={{ tachado: c.temporada === 'no' }}
+                          title={c.temporada === 'no' ? (temporadaDe(c) ?? undefined) : undefined}
+                        >
+                          {c.lugar.nombre}
+                        </a>
+                      </>
+                    ))}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="vacio">Nadie tiene un plan solo suyo todavía.</p>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- ───── 03 · papeles ───── -->
+  <section class="sec" aria-labelledby="papeles-t">
+    <header>
+      <span class="mono">03 · Papeles</span>
+      <h2 id="papeles-t">Qué tan listos estamos</h2>
+      <p class="quorum">
+        Cada uno marca lo suyo.{' '}
+        <a href="/requisitos">Ir a la lista →</a>
+      </p>
+    </header>
+
+    <div class="cuerpo">
+      <p class="ojo">
+        <span class="mono">{urgente.faltan.length ? 'Lo urgente' : 'Listos'}</span>
+        {
+          urgente.faltan.length ? (
+            <span>
+              <b>{PAPEL[urgente.id]}</b>: {urgente.faltan.length === 1 ? 'falta' : 'faltan'}{' '}
+              {urgente.faltan.length === n ? 'todos' : nombres(urgente.faltan)}.
+              {urgente.id === 'pasaporte' && ' Sin pasaporte vigente no se puede pedir la visa, y sin visa no conviene comprar nada.'}
+              {urgente.id === 'visa' && ' Sin visa no conviene comprar nada que no se pueda devolver.'}
+            </span>
+          ) : (
+            <span>Todos tienen todos los papeles. A empacar.</span>
+          )
+        }
+      </p>
+      <div class="papeles" style={`--gente:${n}`} role="table" aria-label="Papeles listos por persona">
+        <div class="fila cabeza" role="row">
+          <span role="columnheader" class="mono">Papel</span>
+          {personas.map((p) => (
+            <span role="columnheader" class="persona">
+              <span class="solo-lector">{p.nombre}</span>
+              <span aria-hidden="true"><Sello {...sello(p)} clave="papeles" /></span>
+            </span>
+          ))}
+          <span role="columnheader" class="mono cuantos">Listos</span>
+        </div>
+        {papeles.map((x) => (
+          <div class:list={['fila', { urgente: x === urgente && x.faltan.length > 0 }]} role="row">
+            <span role="rowheader" class="papel">{PAPEL[x.id]}</span>
+            {personas.map((p) => (
+              <span role="cell" class:list={['hueco', { listo: x.tienen.includes(p) }]}>
+                <span class="solo-lector">{p.nombre}: {x.tienen.includes(p) ? 'listo' : 'pendiente'}</span>
+                {x.tienen.includes(p) && (
+                  <span aria-hidden="true"><Sello {...sello(p)} clave={`papel:${x.id}`} /></span>
+                )}
+              </span>
+            ))}
+            <span role="cell" class="mono cuantos">{x.tienen.length} de {n}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+      </>
+    )
+  }
+
+  <section class="sec">
+    <header>
+      <span class="mono">Nota</span>
+      <h2>Cómo se cuenta</h2>
+    </header>
+    <div class="reglas">
+      <p>
+        <b>Ventanas.</b> <span lang="ja">好</span> vale 2 puntos y <span lang="ja">可</span> vale 1. Se
+        ordenan por puntos sobre lo posible entre quienes ya votaron, para que una ventana con votos
+        pendientes no quede castigada. Un solo <span lang="ja">否</span> la tacha: no sirve una fecha
+        en que alguien no puede ir.
+      </p>
+      <p>
+        <b>Lugares.</b> Fijos son los que quiere todo el grupo o todos menos uno; con fuerza, los que
+        quieren dos o más. Los días se reparten entre zonas en proporción a esos votos, y una zona que
+        no alcanza a sumar un día completo no entra.
+      </p>
+      <p>
+        <b>Temporada.</b> Si un lugar o evento solo se da en ciertos meses, se compara con la ventana
+        que va adelante. Las fechas del catálogo están <b>por confirmar</b>.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // al entrar o salir cambia todo lo que el servidor muestra: se vuelve a armar la página
+  document.addEventListener('grupo:sesion', () => location.reload());
+</script>
+
+<style>
+  /* ───── el acta: el mismo boleto del Inicio ───── */
+  .acta {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    margin: 0;
+    border-bottom: 1px solid var(--ink);
+    background: var(--paper-2);
+  }
+  .acta > div {
+    min-width: 0;
+    padding: 1rem 1rem 1.1rem 1.25rem;
+    border-right: 1px dashed var(--ink);
+  }
+  .acta > div:first-child {
+    padding-left: var(--gutter);
+  }
+  .acta > div:last-child {
+    border-right: 0;
+  }
+  .acta dt {
+    color: var(--ink-soft);
+  }
+  .acta dd {
+    margin: 0.3rem 0 0;
+  }
+  .acta strong,
+  .acta .fila-sellos {
+    display: flex;
+    align-items: center;
+    height: max(2.7rem, calc(clamp(1.6rem, 3.2vw, 2.6rem) * 1.1));
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+  .acta dd > span:last-child {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .acta :global(.sello-p svg) {
+    fill: var(--paper-2);
+  }
+
+  /* ───── piezas comunes ───── */
+  .fila-sellos {
+    display: inline-flex;
+    align-items: center;
+  }
+  .quorum {
+    margin: 0.9rem 0 0;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+  .quorum a {
+    display: inline-block;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .cuerpo {
+    min-width: 0;
+  }
+  .sub {
+    font-size: 1.35rem;
+    margin: 2.6rem 0 0.35rem;
+  }
+  .cuerpo > .sub:first-child,
+  .veredicto + .sub {
+    margin-top: 0;
+  }
+  .veredicto + .sub {
+    margin-top: 2.6rem;
+  }
+  .nota,
+  .regla {
+    color: var(--ink-soft);
+    margin: 0 0 1rem;
+  }
+  .nota {
+    font-size: 0.95rem;
+  }
+  .regla {
+    font-size: 0.66rem;
+  }
+  .regla span {
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: var(--ink);
+  }
+  .ojo {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 1rem;
+    align-items: baseline;
+    max-width: none;
+    margin: 0;
+    padding: 0.85rem 1.1rem;
+    border: 1px dashed var(--ink);
+    background: var(--paper-2);
+    font-size: 0.98rem;
+  }
+  .ojo .mono {
+    color: var(--shu);
+  }
+  .ojo b {
+    font-family: var(--f-display);
+  }
+
+  /* ───── veredicto ───── */
+  .veredicto {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.2rem 1.5rem;
+    align-items: start;
+  }
+  .veredicto .ojo {
+    grid-column: 1 / -1;
+  }
+  .estacion,
+  .mini-estacion {
+    writing-mode: vertical-rl;
+    font-family: var(--f-display);
+    font-weight: 800;
+    line-height: 1;
+    border-radius: 2px;
+  }
+  .estacion {
+    padding: 0.7rem 0.55rem;
+    background: var(--shu);
+    color: var(--paper);
+    font-size: 2.4rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+  }
+  .veredicto p {
+    margin: 0;
+  }
+  .va {
+    color: var(--shu);
+  }
+  .veredicto h3 {
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    margin: 0.25rem 0 0.35rem;
+  }
+  .fechas {
+    color: var(--ink-soft);
+  }
+  .dice {
+    margin-top: 0.8rem !important;
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: 1.15rem;
+  }
+
+  /* ───── tabla de posiciones ───── */
+  .tabla {
+    border-top: 1px solid var(--ink);
+  }
+  .tabla .fila {
+    display: grid;
+    grid-template-columns: 2.2rem minmax(10rem, 1.4fr) repeat(4, minmax(0, 1fr)) 8.5rem;
+    align-items: center;
+    column-gap: 0.6rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .tabla .cabeza {
+    padding-block: 0.55rem;
+    border-bottom-color: var(--ink);
+    color: var(--ink-soft);
+    font-size: 0.6rem;
+  }
+  .tabla .cabeza b {
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--ink);
+    letter-spacing: 0;
+  }
+  .celdas {
+    display: contents;
+  }
+  .celda {
+    min-width: 0;
+  }
+  .celda .etq {
+    display: none;
+  }
+  .celda .fila-sellos {
+    min-height: 2.7rem;
+  }
+  .pos {
+    color: var(--ink-soft);
+    font-size: 0.8rem;
+  }
+  .nombre {
+    display: grid;
+    grid-template-columns: 1.9rem 1fr;
+    gap: 0.7rem;
+    align-items: center;
+  }
+  .nombre > span:last-child {
+    display: grid;
+    justify-items: start;
+    gap: 0.1rem;
+  }
+  .nombre strong {
+    font-family: var(--f-display);
+    font-size: 1.1rem;
+    line-height: 1.15;
+  }
+  .nombre .mono {
+    color: var(--ink-soft);
+    font-size: 0.6rem;
+  }
+  .nombre .veto {
+    margin-top: 0.15rem;
+    color: var(--shu);
+    font-size: 0.58rem;
+    line-height: 1.45;
+  }
+  .mini-estacion {
+    justify-self: center;
+    padding: 0.3rem 0.22rem;
+    border: 1px solid currentColor;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+  .puntos {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .medidor {
+    display: flex;
+    gap: 2px;
+  }
+  .medidor i,
+  .seg {
+    display: inline-block;
+    flex: 1;
+    height: 0.7rem;
+    border-radius: 2px;
+    background: var(--hair);
+  }
+  .medidor i.lleno,
+  .seg.lleno {
+    background: var(--ink);
+  }
+  .medidor i.posible,
+  .seg.posible {
+    background: none;
+    outline: 1px dashed var(--ink-soft);
+    outline-offset: -1px;
+  }
+  .cifra {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+  }
+  .cifra b {
+    font-family: var(--f-display);
+    font-size: 1.35rem;
+    line-height: 1;
+  }
+  .cifra .mono {
+    color: var(--ink-soft);
+    font-size: 0.6rem;
+  }
+  /* la que va adelante: lo único bermellón de la tabla */
+  .fila.primera .pos,
+  .fila.primera .mini-estacion {
+    color: var(--shu);
+  }
+  .fila.primera .mini-estacion {
+    background: var(--shu);
+    border-color: var(--shu);
+    color: var(--paper);
+  }
+  .fila.primera .medidor i.lleno {
+    background: var(--shu);
+  }
+  /* tachada: se lee, pero queda atrás */
+  .fila.tachada strong {
+    text-decoration: line-through;
+    text-decoration-color: var(--shu);
+    text-decoration-thickness: 2px;
+  }
+  .fila.tachada :is(.mini-estacion, .v2, .v1, .falta, .puntos) {
+    opacity: 0.4;
+  }
+  .leyenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.4rem;
+    margin: 0.8rem 0 0;
+    max-width: none;
+    color: var(--ink-soft);
+    font-size: 0.6rem;
+  }
+  .leyenda .seg {
+    flex: none;
+    width: 0.9rem;
+    vertical-align: -0.1em;
+    margin-right: 0.3rem;
+  }
+
+  /* ───── meses × personas ─────
+     En escritorio, una columna por mes; en celular se voltea: una fila por mes.
+     Cada pieza sabe su mes (--m) y su persona (--f), y el CSS decide dónde va. */
+  .meses-grupo {
+    --cab: 4; /* filas antes de las personas: dos carriles de ventanas y el nombre del mes */
+    display: grid;
+    grid-template-columns: 2.6rem repeat(12, minmax(0, 1fr));
+    grid-template-rows: 1.5rem 1.5rem auto repeat(var(--filas), 2.9rem) auto;
+    column-gap: 2px;
+    margin-top: 1.2rem;
+  }
+  .todos {
+    grid-column: calc(var(--m) + 1);
+    grid-row: 3 / -1;
+    background: var(--paper-2);
+    border-bottom: 2px solid var(--ink);
+  }
+  .banda {
+    grid-column: calc(var(--desde) + 1) / calc(var(--hasta) + 2);
+    grid-row: var(--carril);
+    align-self: center;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    min-width: 0;
+    height: 1.15rem;
+    padding-inline: 0.4rem;
+    border: 1px solid var(--ink);
+    border-radius: 99px;
+    font-family: var(--f-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .banda span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .banda .bk {
+    display: none;
+  }
+  .banda.primera {
+    background: var(--shu);
+    border-color: var(--shu);
+    color: var(--paper);
+  }
+  .banda.tachada {
+    border-style: dashed;
+    color: var(--ink-soft);
+  }
+  .banda.tachada span {
+    text-decoration: line-through;
+    text-decoration-color: var(--shu);
+  }
+  .mes {
+    grid-column: calc(var(--m) + 1);
+    grid-row: 3;
+    padding: 0.5rem 0 0.4rem;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 0.62rem;
+  }
+  .quien-es {
+    grid-column: 1;
+    grid-row: calc(var(--f) + 3);
+    display: grid;
+    place-items: center start;
+  }
+  .casilla {
+    grid-column: calc(var(--m) + 1);
+    grid-row: calc(var(--f) + 3);
+    align-self: center;
+    justify-self: center;
+    width: min(100%, 2.4rem);
+    height: 1.5rem;
+    border-radius: 3px;
+  }
+  .casilla::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 4px;
+    margin: calc(0.75rem - 2px) auto 0;
+    border-radius: 50%;
+    background: var(--hair);
+  }
+  .casilla.si {
+    background: var(--ink);
+  }
+  .casilla.si::before {
+    content: none;
+  }
+  .casilla.sin {
+    border: 1px dashed var(--hair);
+  }
+  .casilla.sin::before {
+    content: none;
+  }
+  .meses-grupo .cuenta {
+    grid-column: calc(var(--m) + 1);
+    grid-row: -2;
+    padding: 0.5rem 0;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+  }
+  .meses-grupo .cuenta.es-todos {
+    background: none;
+    border: 0;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .pendiente {
+    margin: 0.7rem 0 0;
+    color: var(--ink-soft);
+    font-size: 0.62rem;
+  }
+
+  .no-cuadra ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--hair);
+  }
+  .no-cuadra li {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--hair);
+    font-size: 0.98rem;
+  }
+  .no-cuadra li b {
+    font-family: var(--f-display);
+  }
+  .no-cuadra [lang='ja'] {
+    font-family: var(--f-display);
+    font-weight: 800;
+  }
+
+  /* ───── los días ───── */
+  .dias {
+    display: grid;
+    gap: 0.35rem;
+    margin-top: 1.2rem;
+  }
+  .numeros,
+  .tramos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(var(--dias), minmax(0, 1fr));
+    gap: 2px;
+  }
+  .numeros li {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 0.6rem;
+    letter-spacing: 0;
+  }
+  .tramos li {
+    grid-column: var(--desde) / calc(var(--hasta) + 1);
+    display: grid;
+    place-items: center;
+    height: 4.2rem;
+    border: 1px solid var(--ink);
+    /* un renglón por día, como en una libreta */
+    background:
+      repeating-linear-gradient(
+        to right,
+        transparent 0 calc(100% / (var(--hasta) - var(--desde) + 1) - 1px),
+        var(--hair) calc(100% / (var(--hasta) - var(--desde) + 1) - 1px) calc(100% / (var(--hasta) - var(--desde) + 1))
+      ),
+      var(--paper);
+  }
+  .tramos .k,
+  .zonas .k {
+    font-family: var(--f-display);
+    font-weight: 800;
+    line-height: 1;
+  }
+  .tramos .k {
+    font-size: clamp(1.1rem, 2.4vw, 1.7rem);
+    padding: 0.25rem 0.3rem;
+    background: var(--paper);
+  }
+  .zonas {
+    list-style: none;
+    margin: 1.2rem 0 1.5rem;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1rem 1.5rem;
+  }
+  .zonas li {
+    display: grid;
+    grid-template-columns: 2.6rem 1fr;
+    gap: 0.75rem;
+    align-items: start;
+  }
+  .zonas .k {
+    font-size: 1.5rem;
+    color: var(--shu);
+    text-align: center;
+  }
+  .zonas li > span:last-child {
+    display: grid;
+    gap: 0.15rem;
+  }
+  .zonas strong {
+    font-family: var(--f-display);
+    font-size: 1.1rem;
+    line-height: 1.2;
+  }
+  .zonas .mono {
+    color: var(--ink-soft);
+    font-size: 0.6rem;
+  }
+  .zonas .por {
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+
+  /* ───── lugares por consenso ───── */
+  .grupo-lugares {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.2rem 1rem;
+    margin: 2.6rem 0 0.9rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--ink);
+  }
+  .grupo-lugares .sub {
+    margin: 0;
+  }
+  .cuerpo > .grupo-lugares:first-child {
+    margin-top: 0;
+  }
+  /* el reparto es una posible opción: trazo punteado, como lo que todavía no se pone en limpio */
+  .tramos li {
+    border-style: dashed !important;
+  }
+  .umbral {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.6rem;
+  }
+  .fijos,
+  .fuerza,
+  .personales {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .fijos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
+    gap: 1.25rem 1rem;
+  }
+  .fijos li {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 0.6rem;
+  }
+  .foto {
+    display: block;
+    overflow: hidden;
+    background: var(--paper-2);
+    border: 1px solid var(--ink);
+  }
+  .foto img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .fijos .foto {
+    aspect-ratio: 3 / 2;
+  }
+  /* los fijos van a color: son los que el grupo ya escogió */
+  .fuerza .foto img,
+  .fuera .foto img {
+    filter: grayscale(1) contrast(1.1);
+    mix-blend-mode: multiply;
+  }
+  .fijos .txt {
+    display: grid;
+    justify-items: start;
+    align-content: start;
+    gap: 0.15rem;
+  }
+  .zona {
+    color: var(--ink-soft);
+    font-size: 0.58rem;
+  }
+  .fijos .txt a,
+  .fuerza .txt a {
+    text-decoration: none;
+    font-family: var(--f-display);
+    font-size: 1.1rem;
+    line-height: 1.2;
+  }
+  .fijos .chip,
+  .fuerza .chip {
+    font-size: 0.54rem;
+  }
+  .fijos .chip {
+    margin-top: 0.3rem;
+  }
+  .votos {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-top: 0.3rem;
+    border-top: 1px dashed var(--hair);
+  }
+  .votos .mono {
+    color: var(--ink-soft);
+    font-size: 0.6rem;
+  }
+  .fuerza {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+    column-gap: 1.5rem;
+  }
+  .fuerza li {
+    display: grid;
+    grid-template-columns: 3.4rem 1fr auto;
+    gap: 0.8rem;
+    align-items: center;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .fuerza .foto {
+    aspect-ratio: 1;
+  }
+  .fuerza .txt {
+    display: grid;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+  .fuerza .zona {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .fuera .txt a {
+    color: var(--ink-soft);
+  }
+  .personales {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1rem 1.5rem;
+  }
+  .personales li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.8rem;
+    align-items: start;
+  }
+  .personales strong {
+    display: block;
+    font-family: var(--f-display);
+  }
+  .lista {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .tachado {
+    text-decoration: line-through;
+    text-decoration-color: var(--shu);
+  }
+
+  /* ───── papeles ───── */
+  .papeles {
+    margin-top: 1.2rem;
+    border-top: 1px solid var(--ink);
+  }
+  .papeles .fila {
+    display: grid;
+    grid-template-columns: minmax(8rem, 1fr) repeat(var(--gente), 3rem) 4.5rem;
+    align-items: center;
+    min-height: 3.3rem;
+    border-bottom: 1px solid var(--hair);
+  }
+  .papeles .cabeza {
+    border-bottom-color: var(--ink);
+    color: var(--ink-soft);
+  }
+  .papeles .cabeza .mono {
+    font-size: 0.6rem;
+  }
+  .papeles .persona,
+  .hueco {
+    display: grid;
+    place-items: center;
+  }
+  .papel {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .hueco::after {
+    content: '';
+    width: 1.6rem;
+    height: 2.4rem;
+    border: 1px dashed var(--hair);
+    border-radius: 3px;
+  }
+  .hueco.listo::after {
+    content: none;
+  }
+  .papeles .cuantos {
+    text-align: right;
+    color: var(--ink-soft);
+    font-size: 0.66rem;
+  }
+  .papeles .urgente .papel,
+  .papeles .urgente .cuantos {
+    color: var(--shu);
+  }
+  .papeles + * {
+    margin-top: 1rem;
+  }
+  .cuerpo > .ojo:first-child + .papeles {
+    margin-top: 1.2rem;
+  }
+
+  .reglas p {
+    font-size: 0.98rem;
+  }
+
+  .fijos .txt a:hover,
+  .fuerza .txt a:hover {
+    color: var(--shu);
+  }
+  .lista a {
+    text-decoration: none;
+  }
+  .lista a:hover {
+    color: var(--shu);
+    text-decoration: underline;
+  }
+  .sin-foto {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: 2.6rem;
+    line-height: 1;
+    opacity: 0.12;
+  }
+  .fuerza .sin-foto {
+    font-size: 1.4rem;
+  }
+  .vacio {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+
+  /* ───── sin sesión ───── */
+  .sin-sesion {
+    padding-block: 2rem;
+    border-bottom: 1px solid var(--ink);
+  }
+  .sin-sesion p {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 1rem;
+    margin: 0;
+    max-width: none;
+    padding: 0.9rem 1.1rem;
+    border: 1px dashed var(--ink);
+    font-family: var(--f-display);
+    font-size: 1.2rem;
+  }
+  .sin-sesion button {
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: var(--f-body);
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: var(--shu);
+    text-underline-offset: 0.2em;
+  }
+  .sin-sesion button:hover {
+    color: var(--shu);
+  }
+
+  /* ───── tu parte: lo que me falta, cada cosa lleva a donde se hace ───── */
+  .tu-parte {
+    display: grid;
+    grid-template-columns: minmax(8rem, 15rem) 1fr;
+    gap: 0.6rem clamp(1rem, 4vw, 3rem);
+    align-items: start;
+    padding-block: 1.3rem;
+    border-bottom: 1px solid var(--ink);
+  }
+  .tu-parte h2 {
+    padding-top: 0.55rem;
+    color: var(--shu);
+    font-weight: 500;
+  }
+  .tu-parte ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+  }
+  .tu-parte a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--hair);
+    text-decoration: none;
+    transition:
+      background 0.2s,
+      color 0.2s;
+  }
+  .tu-parte a:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .tu-parte .ir {
+    font-family: var(--f-mono);
+    color: var(--shu);
+  }
+  /* cuando mi voto decide, es lo primero y va resaltado */
+  .tu-parte .decide a {
+    border-color: var(--shu);
+    background: var(--shu);
+    color: var(--paper);
+    font-weight: 700;
+  }
+  .tu-parte .decide .ir {
+    color: var(--paper);
+  }
+  .tu-parte .decide a:hover {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .tu-parte p {
+    margin: 0;
+    padding: 0.5rem 0;
+    color: var(--ink-soft);
+  }
+  .veredicto-vacio {
+    margin-bottom: 0;
+  }
+
+  /* ───── celular ───── */
+  @media (max-width: 720px) {
+    .acta {
+      grid-template-columns: 1fr 1fr;
+    }
+    .acta > div,
+    .acta > div:first-child {
+      padding: 0.8rem var(--gutter);
+      border-right: 0;
+      border-bottom: 1px dashed var(--ink);
+    }
+    .acta > div:nth-child(odd):not(:last-child) {
+      border-right: 1px dashed var(--ink);
+    }
+    .acta > div:last-child {
+      grid-column: 1 / -1;
+      border-bottom: 0;
+    }
+
+    .veredicto {
+      grid-template-columns: 1fr auto;
+    }
+    .veredicto .estacion {
+      grid-column: 2;
+      grid-row: 1;
+      font-size: 1.8rem;
+    }
+    .veredicto > div {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    .ojo {
+      grid-template-columns: 1fr;
+    }
+    .tu-parte {
+      grid-template-columns: 1fr;
+    }
+    .tu-parte h2 {
+      padding-top: 0;
+    }
+
+    /* la tabla: cada ventana es una ficha; los votos, en cuatro casillas debajo */
+    .tabla .cabeza {
+      display: none;
+    }
+    .tabla .fila {
+      grid-template-columns: 1.6rem minmax(0, 1fr) 5.5rem;
+      row-gap: 0.6rem;
+      padding: 0.9rem 0;
+    }
+    .celdas {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border: 1px solid var(--hair);
+    }
+    .celda {
+      display: grid;
+      justify-items: center;
+      padding: 0.3rem 0.2rem 0.2rem;
+    }
+    .celda + .celda {
+      border-left: 1px solid var(--hair);
+    }
+    .celda .etq {
+      display: block;
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+    }
+    .celda .etq.mono {
+      font-family: var(--f-mono);
+      font-weight: 400;
+      font-size: 0.56rem;
+      line-height: 1.7;
+    }
+    .celda .fila-sellos :global(.sello-p + .sello-p) {
+      margin-left: -0.5rem;
+    }
+    .puntos {
+      grid-column: 3;
+      grid-row: 1;
+    }
+
+    /* meses: volteado, una fila por mes */
+    .meses-grupo {
+      grid-template-columns: 1.3rem 1.3rem 2.6rem repeat(var(--filas), minmax(0, 1fr)) 2rem;
+      grid-template-rows: 3rem repeat(12, 2rem);
+      column-gap: 0;
+      row-gap: 2px;
+    }
+    .todos {
+      grid-column: 3 / -1;
+      grid-row: calc(var(--m) + 1);
+      border-bottom: 0;
+      border-right: 2px solid var(--ink);
+    }
+    .banda {
+      grid-column: var(--carril);
+      grid-row: calc(var(--desde) + 1) / calc(var(--hasta) + 2);
+      align-self: stretch;
+      justify-self: center;
+      justify-content: center;
+      width: 1.05rem;
+      height: auto;
+      padding: 0.4rem 0;
+      writing-mode: vertical-rl;
+    }
+    /* en celular la banda es angosta: va el kanji de la época, como en los papelitos */
+    .banda .txt {
+      display: none;
+    }
+    .banda .bk {
+      display: block;
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: 0.7rem;
+      letter-spacing: 0;
+    }
+    .banda.tachada .bk {
+      text-decoration: none;
+      opacity: 0.6;
+    }
+    .fijos {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.1rem 0.8rem;
+    }
+    .fijos strong {
+      font-size: 0.98rem;
+    }
+    .mes {
+      grid-column: 3;
+      grid-row: calc(var(--m) + 1);
+      align-self: center;
+      padding: 0 0 0 0.4rem;
+      text-align: left;
+    }
+    .quien-es {
+      grid-row: 1;
+      grid-column: calc(var(--f) + 3);
+      place-items: center;
+    }
+    .casilla {
+      grid-column: calc(var(--f) + 3);
+      grid-row: calc(var(--m) + 1);
+      width: min(80%, 2.4rem);
+      height: 1.4rem;
+    }
+    .casilla::before {
+      margin-top: calc(0.7rem - 2px);
+    }
+    .meses-grupo .cuenta {
+      grid-column: -2;
+      grid-row: calc(var(--m) + 1);
+      align-self: center;
+      padding: 0;
+    }
+
+    .fuerza li {
+      grid-template-columns: 3rem 1fr auto;
+    }
+    .papeles .fila {
+      grid-template-columns: minmax(0, 1fr) repeat(var(--gente), 2.3rem) 3.2rem;
+    }
+    .papel {
+      font-size: 0.95rem;
+    }
+  }
+</style>

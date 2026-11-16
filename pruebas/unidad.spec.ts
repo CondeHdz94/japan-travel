@@ -201,12 +201,13 @@ test.describe('fotos del catálogo', () => {
 });
 
 test.describe('secciones', () => {
-  test('seis, numeradas en orden, tres abiertas', () => {
-    expect(secciones.map((s) => s.n)).toEqual(['01', '02', '03', '04', '05', '06']);
+  test('siete, numeradas en orden, cuatro abiertas', () => {
+    expect(secciones.map((s) => s.n)).toEqual(['01', '02', '03', '04', '05', '06', '07']);
     expect(secciones.filter((s) => s.href).map((s) => s.href)).toEqual([
       '/cuando-ir',
       '/requisitos',
       '/lugares',
+      '/decisiones',
     ]);
   });
 });

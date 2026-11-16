@@ -9,6 +9,7 @@ const PAGINAS = [
   { ruta: '/cuando-ir', titulo: 'Cuándo ir', h1: /Cuándo ir/ },
   { ruta: '/requisitos', titulo: 'Requisitos', h1: /Requisitos/ },
   { ruta: '/lugares', titulo: 'Lugares', h1: /Lugares/ },
+  { ruta: '/decisiones', titulo: 'Decisiones', h1: /Decisiones/ },
 ];
 
 // la entrada del Inicio tiene sus propias pruebas; en las demás estorba
@@ -40,11 +41,11 @@ for (const p of PAGINAS) {
       });
     }
 
-    test('cabecera: marca, tres secciones y la actual resaltada', async ({ page }) => {
+    test('cabecera: marca, cuatro secciones y la actual resaltada', async ({ page }) => {
       await abrir(page, p.ruta, 'no');
       await expect(page.locator('header.top a.mark')).toHaveAttribute('href', '/');
       const nav = page.locator('header.top nav a');
-      await expect(nav).toHaveText(['Cuándo ir', 'Requisitos', 'Lugares']);
+      await expect(nav).toHaveText(['Cuándo ir', 'Requisitos', 'Lugares', 'Decisiones']);
       const actual = page.locator('header.top nav a[aria-current=page]');
       if (p.ruta === '/') await expect(actual).toHaveCount(0);
       else await expect(actual).toHaveAttribute('href', p.ruta);
@@ -104,17 +105,18 @@ for (const p of PAGINAS) {
 }
 
 test.describe('Inicio', () => {
-  test('boleto con cinco datos e índice con seis secciones (tres abiertas, tres «Pronto»)', async ({ page }) => {
+  test('boleto con cinco datos e índice con siete secciones (cuatro abiertas, tres «Pronto»)', async ({ page }) => {
     await abrir(page, '/', 'no');
     await expect(page.locator('.boleto > div')).toHaveCount(5);
     await expect(page.locator('.boleto strong')).toHaveText(['CLO', 'TYO', '2027', '4–5', '14.400']);
-    await expect(page.locator('.indice li')).toHaveCount(6);
+    await expect(page.locator('.indice li')).toHaveCount(7);
     const abiertas = page.locator('.indice a.fila');
-    await expect(abiertas).toHaveCount(3);
+    await expect(abiertas).toHaveCount(4);
     expect(await abiertas.evaluateAll((as) => as.map((a) => a.getAttribute('href')))).toEqual([
       '/cuando-ir',
       '/requisitos',
       '/lugares',
+      '/decisiones',
     ]);
     const pronto = page.locator('.indice div.fila.off');
     await expect(pronto).toHaveCount(3);
@@ -123,7 +125,7 @@ test.describe('Inicio', () => {
   });
 
   test('desde el índice se llega a cada sección', async ({ page }) => {
-    for (const [i, ruta] of ['/cuando-ir', '/requisitos', '/lugares'].entries()) {
+    for (const [i, ruta] of ['/cuando-ir', '/requisitos', '/lugares', '/decisiones'].entries()) {
       await abrir(page, '/', 'no');
       await page.locator('.indice a.fila').nth(i).click();
       await expect(page).toHaveURL(new RegExp(`${ruta}$`));
