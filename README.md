@@ -74,8 +74,11 @@ suplantaciones).
 (`src/scripts/kana.ts` hace la transcripción por sonido) y sus iniciales: una por palabra
 («Juan» → J, «Juan Camilo» → JC); si dos chocan, se alarga la última palabra («Ana» y «Andrés»
 → Ana y And). Hay 12 formas de sello (`src/data/formas.ts`) y 6 colores: al entrar se asignan
-la primera forma y el primer color que nadie tenga. La forma se cambia desde el perfil; el color
-es fijo, así que si alguien se sale, los demás no cambian de color. Todas las formas se dibujan
+la primera forma y el primer color que nadie tenga. Los dos se cambian desde el perfil, con una
+diferencia: la forma es gusto personal y se puede repetir; el color es lo que distingue a cada
+uno de lejos y no se repite (los de otros se ven ocupados, con el nombre de quién es, y la API
+rechaza tomarlos). El color se guarda, así que si alguien se sale, los demás no cambian de
+color. Si el grupo pasa de 6, los colores se repiten. Todas las formas se dibujan
 en la misma caja, así que cambiar de forma no mueve nada; donde los sellos se montan, cada uno
 tapa al de abajo solo con su silueta.
 
@@ -145,7 +148,9 @@ lo que voten los demás sale al volver a abrirla. Las reglas:
 - *Días.* Los 15 días se reparten entre zonas en proporción a los votos de lo que quieren dos o
   más (mayor residuo). Es una posible opción, no un plan.
 - *Tu parte.* Mis pendientes, cada uno con su enlace: si mi voto decide la ventana, qué ventanas
-  me faltan, meses, lugares y el papel más urgente.
+  me faltan, meses, lugares y el primer papel que me falte entre el pasaporte y los que otro del
+  grupo ya tiene (no todo: los hospedajes no se piden meses antes). En Papeles, «Lo urgente» es
+  el primero que el grupo ya empezó o, si no, el primero que le falte a alguien.
 
 **Sin saltos.** El espacio de los sellos se reserva de antemano, el último estado se guarda en
 `localStorage` para pintar de una, y en Lugares el orden por votos se fija al cargar.
@@ -164,7 +169,7 @@ Todas en `src/pages/api/`, responden JSON.
 | `POST entrar` | `{nombre, clave, soyYo?}` → abre sesión; `nuevo: true` si se registró. Si el nombre ya existe y no viene `soyYo: true`, responde 409 con `existe` (para el «¿eres tú?») |
 | `POST visto` | `{hasta}` → ya se me anunció hasta ese viajero. Solo sube, y nunca más allá del último que existe |
 | `POST salir` | Cierra la sesión de este dispositivo |
-| `POST renombrar` | `{nombre, forma?}` → cambia mi nombre (y la forma de mi sello, si viene) conservando marcas |
+| `POST renombrar` | `{nombre, forma?, tinta?}` → cambia mi nombre (y la forma o el color de mi sello, si vienen) conservando marcas. Un color de otro: 409 con de quién es |
 | `POST borrarme` | Me saca del grupo, con mis marcas y los lugares que propuse |
 | `POST marca` | `{tipo, clave, valor}` → pone una marca; `valor: null` la quita. Solo acepta claves que existen: las de `src/data/claves.ts`, el catálogo o un lugar propuesto vigente |
 | `POST lugares` | Propone un lugar |

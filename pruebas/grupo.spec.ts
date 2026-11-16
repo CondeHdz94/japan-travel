@@ -543,6 +543,51 @@ test.describe('perfil', () => {
     await expect(d.locator('[data-formas] input:checked')).toHaveValue('ema');
   });
 
+  test('escoger color: los de otros se ven ocupados, el libre se guarda y se ve en todos mis sellos', async ({ page, grupo }) => {
+    await grupo.entrar('Laura'); // le toca el color 0
+    const id = await entrarEn(page, 'Camilo'); // a mí, el 1
+    await abrir(page, '/cuando-ir', 'si');
+    await mes(page, 'oct').locator('[data-poner]').click();
+    const antes = await plano(page, 'main h1, main h2, .meses li, footer');
+
+    await page.locator('#quien [data-perfil]').click();
+    const d = page.locator('#perfil');
+    const colores = d.locator('[data-tintas] input[name=tinta]');
+    await expect(colores).toHaveCount(6);
+    await expect(d.locator('[data-tintas] input:checked')).toHaveValue('1');
+    // el de Laura: se ve, dice de quién es y no se puede escoger
+    const deLaura = d.locator('[data-tintas] label.ocupada');
+    await expect(deLaura).toHaveCount(1);
+    await expect(deLaura).toContainText('Laura');
+    await expect(deLaura.locator('input')).toBeDisabled();
+    await expect(deLaura.locator('input')).toHaveValue('0');
+
+    // al escoger un color, las formas se muestran con él
+    await d.locator('[data-tintas] input[value="3"]').check({ force: true });
+    await expect(d.locator('[data-formas] .sello-p').first()).toHaveAttribute('data-tinta', '3');
+    await d.locator('button[type=submit]').click();
+    await expect(d).toBeHidden();
+
+    await expect(page.locator('#quien .sello-p')).toHaveAttribute('data-tinta', '3');
+    await expect(sellosDe(mes(page, 'oct'))).toHaveAttribute('data-tinta', '3');
+    expect((await estadoDe(page)).yo).toEqual({ id, nombre: 'Camilo', forma: 'maru', tinta: 3 });
+    expect(await plano(page, 'main h1, main h2, .meses li, footer')).toEqual(antes);
+  });
+
+  test('si otro tomó el color mientras tenía el perfil abierto, avisa de quién es y no cambia', async ({ page, grupo }) => {
+    const laura = await grupo.entrar('Laura');
+    await entrarEn(page, 'Camilo');
+    await abrir(page, '/cuando-ir', 'si');
+    await page.locator('#quien [data-perfil]').click();
+    const d = page.locator('#perfil');
+    await d.locator('[data-tintas] input[value="4"]').check({ force: true });
+    await laura.api.post('/api/renombrar', { data: { nombre: 'Laura', tinta: 4 } });
+    await d.locator('button[type=submit]').click();
+    await expect(d.locator('[role=alert]')).toHaveText('Ese color ya es de Laura.');
+    await expect(d).toBeVisible();
+    expect((await estadoDe(page)).yo?.tinta).toBe(1);
+  });
+
   test('cerrar el perfil sin guardar no cambia la forma', async ({ page }) => {
     await entrarEn(page, 'Camilo');
     await abrir(page, '/cuando-ir', 'si');

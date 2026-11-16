@@ -17,6 +17,7 @@ import {
   MESES_DE_VENTANA,
   miParte,
   noCuadran,
+  papelUrgente,
   quorum,
   repartirDias,
   temprano,
@@ -99,13 +100,32 @@ const nombres = (ps: Persona[]) => y(ps.map((p) => p.nombre));
 const o = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} ni ${xs.at(-1)}`);
 const dos = (x: number) => String(x).padStart(2, '0');
 const plural = (k: number, uno: string, varios: string) => `${k} ${k === 1 ? uno : varios}`;
+// cuando la lista me incluye, la página me habla a mí: «Andrés y tú», «faltas tú»
+const esYo = (p: Persona) => p.id === yo?.id;
+const conTu = (ps: Persona[]) => {
+  const otros = ps.filter((p) => !esYo(p)).map((p) => p.nombre);
+  return ps.some(esYo) ? (otros.length ? y([...otros, 'tú']) : 'tú') : y(otros);
+};
+const mayuscula = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const faltan = (ps: Persona[]) =>
+  ps.length === 1 && esYo(ps[0]) ? 'faltas tú' : `${ps.length === 1 ? 'falta' : 'faltan'} ${conTu(ps)}`;
 
 // completo es quien votó ventanas, marcó meses y votó lugares
 const completos = personas.filter(
   (p) => !qVentanas.faltan.includes(p) && !meses.faltan.includes(p) && !qLugares.faltan.includes(p),
 );
 const pendientes = personas.filter((p) => !completos.includes(p));
-const urgente = papeles.find((x) => x.tienen.length > 0 && x.faltan.length > 0) ?? papeles[0];
+const urgente = papelUrgente(papeles);
+// lo que me falta, dicho con su artículo: «te falta la visa», «te faltan los tiquetes»
+const TE_FALTA: Record<string, string> = {
+  pasaporte: 'Te falta el pasaporte',
+  visa: 'Te falta la visa japonesa',
+  tiquetes: 'Te faltan los tiquetes',
+  hospedajes: 'Te faltan los hospedajes',
+  seguro: 'Te falta el seguro de viaje',
+  vjw: 'Te falta el registro en Visit Japan Web',
+  plata: 'Te falta tener lista la plata',
+};
 
 // el acta: qué va en la casilla de Cuándo
 const cuando = esTemprano
@@ -138,7 +158,10 @@ const pendientesMios = mia
       },
       mia.meses && { clave: 'meses', texto: 'No has marcado en qué meses puedes viajar.', href: '/cuando-ir' },
       mia.lugares && { clave: 'lugares', texto: 'No has votado ningún lugar.', href: '/lugares' },
-      mia.papel && { clave: 'papel', texto: `Te falta el ${PAPEL[mia.papel].toLowerCase()}, lo más urgente de los papeles.`, href: '/requisitos' },
+      mia.papel && { clave: 'papel', texto:
+          mia.papel === 'pasaporte'
+            ? `${TE_FALTA.pasaporte}: sin él no se puede pedir la visa.`
+            : `${TE_FALTA[mia.papel]}: otros del grupo ya van en eso.`, href: '/requisitos' },
     ].filter((x): x is { clave: string; texto: string; href: string } => !!x)
   : [];
 
@@ -208,10 +231,10 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
       </dd>
     </div>
     <div>
-      <dt class="mono">{PAPEL[urgente.id]}</dt>
+      <dt class="mono">{urgente ? PAPEL[urgente.id] : 'Papeles'}</dt>
       <dd>
-        <strong>{urgente.tienen.length} de {n}</strong>
-        <span>ya lo tienen</span>
+        <strong>{urgente ? `${urgente.tienen.length} de ${n}` : 'Listos'}</strong>
+        <span>{urgente ? (urgente.tienen.length === 1 ? 'ya lo tiene' : 'ya lo tienen') : 'todos, todo'}</span>
       </dd>
     </div>
     <div>
@@ -221,7 +244,7 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
           {completos.map((p) => <Sello {...sello(p)} clave="acta" />)}
           {pendientes.map((p) => <Sello {...sello(p)} fantasma clave="acta" />)}
         </span>
-        <span>{pendientes.length ? `${completos.length} de ${n} · falta ${nombres(pendientes)}` : 'todos, sin falta'}</span>
+        <span>{pendientes.length ? `${completos.length} de ${n} · ${faltan(pendientes)}` : 'todos, sin falta'}</span>
       </dd>
     </div>
   </dl>
@@ -265,7 +288,7 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
             <span class="mono">Es temprano</span>
             <span>
               Votaron {qVentanas.votaron.length} de {n}: con menos de la mitad del grupo no se anuncia
-              ganadora. {qVentanas.faltan.length > 0 && <>Falta {nombres(qVentanas.faltan)}.</>}
+              ganadora. {qVentanas.faltan.length > 0 && <>{mayuscula(faltan(qVentanas.faltan))}.</>}
             </span>
           </p>
         ) : empatadas.length ? (
@@ -335,14 +358,25 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
         </div>
         {
           ventanas.map((v, i) => (
-            <div class:list={['fila', { primera: delante.has(v.id), tachada: v.tachada }]} role="row">
-              <span class="pos mono" role="cell">{v.tachada ? '—' : dos(i + 1)}</span>
+            <div class:list={['fila', { primera: delante.has(v.id), tachada: v.tachada, 'sin-votos': v.faltan.length === n }]} role="row">
+              <span class="pos mono" role="cell">{v.tachada || v.faltan.length === n ? '—' : dos(i + 1)}</span>
               <span class="nombre" role="cell">
                 <span class="mini-estacion" lang="ja" aria-hidden="true">{V[v.id].k}</span>
                 <span>
                   <strong>{V[v.id].nombre}</strong>
                   <span class="mono">{V[v.id].fechas}</span>
-                  {v.tachada && <span class="veto mono">No puede{v.votos[0].length > 1 && 'n'}: {nombres(v.votos[0])}</span>}
+                  {v.tachada && (
+                    <span class="veto mono">
+                      {/* con muchos, la cuenta: quiénes son ya se ve en sus sellos de la columna 否 */}
+                      {v.votos[0].length === n && n > 1
+                        ? 'Nadie puede'
+                        : v.votos[0].length > 2
+                          ? `No pueden ${v.votos[0].length}`
+                          : v.votos[0].length === 1 && esYo(v.votos[0][0])
+                            ? 'No puedes tú'
+                            : `No puede${v.votos[0].length > 1 ? 'n' : ''}: ${conTu(v.votos[0])}`}
+                    </span>
+                  )}
                 </span>
               </span>
               <span class="celdas">
@@ -374,10 +408,16 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
                     />
                   ))}
                 </span>
-                <span class="cifra">
-                  <b>{v.puntos}</b>
-                  <span class="mono">de {2 * (n - v.faltan.length)}</span>
-                </span>
+                {v.faltan.length === n ? (
+                  <span class="cifra">
+                    <span class="mono">Sin votos</span>
+                  </span>
+                ) : (
+                  <span class="cifra">
+                    <b>{v.puntos}</b>
+                    <span class="mono">de {2 * (n - v.faltan.length)}</span>
+                  </span>
+                )}
               </span>
             </div>
           ))
@@ -428,7 +468,11 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
         ))}
       </div>
       {meses.faltan.length > 0 && (
-        <p class="mono pendiente">{nombres(meses.faltan)} todavía no ha marcado meses.</p>
+        <p class="mono pendiente">
+          {meses.faltan.length === 1 && esYo(meses.faltan[0])
+            ? 'Todavía no has marcado meses.'
+            : `${conTu(meses.faltan)} todavía no ${meses.faltan.length === 1 ? 'ha' : 'han'} marcado meses.`}
+        </p>
       )}
 
       {
@@ -441,8 +485,8 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
                 <li>
                   <Sello {...sello(persona)} clave="raro" />
                   <span>
-                    <b>{persona.nombre}</b> votó por {y(votos.map((r) => V[r.ventana].nombre))}, pero no
-                    marcó {o([...new Set(votos.flatMap((r) => r.meses))].sort((a, b) => a - b).map((m) => MES_LARGO[m - 1]))}.
+                    <b>{esYo(persona) ? 'Tú' : persona.nombre}</b> {esYo(persona) ? 'votaste' : 'votó'} por{' '}
+                    {y(votos.map((r) => V[r.ventana].nombre))}, pero no {esYo(persona) ? 'marcaste' : 'marcó'} {o([...new Set(votos.flatMap((r) => r.meses))].sort((a, b) => a - b).map((m) => MES_LARGO[m - 1]))}.
                   </span>
                 </li>
               ))}
@@ -654,12 +698,11 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
 
     <div class="cuerpo">
       <p class="ojo">
-        <span class="mono">{urgente.faltan.length ? 'Lo urgente' : 'Listos'}</span>
+        <span class="mono">{urgente ? 'Lo urgente' : 'Listos'}</span>
         {
-          urgente.faltan.length ? (
+          urgente ? (
             <span>
-              <b>{PAPEL[urgente.id]}</b>: {urgente.faltan.length === 1 ? 'falta' : 'faltan'}{' '}
-              {urgente.faltan.length === n ? 'todos' : nombres(urgente.faltan)}.
+              <b>{PAPEL[urgente.id]}</b>: {urgente.faltan.length === n && n > 1 ? 'faltan todos' : faltan(urgente.faltan)}.
               {urgente.id === 'pasaporte' && ' Sin pasaporte vigente no se puede pedir la visa, y sin visa no conviene comprar nada.'}
               {urgente.id === 'visa' && ' Sin visa no conviene comprar nada que no se pueda devolver.'}
             </span>
@@ -680,7 +723,7 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
           <span role="columnheader" class="mono cuantos">Listos</span>
         </div>
         {papeles.map((x) => (
-          <div class:list={['fila', { urgente: x === urgente && x.faltan.length > 0 }]} role="row">
+          <div class:list={['fila', { urgente: x === urgente }]} role="row">
             <span role="rowheader" class="papel">{PAPEL[x.id]}</span>
             {personas.map((p) => (
               <span role="cell" class:list={['hueco', { listo: x.tienen.includes(p) }]}>
@@ -907,7 +950,7 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
     padding-block: 0.55rem;
     border-bottom-color: var(--ink);
     color: var(--ink-soft);
-    font-size: 0.6rem;
+    font-size: 0.66rem;
   }
   .tabla .cabeza b {
     font-family: var(--f-display);
@@ -925,8 +968,27 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
   .celda .etq {
     display: none;
   }
-  .celda .fila-sellos {
+  /* Donde el ancho es fijo (las casillas de la tabla, el pie de cada fijo), los sellos van en
+     una sola línea, como en los votos de Cuándo ir: cada uno tiene un carril que se encoge si no
+     caben y se monta sobre el anterior lo justo. El relleno de la derecha es lo que sobresale
+     el último sello de su carril: así nunca se sale de la casilla. */
+  .celda .fila-sellos,
+  .votos .fila-sellos {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1.35rem);
+    justify-content: start;
+    align-items: center;
+    min-width: 0;
     min-height: 2.7rem;
+    /* a la izquierda, lo que asoma un sello torcido */
+    padding: 0 1.3rem 0 0.25rem;
+  }
+  :is(.celda, .votos) .fila-sellos :global(.sello-p + .sello-p) {
+    margin-left: 0;
+  }
+  .votos .fila-sellos {
+    flex: 1;
   }
   .pos {
     color: var(--ink-soft);
@@ -950,12 +1012,12 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
   }
   .nombre .mono {
     color: var(--ink-soft);
-    font-size: 0.6rem;
+    font-size: 0.66rem;
   }
   .nombre .veto {
     margin-top: 0.15rem;
     color: var(--shu);
-    font-size: 0.58rem;
+    font-size: 0.66rem;
     line-height: 1.45;
   }
   .mini-estacion {
@@ -1003,7 +1065,7 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
   }
   .cifra .mono {
     color: var(--ink-soft);
-    font-size: 0.6rem;
+    font-size: 0.66rem;
   }
   /* la que va adelante: lo único bermellón de la tabla */
   .fila.primera .pos,
@@ -1027,6 +1089,10 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
   .fila.tachada :is(.mini-estacion, .v2, .v1, .falta, .puntos) {
     opacity: 0.4;
   }
+  /* sin votos todavía: no tiene puesto ni puntos que mostrar */
+  .fila.sin-votos .medidor {
+    opacity: 0.5;
+  }
   .leyenda {
     display: flex;
     flex-wrap: wrap;
@@ -1034,7 +1100,7 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
     margin: 0.8rem 0 0;
     max-width: none;
     color: var(--ink-soft);
-    font-size: 0.6rem;
+    font-size: 0.66rem;
   }
   .leyenda .seg {
     flex: none;
@@ -1073,7 +1139,7 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
     border: 1px solid var(--ink);
     border-radius: 99px;
     font-family: var(--f-mono);
-    font-size: 0.58rem;
+    font-size: 0.66rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -1203,7 +1269,7 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
   .numeros li {
     text-align: center;
     color: var(--ink-soft);
-    font-size: 0.6rem;
+    font-size: 0.66rem;
     letter-spacing: 0;
   }
   .tramos li {
@@ -1262,7 +1328,7 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
   }
   .zonas .mono {
     color: var(--ink-soft);
-    font-size: 0.6rem;
+    font-size: 0.66rem;
   }
   .zonas .por {
     font-size: 0.85rem;
@@ -1294,7 +1360,7 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
   .umbral {
     margin: 0;
     color: var(--ink-soft);
-    font-size: 0.6rem;
+    font-size: 0.66rem;
   }
   .fijos,
   .fuerza,
@@ -1342,7 +1408,7 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
   }
   .zona {
     color: var(--ink-soft);
-    font-size: 0.58rem;
+    font-size: 0.66rem;
   }
   .fijos .txt a,
   .fuerza .txt a {
@@ -1353,7 +1419,7 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
   }
   .fijos .chip,
   .fuerza .chip {
-    font-size: 0.54rem;
+    font-size: 0.62rem;
   }
   .fijos .chip {
     margin-top: 0.3rem;
@@ -1368,7 +1434,7 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
   }
   .votos .mono {
     color: var(--ink-soft);
-    font-size: 0.6rem;
+    font-size: 0.66rem;
   }
   .fuerza {
     display: grid;
@@ -1442,7 +1508,7 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
     color: var(--ink-soft);
   }
   .papeles .cabeza .mono {
-    font-size: 0.6rem;
+    font-size: 0.66rem;
   }
   .papeles .persona,
   .hueco {
@@ -1685,11 +1751,16 @@ const temporadaDe = (c: { temporada: 'si' | 'no' | null }) =>
     .celda .etq.mono {
       font-family: var(--f-mono);
       font-weight: 400;
-      font-size: 0.56rem;
+      font-size: 0.62rem;
       line-height: 1.7;
     }
-    .celda .fila-sellos :global(.sello-p + .sello-p) {
-      margin-left: -0.5rem;
+    /* en celular van centrados: cada sello se centra en su carril y sobresale igual a cada lado,
+       así que con medio sello de relleno a cada lado nunca se salen */
+    .celda .fila-sellos {
+      justify-self: stretch;
+      justify-content: center;
+      justify-items: center;
+      padding-inline: 0.8rem;
     }
     .puntos {
       grid-column: 3;

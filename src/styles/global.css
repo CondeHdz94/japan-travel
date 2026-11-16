@@ -736,6 +736,42 @@ button {
   outline: 2px solid var(--shu);
   outline-offset: 2px;
 }
+/* el color: una fila de seis, con mi sello en cada tinta. El de otro se ve tenue y dice de
+   quién es; todas las casillas reservan ese renglón, así nada salta al pintarlas */
+.registro .tintas legend span {
+  color: var(--ink-soft);
+}
+.registro .tintas [data-tintas] {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  column-gap: 0.25rem;
+  min-height: 4.6rem;
+}
+.registro .tintas label {
+  grid-template-rows: 2.6rem 1.1rem;
+  min-width: 0;
+  padding-bottom: 0.35rem;
+}
+/* de quién es: el primer nombre, en letra de leer (no la mono de las etiquetas) */
+.registro .tintas small {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 0.7rem;
+  letter-spacing: -0.01em;
+  line-height: 1.1rem;
+  color: var(--ink-soft);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.registro .tintas .ocupada,
+.registro .tintas .ocupada input {
+  cursor: not-allowed;
+}
+/* ocupado: el sello de su dueño, a media tinta y sin reaccionar al cursor */
+.registro .tintas .ocupada .sello-p,
+.registro .tintas .ocupada:hover .sello-p {
+  opacity: 0.55;
+}
 
 .registro .salida {
   display: flex;

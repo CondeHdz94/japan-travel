@@ -160,7 +160,7 @@ const tarjeta = new URL('/tarjeta.png', Astro.site ?? Astro.url).href;
         <button type="button" class="cerrar mono" data-cerrar aria-label="Cerrar">Cerrar ✕</button>
         <span class="mono">Tu sello · 判子</span>
         <h2 id="perfil-t">Tu nombre</h2>
-        <p>Si lo cambias, tus marcas y tu color se quedan contigo.</p>
+        <p>Si lo cambias, tus marcas se quedan contigo.</p>
         <label>
           <span class="mono">Nombre</span>
           <input name="nombre" autofocus required minlength="2" maxlength="20" autocomplete="nickname" />
@@ -169,6 +169,11 @@ const tarjeta = new URL('/tarjeta.png', Astro.site ?? Astro.url).href;
         <fieldset class="formas">
           <legend class="mono">La forma de tu sello</legend>
           <div data-formas></div>
+        </fieldset>
+        <!-- el color no se repite: es lo que distingue a cada uno de lejos -->
+        <fieldset class="formas tintas">
+          <legend class="mono">El color de tu sello <span>· no se repite</span></legend>
+          <div data-tintas></div>
         </fieldset>
         <p role="alert" class="error"></p>
         <button type="submit" class="sellar">Guardar</button>

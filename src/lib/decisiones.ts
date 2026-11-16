@@ -226,6 +226,13 @@ export function contarPapeles(personas: Persona[], marcas: Marca[]) {
   });
 }
 
+/**
+ * El papel más urgente: el primero de la lista que alguien ya tiene y a otros les falta (el
+ * grupo ya va en ese); si no hay, el primero que le falte a alguien. Si nadie debe nada, ninguno.
+ */
+export const papelUrgente = (papeles: ReturnType<typeof contarPapeles>) =>
+  papeles.find((x) => x.tienen.length > 0 && x.faltan.length > 0) ?? papeles.find((x) => x.faltan.length > 0) ?? null;
+
 // ───── lo que me falta a mí ─────
 
 export interface MiParte {
@@ -235,7 +242,7 @@ export interface MiParte {
   meses: boolean;
   /** No he votado ningún lugar. */
   lugares: boolean;
-  /** Me falta el papel más urgente del grupo (el primero de la lista que alguien ya tiene). */
+  /** El primer papel que me falta y que importa ya: el pasaporte o uno que otro del grupo ya tiene. */
   papel: string | null;
   /** Mi voto puede tachar a la que va adelante: si pongo «No puedo», gana esta otra. */
   decido: { ventana: string; siNo: string | null } | null;
@@ -246,12 +253,16 @@ export function miParte(yo: Persona, personas: Persona[], marcas: Marca[]): MiPa
   const ranking = contarVentanas(personas, marcas);
   const { primera, siFalla, empatadas } = lider(ranking);
   const papeles = contarPapeles(personas, marcas);
-  const urgente = papeles.find((x) => x.tienen.length > 0 && x.faltan.length > 0) ?? papeles[0];
+  // A mí me recuerda el pasaporte (sin él no arranca nada) y lo que el grupo ya empezó a tener;
+  // no todo lo que falta: los hospedajes no se piden meses antes.
+  const urgente = papeles.find(
+    (x) => x.faltan.some((p) => p.id === yo.id) && (x.id === 'pasaporte' || x.tienen.length > 0),
+  );
   return {
     ventanas: VENTANAS.filter((v) => !mias.some((m) => m.t === 'ventana' && m.c === v)),
     meses: !mias.some((m) => m.t === 'mes'),
     lugares: !mias.some((m) => m.t === 'lugar'),
-    papel: urgente && urgente.faltan.some((p) => p.id === yo.id) ? urgente.id : null,
+    papel: urgente?.id ?? null,
     decido:
       primera && !empatadas.length && primera.faltan.some((p) => p.id === yo.id)
         ? { ventana: primera.id, siNo: siFalla?.id ?? null }

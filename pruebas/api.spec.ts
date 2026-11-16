@@ -268,6 +268,61 @@ test.describe('color del sello', () => {
     expect((await diana.estado()).yo?.tinta).toBe(0);
     expect((await beto.estado()).yo?.tinta).toBe(1);
   });
+
+  test('se puede escoger uno libre desde el perfil, y sin mandarlo se queda el que había', async ({ grupo }) => {
+    const ana = await grupo.entrar('Ana');
+    await grupo.entrar('Beto');
+    const r = await ana.api.post('/api/renombrar', { data: { nombre: 'Ana', tinta: 4 } });
+    expect(r.status()).toBe(200);
+    expect((await r.json()).yo).toEqual({ id: ana.id, nombre: 'Ana', forma: 'koban', tinta: 4 });
+    await ana.api.post('/api/renombrar', { data: { nombre: 'Anita' } });
+    expect((await ana.estado()).yo?.tinta).toBe(4);
+    // volver a escoger el mío no choca conmigo misma
+    expect((await ana.api.post('/api/renombrar', { data: { nombre: 'Anita', tinta: 4 } })).status()).toBe(200);
+    // el que dejé queda libre para quien llegue
+    expect((await (await grupo.entrar('Caro')).estado()).yo?.tinta).toBe(0);
+  });
+
+  test('el color de otro no se puede tomar: 409, dice de quién es y no cambia nada', async ({ grupo }) => {
+    const ana = await grupo.entrar('Ana');
+    const beto = await grupo.entrar('Beto');
+    const r = await beto.api.post('/api/renombrar', { data: { nombre: 'Roberto', tinta: 0, forma: 'ema' } });
+    expect(r.status()).toBe(409);
+    expect((await r.json()).error).toBe('Ese color ya es de Ana.');
+    expect((await beto.estado()).yo).toEqual({ id: beto.id, nombre: 'Beto', forma: 'maru', tinta: 1 });
+    expect((await ana.estado()).yo?.tinta).toBe(0);
+  });
+
+  test('con más de 6 los colores se repiten, y quien comparte el suyo igual puede guardar', async ({ grupo }) => {
+    const ana = await grupo.entrar('Ana');
+    for (const n of ['Beto', 'Caro', 'Dani', 'Eva', 'Fito']) await grupo.entrar(n);
+    const gabo = await grupo.entrar('Gabo');
+    expect((await gabo.estado()).yo?.tinta).toBe((await ana.estado()).yo?.tinta);
+    const r = await gabo.api.post('/api/renombrar', { data: { nombre: 'Gabriel', tinta: (await gabo.estado()).yo?.tinta } });
+    expect(r.status()).toBe(200);
+    expect((await r.json()).yo.nombre).toBe('Gabriel');
+  });
+
+  test('si dos escogen el mismo color al tiempo, solo uno se lo queda', async ({ grupo }) => {
+    const ana = await grupo.entrar('Ana');
+    const beto = await grupo.entrar('Beto');
+    const [ra, rb] = await Promise.all([
+      ana.api.post('/api/renombrar', { data: { nombre: 'Ana', tinta: 5 } }),
+      beto.api.post('/api/renombrar', { data: { nombre: 'Beto', tinta: 5 } }),
+    ]);
+    expect([ra.status(), rb.status()].sort()).toEqual([200, 409]);
+    expect((await ana.estado()).personas.filter((p) => p.tinta === 5)).toHaveLength(1);
+  });
+
+  test('un color que no existe: 400 y no cambia nada', async ({ grupo }) => {
+    const ana = await grupo.entrar('Ana');
+    for (const tinta of [-1, 6, 1.5, '2', {}, true]) {
+      const r = await ana.api.post('/api/renombrar', { data: { nombre: 'Otra', tinta } });
+      expect(r.status(), JSON.stringify(tinta)).toBe(400);
+      expect((await r.json()).error).toMatch(/color/);
+    }
+    expect((await ana.estado()).yo).toEqual({ id: ana.id, nombre: 'Ana', forma: 'koban', tinta: 0 });
+  });
 });
 
 test.describe('estado y sesión', () => {

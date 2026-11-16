@@ -2,7 +2,7 @@
 
 import { expect, test } from '@playwright/test';
 import { SEMILLAS } from '../src/data/lugares';
-import { VENTANAS } from '../src/data/claves';
+import { PAPELES, VENTANAS } from '../src/data/claves';
 import { VENTANAS_VIAJE } from '../src/data/ventanas';
 import {
   contarLugares,
@@ -12,6 +12,7 @@ import {
   lider,
   miParte,
   noCuadran,
+  papelUrgente,
   quorum,
   repartirDias,
   temprano,
@@ -209,6 +210,18 @@ test.describe('papeles y mi parte', () => {
     expect(r[0].faltan).toEqual([B, C, D]);
   });
 
+  test('papel urgente: el que el grupo ya empezó; si todos tienen ese, el siguiente que falte; si nada falta, ninguno', () => {
+    const empezado = contarPapeles(cuatro, [m(A, 'papel', 'visa')]);
+    expect(papelUrgente(empezado)?.id).toBe('visa');
+    // todos tienen el pasaporte: no se puede decir «listos», falta la visa
+    const conPasaporte = contarPapeles(cuatro, cuatro.map((p) => m(p, 'papel', 'pasaporte')));
+    expect(papelUrgente(conPasaporte)?.id).toBe('visa');
+    const nada = contarPapeles(cuatro, []);
+    expect(papelUrgente(nada)?.id).toBe('pasaporte');
+    const todo = contarPapeles(cuatro, cuatro.flatMap((p) => PAPELES.map((c) => m(p, 'papel', c))));
+    expect(papelUrgente(todo)).toBeNull();
+  });
+
   test('mi parte: ventanas, meses, lugares y el papel urgente que me faltan', () => {
     const marcas = [ventana(A, 'otono', 2), m(B, 'papel', 'pasaporte'), m(B, 'mes', 'oct')];
     const r = miParte(A, cuatro, marcas);
@@ -217,6 +230,10 @@ test.describe('papeles y mi parte', () => {
     expect(r.lugares).toBe(true);
     expect(r.papel).toBe('pasaporte');
     expect(miParte(B, cuatro, marcas).papel).toBeNull();
+    // con pasaporte, solo me recuerda lo que otro del grupo ya tiene
+    const conPasaporte = [m(A, 'papel', 'pasaporte'), m(B, 'papel', 'pasaporte'), m(B, 'papel', 'seguro')];
+    expect(miParte(A, cuatro, conPasaporte).papel).toBe('seguro');
+    expect(miParte(B, cuatro, conPasaporte).papel).toBeNull();
   });
 
   test('mi voto decide cuando falto yo en la que va adelante', () => {

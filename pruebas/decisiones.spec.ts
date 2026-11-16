@@ -50,11 +50,21 @@ test.describe('con el grupo votando', () => {
     await expect(filas.last()).toHaveClass(/tachada/);
     await expect(filas.last().locator('.veto')).toHaveText('No puede: Beto');
 
+    // las que nadie ha votado no tienen puesto ni «0 de 0»
+    const sinVotos = page.locator('.tabla .fila.sin-votos');
+    await expect(sinVotos).toHaveCount(3);
+    await expect(sinVotos.first().locator('.pos')).toHaveText('—');
+    await expect(sinVotos.first().locator('.cifra')).toHaveText('Sin votos');
+
     // mi parte: lo primero es que mi voto decide, y lleva a votar
     const primero = page.locator('.tu-parte li').first();
     await expect(primero).toHaveAttribute('data-pendiente', 'decido');
     await expect(primero).toContainText('Tu voto decide');
     await expect(primero.locator('a')).toHaveAttribute('href', '/cuando-ir');
+    // cuando la lista me incluye, me habla a mí
+    // (el orden de los otros depende de quién se registró primero: se registran a la vez)
+    await expect(page.locator('.acta')).toContainText(/faltan (Ana|Beto|Caro), (Ana|Beto|Caro), (Ana|Beto|Caro) y tú/);
+    await expect(page.locator('.pendiente')).toHaveText(/^(Ana|Beto|Caro), (Ana|Beto|Caro), (Ana|Beto|Caro) y tú todavía no han marcado meses\.$/);
     // la ventana que decide no se repite en «te falta votar»
     await expect(page.locator('[data-pendiente=ventanas]')).not.toContainText('Otoño');
     expect(dani).toBeGreaterThan(0);
@@ -66,7 +76,7 @@ test.describe('con el grupo votando', () => {
     for (const v of ['cerezos', 'abril', 'primavera', 'verano', 'otono', 'invierno']) await ana.marcar('ventana', v, 1);
     await ana.marcar('mes', 'oct', 1);
     await ana.marcar('lugar', 'shibuya', 1);
-    // sin pasaporte igual me lo recuerda: es lo más urgente de los papeles
+    // sin pasaporte igual me lo recuerda; con él, los demás papeles no (nadie del grupo va en eso)
     await abrir(page, '/decisiones', 'si');
     await expect(page.locator('.tu-parte [data-pendiente=papel]')).toContainText('Te falta el pasaporte');
     await ana.marcar('papel', 'pasaporte', 1);
@@ -128,14 +138,15 @@ test.describe('con el grupo votando', () => {
   });
 
   test('con un grupo lleno no se desborda ni tiene errores', async ({ page, grupo, errores }) => {
-    const nombres = ['Valentina', 'Santiago', 'Andrés', 'Laura', 'Maximiliano Fernando'];
+    const nombres = ['Valentina', 'Santiago', 'Andrés', 'Laura', 'Maximiliano Fernando', 'Juan Camilo'];
     const vs = await Promise.all(nombres.map((n) => grupo.entrar(n)));
     for (const [i, v] of vs.entries()) {
+      // todos dicen que no a invierno y todos aman otoño: seis sellos en una casilla
       await v.marcar('ventana', 'invierno', 0);
-      await v.marcar('ventana', 'otono', i % 2 ? 1 : 2);
+      await v.marcar('ventana', 'otono', 2);
       await v.marcar('mes', 'oct', 1);
       await v.marcar('lugar', 'shibuya', 1);
-      if (i < 3) await v.marcar('papel', 'pasaporte', 1);
+      await v.marcar('papel', 'pasaporte', 1);
     }
     await entrarEn(page, 'Valentina');
     await abrir(page, '/decisiones', 'si');
@@ -147,7 +158,21 @@ test.describe('con el grupo votando', () => {
     });
     await page.waitForLoadState('networkidle');
     expect(await desborde(page), 'px que sobran a lo ancho').toBeLessThanOrEqual(0);
-    await expect(page.locator('.papeles .fila.urgente .papel')).toHaveText('Pasaporte');
+    // ningún sello se sale de su casilla de la tabla
+    const fuera = await page.locator('.tabla .celda').evaluateAll((cs) =>
+      cs.filter((c) => {
+        const caja = c.getBoundingClientRect();
+        return [...c.querySelectorAll('.sello-p')].some((s) => {
+          const r = s.getBoundingClientRect();
+          return r.left < caja.left - 1 || r.right > caja.right + 1;
+        });
+      }).length,
+    );
+    expect(fuera, 'casillas con sellos por fuera').toBe(0);
+    await expect(page.locator('.tabla .fila.tachada .veto')).toHaveText('Nadie puede');
+    // todos tienen el pasaporte: lo urgente pasa a la visa, no se dice «listos»
+    await expect(page.locator('.papeles .fila.urgente .papel')).toHaveText('Visa japonesa');
+    await expect(page.locator('.ojo', { hasText: 'Lo urgente' })).toContainText('Visa japonesa: faltan todos');
     expect(errores).toEqual([]);
   });
 });

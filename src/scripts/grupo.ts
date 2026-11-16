@@ -170,32 +170,75 @@ function sello(p: Persona, ini: Map<number, string>, fantasma = false, giro = -6
   return s;
 }
 
-/** Llena el perfil con las formas de sello para escoger, cada una con mi sílaba y mi tinta. */
-function pintarFormas() {
-  const zona = perfil?.querySelector<HTMLElement>('[data-formas]');
-  if (!zona || !E.yo) return;
+/** Nombres de los colores, en el orden de las tintas de global.css (data-tinta 0…5). */
+const NOMBRE_TINTA = ['Bermellón', 'Índigo', 'Matcha', 'Glicina', 'Ámbar', 'Sumi'];
+
+/**
+ * Llena el perfil con lo que se puede escoger del sello: la forma (se puede repetir) y el color
+ * (no se repite: el de otro se ve, dice de quién es y no se puede tocar). Cada muestra es mi
+ * propio sello con lo que llevo escogido, así se ve de una cómo quedaría.
+ */
+function pintarFormas(forma = formaDe(E.yo?.forma).id, tinta = E.yo ? tintaDe(E.yo) : 0) {
+  const formas = perfil?.querySelector<HTMLElement>('[data-formas]');
+  const tintas = perfil?.querySelector<HTMLElement>('[data-tintas]');
+  if (!formas || !tintas || !E.yo) return;
+  const yo = E.yo;
   const ini = iniciales();
-  const mia = formaDe(E.yo.forma).id;
-  zona.replaceChildren(
-    ...FORMAS.map((f) => {
-      const opcion = document.createElement('label');
-      opcion.title = `${f.nombre}: ${f.pista}`;
-      const radio = document.createElement('input');
-      radio.type = 'radio';
-      radio.name = 'forma';
-      radio.value = f.id;
-      radio.checked = f.id === mia;
-      radio.setAttribute('aria-label', `${f.nombre} (${f.pista})`);
-      const muestra = sello({ ...E.yo!, forma: f.id }, ini, false, 0);
-      muestra.removeAttribute('title');
-      opcion.append(radio, muestra);
-      return opcion;
+  const opcion = (campo: string, valor: string, marcado: boolean, dice: string, muestra: HTMLElement) => {
+    const o = document.createElement('label');
+    o.title = dice;
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = campo;
+    radio.value = valor;
+    radio.checked = marcado;
+    radio.setAttribute('aria-label', dice);
+    muestra.removeAttribute('title');
+    o.append(radio, muestra);
+    return o;
+  };
+  formas.replaceChildren(
+    ...FORMAS.map((f) =>
+      opcion('forma', f.id, f.id === forma, `${f.nombre}: ${f.pista}`, sello({ ...yo, forma: f.id, tinta }, ini, false, 0)),
+    ),
+  );
+  tintas.replaceChildren(
+    ...NOMBRE_TINTA.map((nombre, t) => {
+      // el mío nunca sale ocupado, aunque en un grupo de más de 6 alguien lo comparta
+      const de = t === tintaDe(yo) ? undefined : E.personas.find((p) => p.id !== yo.id && tintaDe(p) === t);
+      // el color de otro se muestra con su sello (su sílaba y su inicial): se reconoce de quién es
+      // aunque no se lea el nombre
+      const muestra = de ? sello(de, ini, false, 0) : sello({ ...yo, forma, tinta: t }, ini, false, 0);
+      const o = opcion('tinta', String(t), t === tinta, de ? `${nombre}: es de ${de.nombre}` : nombre, muestra);
+      if (de) {
+        o.classList.add('ocupada');
+        o.querySelector('input')!.disabled = true;
+        const quien = document.createElement('small');
+        // el primer nombre; si otro del grupo lo comparte, con la inicial del segundo («Juan C.»)
+        const [primero, segundo] = de.nombre.split(' ');
+        const repetido = E.personas.some((p) => p.id !== de.id && p.nombre.split(' ')[0].toLowerCase() === primero.toLowerCase());
+        quien.textContent = repetido && segundo ? `${primero} ${segundo.charAt(0)}.` : primero;
+        o.append(quien);
+      }
+      return o;
     }),
   );
 }
 
+// al cambiar la forma, los colores se muestran con ella (y al revés)
+perfil?.addEventListener('change', (ev) => {
+  const el = ev.target as HTMLInputElement;
+  if ((el.name !== 'forma' && el.name !== 'tinta') || !formPerfil) return;
+  const datos = new FormData(formPerfil);
+  pintarFormas(String(datos.get('forma')), Number(datos.get('tinta')));
+  perfil.querySelector<HTMLInputElement>(`input[name=${el.name}][value="${el.value}"]`)?.focus();
+});
+
 // al cerrar el perfil no quedan sellos de muestra en la página
-perfil?.addEventListener('close', () => perfil.querySelector('[data-formas]')?.replaceChildren());
+perfil?.addEventListener('close', () => {
+  perfil.querySelector('[data-formas]')?.replaceChildren();
+  perfil.querySelector('[data-tintas]')?.replaceChildren();
+});
 
 const valorDe = (p: number, t: string, c: string) =>
   E.marcas.find((m) => m.p === p && m.t === t && m.c === c)?.v;
@@ -765,7 +808,12 @@ formPerfil?.addEventListener('submit', async (ev) => {
   if (boton) boton.disabled = true;
   try {
     const datos = new FormData(formPerfil);
-    E = await api('renombrar', { nombre: datos.get('nombre'), forma: datos.get('forma') ?? undefined });
+    const tinta = datos.get('tinta');
+    E = await api('renombrar', {
+      nombre: datos.get('nombre'),
+      forma: datos.get('forma') ?? undefined,
+      tinta: tinta === null ? undefined : Number(tinta),
+    });
     perfil?.close();
     pintar();
   } catch (e) {
