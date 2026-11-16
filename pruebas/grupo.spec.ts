@@ -588,6 +588,64 @@ test.describe('perfil', () => {
     expect((await estadoDe(page)).yo?.tinta).toBe(1);
   });
 
+  test('tocar un sello dice de quién es, sin mover nada; se cierra al tocar fuera o con Escape', async ({ page, grupo }) => {
+    const laura = await grupo.entrar('Laura');
+    await laura.marcar('mes', 'oct', 1);
+    await entrarEn(page, 'Camilo');
+    await abrir(page, '/cuando-ir', 'si');
+    const antes = await plano(page, 'main h1, main h2, .meses li, footer');
+    const sello = sellosDe(mes(page, 'oct')).first();
+    const etiqueta = page.locator('.de-quien');
+
+    await sello.click();
+    await expect(etiqueta).toBeVisible();
+    await expect(etiqueta.locator('strong')).toHaveText('Laura');
+    await expect(etiqueta.locator('span')).toHaveText('ラウラ');
+    // encima del sello (o debajo, si arriba no cabe), sin taparlo, y dentro de la pantalla
+    await page.waitForTimeout(300); // que termine de entrar
+    const e = (await etiqueta.boundingBox())!;
+    const s = (await sello.boundingBox())!;
+    expect(e.y + e.height <= s.y + 1 || e.y >= s.y + s.height - 1, 'la etiqueta tapa el sello').toBe(true);
+    expect(e.x).toBeGreaterThanOrEqual(0);
+    expect(e.x + e.width).toBeLessThanOrEqual(page.viewportSize()!.width);
+    // y no movió nada (plano devuelve la franja de meses al inicio, así que va después)
+    expect(await plano(page, 'main h1, main h2, .meses li, footer')).toEqual(antes);
+    await page.keyboard.press('Escape');
+
+    await page.locator('main h1').click();
+    await expect(etiqueta).toHaveCount(0);
+    await sello.click();
+    await expect(etiqueta).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(etiqueta).toHaveCount(0);
+    // tocar el mismo sello dos veces la abre y la cierra
+    await sello.click();
+    await sello.click();
+    await expect(etiqueta).toHaveCount(0);
+    // con scroll sigue al sello; si el sello sale de la pantalla, se cierra
+    await sello.click();
+    await page.waitForTimeout(300); // que termine de entrar
+    const distancia = async () => (await sello.boundingBox())!.y - (await etiqueta.boundingBox())!.y;
+    const antesDelScroll = await distancia();
+    await page.evaluate(() => window.scrollBy(0, 60));
+    await page.waitForTimeout(100);
+    await expect(etiqueta).toBeVisible();
+    expect(Math.abs((await distancia()) - antesDelScroll)).toBeLessThan(1);
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    await expect(etiqueta).toHaveCount(0);
+  });
+
+  test('los pendientes dicen «Falta», y mi sello de la cabecera sigue abriendo el perfil', async ({ page, grupo }) => {
+    await grupo.entrar('Laura');
+    await entrarEn(page, 'Camilo');
+    await abrir(page, '/decisiones', 'si');
+    await page.locator('.tabla .falta .sello-p.fantasma').first().click();
+    await expect(page.locator('.de-quien small')).toHaveText('Falta');
+    await page.locator('#quien [data-perfil] .sello-p').click();
+    await expect(page.locator('#perfil')).toBeVisible();
+    await expect(page.locator('.de-quien')).toHaveCount(0);
+  });
+
   test('cerrar el perfil sin guardar no cambia la forma', async ({ page }) => {
     await entrarEn(page, 'Camilo');
     await abrir(page, '/cuando-ir', 'si');

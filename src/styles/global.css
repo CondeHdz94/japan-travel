@@ -964,3 +964,74 @@ button {
 .llegada .saltar:hover {
   color: var(--shu);
 }
+
+/* ───── de quién es un sello (src/scripts/de-quien.ts) ─────
+   Una papeleta encima del sello tocado: el nombre en Mincho y su katakana en bermellón.
+   Flota sobre todo (debajo del grano de papel), así que no mueve nada. */
+.sello-p[data-nombre] {
+  cursor: pointer;
+}
+:is(button, label, a) .sello-p[data-nombre] {
+  cursor: inherit;
+}
+.de-quien {
+  position: absolute;
+  z-index: 90;
+  display: grid;
+  justify-items: center;
+  gap: 0.05rem;
+  max-width: min(16rem, calc(100vw - 1.5rem));
+  padding: 0.45rem 0.8rem 0.5rem;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  box-shadow: 3px 3px 0 var(--ink);
+  text-align: center;
+  pointer-events: none;
+  animation: de-quien 0.16s ease-out;
+}
+.de-quien strong {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+.de-quien span {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 0.78rem;
+  line-height: 1.3;
+  color: var(--shu);
+}
+.de-quien small {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+/* la flecha, apuntando al sello */
+.de-quien::after {
+  content: '';
+  position: absolute;
+  left: var(--flecha, 50%);
+  width: 0.55rem;
+  height: 0.55rem;
+  margin-left: -0.275rem;
+  background: var(--paper);
+  border: solid var(--ink);
+  transform: rotate(45deg);
+}
+.de-quien[data-lado='arriba']::after {
+  bottom: -0.3rem;
+  border-width: 0 1px 1px 0;
+}
+.de-quien[data-lado='abajo']::after {
+  top: -0.3rem;
+  border-width: 1px 0 0 1px;
+}
+@keyframes de-quien {
+  from {
+    opacity: 0;
+    translate: 0 0.25rem;
+  }
+}

@@ -126,6 +126,13 @@ no consulta en vivo: quien llegue mientras está abierto sale en la próxima vis
 - `data-sellos` — donde se pintan los sellos (`data-valor` filtra; `data-fantasmas` muestra los pendientes)
 - `data-sello-de="idPersona"` — el sello de una persona puntual
 - `data-entrar` — abre el registro
+
+**De quién es un sello.** Tocar o hacer clic en cualquier sello muestra encima una etiqueta con
+el nombre y su katakana («Falta» si es un pendiente), porque en celular no hay `title`. La pinta
+`src/scripts/de-quien.ts` con los `data-nombre` y `data-katakana` que traen todos los sellos. Flota
+(no mueve nada), sigue al sello si hay scroll y se cierra al tocar fuera, con Escape o si el
+sello sale de la pantalla. No sale en los sellos que ya hacen otra cosa: el de la cabecera, las
+muestras del perfil y los de una llegada.
 - En el Inicio: `data-pasajeros` (los sellos de todo el grupo), `data-cuenta-pasajeros`
   («Van 3 de 4–5»), `data-portada` (si sigue a la vista, las llegadas van en grande) y
   `data-llegadas-despues` (las llegadas esperan a que ese elemento termine de animarse)

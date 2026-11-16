@@ -16,6 +16,7 @@
 
 import { kana, primeraKana } from './kana';
 import { giroFijo, iniciales as inicialesDe } from './sello';
+import './de-quien';
 import { FORMAS, formaDe } from '../data/formas';
 import { anunciar, hayMomento, momento, movimientoReducido, type Llegada } from './llegadas';
 
@@ -155,6 +156,9 @@ function sello(p: Persona, ini: Map<number, string>, fantasma = false, giro = -6
   const enKana = kana(p.nombre);
   const nombre = enKana ? `${p.nombre} · ${enKana}` : p.nombre;
   s.title = fantasma ? `${nombre}: pendiente` : nombre;
+  // para la etiqueta que sale al tocarlo (de-quien.ts): en celular no hay title
+  s.dataset.nombre = p.nombre;
+  if (enKana) s.dataset.katakana = enKana;
   // arriba la primera sílaba en katakana, abajo la inicial latina
   const silaba = primeraKana(p.nombre);
   if (silaba) {

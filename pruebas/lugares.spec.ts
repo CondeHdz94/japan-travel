@@ -552,3 +552,40 @@ test.describe('lugares en vivo', () => {
     await expect(page.locator('#novedad')).toBeHidden();
   });
 });
+
+test.describe('de quién es un sello, con la barra de filtros pegada arriba', () => {
+  test('la etiqueta nunca queda encima de los filtros: sale debajo del sello o se cierra', async ({ page, grupo }) => {
+    const ana = await grupo.entrar('Ana');
+    const id = SEMILLAS[3].id;
+    await ana.marcar('lugar', id, 1);
+    await entrarEn(page, 'Camilo');
+    await abrir(page, '/lugares', 'si');
+    const barra = page.locator('.barra');
+    const sello = tarjeta(page, id).locator('[data-sellos] .sello-p');
+    const etiqueta = page.locator('.de-quien');
+    // (si ya se cerró, no pisa nada: no se espera a que vuelva)
+    const pisa = async () => {
+      if (!(await etiqueta.count())) return false;
+      const b = (await barra.boundingBox())!;
+      const e = (await etiqueta.boundingBox())!;
+      return e.y < b.y + b.height;
+    };
+
+    // el sello justo debajo de la barra: arriba no hay espacio libre, sale debajo
+    await sello.scrollIntoViewIfNeeded();
+    const altoBarra = (await barra.boundingBox())!.height;
+    await page.evaluate(([y]) => window.scrollBy(0, y), [((await sello.boundingBox())!.y - altoBarra - 20)]);
+    await sello.click();
+    await expect(etiqueta).toBeVisible();
+    await expect(etiqueta).toHaveAttribute('data-lado', 'abajo');
+    expect(await pisa(), 'la etiqueta pisa los filtros').toBe(false);
+
+    // se sigue bajando: el sello pasa debajo de la barra y la etiqueta se cierra
+    for (let i = 0; i < 6; i++) {
+      await page.evaluate(() => window.scrollBy(0, 40));
+      await page.waitForTimeout(50);
+      expect(await pisa(), 'la etiqueta pisa los filtros').toBe(false);
+    }
+    await expect(etiqueta).toHaveCount(0);
+  });
+});

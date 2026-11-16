@@ -25,6 +25,8 @@ const nombre = enKana ? `${p.nombre} · ${enKana}` : p.nombre;
   data-tinta={p.tinta ?? 0}
   style={`--giro:${giroFijo(`${p.id}:${clave}`)}deg`}
   title={fantasma ? `${nombre}: pendiente` : nombre}
+  data-nombre={p.nombre}
+  data-katakana={enKana || undefined}
 ><svg viewBox="0 0 32 48" aria-hidden="true" set:html={forma.trazo} />{
     silaba && <b class:list={{ dos: silaba.length > 1 }}>{silaba}</b>
   }<i class:list={{ largo: ini.length > 2 }}>{ini}</i></span>
