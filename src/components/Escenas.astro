@@ -1,0 +1,438 @@
+---
+// La ventana de las escenas de anime de un lugar. La llena src/scripts/escenas.ts al tocar
+// «Ver escenas» en una tarjeta de Lugares (atributo data-abrir-escenas).
+//
+// Escritorio: ventana centrada, con el índice de obras fijo a la izquierda y todas las obras
+// seguidas a la derecha. Celular: hoja que sube desde abajo, con una barra fija que dice qué obra
+// se está viendo y abre el índice (el índice reemplaza al recorrido: nada se desliza dentro de otra cosa).
+---
+
+<dialog class="escenas" id="escenas" aria-label="Escenas de anime"></dialog>
+
+<script>
+  import '../scripts/escenas';
+</script>
+
+<style is:global>
+  dialog.escenas {
+    width: min(56rem, calc(100vw - 2rem));
+    max-height: calc(100dvh - 2rem);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    overflow: visible;
+  }
+  dialog.escenas::backdrop {
+    background: rgba(25, 23, 20, 0.55);
+  }
+  .es-ficha {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.95rem;
+    max-height: calc(100dvh - 2rem);
+    overflow: auto;
+    /* el navegador no reacomoda solo el desplazamiento mientras se salta de obra en obra */
+    overflow-anchor: none;
+    overscroll-behavior: contain;
+    padding: 1.2rem 1.35rem 1.35rem;
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    box-shadow: 8px 8px 0 var(--ink);
+  }
+  .es-arriba {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .es-arriba .mono {
+    color: var(--shu-tinta);
+    font-size: 0.62rem;
+  }
+  .es-cerrar {
+    min-height: 2.75rem;
+    padding: 0 0.2rem;
+    background: none;
+    border: 0;
+    font-family: var(--f-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .es-cerrar:hover {
+    color: var(--shu-tinta);
+  }
+  .es-ficha h2 {
+    font-size: 1.15rem;
+  }
+  .es-ficha h2 small,
+  .es-obra h3 small {
+    margin-left: 0.5rem;
+    font-family: var(--f-mono);
+    font-weight: 400;
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .es-cargando {
+    margin: 0;
+    padding: 2rem 0;
+    color: var(--ink-soft);
+  }
+
+  /* «Hoy»: la foto del lugar una sola vez */
+  .es-hoy {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    gap: 0.8rem;
+    align-items: center;
+    padding: 0.55rem;
+    border: 1px dashed var(--ink);
+  }
+  .es-hoy img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    border: 1px solid var(--ink);
+  }
+  .es-hoy p {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: var(--ink-soft);
+  }
+  .es-hoy b {
+    color: var(--ink);
+  }
+
+  /* escritorio: índice fijo al lado y las obras seguidas */
+  .es-recorrido {
+    display: grid;
+    grid-template-columns: 12.5rem minmax(0, 1fr);
+    gap: 1.4rem;
+    align-items: start;
+  }
+  .es-indice {
+    display: grid;
+    gap: 1px;
+    border: 1px solid var(--ink);
+    background: var(--hair);
+  }
+  .es-recorrido > .es-indice {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    /* nunca más alto que la ventana: si no cabe, se desliza solo */
+    max-height: calc(100dvh - 9rem);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  .es-indice button {
+    display: grid;
+    grid-template-columns: 3.2rem minmax(0, 1fr);
+    gap: 0.55rem;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.4rem 0.5rem;
+    border: 0;
+    background: var(--paper);
+    text-align: left;
+  }
+  .es-indice.sin-fotos button {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .es-indice img,
+  .es-indice .es-miniatura {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border: 1px solid var(--ink);
+    background: var(--paper-2);
+  }
+  .es-indice b {
+    display: block;
+    font-size: 0.84rem;
+    font-weight: 500;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+  .es-indice small {
+    font-family: var(--f-mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .es-indice button:hover {
+    background: var(--paper-2);
+  }
+  .es-indice [aria-current='true'] {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .es-indice [aria-current='true'] small {
+    color: var(--paper);
+  }
+  .es-feed {
+    display: grid;
+    gap: 1.8rem;
+    min-width: 0;
+  }
+
+  /* cada obra */
+  .es-obra {
+    display: grid;
+    gap: 0.6rem;
+    min-width: 0;
+  }
+  .es-obra h3 {
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--ink);
+    font-size: 1.35rem;
+  }
+  .es-obra h3:focus {
+    outline: none;
+  }
+  .es-romaji {
+    margin: -0.45rem 0 0;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+  .es-escena {
+    display: grid;
+    gap: 0.6rem;
+    min-width: 0;
+  }
+  .es-grande {
+    display: grid;
+    gap: 0.3rem;
+    margin: 0;
+  }
+  .es-grande img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border: 1px solid var(--ink);
+    background: var(--paper-2);
+  }
+  .es-grande figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-family: var(--f-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .es-grande figcaption b {
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .es-datos {
+    display: grid;
+    gap: 0.05rem;
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+  .es-datos dt {
+    margin-top: 0.4rem;
+    font-family: var(--f-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .es-datos dt:first-child {
+    margin-top: 0;
+  }
+  .es-datos dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+  .es-datos .chip {
+    margin-left: 0.3rem;
+  }
+  /* el enlace del mapa mide 44 px para el dedo sin mover el renglón */
+  .es-datos a {
+    display: inline-block;
+    padding-block: 0.75rem;
+    margin-block: -0.75rem;
+  }
+  .es-fila {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.35rem;
+  }
+  .es-fila button {
+    padding: 0;
+    border: 1px solid var(--ink);
+    background: var(--paper-2);
+    opacity: 0.6;
+  }
+  .es-fila button:hover,
+  .es-fila [aria-current='true'] {
+    opacity: 1;
+  }
+  .es-fila [aria-current='true'] {
+    outline: 2px solid var(--shu);
+    outline-offset: 1px;
+  }
+  .es-fila img,
+  .es-fila .es-miniatura {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+  .es-fila .oculta {
+    display: none;
+  }
+  .es-fila.todas .oculta {
+    display: block;
+  }
+  .es-ver-todas {
+    justify-self: start;
+    padding: 0.75rem 0;
+    background: none;
+    border: 0;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: underline;
+    text-decoration-color: var(--shu);
+    text-underline-offset: 0.2em;
+  }
+  .es-fuente {
+    margin: 0;
+    max-width: none;
+    font-size: 0.74rem;
+    color: var(--ink-soft);
+  }
+  .es-fuente a {
+    color: inherit;
+  }
+
+  /* lo que no hay: imagen que no carga, o sin sesión. Mismo tamaño que la imagen: nada se corre */
+  .es-falta {
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 0.2rem;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 1px dashed var(--ink);
+    background: var(--paper-2);
+    color: var(--ink-soft);
+    text-align: center;
+    font-size: 0.75rem;
+  }
+  .es-falta > b {
+    font-family: var(--f-display);
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--ink);
+    opacity: 0.25;
+  }
+  .es-falta button {
+    min-height: 2.75rem;
+    padding: 0 0.2rem;
+    background: none;
+    border: 0;
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--shu);
+    text-underline-offset: 0.2em;
+  }
+  .es-fila .es-falta,
+  .es-indice .es-falta {
+    font-size: 0;
+    gap: 0;
+  }
+  .es-fila .es-falta > b,
+  .es-indice .es-falta > b {
+    font-size: 0.9rem;
+  }
+
+  /* celular: la barra fija dice qué obra se ve y abre el índice */
+  .es-salto {
+    position: sticky;
+    /* la hoja tiene 1 rem de relleno arriba: así queda pegada al borde */
+    top: -1rem;
+    z-index: 3;
+    margin: 0 -16px;
+    padding: 0.55rem 16px;
+    background: var(--paper);
+    border-block: 1px solid var(--ink);
+  }
+  .es-salto-b {
+    width: 100%;
+    min-height: 2.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0;
+    background: none;
+    border: 0;
+    text-align: left;
+  }
+  .es-salto-b small {
+    display: block;
+    font-family: var(--f-mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .es-salto-b b {
+    display: block;
+    font-family: var(--f-display);
+    font-size: 1.05rem;
+    line-height: 1.2;
+  }
+  .es-salto-b .mono {
+    font-size: 0.58rem;
+    white-space: nowrap;
+  }
+  .es-emergente button {
+    grid-template-columns: 4.4rem minmax(0, 1fr);
+    gap: 0.75rem;
+    min-height: 3.4rem;
+    padding: 0.5rem 0.6rem;
+  }
+  .es-emergente.sin-fotos button {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .es-emergente b {
+    font-size: 0.95rem;
+  }
+  .es-ficha.indice-abierto > :is(.es-obra, .es-hoy) {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    dialog.escenas {
+      inset: auto 0 0 0;
+      width: auto;
+      max-width: none;
+      margin: 0;
+    }
+    dialog.escenas .es-ficha {
+      max-height: 92dvh;
+      padding: 1rem 16px 1.4rem;
+      border-width: 1px 0 0;
+      border-radius: 1rem 1rem 0 0;
+      box-shadow: none;
+    }
+    .es-fila {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

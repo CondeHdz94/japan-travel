@@ -196,7 +196,7 @@ en el puerto 4399, con clave y base propias (`.data/pruebas.db`): no leen el `.e
 
 | Archivo | Qué cubre |
 | :-- | :-- |
-| `unidad.spec.ts` | Katakana, etiquetas de meses y coherencia del catálogo y las fotos |
+| `unidad.spec.ts` | Katakana, etiquetas de meses y coherencia del catálogo, las fotos y las escenas |
 | `api.spec.ts` | Toda la API: sesión, marcas, renombrar, borrarse, proponer y quitar, privacidad |
 | `paginas.spec.ts` | Cada página: carga limpia, cabecera, enlaces, desborde, entrada animada |
 | `grupo.spec.ts` | Registro, sellos, en vivo, perfil, sin conexión y «nada salta» |
@@ -204,6 +204,7 @@ en el puerto 4399, con clave y base propias (`.data/pruebas.db`): no leen el `.e
 | `lugares.spec.ts` | Filtros, sellos, proponer, quitar y avisos en vivo |
 | `decisiones.unidad.spec.ts` | Las cuentas de Decisiones, iniciales y giro de los sellos (sin navegador) |
 | `decisiones.spec.ts` | Decisiones: privacidad, la que va adelante, mi parte, temprano, empate, todas tachadas y lugares |
+| `escenas.spec.ts` | Escenas de anime: sello y línea de la tarjeta, filtro «聖 Anime», ventana, imágenes con sesión |
 
 ## Lugares y fotos
 
@@ -231,15 +232,61 @@ en el puerto 4399, con clave y base propias (`.data/pruebas.db`): no leen el `.e
   otra cosa, `sinArticulo: true` deja el nombre sin enlace; si no existe el artículo, también.
 - Para agregar un lugar al catálogo: añadirlo a `SEMILLAS` y correr los dos scripts.
 
+## Escenas de anime (聖地巡礼)
+
+Lugares marca los sitios del catálogo donde pasa una escena de anime:
+
+- **Tarjeta:** sello «聖地 N obras» arriba a la izquierda de la foto (solo avisa, no se toca) y,
+  al fondo del texto, «聖 Sale en: A, B y N más · Ver escenas →».
+- **Filtro:** la píldora «聖 Anime» de la fila de temas, justo después de Otaku. No es una
+  sección: deja en cada tema solo sus lugares con escenas, se combina con los demás filtros y
+  queda en la dirección (`?anime=1`).
+- **Ventana:** todas las obras del lugar seguidas, de la que más escenas tiene ahí a la que
+  menos. En escritorio, índice fijo que marca la obra que se ve; en celular, hoja con una barra
+  fija «Viendo · 2 de 16 · Índice». Vive en la dirección (`#escenas-<id>`): Esc y «atrás» la
+  cierran. La pinta `src/scripts/escenas.ts`; el `<dialog>` y sus estilos están en
+  `src/components/Escenas.astro`.
+
+**Datos.** Los puntos salen de la API pública de [anitabi](https://github.com/anitabi/anitabi.cn-document),
+con licencia CC BY-NC-SA 4.0: cada escena muestra su fuente con enlace y el estudio que la animó
+(«Animación: …», que no es el dueño de los derechos). Se arman con:
+
+```sh
+node scripts/escenas.mjs               # usa la copia local de .data/anitabi/
+node scripts/escenas.mjs --refrescar   # vuelve a pedirle todo a anitabi
+```
+
+- `scripts/escenas.config.mjs`: las series (temporadas y películas van juntas), su nombre a
+  mostrar y a qué lugar va cada punto, por palabras clave.
+- Nombre: el de Latinoamérica si es conocido; si no, el inglés oficial; si no, el rōmaji. Nunca
+  en letra japonesa. El rōmaji va debajo cuando es distinto.
+- `src/data/escenas.json` lo genera el script; no se edita a mano.
+- `src/data/escenas-revision.json` sí es a mano, y el script nunca lo pisa: estado de cada escena
+  (`confirmada` con su enlace, `validada` o `por-confirmar`), distancia si es otro punto
+  («Queda»), la escena principal de una obra y lo que se excluye.
+
+**Imágenes.** Los fotogramas tienen derechos de su estudio: viven en `privado/escenas/` (no en
+`public/`) y solo se sirven con sesión, por `/api/escena/<id>.webp` (y `<id>-p.webp`, la
+miniatura). Sin sesión la ventana muestra todo menos las imágenes. Se bajan despacio con:
+
+```sh
+node scripts/imagenes-escenas.mjs   # solo las que faltan; se detiene si anitabi no responde
+```
+
+Mientras falte una imagen, la ventana deja un marco del mismo tamaño.
+
 ## Estructura
 
 ```text
 scripts/fotos-lugares.mjs    baja y comprime las fotos del catálogo
 scripts/articulos-lugares.mjs resuelve a qué artículo de Wikipedia lleva cada lugar
+scripts/escenas.mjs          arma las escenas de anime (y escenas.config.mjs, su configuración)
+scripts/imagenes-escenas.mjs baja las imágenes de las escenas a privado/escenas/
 scripts/iconos.mjs           saca los íconos a partir de public/favicon.svg
 scripts/tarjeta.html         la tarjeta que sale al compartir el enlace (public/tarjeta.png)
 public/                      íconos, manifiesto y tarjeta para compartir
 public/lugares/              fotos del catálogo
+privado/escenas/             imágenes de las escenas de anime (solo con sesión)
 src/
 ├── components/              Intro.astro (entrada del Inicio) y Sello.astro (el sello pintado en el servidor)
 ├── data/                    secciones, ventanas, catálogo de lugares, créditos de fotos, formas de sello

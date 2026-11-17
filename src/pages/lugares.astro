@@ -5,6 +5,8 @@ import creditos from '../data/fotos.json';
 import articulos from '../data/articulos.json';
 import { propuestos, sellosPorLugar, type LugarPropuesto } from '../lib/lugares';
 import { sesion } from '../lib/sesion';
+import { resumenTarjeta } from '../data/escenas';
+import Escenas from '../components/Escenas.astro';
 
 // Se arma en el servidor en cada visita: con sesión se suman los lugares que propuso el grupo
 // y se ordena por sellos. Sin sesión solo se ve el catálogo inicial.
@@ -47,6 +49,10 @@ const leer = (l: Ficha) => l.enlace ?? (articulos as Record<string, string>)[l.i
 const mapa = (l: Ficha) =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${l.nombre} ${l.jp ?? ''} Japan`)}`;
 const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
+
+// Escenas de anime: el sello «聖地 N obras» en la foto y la línea «Sale en: …» en el texto.
+// La ventana con las escenas la pinta src/scripts/escenas.ts al tocar «Ver escenas».
+const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
 ---
 
 <Base title="Lugares" description="Lugares y eventos de Japón para votar entre todos.">
@@ -66,11 +72,24 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
     <nav class="temas" aria-label="Temas">
       {
         porTema.map(({ tema, lugares }) => (
-          <a href={`#${tema.id}`} data-ir-tema={tema.id}>
-            <b aria-hidden="true">{tema.kanji}</b>
-            <span>{tema.corto}</span>
-            <small class="mono">{lugares.length}</small>
-          </a>
+          <Fragment>
+            <a href={`#${tema.id}`} data-ir-tema={tema.id}>
+              <b aria-hidden="true">{tema.kanji}</b>
+              <span>{tema.corto}</span>
+              <small class="mono">{lugares.length}</small>
+            </a>
+            {/* el filtro de anime va justo después de Otaku: filtra todas las secciones, no lleva a una */}
+            {tema.id === 'otaku' && conAnime > 0 && (
+              <Fragment>
+                <button type="button" class="lente" id="f-anime" aria-pressed="false">
+                  <b aria-hidden="true">聖</b>
+                  <span>Anime</span>
+                  <small class="mono">{conAnime}</small>
+                </button>
+                <span class="corte" aria-hidden="true" />
+              </Fragment>
+            )}
+          </Fragment>
         ))
       }
     </nav>
@@ -95,6 +114,11 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
     </div>
   </div>
 
+  <p class="aviso-anime" id="aviso-anime" hidden>
+    <span><b aria-hidden="true">聖</b> Solo los <b id="n-anime">{conAnime}</b> lugares que salen en anime</span>
+    <button type="button" id="quitar-anime">Quitar</button>
+  </p>
+
   <p class="vacio wrap" id="vacio" hidden>
     No hay nada con ese filtro. <button type="button" id="limpiar">Quitar filtros</button>
   </p>
@@ -112,12 +136,15 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
         </header>
         <div class="rejilla">
           {
-            lugares.map((l) => (
+            lugares.map((l) => {
+              const anime = resumenTarjeta(l.id);
+              return (
               <article
                 class="lugar"
                 id={l.id}
                 data-zona={l.zona}
                 data-meses={l.meses?.join(',')}
+                data-escenas={anime?.obras}
                 data-marca={`lugar:${l.id}`}
               >
                 <div class="foto">
@@ -127,6 +154,12 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
                     <span class="sin-foto" aria-hidden="true">{tema.kanji}</span>
                   )}
                   {l.meses && <span class="cuando mono">{etiquetaMeses(l.meses)}</span>}
+                  {anime && (
+                    <span class="sello-anime">
+                      <b aria-hidden="true">聖地</b>
+                      {anime.obras} {anime.obras === 1 ? 'obra' : 'obras'}
+                    </span>
+                  )}
                 </div>
                 <div class="cuerpo">
                   <p class="meta mono">
@@ -151,13 +184,30 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
                       )}
                     </p>
                   )}
+                  {anime && (
+                    <p class="linea-anime">
+                      <span class="marca" aria-hidden="true">聖</span>
+                      <span class="suave">Sale en:</span>{' '}
+                      {/* «A», «A y B» o «A, B y N más» */}
+                      {anime.nombres.map((x, i) => (
+                        <Fragment>
+                          {i > 0 && (anime.obras === 2 ? ' y ' : ', ')}
+                          <em>{x}</em>
+                        </Fragment>
+                      ))}
+                      {anime.obras > 2 && ` y ${anime.obras - 2} más`}.{' '}
+                      <button type="button" class="ver-escenas" data-abrir-escenas={l.id}>Ver escenas →</button>
+                      {anime.aparte && <span class="aparte">{anime.aparte}</span>}
+                    </p>
+                  )}
                 </div>
                 <div class="pie">
                   <button type="button" class="poner" data-poner="1" aria-pressed="false">Quiero ir</button>
                   <span class="juntos" data-sellos />
                 </div>
               </article>
-            ))
+              );
+            })
           }
           <button type="button" class="nueva" data-proponer={tema.id}>
             <span aria-hidden="true">＋</span>
@@ -194,6 +244,8 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
     </svg>
   </button>
   <button type="button" class="novedad mono" id="novedad" hidden>Hay lugares nuevos · Actualizar ↻</button>
+
+  <Escenas />
 
   <dialog id="proponer" class="registro" aria-labelledby="proponer-t">
     <form method="dialog">
@@ -248,6 +300,9 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
   const zona = $<HTMLSelectElement>('f-zona')!;
   const temp = $<HTMLSelectElement>('f-temp')!;
   const mios = $<HTMLButtonElement>('f-mios')!;
+  // el filtro de anime puede no estar (si ningún lugar tuviera escenas)
+  const anime = $<HTMLButtonElement>('f-anime');
+  const avisoAnime = $('aviso-anime')!;
   const total = $('f-total')!;
   const vacio = $('vacio')!;
   const dlg = $<HTMLDialogElement>('proponer')!;
@@ -260,6 +315,7 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
     const z = zona.value;
     const meses = temp.selectedOptions[0]?.dataset.meses?.split(',');
     const soloMios = mios.getAttribute('aria-pressed') === 'true';
+    const soloAnime = anime?.getAttribute('aria-pressed') === 'true';
     let suma = 0;
 
     for (const tema of document.querySelectorAll<HTMLElement>('.tema')) {
@@ -268,7 +324,8 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
         const enZona = !z || c.dataset.zona === z;
         const enFecha = !meses || !c.dataset.meses || c.dataset.meses.split(',').some((m) => meses.includes(m));
         const mio = !soloMios || !!c.querySelector('.poner[aria-pressed="true"]');
-        const ver = enZona && enFecha && mio;
+        const conEscenas = !soloAnime || !!c.dataset.escenas;
+        const ver = enZona && enFecha && mio && conEscenas;
         c.hidden = !ver;
         if (ver) n++;
       }
@@ -283,12 +340,16 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
     }
     total.textContent = String(suma);
     vacio.hidden = suma > 0;
+    // prendido, se avisa arriba cuántos quedan y cómo quitarlo
+    avisoAnime.hidden = !soloAnime || suma === 0;
+    $('n-anime')!.textContent = String(suma);
 
     // los filtros quedan en la dirección: se pueden compartir y sobreviven a una recarga
     const q = new URLSearchParams();
     if (z) q.set('zona', z);
     if (temp.value) q.set('t', temp.value);
     if (soloMios) q.set('mios', '1');
+    if (soloAnime) q.set('anime', '1');
     history.replaceState(null, '', `${location.pathname}${q.size ? `?${q}` : ''}${location.hash}`);
   }
 
@@ -297,7 +358,8 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
   if ([...zona.options].some((o) => o.value === q.get('zona'))) zona.value = q.get('zona')!;
   if ([...temp.options].some((o) => o.value === q.get('t'))) temp.value = q.get('t')!;
   const quiereMios = q.get('mios') === '1';
-  if (zona.value || temp.value) filtrar();
+  if (anime && q.get('anime') === '1') anime.setAttribute('aria-pressed', 'true');
+  if (zona.value || temp.value || anime?.getAttribute('aria-pressed') === 'true') filtrar();
 
   // en celular el valor por defecto dice solo de qué es el filtro («Zona», «Temporada») para que quepa
   const celular = matchMedia('(max-width: 720px)');
@@ -315,10 +377,20 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
     mios.setAttribute('aria-pressed', String(mios.getAttribute('aria-pressed') !== 'true'));
     filtrar();
   });
+  // el filtro de anime: prender y apagar desde la píldora, o apagar desde el aviso
+  anime?.addEventListener('click', () => {
+    anime.setAttribute('aria-pressed', String(anime.getAttribute('aria-pressed') !== 'true'));
+    filtrar();
+  });
+  $('quitar-anime')!.addEventListener('click', () => {
+    anime?.setAttribute('aria-pressed', 'false');
+    filtrar();
+  });
   $('limpiar')!.addEventListener('click', () => {
     zona.value = '';
     temp.value = '';
     mios.setAttribute('aria-pressed', 'false');
+    anime?.setAttribute('aria-pressed', 'false');
     filtrar();
   });
   // «mis sellos» depende de que los sellos ya estén pintados
@@ -482,6 +554,70 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
   .temas a.apagado {
     opacity: 0.3;
     pointer-events: none;
+  }
+  /* «聖 Anime»: filtra, no lleva a una sección; por eso es una píldora con borde y no un tema más */
+  .temas .lente {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    align-self: center;
+    min-height: 2.75rem;
+    margin: 0 0.3rem;
+    padding: 0 0.8rem;
+    border: 1px solid var(--ink);
+    border-radius: 99px;
+    background: none;
+    white-space: nowrap;
+  }
+  .temas .lente b {
+    font-size: 1rem;
+  }
+  .temas .lente:hover {
+    background: var(--paper-2);
+  }
+  .temas .lente[aria-pressed='true'] {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .temas .lente[aria-pressed='true'] :is(b, small) {
+    color: var(--paper);
+  }
+  .temas .corte {
+    flex: none;
+    align-self: stretch;
+    width: 1px;
+    margin-block: 0.45rem;
+    background: var(--hair);
+  }
+  /* prendido el filtro: cuántos quedan y cómo quitarlo */
+  .aviso-anime {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    max-width: none;
+    margin: 0;
+    padding: 0.35rem var(--gutter);
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.9rem;
+  }
+  .aviso-anime[hidden] {
+    display: none;
+  }
+  .aviso-anime b {
+    font-family: var(--f-display);
+  }
+  .aviso-anime button {
+    min-height: 2.75rem;
+    padding: 0 0.2rem;
+    background: none;
+    border: 0;
+    color: var(--paper);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
   .filtros {
     display: flex;
@@ -679,9 +815,91 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
     font-size: 0.62rem;
   }
 
+  /* sello de escenas de anime: arriba a la izquierda (abajo va la temporada). Cuerpo negro con anillo
+     de papel: el anillo se separa de las fotos oscuras y el negro de las claras. Solo avisa: no se toca */
+  .sello-anime {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.6rem;
+    background: var(--ink);
+    color: var(--paper);
+    box-shadow: 0 0 0 2px var(--paper);
+    font-family: var(--f-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.2;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .sello-anime b {
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 0;
+  }
+
   .cuerpo {
     flex: 1;
+    display: flex;
+    flex-direction: column;
     padding: 0.85rem 1rem 0.3rem;
+  }
+  /* «Sale en: …» va al fondo del texto, justo encima de «Quiero ir»: queda a la misma altura en
+     toda la fila aunque las descripciones midan distinto */
+  .linea-anime {
+    margin: auto 0 0;
+    padding-top: 0.55rem;
+    border-top: 1px dashed var(--hair);
+    font-size: 0.85rem;
+    line-height: 1.45;
+  }
+  .cuerpo:has(.linea-anime) > :nth-last-child(2) {
+    margin-bottom: 0.65rem;
+  }
+  .linea-anime .marca {
+    margin-right: 0.3rem;
+    font-family: var(--f-display);
+    font-weight: 800;
+    color: var(--shu);
+  }
+  .linea-anime em {
+    font-family: var(--f-display);
+    font-weight: 700;
+  }
+  .linea-anime .suave {
+    color: var(--ink-soft);
+  }
+  /* 44 px para el dedo sin mover el renglón */
+  .ver-escenas {
+    display: inline-block;
+    padding: 0.8rem 0;
+    margin-block: -0.8rem;
+    background: none;
+    border: 0;
+    font: inherit;
+    font-weight: 700;
+    white-space: nowrap;
+    text-decoration: underline;
+    text-decoration-color: var(--shu);
+    text-underline-offset: 0.2em;
+  }
+  .ver-escenas:hover {
+    color: var(--shu-tinta);
+  }
+  .linea-anime .aparte {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+  .linea-anime .aparte::before {
+    content: '↳ ';
+    color: var(--shu-tinta);
   }
   .meta {
     display: flex;
@@ -989,6 +1207,17 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
     }
     .sin-foto {
       font-size: 4rem;
+    }
+    /* la foto mide un tercio de la tarjeta: el sello se achica para caber holgado */
+    .sello-anime {
+      top: 0.4rem;
+      left: 0.4rem;
+      gap: 0.3rem;
+      padding: 0.25rem 0.45rem;
+      font-size: 0.56rem;
+    }
+    .sello-anime b {
+      font-size: 0.72rem;
     }
     .lugar h3 {
       font-size: 1.15rem;

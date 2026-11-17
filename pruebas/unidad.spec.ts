@@ -5,6 +5,7 @@ import { expect, test } from '@playwright/test';
 import { SEMILLAS, TEMAS, TEMPORADAS, ZONAS, etiquetaMeses } from '../src/data/lugares';
 import { secciones } from '../src/data/secciones';
 import { kana, primeraKana } from '../src/scripts/kana';
+import { ESCENAS, momento, resumenTarjeta } from '../src/data/escenas';
 
 const fotos: Record<string, { archivo: string; autor: string; licencia: string; fuente: string }> =
   JSON.parse(readFileSync('src/data/fotos.json', 'utf8'));
@@ -209,5 +210,68 @@ test.describe('secciones', () => {
       '/lugares',
       '/decisiones',
     ]);
+  });
+});
+
+test.describe('escenas de anime', () => {
+  const lugares = Object.entries(ESCENAS);
+  const escenas = lugares.flatMap(([, l]) => l.obras.flatMap((o) => o.escenas));
+
+  test('cada lugar con escenas existe en el catálogo y tiene al menos una obra', () => {
+    const ids = new Set(SEMILLAS.map((l) => l.id));
+    for (const [id, l] of lugares) {
+      expect(ids.has(id), `${id} no está en el catálogo`).toBe(true);
+      expect(l.obras.length, id).toBeGreaterThan(0);
+    }
+  });
+
+  test('ningún nombre de obra va en letra japonesa', () => {
+    const japones = /[぀-ヿ㐀-鿿]/;
+    for (const [, l] of lugares)
+      for (const o of l.obras) {
+        expect(o.nombre, o.nombre).not.toMatch(japones);
+        if (o.romaji) expect(o.romaji, o.romaji).not.toMatch(japones);
+      }
+  });
+
+  test('las obras van de la que más escenas tiene en el lugar a la que menos', () => {
+    for (const [id, l] of lugares) {
+      const n = l.obras.map((o) => o.escenas.length);
+      expect(n, id).toEqual([...n].sort((a, b) => b - a));
+    }
+  });
+
+  test('una obra no se repite en un mismo lugar, y el rōmaji solo va si es distinto', () => {
+    for (const [id, l] of lugares) {
+      expect(new Set(l.obras.map((o) => o.serie)).size, id).toBe(l.obras.length);
+      for (const o of l.obras) expect(o.romaji, `${id}: ${o.nombre}`).not.toBe(o.nombre);
+    }
+  });
+
+  test('cada escena trae su fuente con enlace https y un id único', () => {
+    for (const e of escenas) {
+      expect(e.fuente.autor.trim().length, e.id).toBeGreaterThan(0);
+      expect(e.fuente.enlace, e.id).toMatch(/^https:\/\//);
+      expect(e.id).toMatch(/^\d+-\w+$/);
+    }
+    expect(new Set(escenas.map((e) => e.id)).size).toBe(escenas.length);
+  });
+
+  test('cada obra tiene estudio, salvo las marcadas como dudosas', () => {
+    for (const [, l] of lugares) for (const o of l.obras) if (!o.dudoso) expect(o.estudio, o.nombre).toBeTruthy();
+  });
+
+  test('una escena confirmada trae el enlace que la confirma', () => {
+    for (const e of escenas.filter((x) => x.estado === 'confirmada')) expect(e.confirmacion, e.id).toMatch(/^https:\/\//);
+  });
+
+  test('resumen de la tarjeta y momento de la escena', () => {
+    const r = resumenTarjeta(lugares[0][0])!;
+    expect(r.obras).toBe(lugares[0][1].obras.length);
+    expect(r.nombres.length).toBe(Math.min(2, r.obras));
+    expect(resumenTarjeta('no-existe')).toBeNull();
+    expect(momento({ ep: '7', s: 946 })).toBe('Ep 7 · 15:46');
+    expect(momento({ ep: 'ED2', s: 45 })).toBe('ED2 · 0:45');
+    expect(momento({ ep: null, s: null })).toBeNull();
   });
 });

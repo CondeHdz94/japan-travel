@@ -1,0 +1,40 @@
+{
+  "lugares": {
+    "kamakura": {
+      "aparte": "en puntos cercanos: la estación Kamakurakōkō-mae y Enoshima, en el tren Enoden"
+    },
+    "kawaguchiko": {
+      "aparte": "varias en el lago Motosu, a unos 16 km"
+    },
+    "takayama": {
+      "aparte": "varias en Hida-Furukawa, a unos 12 km en tren"
+    },
+    "museo-nintendo": {
+      "aparte": "en el centro de Uji, a unos 2 km del museo"
+    }
+  },
+  "escenas": {},
+  "principal": {},
+  "excluir": {
+    "876-5c4dgq9td": "Es otro sitio (Aomori, Hakodate o el barrio Kanazawa de Yokohama), no el puerto de Yokohama (陸奥横浜駅２)",
+    "876-5c4dgq9e8": "Es otro sitio (Aomori, Hakodate o el barrio Kanazawa de Yokohama), no el puerto de Yokohama (陸奥横浜駅３)",
+    "876-5c4dgq9vd": "Es otro sitio (Aomori, Hakodate o el barrio Kanazawa de Yokohama), no el puerto de Yokohama (陸奥横浜駅５)",
+    "876-5c4dgq9e6": "Es otro sitio (Aomori, Hakodate o el barrio Kanazawa de Yokohama), no el puerto de Yokohama (陸奥横浜駅6)",
+    "876-5c4dgq9sm": "Es otro sitio (Aomori, Hakodate o el barrio Kanazawa de Yokohama), no el puerto de Yokohama (陸奥横浜駅４)",
+    "876-5c4dgq9n1": "Es otro sitio (Aomori, Hakodate o el barrio Kanazawa de Yokohama), no el puerto de Yokohama (陸奥横浜駅１)",
+    "328609-uqgvi85q1": "Es otro sitio (Aomori, Hakodate o el barrio Kanazawa de Yokohama), no el puerto de Yokohama (横浜金澤七福神)",
+    "429644-ngdnuve9f": "Es otro sitio (Aomori, Hakodate o el barrio Kanazawa de Yokohama), no el puerto de Yokohama (金森赤レンガ倉庫)",
+    "328609-cl27l5": "Es Kanazawa-Hakkei, en Yokohama, no la ciudad de Kanazawa (金沢シーサイドライン下広場)",
+    "328609-4xydgsp7r": "Es Kanazawa-Hakkei, en Yokohama, no la ciudad de Kanazawa (金沢八景マンション前の歩道)",
+    "328609-cmbyk3": "Es Kanazawa-Hakkei, en Yokohama, no la ciudad de Kanazawa (金沢八景駅前)",
+    "328609-50slhscht": "Es Kanazawa-Hakkei, en Yokohama, no la ciudad de Kanazawa (金沢八景駅)",
+    "328609-uqgmy0i50": "Es Kanazawa-Hakkei, en Yokohama, no la ciudad de Kanazawa (純福音金沢教会)",
+    "876-9nwiej5": "Es Hakonegasaki, en Tokio, no Hakone (共立​リライアンス​箱根ヶ崎)",
+    "876-9okb036": "Es Hakonegasaki, en Tokio, no Hakone (箱根ケ崎)",
+    "110467-5q875irq": "Es el área de servicio de Ranzan, en Saitama, no Arashiyama (嵐山サービスエリア)",
+    "276-50cjwj463": "Es el cruce de la estación de Omiya, no el de Shibuya (大宮駅西口スクランブル交差点)",
+    "165553-krxhjq2qp": "Es un cine de Numazu: solo coincide «サンシャイン» (シネマサンシャイン沼津)",
+    "262897-45dtmtj": "Okuhida queda a 27 km de Takayama (奥飛騨温泉郷平湯)",
+    "362577-ss4sdjguk": "Suzume no pasa por Kioto: es otro cruce llamado Gion (祇園踏切)"
+  }
+}

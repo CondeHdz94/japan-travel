@@ -1,0 +1,6177 @@
+{
+ "fuente": "anitabi",
+ "licencia": "CC BY-NC-SA 4.0",
+ "lugares": {
+  "akihabara": {
+   "obras": [
+    {
+     "serie": "love-live",
+     "nombre": "Love Live!",
+     "estudio": "Sunrise",
+     "escenas": [
+      {
+       "id": "49294-cxfdy2b0l",
+       "punto": "神田明神",
+       "ep": "2",
+       "s": 1336,
+       "parte": "School Idol Project",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1yjZUbvfXNwpnwYgoHbPpiWJnbRM&ll=35.70168%2C139.767926&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/49294/points/cxfdy2b0l-1694617233071.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "49294-knlbeybai",
+       "punto": "秋葉原UDX",
+       "ep": "1",
+       "s": 701,
+       "parte": "School Idol Project",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1yjZUbvfXNwpnwYgoHbPpiWJnbRM&ll=35.699656%2C139.772479&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/49294/points/knlbeybai-1716415138518.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "49294-knnoxih4g",
+       "punto": "アキバ系アイドルショップ",
+       "ep": "9",
+       "s": 419,
+       "parte": "School Idol Project",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=49294&pid=knnoxih4g"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/49294/points/knnoxih4g-1716419426774.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "165553-krvyyoq9e",
+       "punto": "秋葉原駅電気街口",
+       "ep": "1",
+       "s": 15,
+       "parte": "Sunshine!!",
+       "fuente": {
+        "autor": "Anitabi@うに",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=165553&pid=krvyyoq9e"
+       },
+       "original": "https://image.anitabi.cn/user/1093/bangumi/165553/points/krvyyoq9e-1716750867280.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "165553-ks0f8r4p5",
+       "punto": "神田明神",
+       "ep": "7",
+       "s": 1117,
+       "parte": "Sunshine!!",
+       "fuente": {
+        "autor": "Anitabi@うに",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=165553&pid=ks0f8r4p5"
+       },
+       "original": "https://image.anitabi.cn/user/1093/bangumi/165553/points/ks0f8r4p5-1716760560105.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "210272-kr44exiop",
+       "punto": "神田明神",
+       "ep": "12",
+       "s": 265,
+       "parte": "Sunshine!! temporada 2",
+       "fuente": {
+        "autor": "Anitabi@うに",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=210272&pid=kr44exiop"
+       },
+       "original": "https://image.anitabi.cn/user/1093/bangumi/210272/points/kr44exiop-1716690268194.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "49294-cxfz4st2i",
+       "punto": "秋葉原UDX",
+       "ep": "1",
+       "s": null,
+       "parte": "School Idol Project",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1yjZUbvfXNwpnwYgoHbPpiWJnbRM&ll=35.699656%2C139.772479&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/49294/points/cxfz4st2i-1694617649891.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "49294-lo9h36cje",
+       "punto": "肉​の​ハナマサ​秋葉原​店",
+       "ep": "二季4话",
+       "s": null,
+       "parte": "School Idol Project",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=49294&pid=lo9h36cje"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/49294/points/lo9h36cje-1719288027637.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "210272-4t2lo5uue",
+       "punto": "12.5秋葉原",
+       "ep": null,
+       "s": null,
+       "parte": "Sunshine!! temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1bLKGYdCayP9e5knF7dH5fT7WaVo-XveR&ll=35.698156%2C139.772134&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/210272/4t2lo5uue.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "210272-4t2lo5vc9",
+       "punto": "12.6ラジオ会館前",
+       "ep": null,
+       "s": null,
+       "parte": "Sunshine!! temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1bLKGYdCayP9e5knF7dH5fT7WaVo-XveR&ll=35.698126%2C139.77193&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/210272/4t2lo5vc9.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "296659-4s6dzr8e3",
+       "punto": "セガコラボカフェ秋葉原2号館",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.697733%2C139.771418&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/296659/4s6dzr8e3.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "steins-gate",
+     "nombre": "Steins;Gate",
+     "estudio": "White Fox",
+     "escenas": [
+      {
+       "id": "10380-kpx6og70a",
+       "punto": "秋葉原ラジオ会館",
+       "ep": "24",
+       "s": 1405,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1ETfERFhxsc9JGJgsDVvh-qQidsU&ll=35.698174%2C139.771946&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/10380/points/kovdimeor-1716514541178.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "10380-nzk0qmsv1",
+       "punto": "秋葉原駅電気街口",
+       "ep": "14",
+       "s": 673,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=10380&pid=nzk0qmsv1"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/10380/points/nzk0qmsv1-1725815160341.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "10380-8r2oep4",
+       "punto": "ボークス​秋葉原​ホビー​天国​2",
+       "ep": "2",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@LovelySummer Channel",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=10380&pid=8r2oep4"
+       },
+       "original": "https://image.anitabi.cn/points/10380/8r2oep4_1766061938438.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "10380-6ajjjoh",
+       "punto": "秋葉原​ラジオ​会館",
+       "ep": "1",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@LovelySummer Channel",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=10380&pid=6ajjjoh"
+       },
+       "original": "https://image.anitabi.cn/points/10380/6ajjjoh_1760708538718.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "10380-6ajkkly",
+       "punto": "アトレ秋葉原1",
+       "ep": "1",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@LovelySummer Channel",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=10380&pid=6ajkkly"
+       },
+       "original": "https://image.anitabi.cn/points/10380/6ajkkly_1760708584991.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "10380-6ajmz9u",
+       "punto": "秋葉原駅",
+       "ep": "1",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@LovelySummer Channel",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=10380&pid=6ajmz9u"
+       },
+       "original": "https://image.anitabi.cn/points/10380/6ajmz9u_1760708705152.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "10380-spwogmkmy",
+       "punto": "秋葉原駅電気街口",
+       "ep": "EP22",
+       "s": 1010,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=10380&pid=spwogmkmy"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/10380/points/spwogmkmy-1739164625034.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "10380-kf9p6tg",
+       "punto": "秋葉原ラジオ会館7F",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@落雪鸦杀",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=10380&pid=kf9p6tg"
+       },
+       "original": "https://image.anitabi.cn/points/10380/kf9p6tg_1791469285916.webp&plan=h160",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "10380-5u3psrk",
+       "punto": "秋葉原ラジオ会館屋上",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@落雪鸦杀",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=10380&pid=5u3psrk"
+       },
+       "original": "https://image.anitabi.cn/points/10380/5u3psrk_1759714539181.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "10380-5u41n79",
+       "punto": "秋葉原ゲーマー横",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@落雪鸦杀",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=10380&pid=5u41n79"
+       },
+       "original": "https://image.anitabi.cn/points/10380/5u41n79_1759715075299.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "10380-kpx6og826",
+       "punto": "秋葉原駅周辺",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1ETfERFhxsc9JGJgsDVvh-qQidsU&ll=35.698558%2C139.774203&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/10380/points/kpx6og826-1757950262612.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "oshi-no-ko",
+     "nombre": "Oshi no Ko",
+     "romaji": "[Oshi no Ko]",
+     "estudio": "Doga Kobo",
+     "escenas": [
+      {
+       "id": "386809-o6lkl2qum",
+       "punto": "アトレ秋葉原1",
+       "ep": "1",
+       "s": 4407,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=386809&pid=o6lkl2qum"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/386809/points/o6lkl2qum-1726367202536.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "386809-o6lpwx3ky",
+       "punto": "JR秋葉原駅電気街口",
+       "ep": "1",
+       "s": 4411,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=386809&pid=o6lpwx3ky"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/386809/points/o6lpwx3ky-1726367378000.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "386809-jrz27kxku",
+       "punto": "秋葉原ZEST",
+       "ep": "11",
+       "s": 1280,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@RNRT2983",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=386809&pid=jrz27kxku"
+       },
+       "original": "https://image.anitabi.cn/user/1074/bangumi/386809/points/jrz27kxku-1713936521725.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "lucky-star",
+     "nombre": "Lucky Star",
+     "romaji": "Lucky☆Star",
+     "estudio": "Kyoto Animation",
+     "escenas": [
+      {
+       "id": "276-50cjwj41j",
+       "punto": "JR秋葉原駅電気街口",
+       "ep": "16",
+       "s": 506,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1cr8fxbmEdOWXpV7pNUGYS38Kbf8&ll=35.698183%2C139.772468&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/276/50cjwj41j_1741162089527.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "276-50cjwj4a4",
+       "punto": "とらのあな秋葉原店B前",
+       "ep": "16",
+       "s": 623,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1cr8fxbmEdOWXpV7pNUGYS38Kbf8&ll=35.700364%2C139.77162&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/276/50cjwj4a4_1741162130328.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "suzume",
+     "nombre": "Suzume",
+     "romaji": "Suzume no Tojimari",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "362577-ss59sn15f",
+       "punto": "秋葉原駅西口",
+       "ep": null,
+       "s": 3984,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=362577&pid=ss59sn15f"
+       },
+       "original": "https://image.anitabi.cn/points/362577/ss59sn15f_1739339990737.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "shirobako",
+     "nombre": "Shirobako",
+     "estudio": "P.A. Works",
+     "escenas": [
+      {
+       "id": "110467-5q875hy5",
+       "punto": "秋葉原駅電気街口",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1CS8ngrrzFoJtkvwLuNVixBuKvdY&ll=35.698586%2C139.77255&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/110467/5q875hy5_1731430527178.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "kaguya-sama",
+     "nombre": "Kaguya-sama: Love is War",
+     "romaji": "Kaguya-sama wa Kokurasetai",
+     "estudio": "A-1 Pictures",
+     "escenas": [
+      {
+       "id": "248175-51i51ugzx",
+       "punto": "ロイヤルホスト秋葉原店",
+       "ep": "3",
+       "s": 940,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1ZhGSZXEZkJn9JOJxG3pgd70zfD5dEH3w&ll=35.701716%2C139.77194&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/1065/bangumi/248175/points/51i51ugzx-1765438080981.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "tonari-no-kyuuketsuki",
+     "nombre": "Ms. Vampire Who Lives in My Neighborhood",
+     "romaji": "Tonari no Kyuuketsuki-san",
+     "estudio": "Studio Gokumi y AXsiZ",
+     "escenas": [
+      {
+       "id": "241158-51i523myq",
+       "punto": "秋葉原中央通り",
+       "ep": "8",
+       "s": 955,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xo7t_6GJex0R4YYneiDUzln5qm8_TV2c&ll=35.698849%2C139.771073&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/241158/51i523myq_1729410356043.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "nakano-broadway": {
+   "obras": [
+    {
+     "serie": "tonari-no-kyuuketsuki",
+     "nombre": "Ms. Vampire Who Lives in My Neighborhood",
+     "romaji": "Tonari no Kyuuketsuki-san",
+     "estudio": "Studio Gokumi y AXsiZ",
+     "escenas": [
+      {
+       "id": "241158-51i523n9y",
+       "punto": "中野サンモール",
+       "ep": "11",
+       "s": 712,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xo7t_6GJex0R4YYneiDUzln5qm8_TV2c&ll=35.706426%2C139.665772&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/241158/51i523n9y_1729411709382.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "ikebukuro": {
+   "obras": [
+    {
+     "serie": "durarara",
+     "nombre": "Durarara!!",
+     "estudio": "Brain's Base",
+     "escenas": [
+      {
+       "id": "2463-kpx6ol3sx",
+       "punto": "南池袋公園",
+       "ep": "17",
+       "s": 162,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1vzhG57CN_1BdjW6NDHohJ27azJs&ll=35.727527%2C139.714444&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/2463/points/kpx6ol3sx-1720284629990.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "2463-kpx6ol6sj",
+       "punto": "東池袋中央公園",
+       "ep": "3",
+       "s": 1233,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1vzhG57CN_1BdjW6NDHohJ27azJs&ll=35.730027%2C139.718692&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/2463/points/kpx6ol6sj-1720278771623.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "2463-3c86aht",
+       "punto": "首都高速5号池袋線",
+       "ep": "1",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@月即别",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=2463&pid=3c86aht"
+       },
+       "original": "https://image.anitabi.cn/points/2463/3c86aht_1754280035538.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "2463-3c9cww6",
+       "punto": "池袋水天宮",
+       "ep": "3",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@月即别",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=2463&pid=3c9cww6"
+       },
+       "original": "https://image.anitabi.cn/points/2463/3c9cww6_1754282018829.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "2463-kpx6ol5y8",
+       "punto": "池袋駅前公園",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1vzhG57CN_1BdjW6NDHohJ27azJs&ll=35.732936%2C139.713237&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/2463/points/kpx6ol5y8-1749144582328.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "2463-kpx6ol5nl",
+       "punto": "池袋西口公園",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1vzhG57CN_1BdjW6NDHohJ27azJs&ll=35.730393%2C139.709219&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/2463/kpx6ol5nl_1754281196459.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "2463-3c766uh",
+       "punto": "西武池袋前",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@月即别",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=2463&pid=3c766uh"
+       },
+       "original": "https://image.anitabi.cn/points/2463/3c766uh_1754278466782.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "2463-3c7jch8",
+       "punto": "卡拉OK池袋南口店",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@月即别",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=2463&pid=3c7jch8"
+       },
+       "original": "https://image.anitabi.cn/points/2463/3c7jch8_1754278977880.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "2463-3c8int2",
+       "punto": "首都高速池袋口",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@月即别",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=2463&pid=3c8int2"
+       },
+       "original": "https://image.anitabi.cn/points/2463/3c8int2_1754280643116.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "tenki-no-ko",
+     "nombre": "El tiempo contigo",
+     "romaji": "Tenki no Ko",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "269235-4ui73kr2z",
+       "punto": "池袋大橋",
+       "ep": null,
+       "s": 3862,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=14kcxx9iP_cOuHXHsP0nFzYCPt8Pw2Suy&ll=35.73386%2C139.713851&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/269235/points/4ui73kr2z-1721905959858.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "269235-bq0atq4",
+       "punto": "警視庁池袋警察署",
+       "ep": null,
+       "s": 4896,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=269235&pid=bq0atq4"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/269235/points/bq0atq4-1772527596187.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "269235-bq0duws",
+       "punto": "ホテルヒソカ池袋",
+       "ep": null,
+       "s": 4135,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=269235&pid=bq0duws"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/269235/points/bq0duws-1772528007665.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "shirobako",
+     "nombre": "Shirobako",
+     "estudio": "P.A. Works",
+     "escenas": [
+      {
+       "id": "110467-jr6q4t6",
+       "punto": "サンシャイン​水族館",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=110467&pid=jr6q4t6"
+       },
+       "original": "https://image.anitabi.cn/points/110467/jr6q4t6_1790013106246.webp&plan=h160",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "sword-art-online",
+     "nombre": "Sword Art Online",
+     "estudio": "A-1 Pictures",
+     "escenas": [
+      {
+       "id": "148099-db6rgwg",
+       "punto": "优衣库池袋Sun",
+       "ep": null,
+       "s": 1800,
+       "parte": "Ordinal Scale (película)",
+       "fuente": {
+        "autor": "Anitabi@采钦佩",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=148099&pid=db6rgwg"
+       },
+       "original": "https://image.anitabi.cn/user/2205/bangumi/148099/points/db6rgwg-1775985235840.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "steins-gate",
+     "nombre": "Steins;Gate",
+     "estudio": "White Fox",
+     "escenas": [
+      {
+       "id": "129807-ko4rp4lmm",
+       "punto": "西池袋公園",
+       "ep": "2",
+       "s": 1248,
+       "parte": "Steins;Gate 0",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=129807&pid=ko4rp4lmm"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/10380/points/ko4rp4lmm-1716456655148.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "museo-ghibli": {
+   "obras": [
+    {
+     "serie": "jujutsu-kaisen",
+     "nombre": "Jujutsu Kaisen",
+     "estudio": "MAPPA",
+     "escenas": [
+      {
+       "id": "294993-20bf3321",
+       "punto": "吉祥寺プラザ",
+       "ep": "8",
+       "s": 1126,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1szRFjkAXOmd-He4PYBDIB3RDeHZ97LRg&ll=35.706596%2C139.580582&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/294993/20bf3321_1719541897717.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "294993-lrgzme5td",
+       "punto": "吉祥寺サンロード",
+       "ep": "9",
+       "s": 223,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@AmaiAya",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=294993&pid=lrgzme5td"
+       },
+       "original": "https://image.anitabi.cn/points/294993/lrgzme5td_1719541901749.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "294993-lrgvxiylh",
+       "punto": "吉祥寺バッティングセンター",
+       "ep": "9",
+       "s": 781,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@AmaiAya",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=294993&pid=lrgvxiylh"
+       },
+       "original": "https://image.anitabi.cn/points/294993/lrgvxiylh_1719541898363.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-cea675ab",
+       "punto": "京王井の頭線",
+       "ep": "14",
+       "s": 457,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.658714%2C139.699409&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/cea675ab_1719534465741.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "294993-fdcdf66d",
+       "punto": "吉祥寺パークロード",
+       "ep": "OP1",
+       "s": 57,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=19QjuPVs5YnLnmo_RChnclEJeOFkOssBc&ll=35.702735%2C139.578836&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/294993/fdcdf66d_1719540622740.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-ec29275f",
+       "punto": "井の頭恩賜公園",
+       "ep": "ED1",
+       "s": 38,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.69819%2C139.580744&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/ec29275f_1719534450825.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "shirobako",
+     "nombre": "Shirobako",
+     "estudio": "P.A. Works",
+     "escenas": [
+      {
+       "id": "110467-jr1gyrw",
+       "punto": "吉祥寺駅",
+       "ep": "12",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=110467&pid=jr1gyrw"
+       },
+       "original": "https://image.anitabi.cn/points/110467/jr1gyrw_1790004276961.webp&plan=h160",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "110467-jr1lfgc",
+       "punto": "井の頭公園弁財天",
+       "ep": "4",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=110467&pid=jr1lfgc"
+       },
+       "original": "https://image.anitabi.cn/points/110467/jr1lfgc_1790004482036.webp&plan=h160",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "110467-5q875dvn",
+       "punto": "黒毛和牛専門店さとう吉祥寺店",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1CS8ngrrzFoJtkvwLuNVixBuKvdY&ll=35.70402%2C139.579054&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/110467/5q875dvn_1731428367691.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "110467-5q875du8",
+       "punto": "井の頭公園七井橋",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1CS8ngrrzFoJtkvwLuNVixBuKvdY&ll=35.699956%2C139.577394&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/110467/5q875du8_1731428274937.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "110467-jr5qq6a",
+       "punto": "三鷹駅",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=110467&pid=jr5qq6a"
+       },
+       "original": "https://image.anitabi.cn/points/110467/jr5qq6a_1790011492569.webp&plan=h160",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "tokyo-ghoul",
+     "nombre": "Tokyo Ghoul",
+     "estudio": "Studio Pierrot",
+     "escenas": [
+      {
+       "id": "93714-p8f7f7uox",
+       "punto": "吉祥寺駅",
+       "ep": "2",
+       "s": 722,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Xmなのだ",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=93714&pid=p8f7f7uox"
+       },
+       "original": "https://image.anitabi.cn/user/1099/bangumi/93714/points/p8f7f7uox-1729331003858.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "93714-rkdpiruun",
+       "punto": "吉祥寺駅南口",
+       "ep": "6",
+       "s": 1169,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Xmなのだ",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=93714&pid=rkdpiruun"
+       },
+       "original": "https://image.anitabi.cn/user/1099/bangumi/93714/points/rkdpiruun-1735910435418.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "oshi-no-ko",
+     "nombre": "Oshi no Ko",
+     "romaji": "[Oshi no Ko]",
+     "estudio": "Doga Kobo",
+     "escenas": [
+      {
+       "id": "443428-o60vawv2r",
+       "punto": "井の頭公園のベンチ",
+       "ep": "13",
+       "s": 652,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=443428&pid=o60vawv2r"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/443428/points/o60vawv2r-1726322105684.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "gundam-odaiba": {
+   "obras": [
+    {
+     "serie": "love-live",
+     "nombre": "Love Live!",
+     "estudio": "Sunrise",
+     "escenas": [
+      {
+       "id": "296659-4s6dzr6l2",
+       "punto": "お台場海浜公園",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.627685%2C139.771319&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/296659/4s6dzr6l2.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "296659-4s6dzr6fk",
+       "punto": "シーリアお台場五番街前",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.62991%2C139.777355&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/296659/4s6dzr6fk.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "296659-4s6dzr651",
+       "punto": "首都高速11号台場線",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.636645%2C139.762966&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/296659/4s6dzr651.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "296659-4s6dzr6em",
+       "punto": "アクアシティお台場5F",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.628057%2C139.773344&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/296659/4s6dzr6em.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "296659-4s6dzr67m",
+       "punto": "お台場海浜公園中央デッキ",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.629775%2C139.775663&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/296659/4s6dzr67m.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "296659-4s6dzr678",
+       "punto": "台場公園",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.633264%2C139.771012&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/296659/4s6dzr678.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "296659-4s6dzr701",
+       "punto": "お台場海浜公園水域",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.630043%2C139.774654&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/296659/4s6dzr701.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "296659-4s6dzr7ar",
+       "punto": "お台場レインボー公園",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.632646%2C139.777894&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/296659/4s6dzr7ar.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "296659-4s6dzr76r",
+       "punto": "台場口側",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.624612%2C139.773882&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/296659/4s6dzr76r.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "296659-4s6dzr79z",
+       "punto": "お台場海浜公園駅前バス停",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.629697%2C139.778113&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/296659/4s6dzr79z.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "296659-4s6dzr73e",
+       "punto": "東京お台場",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.615295%2C139.778265&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/296659/4s6dzr73e.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "296659-4s6dzr87c",
+       "punto": "オーケーお台場店前",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.63025%2C139.779727&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/296659/4s6dzr87c.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "296659-4s6dzr81s",
+       "punto": "お台場たこ焼きミュージアム",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.629444%2C139.776189&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/296659/4s6dzr81s.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "296659-4s6dzr7si",
+       "punto": "お台場モヤイ像",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.629888%2C139.774911&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/296659/4s6dzr7si.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "296659-4s6dzr8io",
+       "punto": "ザ・タワーズ台場",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.630379%2C139.780097&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/296659/4s6dzr8io.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "296659-4s6dzr8ha",
+       "punto": "ヒルトン東京お台場",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.626324%2C139.771132&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/296659/4s6dzr8ha.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "oshi-no-ko",
+     "nombre": "Oshi no Ko",
+     "romaji": "[Oshi no Ko]",
+     "estudio": "Doga Kobo",
+     "escenas": [
+      {
+       "id": "386809-o6nei7z99",
+       "punto": "お台場海浜公園",
+       "ep": "8",
+       "s": 769,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=386809&pid=o6nei7z99"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/386809/points/o6nei7z99-1726371089876.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "386809-js3apek1c",
+       "punto": "お台場海浜公園",
+       "ep": "8",
+       "s": 826,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@RNRT2983",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=386809&pid=js3apek1c"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/386809/points/js3apek1c-1726366668320.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "386809-9pgv4hd",
+       "punto": "お台場海浜公園展望広場",
+       "ep": "8",
+       "s": 787,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@采钦佩",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=386809&pid=9pgv4hd"
+       },
+       "original": "https://image.anitabi.cn/user/2205/bangumi/386809/points/9pgv4hd-1768141374813.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "tenki-no-ko",
+     "nombre": "El tiempo contigo",
+     "romaji": "Tenki no Ko",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "269235-k16vnpm17",
+       "punto": "お台場",
+       "ep": null,
+       "s": 2102,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=269235&pid=k16vnpm17"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/269235/points/k16vnpm17-1714658814518.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "269235-32hpjv6",
+       "punto": "お台場海浜公園",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=269235&pid=32hpjv6"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/269235/points/32hpjv6-1753691437158.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "suzume",
+     "nombre": "Suzume",
+     "romaji": "Suzume no Tojimari",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "362577-srixpynuo",
+       "punto": "お台場海浜公園",
+       "ep": null,
+       "s": 3995,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=362577&pid=srixpynuo"
+       },
+       "original": "https://image.anitabi.cn/points/362577/srixpynuo_1739291369156.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "museo-nintendo": {
+   "aparte": "en el centro de Uji, a unos 2 km del museo",
+   "obras": [
+    {
+     "serie": "euphonium",
+     "nombre": "Sound! Euphonium",
+     "romaji": "Hibike! Euphonium",
+     "estudio": "Kyoto Animation",
+     "escenas": [
+      {
+       "id": "115908-qys7i1",
+       "punto": "宇治橋西詰交差点",
+       "ep": "1",
+       "s": 242,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=13mgdlajJV0HxpqKf6ri2NnEHFBc&ll=34.892285%2C135.805459&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/115908/qys7i1.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-7f3s0088",
+       "punto": "宇治橋西",
+       "ep": "1",
+       "s": 245,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=7f3s0088"
+       },
+       "original": "https://image.anitabi.cn/points/115908/7f3s0088.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-7gu3e7rw",
+       "punto": "宇治橋西詰",
+       "ep": "2",
+       "s": 835,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=7gu3e7rw"
+       },
+       "original": "https://image.anitabi.cn/points/115908/7gu3e7rw.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-7gs3o1mm",
+       "punto": "宇治橋",
+       "ep": "2",
+       "s": 809,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=7gs3o1mm"
+       },
+       "original": "https://image.anitabi.cn/points/115908/7gs3o1mm.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-j2sjku1v4",
+       "punto": "宇治橋西",
+       "ep": "8",
+       "s": 685,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=j2sjku1v4"
+       },
+       "original": "https://image.anitabi.cn/points/115908/j2sjku1v4_1737823169775_c16v9.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "283643-jyqu17je3",
+       "punto": "宇治橋東詰",
+       "ep": "1",
+       "s": 136,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@玖石澪",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=283643&pid=jyqu17je3"
+       },
+       "original": "https://image.anitabi.cn/points/283643/jyqu17je3_1714467129942.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "283643-khsc8hvyx",
+       "punto": "宇治橋",
+       "ep": "6",
+       "s": 484,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@玖石澪",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=283643&pid=khsc8hvyx"
+       },
+       "original": "https://image.anitabi.cn/points/283643/khsc8hvyx_1715959322437.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "283643-jyqqfkxxr",
+       "punto": "宇治橋西詰",
+       "ep": "1",
+       "s": 136,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@玖石澪",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=283643&pid=jyqqfkxxr"
+       },
+       "original": "https://image.anitabi.cn/points/283643/jyqqfkxxr_1714466990385.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "216372-kqi28iqbf",
+       "punto": "宇治橋西詰",
+       "ep": null,
+       "s": 3087,
+       "parte": "Película: Our Promise",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=216372&pid=kqi28iqbf"
+       },
+       "original": "https://image.anitabi.cn/points/216372/kqi28iqbf_1716642222223.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "386195-ksq0m69d7",
+       "punto": "宇治橋",
+       "ep": null,
+       "s": 2786,
+       "parte": "Ensemble Contest",
+       "fuente": {
+        "autor": "Anitabi@玖石澪",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=386195&pid=ksq0m69d7"
+       },
+       "original": "https://image.anitabi.cn/points/386195/ksq0m69d7_1716816275392.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-kq1wg6e2b",
+       "punto": "宇治桥望向JR铁路桥",
+       "ep": "12",
+       "s": 440,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=kq1wg6e2b"
+       },
+       "original": "https://image.anitabi.cn/points/115908/kq1wg6e2b_1716607069889.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-7ghhgxql",
+       "punto": "府立宇治公園前交差点",
+       "ep": "1",
+       "s": 1201,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=7ghhgxql"
+       },
+       "original": "https://image.anitabi.cn/points/115908/7ghhgxql.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-qys7ii",
+       "punto": "宇治神社",
+       "ep": "1",
+       "s": 1076,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=13mgdlajJV0HxpqKf6ri2NnEHFBc&ll=34.890577%2C135.809906&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/115908/qys7ii.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-k97znz3w",
+       "punto": "京阪宇治",
+       "ep": "12",
+       "s": 1283,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@itorr",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=k97znz3w"
+       },
+       "original": "https://image.anitabi.cn/points/115908/k97znz3w_1673372490534.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-7gia835k",
+       "punto": "京阪宇治闸机",
+       "ep": "1",
+       "s": 1212,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=7gia835k"
+       },
+       "original": "https://image.anitabi.cn/points/115908/7gia835k.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-7jhnw9ev",
+       "punto": "京阪宇治外",
+       "ep": "5",
+       "s": 649,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=7jhnw9ev"
+       },
+       "original": "https://image.anitabi.cn/points/115908/7jhnw9ev.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-7ipvee45",
+       "punto": "京阪宇治站内",
+       "ep": "4",
+       "s": 677,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=7ipvee45"
+       },
+       "original": "https://image.anitabi.cn/points/115908/7ipvee45.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-7giv34em",
+       "punto": "京阪宇治站台",
+       "ep": "1",
+       "s": 1214,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=7giv34em"
+       },
+       "original": "https://image.anitabi.cn/points/115908/7giv34em.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-7jj2ywzo",
+       "punto": "宇治桥东",
+       "ep": "5",
+       "s": 679,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=7jj2ywzo"
+       },
+       "original": "https://image.anitabi.cn/points/115908/7jj2ywzo.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-7jjozvi3",
+       "punto": "宇治桥东信号灯",
+       "ep": "5",
+       "s": 691,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=7jjozvi3"
+       },
+       "original": "https://image.anitabi.cn/points/115908/7jjozvi3.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-7jn2zoll",
+       "punto": "宇治桥 清晨",
+       "ep": "5",
+       "s": 761,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=7jn2zoll"
+       },
+       "original": "https://image.anitabi.cn/points/115908/7jn2zoll.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-qys7kd",
+       "punto": "宇治御蔵山郵便局付近坂道",
+       "ep": "2",
+       "s": 1094,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=13mgdlajJV0HxpqKf6ri2NnEHFBc&ll=34.932588%2C135.80496&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/115908/qys7kd.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-qys7kc",
+       "punto": "711宇治黄檗公园店",
+       "ep": "2",
+       "s": 1233,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=13mgdlajJV0HxpqKf6ri2NnEHFBc&ll=34.908269%2C135.809662&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/115908/qys7kc.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-qys7hz",
+       "punto": "マクドナルド宇治木幡店",
+       "ep": "3",
+       "s": 1018,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=13mgdlajJV0HxpqKf6ri2NnEHFBc&ll=34.92643%2C135.799795&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/115908/qys7hz.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-qys7i8",
+       "punto": "セブンイレブンJR宇治駅前店",
+       "ep": "7",
+       "s": 389,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=13mgdlajJV0HxpqKf6ri2NnEHFBc&ll=34.889871%2C135.800438&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/115908/2f447201b1333025a6fe67f90d761257.png",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-7oun8aol",
+       "punto": "萨莉亚宇治里尻店前",
+       "ep": "7",
+       "s": 1267,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=7oun8aol"
+       },
+       "original": "https://image.anitabi.cn/points/115908/7oun8aol.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-qys7il",
+       "punto": "JR宇治駅",
+       "ep": "8",
+       "s": 451,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=13mgdlajJV0HxpqKf6ri2NnEHFBc&ll=34.890402%2C135.800607&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/115908/points/qys7il-1720438003834.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-qys7hu",
+       "punto": "宇治文化中心",
+       "ep": "11",
+       "s": 700,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=13mgdlajJV0HxpqKf6ri2NnEHFBc&ll=34.87962%2C135.803991&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/115908/qys7hu_1716605169430.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-hsi1kiyqq",
+       "punto": "宇治桥 不甘心",
+       "ep": "12",
+       "s": 987,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Chimes",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=hsi1kiyqq"
+       },
+       "original": "https://image.anitabi.cn/points/115908/kq2i9iegc_1716608362043.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-3plnxvy",
+       "punto": "JR宇治駅",
+       "ep": "8",
+       "s": 713,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=3plnxvy"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/115908/points/3plnxvy-1755088794974.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-4qkomh3",
+       "punto": "京阪宇治站车辆入站",
+       "ep": "9",
+       "s": 645,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=4qkomh3"
+       },
+       "original": "https://image.anitabi.cn/user/1000/bangumi/115908/points/4qkomh3-1757324347454.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-kq5gkb5y5",
+       "punto": "京阪宇治站",
+       "ep": "1",
+       "s": 742,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=kq5gkb5y5"
+       },
+       "original": "https://image.anitabi.cn/points/152091/kq5gkb5y5_1716614800422.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-kq5h19o6l",
+       "punto": "宇治桥东",
+       "ep": "1",
+       "s": 746,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=kq5h19o6l"
+       },
+       "original": "https://image.anitabi.cn/points/152091/kq5h19o6l_1716614824979.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-kq6qqpdzb",
+       "punto": "宇治桥西",
+       "ep": "1",
+       "s": 1973,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=kq6qqpdzb"
+       },
+       "original": "https://image.anitabi.cn/points/152091/kq6qqpdzb_1716617585537.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-kq5y9d6d9",
+       "punto": "菊桥 远眺宇治桥",
+       "ep": "1",
+       "s": 768,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=kq5y9d6d9"
+       },
+       "original": "https://image.anitabi.cn/points/152091/kq5y9d6d9_1716615878186.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-kq61a7s69",
+       "punto": "宇治公园附近",
+       "ep": "1",
+       "s": 775,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=kq61a7s69"
+       },
+       "original": "https://image.anitabi.cn/points/152091/kq61a7s69_1716616055079.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-kq72ewk7h",
+       "punto": "宇治神社第一鸟居",
+       "ep": "1",
+       "s": 2400,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=kq72ewk7h"
+       },
+       "original": "https://image.anitabi.cn/points/152091/kq72ewk7h_1716618539445.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-kq7bug0r0",
+       "punto": "朝雾桥 远眺京阪宇治站",
+       "ep": "1",
+       "s": 2504,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=kq7bug0r0"
+       },
+       "original": "https://image.anitabi.cn/points/152091/kq7bug0r0_1716618861529.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-kq8fcosqk",
+       "punto": "アクトパル宇治",
+       "ep": "2",
+       "s": 738,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=kq8fcosqk"
+       },
+       "original": "https://image.anitabi.cn/points/152091/kq8fcosqk_1716621284686.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-kq8ge35q3",
+       "punto": "宇治市​総合​野外​活動​センター",
+       "ep": "2",
+       "s": 743,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=kq8ge35q3"
+       },
+       "original": "https://image.anitabi.cn/points/152091/kq8ge35q3_1716621308453.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-kq8hqhod6",
+       "punto": "Actpal宇治",
+       "ep": "2",
+       "s": 874,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=kq8hqhod6"
+       },
+       "original": "https://image.anitabi.cn/points/152091/kq8hqhod6_1716621390211.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-ptcrup9aq",
+       "punto": "宇治市天之濑墓地公园",
+       "ep": "11",
+       "s": 1208,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=ptcrup9aq"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/152091/points/ptcrup9aq-1730971461948.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-s8n7xn1da",
+       "punto": "宇治日の出園",
+       "ep": "6",
+       "s": 1147,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=s8n7xn1da"
+       },
+       "original": "https://image.anitabi.cn/user/2168/bangumi/152091/points/s8n7xn1da-1737811777486.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-s8naucehu",
+       "punto": "宇治公園",
+       "ep": "6",
+       "s": 1148,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=s8naucehu"
+       },
+       "original": "https://image.anitabi.cn/user/2168/bangumi/152091/points/s8naucehu-1737811951482.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-s8ngdtqtf",
+       "punto": "京都宇治茶",
+       "ep": "6",
+       "s": 1044,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=s8ngdtqtf"
+       },
+       "original": "https://image.anitabi.cn/user/2168/bangumi/152091/points/s8ngdtqtf-1737812420879.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-2106zs5",
+       "punto": "お茶と宇治のまち歴史公園",
+       "ep": "9",
+       "s": 1396,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=2106zs5"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/152091/points/2106zs5-1751424749757.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-emth9gw",
+       "punto": "平等院表門西側",
+       "ep": "8",
+       "s": 286,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=emth9gw"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/152091/points/emth9gw-1778865075067.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "283643-kffmz640b",
+       "punto": "平等院前宇治驻车場",
+       "ep": "5",
+       "s": 1374,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@玖石澪",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=283643&pid=kffmz640b"
+       },
+       "original": "https://image.anitabi.cn/points/283643/kffmz640b_1715774941274.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "283643-jyw3i3zjz",
+       "punto": "宇治神社",
+       "ep": "2",
+       "s": 49,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@玖石澪",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=283643&pid=jyw3i3zjz"
+       },
+       "original": "https://image.anitabi.cn/points/283643/jyw3i3zjz_1714478581422.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "283643-l97o7hnpz",
+       "punto": "宇治神社前",
+       "ep": "10",
+       "s": 455,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@玖石澪",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=283643&pid=l97o7hnpz"
+       },
+       "original": "https://image.anitabi.cn/points/283643/l97o7hnpz_1718108527678.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "283643-jyx68ib21",
+       "punto": "京阪宇治ビル",
+       "ep": "2",
+       "s": 683,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@玖石澪",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=283643&pid=jyx68ib21"
+       },
+       "original": "https://image.anitabi.cn/points/283643/jyx68ib21_1714480920065.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "283643-jyxc31f60",
+       "punto": "宇治公园",
+       "ep": "2",
+       "s": 1221,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@玖石澪",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=283643&pid=jyxc31f60"
+       },
+       "original": "https://image.anitabi.cn/points/283643/jyxc31f60_1714481274870.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "283643-kffgg2gnd",
+       "punto": "宇治駅",
+       "ep": "5",
+       "s": 226,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@玖石澪",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=283643&pid=kffgg2gnd"
+       },
+       "original": "https://image.anitabi.cn/points/283643/kffgg2gnd_1715774546372.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "283643-l2m6i6jwg",
+       "punto": "アクトパル宇治",
+       "ep": "9",
+       "s": 184,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@玖石澪",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=283643&pid=l2m6i6jwg"
+       },
+       "original": "https://image.anitabi.cn/points/283643/l2m6i6jwg_1717591566716.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "283643-lor0m1wwc",
+       "punto": "宇治市​文化​センター",
+       "ep": "12",
+       "s": 396,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@玖石澪",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=283643&pid=lor0m1wwc"
+       },
+       "original": "https://image.anitabi.cn/points/283643/lor0m1wwc_1719326101110.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "115908-gob9wwd",
+       "punto": "宇治公園",
+       "ep": "1",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=gob9wwd"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/115908/points/gob9wwd-1783309012849.webp&plan=h160",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-s8n19fbyj",
+       "punto": "宇治モータース販売",
+       "ep": "6",
+       "s": null,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=s8n19fbyj"
+       },
+       "original": "https://image.anitabi.cn/user/2168/bangumi/152091/points/s8n19fbyj-1737811466674.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-s8o3oavvc",
+       "punto": "宇治国道踏切",
+       "ep": "7",
+       "s": null,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=s8o3oavvc"
+       },
+       "original": "https://image.anitabi.cn/user/2168/bangumi/152091/points/s8o3oavvc-1737813719394.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "216372-kqhylwcti",
+       "punto": "宇治神社",
+       "ep": null,
+       "s": 2950,
+       "parte": "Película: Our Promise",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=216372&pid=kqhylwcti"
+       },
+       "original": "https://image.anitabi.cn/points/216372/kqhylwcti_1716642010670.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "216372-kqgz3hrio",
+       "punto": "宇治桥 三之间",
+       "ep": null,
+       "s": 453,
+       "parte": "Película: Our Promise",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=216372&pid=kqgz3hrio"
+       },
+       "original": "https://image.anitabi.cn/points/216372/kqgz3hrio_1716639866211.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "216372-kqhbg05yp",
+       "punto": "府立宇治公园",
+       "ep": null,
+       "s": 1154,
+       "parte": "Película: Our Promise",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=216372&pid=kqhbg05yp"
+       },
+       "original": "https://image.anitabi.cn/points/216372/kqhbg05yp_1716640602534.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "216372-kqiq2cs78",
+       "punto": "宇治市​羽戸山​集会​所",
+       "ep": null,
+       "s": 4158,
+       "parte": "Película: Our Promise",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=216372&pid=kqiq2cs78"
+       },
+       "original": "https://image.anitabi.cn/points/216372/kqiq2cs78_1716643682236.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "216372-kqj05rom9",
+       "punto": "Actpal宇治",
+       "ep": null,
+       "s": 4325,
+       "parte": "Película: Our Promise",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=216372&pid=kqj05rom9"
+       },
+       "original": "https://image.anitabi.cn/points/216372/kqj05rom9_1716644275376.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "283643-jywiof0xv",
+       "punto": "平等院前宇治驻车場",
+       "ep": "PV1",
+       "s": 16,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@玖石澪",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=283643&pid=jywiof0xv"
+       },
+       "original": "https://image.anitabi.cn/points/283643/jywiof0xv_1714479498110.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "283643-jywhhw529",
+       "punto": "宇治菟道邮政局",
+       "ep": "PV1",
+       "s": 20,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@玖石澪",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=283643&pid=jywhhw529"
+       },
+       "original": "https://image.anitabi.cn/points/283643/jywhhw529_1714479425589.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "152091-s8mi4z9jp",
+       "punto": "宇治駅",
+       "ep": null,
+       "s": null,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=152091&pid=s8mi4z9jp"
+       },
+       "original": "https://image.anitabi.cn/user/2168/bangumi/152091/points/s8mi4z9jp-1737810221567.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "283643-ndgomevp8",
+       "punto": "JR宇治駅",
+       "ep": null,
+       "s": null,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@玖石澪",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=283643&pid=ndgomevp8"
+       },
+       "original": "https://image.anitabi.cn/points/283643/ndgomevp8_1724083829797.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "283643-jyw56dt5a",
+       "punto": "宇治御藏山邮政局",
+       "ep": "OP",
+       "s": 60,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@玖石澪",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=283643&pid=jyw56dt5a"
+       },
+       "original": "https://image.anitabi.cn/points/283643/jyw56dt5a_1714478703343.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "love-live",
+     "nombre": "Love Live!",
+     "estudio": "Sunrise",
+     "escenas": [
+      {
+       "id": "442615-5572650f",
+       "punto": "平等院",
+       "ep": "1",
+       "s": 1098,
+       "parte": "Nijigasaki: película final, parte 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1tCqJ_fvsc2mwfOHms7QeEkKWFG-KvD4&ll=34.889291%2C135.807678&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/442615/points/5572650f-1774413541301.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "442615-2c160051",
+       "punto": "宇治神社",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki: película final, parte 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1tCqJ_fvsc2mwfOHms7QeEkKWFG-KvD4&ll=34.891093%2C135.810721&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/442615/2c160051_1769834211961.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "442615-e626b925",
+       "punto": "宇治駅",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki: película final, parte 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1tCqJ_fvsc2mwfOHms7QeEkKWFG-KvD4&ll=34.895205%2C135.806276&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/442615/e626b925_1769834225484.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "k-on",
+     "nombre": "K-On!",
+     "romaji": "K-ON!",
+     "estudio": "Kyoto Animation",
+     "escenas": [
+      {
+       "id": "3774-oii997w3u",
+       "punto": "JR宇治駅",
+       "ep": "12",
+       "s": 300,
+       "parte": "K-On!! (temporada 2)",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=3774&pid=oii997w3u"
+       },
+       "original": "https://image.anitabi.cn/points/1424/4yfz2oewz.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "3774-s9p1t7a2i",
+       "punto": "ビッグボーイ宇治店",
+       "ep": "10",
+       "s": null,
+       "parte": "K-On!! (temporada 2)",
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=3774&pid=s9p1t7a2i"
+       },
+       "original": "https://image.anitabi.cn/points/3774/s9p1t7a2i_1737894122993.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "fushimi-inari": {
+   "obras": [
+    {
+     "serie": "euphonium",
+     "nombre": "Sound! Euphonium",
+     "romaji": "Hibike! Euphonium",
+     "estudio": "Kyoto Animation",
+     "escenas": [
+      {
+       "id": "115908-qys7k6",
+       "punto": "京阪伏見稲荷駅",
+       "ep": "13",
+       "s": 115,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=13mgdlajJV0HxpqKf6ri2NnEHFBc&ll=34.968775%2C135.769322&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/115908/75877ba95f223e54af4e0b48d29f55fc.png",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "kiyomizudera": {
+   "obras": [
+    {
+     "serie": "lucky-star",
+     "nombre": "Lucky Star",
+     "romaji": "Lucky☆Star",
+     "estudio": "Kyoto Animation",
+     "escenas": [
+      {
+       "id": "276-50cjwj50x",
+       "punto": "清水寺本堂",
+       "ep": "21",
+       "s": 734,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1cr8fxbmEdOWXpV7pNUGYS38Kbf8&ll=34.994815%2C135.784754&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/276/50cjwj50x_1672277251254.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "276-50d363zd4",
+       "punto": "清水寺",
+       "ep": "21",
+       "s": 745,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=276&pid=50d363zd4"
+       },
+       "original": "https://image.anitabi.cn/points/276/50d363zd4_1672277276374.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "sword-art-online",
+     "nombre": "Sword Art Online",
+     "estudio": "A-1 Pictures",
+     "escenas": [
+      {
+       "id": "92382-pxn4odjgn",
+       "punto": "清水寺 奥の院",
+       "ep": "24",
+       "s": 127,
+       "parte": "Sword Art Online II",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=92382&pid=pxn4odjgn"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/92382/points/pxn4odjgn-1731307394475.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "love-live",
+     "nombre": "Love Live!",
+     "estudio": "Sunrise",
+     "escenas": [
+      {
+       "id": "442615-36aacd69",
+       "punto": "清水寺",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki: película final, parte 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1tCqJ_fvsc2mwfOHms7QeEkKWFG-KvD4&ll=34.994666%2C135.784661&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/442615/36aacd69_1769835077111.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "sensoji": {
+   "obras": [
+    {
+     "serie": "love-live",
+     "nombre": "Love Live!",
+     "estudio": "Sunrise",
+     "escenas": [
+      {
+       "id": "49294-knic0b9ff",
+       "punto": "浅草花やしき",
+       "ep": "11",
+       "s": 862,
+       "parte": "School Idol Project",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=49294&pid=knic0b9ff"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/49294/points/knic0b9ff-1716407761408.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "49294-kni7ht8er",
+       "punto": "雷門",
+       "ep": "S2.11",
+       "s": 848,
+       "parte": "School Idol Project",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=49294&pid=kni7ht8er"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/49294/points/kni7ht8er-1716407470744.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "49294-knid7qtfi",
+       "punto": "浅草門（最後海に行くことに決めるシーン）",
+       "ep": "S2.11",
+       "s": 870,
+       "parte": "School Idol Project",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=49294&pid=knid7qtfi"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/49294/points/knid7qtfi-1716407914012.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "lycoris-recoil",
+     "nombre": "Lycoris Recoil",
+     "estudio": "A-1 Pictures",
+     "escenas": [
+      {
+       "id": "364450-4t2xtafho",
+       "punto": "雷門",
+       "ep": "5",
+       "s": 366,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Sq592ILlS_OscsI_5bSMrPnORQz_D3Y&ll=35.711039%2C139.796378&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/364450/4t2xtafho.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "364450-4t2xtag0b",
+       "punto": "浅草寺",
+       "ep": "5",
+       "s": 397,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Sq592ILlS_OscsI_5bSMrPnORQz_D3Y&ll=35.714657%2C139.79675&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/364450/4t2xtag0b.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "shirobako",
+     "nombre": "Shirobako",
+     "estudio": "P.A. Works",
+     "escenas": [
+      {
+       "id": "110467-jr489bl",
+       "punto": "浅草站（观光巴士）",
+       "ep": "8",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=110467&pid=jr489bl"
+       },
+       "original": "https://image.anitabi.cn/points/110467/jr489bl_1790008916263.webp&plan=h160",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "110467-5q875hsj",
+       "punto": "雷門",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1CS8ngrrzFoJtkvwLuNVixBuKvdY&ll=35.711085%2C139.796367&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/110467/5q875hsj_1731430641234.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "suzume",
+     "nombre": "Suzume",
+     "romaji": "Suzume no Tojimari",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "362577-4uisgzjv1",
+       "punto": "浅草寺 雷門前",
+       "ep": null,
+       "s": 3393,
+       "parte": null,
+       "fuente": {
+        "autor": "アストラル",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1430UUspYMM8M9N4Uunz4M6llRpNDuaE"
+       },
+       "original": "https://image.anitabi.cn/points/362577/4uisgzjv1_1724954365310_cblack.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "tenki-no-ko",
+     "nombre": "El tiempo contigo",
+     "romaji": "Tenki no Ko",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "269235-jwcqfl3pn",
+       "punto": "雷門通り",
+       "ep": null,
+       "s": 2291,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=269235&pid=jwcqfl3pn"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/269235/points/jwcqfl3pn-1714279706825.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "sword-art-online",
+     "nombre": "Sword Art Online",
+     "estudio": "A-1 Pictures",
+     "escenas": [
+      {
+       "id": "92382-kpwobjh1k",
+       "punto": "浅草駅付近の隅田川沿い",
+       "ep": null,
+       "s": null,
+       "parte": "Sword Art Online II",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1DZcmwiX36FdvMKESdSUDecDW-Ho&ll=35.7115%2C139.799317&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/92382/kpwobjh1k_1726905755696.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "euphonium",
+     "nombre": "Sound! Euphonium",
+     "romaji": "Hibike! Euphonium",
+     "estudio": "Kyoto Animation",
+     "escenas": [
+      {
+       "id": "283643-kc6he63mj",
+       "punto": "浅草寺雷门",
+       "ep": "6",
+       "s": 130,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=283643&pid=kc6he63mj"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/283643/points/kc6he63mj-1715519939253.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "meiji-jingu": {
+   "obras": [
+    {
+     "serie": "love-live",
+     "nombre": "Love Live!",
+     "estudio": "Sunrise",
+     "escenas": [
+      {
+       "id": "306742-51i52g56z",
+       "punto": "明治神宮前交差点１",
+       "ep": "1",
+       "s": 305,
+       "parte": "Superstar!!",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1CcrNtSsfPfnaC2oktSP48sdC2vIRiMz3&ll=35.668768%2C139.705158&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/306742/points/51i52g56z-1721310622493.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "306742-51i52g729",
+       "punto": "明治神宮外苑",
+       "ep": null,
+       "s": null,
+       "parte": "Superstar!!",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1CcrNtSsfPfnaC2oktSP48sdC2vIRiMz3&ll=35.674607%2C139.719585&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/306742/51i52g729_1672383083165.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "your-name",
+     "nombre": "Your Name",
+     "romaji": "Kimi no Na wa.",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "160209-3ik9kj5n",
+       "punto": "明治神宮外苑",
+       "ep": null,
+       "s": 2725,
+       "parte": null,
+       "fuente": {
+        "autor": "@nekoumi",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
+       },
+       "original": "https://image.anitabi.cn/points/160209/3ik9kj5n.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "kamakura": {
+   "aparte": "en puntos cercanos: la estación Kamakurakōkō-mae y Enoshima, en el tren Enoden",
+   "obras": [
+    {
+     "serie": "slam-dunk",
+     "nombre": "Slam Dunk",
+     "estudio": "Toei Animation",
+     "escenas": [
+      {
+       "id": "1608-np5n8b8ys",
+       "punto": "鎌倉高校駅前踏切",
+       "ep": "1",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=1608&pid=np5n8b8ys"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/1608/points/6uhlkmcos-1677460086131.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "1608-ir7b7zb",
+       "punto": "鎌倉高校站前",
+       "ep": "第4集",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=1608&pid=ir7b7zb"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/1608/points/ir7b7zb-1787837424420.webp&plan=h160",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "1608-40tzbwx",
+       "punto": "鎌倉海浜公園",
+       "ep": "2卷",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=1608&pid=40tzbwx"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/1608/points/40tzbwx-1755768055597.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "1608-np5o3v3o6",
+       "punto": "鎌倉高",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=1608&pid=np5o3v3o6"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/1608/points/np5o3v3o6-1728723006043.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "1608-ir7n8xp",
+       "punto": "江ノ島",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=1608&pid=ir7n8xp"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/1608/points/ir7n8xp-1787837893874.webp&plan=h160",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "bocchi-the-rock",
+     "nombre": "Bocchi the Rock!",
+     "estudio": "CloverWorks",
+     "escenas": [
+      {
+       "id": "328609-cn0zxm",
+       "punto": "片瀬江ノ島駅",
+       "ep": "9",
+       "s": 641,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=328609&pid=cn0zxm"
+       },
+       "original": "https://image.anitabi.cn/points/328609/cn0zxm_1747774628252.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "328609-civzmb",
+       "punto": "江ノ島海岸",
+       "ep": "9",
+       "s": 685,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=328609&pid=civzmb"
+       },
+       "original": "https://image.anitabi.cn/points/328609/civzmb_1747767675816.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "328609-f0ff9fbe",
+       "punto": "江ノ島神社大鳥居",
+       "ep": "9",
+       "s": 794,
+       "parte": null,
+       "fuente": {
+        "autor": "林宏",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=18yUGs7Ekm9vaZe4Ym2zK4oAxFEc56uU"
+       },
+       "original": "https://image.anitabi.cn/points/328609/f0ff9fbe_1739361977717.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "328609-b40ee17a",
+       "punto": "江ノ島 エスカー乗り場",
+       "ep": "9",
+       "s": 886,
+       "parte": null,
+       "fuente": {
+        "autor": "林宏",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=18yUGs7Ekm9vaZe4Ym2zK4oAxFEc56uU"
+       },
+       "original": "https://image.anitabi.cn/points/328609/b40ee17a_1739364064402.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "gion": {
+   "obras": [
+    {
+     "serie": "love-live",
+     "nombre": "Love Live!",
+     "estudio": "Sunrise",
+     "escenas": [
+      {
+       "id": "442615-18819f55",
+       "punto": "八坂神社",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki: película final, parte 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1tCqJ_fvsc2mwfOHms7QeEkKWFG-KvD4&ll=35.003744%2C135.777531&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/442615/18819f55_1769833806690.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "442615-ea131893",
+       "punto": "八坂庚申堂",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki: película final, parte 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1tCqJ_fvsc2mwfOHms7QeEkKWFG-KvD4&ll=34.998324%2C135.77873&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/442615/ea131893_1769833861189.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "442615-0b0c4157",
+       "punto": "祇園祭ぎゃらりぃ",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki: película final, parte 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1tCqJ_fvsc2mwfOHms7QeEkKWFG-KvD4&ll=35.00356%2C135.776711&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/442615/0b0c4157_1770539607012.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "yanaka": {
+   "obras": [
+    {
+     "serie": "love-live",
+     "nombre": "Love Live!",
+     "estudio": "Sunrise",
+     "escenas": [
+      {
+       "id": "210272-4t2lo5wvg",
+       "punto": "台東区立中央図書館谷中分室",
+       "ep": "12",
+       "s": 750,
+       "parte": "Sunshine!! temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1bLKGYdCayP9e5knF7dH5fT7WaVo-XveR&ll=35.725622%2C139.766673&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/210272/4t2lo5wvg.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "takayama": {
+   "aparte": "varias en Hida-Furukawa, a unos 12 km en tren",
+   "obras": [
+    {
+     "serie": "your-name",
+     "nombre": "Your Name",
+     "romaji": "Kimi no Na wa.",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "160209-3ik9kjfi",
+       "punto": "飛騨古川駅西北側跨線橋",
+       "ep": null,
+       "s": 2850,
+       "parte": null,
+       "fuente": {
+        "autor": "@nekoumi",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
+       },
+       "original": "https://image.anitabi.cn/points/160209/3ik9kjfi.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "160209-3ik9kjaa",
+       "punto": "飛騨古川駅構内跨線橋",
+       "ep": null,
+       "s": 2855,
+       "parte": null,
+       "fuente": {
+        "autor": "@nekoumi",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
+       },
+       "original": "https://image.anitabi.cn/points/160209/3ik9kjaa.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "160209-3ik9kjli",
+       "punto": "飛騨古川駅",
+       "ep": null,
+       "s": 2863,
+       "parte": null,
+       "fuente": {
+        "autor": "@nekoumi",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
+       },
+       "original": "https://image.anitabi.cn/points/160209/3ik9kjli.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "160209-3ik9kj2o",
+       "punto": "飛騨古川駅タクシーロータリー",
+       "ep": null,
+       "s": 2871,
+       "parte": null,
+       "fuente": {
+        "autor": "@nekoumi",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
+       },
+       "original": "https://image.anitabi.cn/points/160209/3ik9kj2o.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "160209-3ik9kjbn",
+       "punto": "古川町",
+       "ep": null,
+       "s": 2876,
+       "parte": null,
+       "fuente": {
+        "autor": "@nekoumi",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
+       },
+       "original": "https://image.anitabi.cn/points/160209/3ik9kjbn.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "160209-3ik9kj9r",
+       "punto": "味処古川",
+       "ep": null,
+       "s": 2885,
+       "parte": null,
+       "fuente": {
+        "autor": "@nekoumi",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
+       },
+       "original": "https://image.anitabi.cn/points/160209/3ik9kj9r.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "160209-3ik9kize",
+       "punto": "飛騨市図書館",
+       "ep": null,
+       "s": 3102,
+       "parte": null,
+       "fuente": {
+        "autor": "@nekoumi",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
+       },
+       "original": "https://image.anitabi.cn/points/160209/3ik9kize.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "hyouka",
+     "nombre": "Hyouka",
+     "estudio": "Kyoto Animation",
+     "escenas": [
+      {
+       "id": "27364-u3z4mo7nc",
+       "punto": "一般​社団​法人​飛騨・​高山​観光​コンベンション​協会",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=27364&pid=u3z4mo7nc"
+       },
+       "original": "https://image.anitabi.cn/user/2192/bangumi/27364/points/u3z4mo7nc-1755786535729.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "27364-cwuduh0",
+       "punto": "岐阜県高山水位観測所",
+       "ep": "OP",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=27364&pid=cwuduh0"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/27364/points/cwuduh0-1775118071002.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "yuru-camp",
+     "nombre": "Laid-Back Camp",
+     "romaji": "Yuru Camp△",
+     "estudio": "C-Station y 8-bit",
+     "escenas": [
+      {
+       "id": "262897-45do68t",
+       "punto": "飛騨小町",
+       "ep": "1",
+       "s": null,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=262897&pid=45do68t"
+       },
+       "original": "https://image.anitabi.cn/points/262897/45do68t_1756042796135.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "kawaguchiko": {
+   "aparte": "varias en el lago Motosu, a unos 16 km",
+   "obras": [
+    {
+     "serie": "yuru-camp",
+     "nombre": "Laid-Back Camp",
+     "romaji": "Yuru Camp△",
+     "estudio": "C-Station y 8-bit",
+     "escenas": [
+      {
+       "id": "207195-u5ve7l7wt",
+       "punto": "本栖湖 中之倉トンネル",
+       "ep": "1",
+       "s": 195,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=207195&pid=u5ve7l7wt"
+       },
+       "original": "https://image.anitabi.cn/points/207195/u5ve7l7wt_1743236724022.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "207195-u5v2chc1y",
+       "punto": "本栖湖 身延観光​案内​所",
+       "ep": "1",
+       "s": 232,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=207195&pid=u5v2chc1y"
+       },
+       "original": "https://image.anitabi.cn/points/207195/u5v2chc1y_1743235978511.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "207195-u5w8higfq",
+       "punto": "本栖湖 公衆トイレ",
+       "ep": "1",
+       "s": 262,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=207195&pid=u5w8higfq"
+       },
+       "original": "https://image.anitabi.cn/points/207195/u5w8higfq_1743238530011.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "262897-5fchw27sy",
+       "punto": "本栖湖",
+       "ep": "1",
+       "s": 710,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1_Jm0ElrPNjzMiGH0dctAc6cM23YyGNjL&ll=35.47234%2C138.574915&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/262897/5fchw27sy_1673452342245.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "262897-5fchw2912",
+       "punto": "本栖湖展望公園",
+       "ep": "13",
+       "s": 1144,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1_Jm0ElrPNjzMiGH0dctAc6cM23YyGNjL&ll=35.47403%2C138.575542&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/262897/5fchw2912_1673452464352.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "405785-487d7iz",
+       "punto": "本栖湖",
+       "ep": "SP1",
+       "s": null,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=405785&pid=487d7iz"
+       },
+       "original": "https://image.anitabi.cn/points/405785/487d7iz_1756213584069.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "262897-f5jd54z",
+       "punto": "道の駅 富士吉田",
+       "ep": "5",
+       "s": null,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=262897&pid=f5jd54z"
+       },
+       "original": "https://image.anitabi.cn/points/262897/f5jd54z_1779997050303.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "405785-487eitk",
+       "punto": "西湖",
+       "ep": "13",
+       "s": null,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=405785&pid=487eitk"
+       },
+       "original": "https://image.anitabi.cn/points/405785/487eitk_1756213648646.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "405785-487faij",
+       "punto": "河口湖",
+       "ep": "13",
+       "s": null,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=405785&pid=487faij"
+       },
+       "original": "https://image.anitabi.cn/points/405785/487faij_1756213681307.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "262898-4ie4b6p",
+       "punto": "夢見る河口湖",
+       "ep": null,
+       "s": 85,
+       "parte": "Película",
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=262898&pid=4ie4b6p"
+       },
+       "original": "https://image.anitabi.cn/points/262898/4ie4b6p_1756920446643.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "405785-487e8br",
+       "punto": "精進湖",
+       "ep": "SP1",
+       "s": null,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=405785&pid=487e8br"
+       },
+       "original": "https://image.anitabi.cn/points/405785/487e8br_1756213632399.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "hakone": {
+   "obras": [
+    {
+     "serie": "evangelion",
+     "nombre": "Neon Genesis Evangelion",
+     "romaji": "Shin Seiki Evangelion",
+     "estudio": "Gainax y Tatsunoko Production",
+     "escenas": [
+      {
+       "id": "265-2m71cf11x",
+       "punto": "箱根湯本駅",
+       "ep": "12",
+       "s": 318,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1ODFeoYj14UaaLPtuEEvNBxmkJJA&ll=35.233189%2C139.104056&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/265/points/2m71cf11x-1725815885738.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "arashiyama": {
+   "obras": [
+    {
+     "serie": "k-on",
+     "nombre": "K-On!",
+     "romaji": "K-ON!",
+     "estudio": "Kyoto Animation",
+     "escenas": [
+      {
+       "id": "3774-25idmgb",
+       "punto": "嵐山渡月橋#2",
+       "ep": "9",
+       "s": 896,
+       "parte": "K-On!! (temporada 2)",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=3774&pid=25idmgb"
+       },
+       "original": "https://image.anitabi.cn/points/1424/25idmgb.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "3774-25idmew",
+       "punto": "嵐山・路地B#2",
+       "ep": "8",
+       "s": 1090,
+       "parte": "K-On!! (temporada 2)",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=3774&pid=25idmew"
+       },
+       "original": "https://image.anitabi.cn/points/1424/25idmew.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "3774-25idmgk",
+       "punto": "嵐山の路地C#2",
+       "ep": "3",
+       "s": 1444,
+       "parte": "K-On!! (temporada 2)",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=3774&pid=25idmgk"
+       },
+       "original": "https://image.anitabi.cn/points/1424/25idmgk.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "3774-25idmfi",
+       "punto": "嵐山路地D#2",
+       "ep": "4",
+       "s": 1012,
+       "parte": "K-On!! (temporada 2)",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=3774&pid=25idmfi"
+       },
+       "original": "https://image.anitabi.cn/points/1424/25idmfi.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "3774-25idmgv",
+       "punto": "嵐山路地E#2",
+       "ep": "4",
+       "s": 1035,
+       "parte": "K-On!! (temporada 2)",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=3774&pid=25idmgv"
+       },
+       "original": "https://image.anitabi.cn/points/1424/25idmgv.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "3774-25idmeu",
+       "punto": "嵐山・路地F（高島診療所前）#2",
+       "ep": "12",
+       "s": 1318,
+       "parte": "K-On!! (temporada 2)",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=3774&pid=25idmeu"
+       },
+       "original": "https://image.anitabi.cn/points/1424/25idmeu.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "3774-s9p345e6q",
+       "punto": "嵐山​モンキー​パーク​いわ​た​やま",
+       "ep": "4",
+       "s": null,
+       "parte": "K-On!! (temporada 2)",
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=3774&pid=s9p345e6q"
+       },
+       "original": "https://image.anitabi.cn/points/3774/s9p345e6q_1737894198804.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "3774-s9p62gpnx",
+       "punto": "渡月橋",
+       "ep": "4",
+       "s": null,
+       "parte": "K-On!! (temporada 2)",
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=3774&pid=s9p62gpnx"
+       },
+       "original": "https://image.anitabi.cn/points/3774/s9p62gpnx_1737894381165.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "3774-s9p7vdnd9",
+       "punto": "嵐山",
+       "ep": "4",
+       "s": null,
+       "parte": "K-On!! (temporada 2)",
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=3774&pid=s9p7vdnd9"
+       },
+       "original": "https://image.anitabi.cn/points/3774/s9p7vdnd9_1737894488661.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "3774-25idmgs",
+       "punto": "嵐山・路地A#2",
+       "ep": null,
+       "s": 2620,
+       "parte": "K-On!! (temporada 2)",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=3774&pid=25idmgs"
+       },
+       "original": "https://image.anitabi.cn/points/1424/25idmgs.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "love-live",
+     "nombre": "Love Live!",
+     "estudio": "Sunrise",
+     "escenas": [
+      {
+       "id": "442615-987c3d0e",
+       "punto": "渡月橋",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki: película final, parte 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1tCqJ_fvsc2mwfOHms7QeEkKWFG-KvD4&ll=35.012877%2C135.677775&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/442615/987c3d0e_1769834259431.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "442615-ccec62ff",
+       "punto": "嵐山竹林の小径",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki: película final, parte 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1tCqJ_fvsc2mwfOHms7QeEkKWFG-KvD4&ll=35.017418%2C135.674558&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/442615/ccec62ff_1769834296427.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "442615-ffaf2f62",
+       "punto": "嵐山駅",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki: película final, parte 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1tCqJ_fvsc2mwfOHms7QeEkKWFG-KvD4&ll=35.01522%2C135.677713&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/442615/ffaf2f62_1769834327962.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "shinjuku-gyoen": {
+   "obras": [
+    {
+     "serie": "kotonoha-no-niwa",
+     "nombre": "El jardín de las palabras",
+     "romaji": "Kotonoha no Niwa",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "58949-3pfh07n",
+       "punto": "新宿御苑",
+       "ep": null,
+       "s": 101,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=58949&pid=3pfh07n"
+       },
+       "original": "https://image.anitabi.cn/points/58949/3pfh07n_1755078453132.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "58949-25a9b035",
+       "punto": "新宿御苑券売機*",
+       "ep": null,
+       "s": 106,
+       "parte": null,
+       "fuente": {
+        "autor": "NEKO UMI",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=12A3la9wSYNTQUGQqsIDblqFUbN6xUYc"
+       },
+       "original": "https://image.anitabi.cn/points/58949/25a9b035_1720194011426.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "58949-3pmckoe",
+       "punto": "新宿御苑俯瞰",
+       "ep": null,
+       "s": 624,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=58949&pid=3pmckoe"
+       },
+       "original": "https://image.anitabi.cn/points/58949/3pmckoe_1755089922533.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "rock-wa-lady",
+     "nombre": "Rock Is a Lady's Modesty",
+     "romaji": "Rock wa Lady no Tashinami Deshite",
+     "estudio": "Bandai Namco Pictures",
+     "escenas": [
+      {
+       "id": "504678-1kn4ynj",
+       "punto": "新宿御苑",
+       "ep": "12",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@月即别",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=504678&pid=1kn4ynj"
+       },
+       "original": "https://image.anitabi.cn/user/1073/bangumi/504678/points/1kn4ynj-1750435367123.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "rio-meguro": {
+   "obras": [
+    {
+     "serie": "oshi-no-ko",
+     "nombre": "Oshi no Ko",
+     "romaji": "[Oshi no Ko]",
+     "estudio": "Doga Kobo",
+     "escenas": [
+      {
+       "id": "443428-ufhl5xfqw",
+       "punto": "中目黒小前歩道橋",
+       "ep": "22",
+       "s": null,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=443428&pid=ufhl5xfqw"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/443428/points/ufhl5xfqw-1743990294376.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "byousoku-5-cm",
+     "nombre": "5 centímetros por segundo",
+     "romaji": "Byousoku 5 Centimeter",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "927-a99qrfpm",
+       "punto": "東急中目黒駅",
+       "ep": null,
+       "s": 3478,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.644604%2C139.698685&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/a99qrfpm_1719893854571.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "camino-filosofia": {
+   "obras": [
+    {
+     "serie": "k-on",
+     "nombre": "K-On!",
+     "romaji": "K-ON!",
+     "estudio": "Kyoto Animation",
+     "escenas": [
+      {
+       "id": "1424-25idmgr",
+       "punto": "哲学の道",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=1424&pid=25idmgr"
+       },
+       "original": "https://image.anitabi.cn/points/1424/25idmgr.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "euphonium",
+     "nombre": "Sound! Euphonium",
+     "romaji": "Hibike! Euphonium",
+     "estudio": "Kyoto Animation",
+     "escenas": [
+      {
+       "id": "283643-ll0l14rq1",
+       "punto": "哲学の道",
+       "ep": "11",
+       "s": 356,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@月即别",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=283643&pid=ll0l14rq1"
+       },
+       "original": "https://image.anitabi.cn/user/1073/bangumi/283643/points/ll0l14rq1-1719033513624.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "love-live",
+     "nombre": "Love Live!",
+     "estudio": "Sunrise",
+     "escenas": [
+      {
+       "id": "442615-03d49d29",
+       "punto": "哲学の道",
+       "ep": null,
+       "s": null,
+       "parte": "Nijigasaki: película final, parte 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1tCqJ_fvsc2mwfOHms7QeEkKWFG-KvD4&ll=35.019303%2C135.794125&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/442615/03d49d29_1769833837907.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "shibuya": {
+   "obras": [
+    {
+     "serie": "jujutsu-kaisen",
+     "nombre": "Jujutsu Kaisen",
+     "estudio": "MAPPA",
+     "escenas": [
+      {
+       "id": "369304-7f15bf3d",
+       "punto": "渋谷スクランブル交差点付近",
+       "ep": "7",
+       "s": 946,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.65962%2C139.700361&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/7f15bf3d_1719534456714.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-999eb252",
+       "punto": "忠犬ハチ公像",
+       "ep": "7",
+       "s": 952,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.659071%2C139.700648&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/999eb252_1719534452353.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-25a69727",
+       "punto": "ハチ公前広場",
+       "ep": "7",
+       "s": 998,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.659231%2C139.700817&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/25a69727_1719534457696.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-342ca2c1",
+       "punto": "大黒屋 質渋谷店前",
+       "ep": "7",
+       "s": 1249,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.660098%2C139.699816&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/342ca2c1_1719534459551.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-1ee3f2cd",
+       "punto": "渋谷駅A0出口付近",
+       "ep": "19",
+       "s": 480,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.659315%2C139.698553&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/1ee3f2cd_1719534463748.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-9a222afa",
+       "punto": "渋谷駅 京王井の頭線連絡通路",
+       "ep": "14",
+       "s": 476,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.658774%2C139.700239&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/9a222afa_1719534464750.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-e8bdeb32",
+       "punto": "渋谷駅C3出口付近",
+       "ep": "16",
+       "s": 963,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.658361%2C139.702708&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/e8bdeb32_1719534472749.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-d18270a7",
+       "punto": "渋谷駅東口バス停付近",
+       "ep": "13",
+       "s": 27,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.658647%2C139.703042&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/d18270a7_1719534473750.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-ffa75aaf",
+       "punto": "渋谷駅東口歩道橋下",
+       "ep": "13",
+       "s": 26,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.658358%2C139.703156&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/ffa75aaf_1719534475747.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-ca40610c",
+       "punto": "稲荷橋(渋谷川)付近",
+       "ep": "3",
+       "s": 1008,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.657815%2C139.702832&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/ca40610c_1719534479740.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-d9400d77",
+       "punto": "渋谷駅 渋谷ヒカリエ入り口前",
+       "ep": "8",
+       "s": 2,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.658884%2C139.702786&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/d9400d77_1719534482429.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-bbfabb02",
+       "punto": "渋谷駅 地下3階",
+       "ep": "12",
+       "s": 1258,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.658955%2C139.702567&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/bbfabb02_1719534482750.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-68c049ae",
+       "punto": "渋谷駅 地下4階",
+       "ep": "12",
+       "s": 1311,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.659042%2C139.702521&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/68c049ae_1719534483031.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-9d3e57e3",
+       "punto": "渋谷駅 地下2階ハチ公改札前",
+       "ep": "18",
+       "s": 287,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.659503%2C139.700294&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/9d3e57e3_1719534485214.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-9cb2780a",
+       "punto": "渋谷駅 地下1階A2出口付近広場",
+       "ep": "19",
+       "s": 158,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.659544%2C139.699405&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/9cb2780a_1719534486605.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-327a4971",
+       "punto": "渋谷駅 地下2階A2出口付近",
+       "ep": "20",
+       "s": 1085,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.659523%2C139.699285&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/327a4971_1719534487562.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-e3bcf476",
+       "punto": "宮下第一歩道橋",
+       "ep": "7",
+       "s": 1086,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.661451%2C139.702252&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/e3bcf476_1719534489579.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-731f6924",
+       "punto": "渋谷モディ横",
+       "ep": "10",
+       "s": 787,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.661433%2C139.700732&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/731f6924_1719534490584.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-bfba6ee0",
+       "punto": "渋谷ブリッジ21",
+       "ep": "11",
+       "s": 998,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.656683%2C139.698739&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/bfba6ee0_1719534491522.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-7f9cbeb4",
+       "punto": "JR渋谷駅新南口",
+       "ep": "7",
+       "s": 1196,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.655801%2C139.704215&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/7f9cbeb4_1719534492198.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-0db45303",
+       "punto": "名鉄協商パーキング渋谷第12代々木1丁目駐輪場",
+       "ep": "ED1",
+       "s": 43,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.680275%2C139.702542&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/0db45303_1719534502487.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-f485e36f",
+       "punto": "渋谷駅西口",
+       "ep": "ED2",
+       "s": 45,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.658252%2C139.701116&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/f485e36f_1719534446128.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-d9742027",
+       "punto": "渋谷センター街入口",
+       "ep": "ED2",
+       "s": 47,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.659888%2C139.700134&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/d9742027_1719534446440.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-f9f882f4",
+       "punto": "中渋谷ガード",
+       "ep": "ED2",
+       "s": 49,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.660364%2C139.701265&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/f9f882f4_1719534437832.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-45f55c54",
+       "punto": "西武渋谷店",
+       "ep": "ED2",
+       "s": 51,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.660483%2C139.700911&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/45f55c54_1719534438933.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-08174c1b",
+       "punto": "渋谷PARCO前",
+       "ep": "ED2",
+       "s": 61,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.661994%2C139.699311&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/08174c1b_1719534439646.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-ae962169",
+       "punto": "JR渋谷駅",
+       "ep": "ED2",
+       "s": 62,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.658701%2C139.701339&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/ae962169_1719534447859.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-65d8b10c",
+       "punto": "忠犬ハチ公像",
+       "ep": "ED2",
+       "s": 63,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.659058%2C139.70064&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/65d8b10c_1719534436454.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-eb581b14",
+       "punto": "ファミリーマート渋谷公園通り店前公衆電話",
+       "ep": "ED2",
+       "s": 63,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.662962%2C139.699197&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/eb581b14_1719534446777.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-6ac9d424",
+       "punto": "ハンズ渋谷店前",
+       "ep": "ED2",
+       "s": 66,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.662167%2C139.697423&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/6ac9d424_1719534440787.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-0af62fed",
+       "punto": "渋谷駅西口歩道橋",
+       "ep": "ED2",
+       "s": 67,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.657693%2C139.701359&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/0af62fed_1719534436770.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-3dea890e",
+       "punto": "渋谷駅西口歩道橋付近のガード下",
+       "ep": "ED2",
+       "s": 69,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.657505%2C139.701858&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/3dea890e_1719534445125.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-82a5187a",
+       "punto": "渋谷駅東口",
+       "ep": "ED2",
+       "s": 71,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.65877%2C139.702227&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/82a5187a_1719534445436.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "oshi-no-ko",
+     "nombre": "Oshi no Ko",
+     "romaji": "[Oshi no Ko]",
+     "estudio": "Doga Kobo",
+     "escenas": [
+      {
+       "id": "386809-jrz6fqtoh",
+       "punto": "渋谷スクランブル交差点",
+       "ep": "10",
+       "s": 1422,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@RNRT2983",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=386809&pid=jrz6fqtoh"
+       },
+       "original": "https://image.anitabi.cn/user/1074/bangumi/386809/points/jrz6fqtoh-1713936792986.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "443428-o60l6hu5q",
+       "punto": "渋谷スクランブル交差点",
+       "ep": "17",
+       "s": 1298,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=443428&pid=o60l6hu5q"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/443428/points/o60l6hu5q-1726321648634.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "517057-acnk5nh",
+       "punto": "渋谷スクランブル交差点",
+       "ep": "1",
+       "s": 276,
+       "parte": "Temporada 3",
+       "fuente": {
+        "autor": "Anitabi@suichan1oshi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=517057&pid=acnk5nh"
+       },
+       "original": "https://image.anitabi.cn/user/2192/bangumi/517057/points/acnk5nh-1769543429620.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "detective-conan",
+     "nombre": "Detective Conan",
+     "romaji": "Meitantei Conan",
+     "estudio": "TMS Entertainment",
+     "escenas": [
+      {
+       "id": "359930-hiiavog",
+       "punto": "忠犬ハチ公像",
+       "ep": null,
+       "s": null,
+       "parte": "The Bride of Halloween (película)",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=359930&pid=hiiavog"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/359930/points/hiiavog-1785134897234.webp&plan=h160",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "359930-hiim7yl",
+       "punto": "区渋谷交差点",
+       "ep": null,
+       "s": null,
+       "parte": "The Bride of Halloween (película)",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=359930&pid=hiim7yl"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/359930/points/hiim7yl-1785135384350.webp&plan=h160",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "359930-hiiyl9c",
+       "punto": "渋谷スカイ",
+       "ep": null,
+       "s": null,
+       "parte": "The Bride of Halloween (película)",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=359930&pid=hiiyl9c"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/359930/points/hiiyl9c-1785135903379.webp&plan=h160",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "death-note",
+     "nombre": "Death Note",
+     "estudio": "Madhouse",
+     "escenas": [
+      {
+       "id": "1773-kysocn6vl",
+       "punto": "渋谷スクランブル交差点",
+       "ep": "1",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@AmaiAya",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=1773&pid=kysocn6vl"
+       },
+       "original": "https://image.anitabi.cn/points/1773/kysocn6vl_1717292592804.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "1773-kysm1rtng",
+       "punto": "渋谷駅東口バス停",
+       "ep": "1",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@AmaiAya",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=1773&pid=kysm1rtng"
+       },
+       "original": "https://image.anitabi.cn/points/1773/kysm1rtng_1717292592086.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "suzume",
+     "nombre": "Suzume",
+     "romaji": "Suzume no Tojimari",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "362577-ss5heo9me",
+       "punto": "渋谷スクランブル交差点",
+       "ep": null,
+       "s": 4167,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=362577&pid=ss5heo9me"
+       },
+       "original": "https://image.anitabi.cn/points/362577/ss5heo9me_1739340464718.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "362577-ss5cutuq6",
+       "punto": "渋谷宮益坂下交差点",
+       "ep": null,
+       "s": 4138,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=362577&pid=ss5cutuq6"
+       },
+       "original": "https://image.anitabi.cn/points/362577/ss5cutuq6_1739340217481.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "love-live",
+     "nombre": "Love Live!",
+     "estudio": "Sunrise",
+     "escenas": [
+      {
+       "id": "306742-51i52g3ep",
+       "punto": "渋谷門展望デッキの下",
+       "ep": null,
+       "s": null,
+       "parte": "Superstar!!",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1CcrNtSsfPfnaC2oktSP48sdC2vIRiMz3&ll=35.668911%2C139.696442&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/306742/51i52g3ep_1672382903702.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "306742-51i52g7y8",
+       "punto": "渋谷スカイ",
+       "ep": null,
+       "s": null,
+       "parte": "Superstar!!",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1CcrNtSsfPfnaC2oktSP48sdC2vIRiMz3&ll=35.658582%2C139.702249&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/1468/bangumi/306742/points/51i52g7y8-1735583343140.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "kaguya-sama",
+     "nombre": "Kaguya-sama: Love is War",
+     "romaji": "Kaguya-sama wa Kokurasetai",
+     "estudio": "A-1 Pictures",
+     "escenas": [
+      {
+       "id": "248175-51i51ugl0",
+       "punto": "渋谷駅ハチ公口",
+       "ep": "4",
+       "s": 1011,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1ZhGSZXEZkJn9JOJxG3pgd70zfD5dEH3w&ll=35.65899%2C139.700591&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/248175/51i51ugl0_1765442057660.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "293049-106ft7vg23",
+       "punto": "渋谷駅ハチ公口",
+       "ep": "2",
+       "s": 411,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1ZhGSZXEZkJn9JOJxG3pgd70zfD5dEH3w&ll=35.65899%2C139.700591&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/293049/points/51i51ugl0-1753782214356.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "grotesque",
+     "nombre": "GROTESQUE",
+     "romaji": "Grotesque (título provisional)",
+     "estudio": null,
+     "dudoso": true,
+     "escenas": [
+      {
+       "id": "502499-m15p7f3pm",
+       "punto": "渋谷駅前",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@concert",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=502499&pid=m15p7f3pm"
+       },
+       "original": "https://image.anitabi.cn/points/502499/m15p7f3pm_1720298434390.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "502499-m15qdcse8",
+       "punto": "首都高速3号渋谷線",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@concert",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=502499&pid=m15qdcse8"
+       },
+       "original": "https://image.anitabi.cn/points/502499/m15qdcse8_1720298525217.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "your-name",
+     "nombre": "Your Name",
+     "romaji": "Kimi no Na wa.",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "160209-3ik9kixn",
+       "punto": "渋谷駅西口歩道橋",
+       "ep": null,
+       "s": 2729,
+       "parte": null,
+       "fuente": {
+        "autor": "@nekoumi",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
+       },
+       "original": "https://image.anitabi.cn/points/160209/3ik9kixn.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "tokyo-ghoul",
+     "nombre": "Tokyo Ghoul",
+     "estudio": "Studio Pierrot",
+     "escenas": [
+      {
+       "id": "115292-q083tjzuv",
+       "punto": "渋谷スクランブル交差点",
+       "ep": "9",
+       "s": 426,
+       "parte": "√A",
+       "fuente": {
+        "autor": "Anitabi@Xmなのだ",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=115292&pid=q083tjzuv"
+       },
+       "original": "https://image.anitabi.cn/user/1099/bangumi/115292/points/q083tjzuv-1731509772709.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "lycoris-recoil",
+     "nombre": "Lycoris Recoil",
+     "estudio": "A-1 Pictures",
+     "escenas": [
+      {
+       "id": "364450-4t2xtageb",
+       "punto": "スクランブル交差点",
+       "ep": "10",
+       "s": 1139,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Sq592ILlS_OscsI_5bSMrPnORQz_D3Y&ll=35.659307%2C139.700738&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/364450/4t2xtageb.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "kotonoha-no-niwa",
+     "nombre": "El jardín de las palabras",
+     "romaji": "Kotonoha no Niwa",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "58949-558fec3e",
+       "punto": "渋谷区役所千駄ヶ谷出張所前",
+       "ep": null,
+       "s": 2511,
+       "parte": null,
+       "fuente": {
+        "autor": "NEKO UMI",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=12A3la9wSYNTQUGQqsIDblqFUbN6xUYc"
+       },
+       "original": "https://image.anitabi.cn/points/58949/558fec3e_1720194168248.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "byousoku-5-cm",
+     "nombre": "5 centímetros por segundo",
+     "romaji": "Byousoku 5 Centimeter",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "927-a99qrfcd",
+       "punto": "JR渋谷駅",
+       "ep": null,
+       "s": 3427,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.658596%2C139.701355&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/a99qrfcd_1719893803887.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "chou-kaguya-hime",
+     "nombre": "Cosmic Princess Kaguya!",
+     "romaji": "Chou Kaguya-hime!",
+     "estudio": "Studio Colorido y Studio Chromato",
+     "escenas": [
+      {
+       "id": "604826-ai11604",
+       "punto": "渋谷TSUTAYA",
+       "ep": "MV",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@澄蔦",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=604826&pid=ai11604"
+       },
+       "original": "https://image.anitabi.cn/points/604826/ai11604_1769868307084.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "horimiya",
+     "nombre": "Horimiya",
+     "estudio": "CloverWorks",
+     "escenas": [
+      {
+       "id": "315069-rlbg1jhch",
+       "punto": "渋谷門展望デッキ",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@月即别",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=315069&pid=rlbg1jhch"
+       },
+       "original": "https://image.anitabi.cn/user/1073/bangumi/315069/points/rlbg1jhch-1735983795933.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "shinjuku": {
+   "obras": [
+    {
+     "serie": "byousoku-5-cm",
+     "nombre": "5 centímetros por segundo",
+     "romaji": "Byousoku 5 Centimeter",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "927-a99qr9xh",
+       "punto": "小田急新宿駅5番線",
+       "ep": null,
+       "s": 508,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.690876%2C139.69957&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/a99qr9xh_1719893080381.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "927-a99qra32",
+       "punto": "小田急新宿駅西口地上改札",
+       "ep": null,
+       "s": 510,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.690956%2C139.699539&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/a99qra32_1719893088277.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "927-a99qrahk",
+       "punto": "JR新宿駅西口券売機",
+       "ep": null,
+       "s": 514,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.69173%2C139.699722&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/a99qrahk_1719893099761.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "927-a99qrae8",
+       "punto": "JR新宿駅",
+       "ep": null,
+       "s": 519,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.691544%2C139.699875&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/a99qrae8_1719893105258.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "927-a99qradf",
+       "punto": "ＪＲ新宿駅",
+       "ep": null,
+       "s": 542,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.691151%2C139.700867&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/a99qradf_1719893254724.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "927-a99qrdry",
+       "punto": "新宿駅西口",
+       "ep": null,
+       "s": 2996,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.691475%2C139.699463&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/a99qrdry_1719893462567.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "927-a99qre5f",
+       "punto": "新宿住友ビル前",
+       "ep": null,
+       "s": 3017,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.690865%2C139.69313&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/a99qre5f_1719893531779.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "927-a99qrdqe",
+       "punto": "新宿住友ビル",
+       "ep": null,
+       "s": 3024,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.691048%2C139.692398&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/a99qrdqe_1719893537409.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "927-a99qrehl",
+       "punto": "北新宿　第二種市街地再開発事業地",
+       "ep": null,
+       "s": 3225,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.695873%2C139.688583&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/4fd782b6f15e1583a150d43f600eb68f.jpeg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "927-a99qrekk",
+       "punto": "新宿モノリス前横断歩道",
+       "ep": null,
+       "s": 3244,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.688984%2C139.69516&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/a99qrekk_1719893599063.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "927-a99qrers",
+       "punto": "新宿野村ビル・損保ジャパンビル",
+       "ep": null,
+       "s": 3254,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.692101%2C139.694382&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/a99qrers_1719893617881.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "927-a99qrfsy",
+       "punto": "南新宿5号踏切",
+       "ep": null,
+       "s": 3476,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.680649%2C139.695618&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/a99qrfsy_1719893849643.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "927-a99qrfjw",
+       "punto": "西新宿1丁目交差点",
+       "ep": null,
+       "s": 3482,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.68853%2C139.699158&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/a99qrfjw_1719893932968.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "927-a99qrghp",
+       "punto": "新宿サザンテラス",
+       "ep": null,
+       "s": 3530,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.686817%2C139.700912&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/a99qrghp_1719894056535.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "927-a99qrgew",
+       "punto": "新宿1号踏切",
+       "ep": null,
+       "s": 3535,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.685856%2C139.700348&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/a99qrgew_1719894081445.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "927-a99qrge8",
+       "punto": "新宿みやざき館",
+       "ep": null,
+       "s": 5820,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.68824%2C139.700043&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/3f612eb9f834f3cb1ece6b640bc68302.jpeg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "kotonoha-no-niwa",
+     "nombre": "El jardín de las palabras",
+     "romaji": "Kotonoha no Niwa",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "58949-b19f8f8c",
+       "punto": "JR新宿駅远景",
+       "ep": null,
+       "s": 53,
+       "parte": null,
+       "fuente": {
+        "autor": "NEKO UMI",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=12A3la9wSYNTQUGQqsIDblqFUbN6xUYc"
+       },
+       "original": "https://image.anitabi.cn/points/58949/b19f8f8c_1720194006405.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "58949-bc7c885c",
+       "punto": "JR新宿駅ホーム",
+       "ep": null,
+       "s": 58,
+       "parte": null,
+       "fuente": {
+        "autor": "NEKO UMI",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=12A3la9wSYNTQUGQqsIDblqFUbN6xUYc"
+       },
+       "original": "https://image.anitabi.cn/points/58949/bc7c885c_1720194008132.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "58949-3pb7wp6",
+       "punto": "JR新宿駅13番線ホーム7号乗車口",
+       "ep": null,
+       "s": 68,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=58949&pid=3pb7wp6"
+       },
+       "original": "https://image.anitabi.cn/points/58949/3pb7wp6_1755071265716.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "58949-6b517e1d",
+       "punto": "JR新宿駅",
+       "ep": null,
+       "s": 71,
+       "parte": null,
+       "fuente": {
+        "autor": "NEKO UMI",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=12A3la9wSYNTQUGQqsIDblqFUbN6xUYc"
+       },
+       "original": "https://image.anitabi.cn/points/58949/6b517e1d_1720194048010.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "58949-3pemrzr",
+       "punto": "新宿駅東口改札",
+       "ep": null,
+       "s": 77,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=58949&pid=3pemrzr"
+       },
+       "original": "https://image.anitabi.cn/points/58949/3pemrzr_1755076934194.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "58949-3pem7ap",
+       "punto": "新宿駅東口",
+       "ep": null,
+       "s": 77,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=58949&pid=3pem7ap"
+       },
+       "original": "https://image.anitabi.cn/points/58949/3pem7ap_1755076905733.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "58949-3pexhyb",
+       "punto": "ルミネ新宿遠景",
+       "ep": null,
+       "s": 88,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=58949&pid=3pexhyb"
+       },
+       "original": "https://image.anitabi.cn/points/58949/3pexhyb_1755077432559.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "58949-0857d78a",
+       "punto": "新宿門",
+       "ep": null,
+       "s": 107,
+       "parte": null,
+       "fuente": {
+        "autor": "NEKO UMI",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=12A3la9wSYNTQUGQqsIDblqFUbN6xUYc"
+       },
+       "original": "https://image.anitabi.cn/points/58949/0857d78a_1720194012627.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "58949-5309a13c",
+       "punto": "旧新宿国際劇場ビル前*",
+       "ep": null,
+       "s": 460,
+       "parte": null,
+       "fuente": {
+        "autor": "NEKO UMI",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=12A3la9wSYNTQUGQqsIDblqFUbN6xUYc"
+       },
+       "original": "https://image.anitabi.cn/points/58949/5309a13c_1720194097038.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "58949-7933a2ec",
+       "punto": "新宿駅階段",
+       "ep": null,
+       "s": 610,
+       "parte": null,
+       "fuente": {
+        "autor": "NEKO UMI",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=12A3la9wSYNTQUGQqsIDblqFUbN6xUYc"
+       },
+       "original": "https://image.anitabi.cn/points/58949/7933a2ec_1720194026654.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "58949-3b87b04a",
+       "punto": "新宿高層ビル群遠景",
+       "ep": null,
+       "s": 749,
+       "parte": null,
+       "fuente": {
+        "autor": "NEKO UMI",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=12A3la9wSYNTQUGQqsIDblqFUbN6xUYc"
+       },
+       "original": "https://image.anitabi.cn/points/58949/3b87b04a_1720194035686.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "58949-caf4140b",
+       "punto": "JR埼京線池袋~新宿区间",
+       "ep": null,
+       "s": 1419,
+       "parte": null,
+       "fuente": {
+        "autor": "NEKO UMI",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=12A3la9wSYNTQUGQqsIDblqFUbN6xUYc"
+       },
+       "original": "https://image.anitabi.cn/points/58949/caf4140b_1720194136490.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "your-name",
+     "nombre": "Your Name",
+     "romaji": "Kimi no Na wa.",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "160209-3ik9kjew",
+       "punto": "LABI新宿東口館前",
+       "ep": null,
+       "s": 197,
+       "parte": null,
+       "fuente": {
+        "autor": "@nekoumi",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
+       },
+       "original": "https://image.anitabi.cn/points/160209/3ik9kjew.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "160209-3ik9kj50",
+       "punto": "新宿駅南口",
+       "ep": null,
+       "s": 1201,
+       "parte": null,
+       "fuente": {
+        "autor": "@nekoumi",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
+       },
+       "original": "https://image.anitabi.cn/points/160209/3ik9kj50.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "160209-3ik9kj6d",
+       "punto": "新宿駅南口歩道橋",
+       "ep": null,
+       "s": 1205,
+       "parte": null,
+       "fuente": {
+        "autor": "@nekoumi",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
+       },
+       "original": "https://image.anitabi.cn/points/160209/3ik9kj6d.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "160209-3ik9kjf5",
+       "punto": "Ladurée新宿店前",
+       "ep": null,
+       "s": 1222,
+       "parte": null,
+       "fuente": {
+        "autor": "@nekoumi",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
+       },
+       "original": "https://image.anitabi.cn/points/160209/3ik9kjf5.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "160209-3ik9kj20",
+       "punto": "新宿警察署裏交差点",
+       "ep": null,
+       "s": 1801,
+       "parte": null,
+       "fuente": {
+        "autor": "@nekoumi",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
+       },
+       "original": "https://image.anitabi.cn/points/160209/3ik9kj20.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "160209-3ik9kjg2",
+       "punto": "新宿大ガード西",
+       "ep": null,
+       "s": 5297,
+       "parte": null,
+       "fuente": {
+        "autor": "@nekoumi",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
+       },
+       "original": "https://image.anitabi.cn/points/160209/3ik9kjg2.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "160209-3ik9kjcb",
+       "punto": "新宿LUMINE2前",
+       "ep": null,
+       "s": 5975,
+       "parte": null,
+       "fuente": {
+        "autor": "@nekoumi",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
+       },
+       "original": "https://image.anitabi.cn/points/160209/3ik9kjcb.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "160209-7b6h2pw",
+       "punto": "新宿センタービル",
+       "ep": null,
+       "s": 144,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@真手凛",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=160209&pid=7b6h2pw"
+       },
+       "original": "https://image.anitabi.cn/user/1065/bangumi/160209/points/7b6h2pw-1762923840053.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "160209-7b0zia7",
+       "punto": "新宿駅 远景",
+       "ep": null,
+       "s": 1210,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@真手凛",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=160209&pid=7b0zia7"
+       },
+       "original": "https://image.anitabi.cn/user/1065/bangumi/160209/points/7b0zia7-1762914636500.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "160209-35breqh",
+       "punto": "首都高速4号新宿線高架下",
+       "ep": null,
+       "s": 5691,
+       "parte": null,
+       "fuente": {
+        "autor": "ckrito",
+        "enlace": "https://www.google.com/maps/d/edit?mid=1_lGB-sWlsYob0oTfYjg0R81vBa4FNj8&usp=sharing"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/160209/points/35breqh-1753862798742.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "160209-7b307zt",
+       "punto": "新宿駅南口券壳機横",
+       "ep": null,
+       "s": 5971,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@真手凛",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=160209&pid=7b307zt"
+       },
+       "original": "https://image.anitabi.cn/user/1065/bangumi/160209/points/7b307zt-1762918013147.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "jujutsu-kaisen",
+     "nombre": "Jujutsu Kaisen",
+     "estudio": "MAPPA",
+     "escenas": [
+      {
+       "id": "294993-lrfkpxxey",
+       "punto": "新宿大ガード西",
+       "ep": "5",
+       "s": 738,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@AmaiAya",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=294993&pid=lrfkpxxey"
+       },
+       "original": "https://image.anitabi.cn/points/294993/lrfkpxxey_1719541904749.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "294993-lrgn9haeb",
+       "punto": "龍生堂薬局新宿店前",
+       "ep": "5",
+       "s": 743,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@AmaiAya",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=294993&pid=lrgn9haeb"
+       },
+       "original": "https://image.anitabi.cn/points/294993/lrgn9haeb_1719541894207.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "294993-23b91d32",
+       "punto": "ガスト 新宿靖国通店",
+       "ep": "5",
+       "s": 784,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1szRFjkAXOmd-He4PYBDIB3RDeHZ97LRg&ll=35.693196%2C139.704172&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/294993/23b91d32_1719541902749.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "294993-42233d57",
+       "punto": "カフェ・ベローチェ西新宿店",
+       "ep": "13",
+       "s": 655,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1szRFjkAXOmd-He4PYBDIB3RDeHZ97LRg&ll=35.693782%2C139.697847&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/294993/42233d57_1719541905742.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-eb171aa4",
+       "punto": "西武新宿駅PePe前広場",
+       "ep": "17",
+       "s": 1028,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.694065%2C139.700434&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/eb171aa4_1719534496696.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "294993-62d87e9e",
+       "punto": "スバルビル新宿の目",
+       "ep": "OP1",
+       "s": 64,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=19QjuPVs5YnLnmo_RChnclEJeOFkOssBc&ll=35.691412%2C139.69802&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/294993/62d87e9e_1719540637226.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "tenki-no-ko",
+     "nombre": "El tiempo contigo",
+     "romaji": "Tenki no Ko",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "269235-4ui73krj7",
+       "punto": "マクドナルド西武新宿駅前店",
+       "ep": null,
+       "s": 643,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=14kcxx9iP_cOuHXHsP0nFzYCPt8Pw2Suy&ll=35.694206%2C139.700618&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/269235/points/4ui73krj7-1710234719464.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "269235-36o4m6k",
+       "punto": "歌舞伎町一番街入り口",
+       "ep": null,
+       "s": 475,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=269235&pid=36o4m6k"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/269235/points/36o4m6k-1753944036478.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "269235-bm3zbak",
+       "punto": "山手線 湘南新宿ライン",
+       "ep": null,
+       "s": 5272,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=269235&pid=bm3zbak"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/269235/points/bm3zbak-1772292263028.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "269235-f9glcow",
+       "punto": "新宿中央公園前",
+       "ep": null,
+       "s": 2294,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=269235&pid=f9glcow"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/269235/points/f9glcow-1780234159238.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "269235-9orz3j4",
+       "punto": "新宿",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=269235&pid=9orz3j4"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/269235/points/9orz3j4-1768099592860.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "shirobako",
+     "nombre": "Shirobako",
+     "estudio": "P.A. Works",
+     "escenas": [
+      {
+       "id": "110467-jr3l3w9",
+       "punto": "旬鮮酒場天狗新宿店",
+       "ep": "23",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=110467&pid=jr3l3w9"
+       },
+       "original": "https://image.anitabi.cn/points/110467/jr3l3w9_1790007848899.webp&plan=h160",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "110467-jr3nrqm",
+       "punto": "H＆M新宿店",
+       "ep": "24",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=110467&pid=jr3nrqm"
+       },
+       "original": "https://image.anitabi.cn/points/110467/jr3nrqm_1790007954823.webp&plan=h160",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "110467-jr6tni0",
+       "punto": "JR新宿駅中央東口",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=110467&pid=jr6tni0"
+       },
+       "original": "https://image.anitabi.cn/points/110467/jr6tni0_1790013269447.webp&plan=h160",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "110467-jr52hzn",
+       "punto": "JR新宿駅",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=110467&pid=jr52hzn"
+       },
+       "original": "https://image.anitabi.cn/points/110467/jr52hzn_1790010317159.webp&plan=h160",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "110467-jr6vwux",
+       "punto": "新宿バルト９",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@甜食伯爵",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=110467&pid=jr6vwux"
+       },
+       "original": "https://image.anitabi.cn/points/110467/jr6vwux_1790013410097.webp&plan=h160",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "suzume",
+     "nombre": "Suzume",
+     "romaji": "Suzume no Tojimari",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "362577-srj741k8q",
+       "punto": "新宿駅",
+       "ep": null,
+       "s": 4170,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=362577&pid=srj741k8q"
+       },
+       "original": "https://image.anitabi.cn/points/362577/srj741k8q_1739291937586.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "362577-9da95c92",
+       "punto": "新宿２号踏切",
+       "ep": null,
+       "s": 4177,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1430UUspYMM8M9N4Uunz4M6llRpNDuaE&ll=35.684589%2C139.700205&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/362577/9da95c92_1739292492984.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "362577-srjtsvu6g",
+       "punto": "新宿駅南口",
+       "ep": null,
+       "s": 4210,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=362577&pid=srjtsvu6g"
+       },
+       "original": "https://image.anitabi.cn/points/362577/srjtsvu6g_1739293311008.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "362577-e132148d",
+       "punto": "新宿センタービル",
+       "ep": null,
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1430UUspYMM8M9N4Uunz4M6llRpNDuaE&ll=35.693243%2C139.696896&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/362577/e132148d_1739272653809.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "tokyo-ghoul",
+     "nombre": "Tokyo Ghoul",
+     "estudio": "Studio Pierrot",
+     "escenas": [
+      {
+       "id": "93714-p8c1uwvz7",
+       "punto": "新宿区役所",
+       "ep": "1",
+       "s": 318,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Xmなのだ",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=93714&pid=p8c1uwvz7"
+       },
+       "original": "https://image.anitabi.cn/user/1099/bangumi/93714/points/p8c1uwvz7-1729324139657.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "93714-p8cmzth4a",
+       "punto": "歌舞伎町一番街前",
+       "ep": "1",
+       "s": 1013,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Xmなのだ",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=93714&pid=p8cmzth4a"
+       },
+       "original": "https://image.anitabi.cn/user/1099/bangumi/93714/points/p8cmzth4a-1729325494961.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "93714-p8cwoe6m1",
+       "punto": "新宿駅 東口",
+       "ep": "3",
+       "s": 765,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Xmなのだ",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=93714&pid=p8cwoe6m1"
+       },
+       "original": "https://image.anitabi.cn/user/1099/bangumi/93714/points/p8cwoe6m1-1729326169103.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "oshi-no-ko",
+     "nombre": "Oshi no Ko",
+     "romaji": "[Oshi no Ko]",
+     "estudio": "Doga Kobo",
+     "escenas": [
+      {
+       "id": "443428-oclhhvirc",
+       "punto": "JR新宿駅",
+       "ep": "22",
+       "s": 192,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=443428&pid=oclhhvirc"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/443428/points/oclhhvirc-1726837096620.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "443428-ocmnm2jfy",
+       "punto": "バルバッコア新宿店",
+       "ep": "22",
+       "s": 425,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=443428&pid=ocmnm2jfy"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/443428/points/ocmnm2jfy-1726839575745.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "bocchi-the-rock",
+     "nombre": "Bocchi the Rock!",
+     "estudio": "CloverWorks",
+     "escenas": [
+      {
+       "id": "328609-50slhscxa",
+       "punto": "小田急新宿駅",
+       "ep": "10",
+       "s": 783,
+       "parte": null,
+       "fuente": {
+        "autor": "林宏",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=18yUGs7Ekm9vaZe4Ym2zK4oAxFEc56uU"
+       },
+       "original": "https://image.anitabi.cn/points/328609/50slhscxa_1672311106910.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "328609-cqsz7t",
+       "punto": "新宿LOFT",
+       "ep": "10",
+       "s": 783,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=328609&pid=cqsz7t"
+       },
+       "original": "https://image.anitabi.cn/points/328609/cqsz7t_1747780970691.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "lycoris-recoil",
+     "nombre": "Lycoris Recoil",
+     "estudio": "A-1 Pictures",
+     "escenas": [
+      {
+       "id": "364450-4t2xtag2p",
+       "punto": "新宿アルタ前",
+       "ep": "10",
+       "s": 1131,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Sq592ILlS_OscsI_5bSMrPnORQz_D3Y&ll=35.692156%2C139.701081&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/364450/4t2xtag2p.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "364450-4t2xtag0e",
+       "punto": "JR新宿駅",
+       "ep": "10",
+       "s": 1135,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Sq592ILlS_OscsI_5bSMrPnORQz_D3Y&ll=35.689644%2C139.701761&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/364450/4t2xtag0e.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "kimi-no-uso",
+     "nombre": "Your Lie in April",
+     "romaji": "Shigatsu wa Kimi no Uso",
+     "estudio": "A-1 Pictures",
+     "escenas": [
+      {
+       "id": "100444-ubrpygj3a",
+       "punto": "新宿区立落合公園",
+       "ep": "7",
+       "s": 387,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@和泉Ciao",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=100444&pid=ubrpygj3a"
+       },
+       "original": "https://image.anitabi.cn/points/100444/ubrpygj3a_1743698919707.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "100444-ubuwfm5dw",
+       "punto": "西武新宿線・上石神井駅の近くの踏切",
+       "ep": "11",
+       "s": 592,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@和泉Ciao",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=100444&pid=ubuwfm5dw"
+       },
+       "original": "https://image.anitabi.cn/points/100444/ubuwfm5dw_1743705806676.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "death-note",
+     "nombre": "Death Note",
+     "estudio": "Madhouse",
+     "escenas": [
+      {
+       "id": "1773-kysspl28c",
+       "punto": "とんかつ新宿さぼてん",
+       "ep": "5",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@AmaiAya",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=1773&pid=kysspl28c"
+       },
+       "original": "https://image.anitabi.cn/points/1773/kysspl28c_1717292595690.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "sword-art-online",
+     "nombre": "Sword Art Online",
+     "estudio": "A-1 Pictures",
+     "escenas": [
+      {
+       "id": "148099-5etveck",
+       "punto": "新宿",
+       "ep": null,
+       "s": 2607,
+       "parte": "Ordinal Scale (película)",
+       "fuente": {
+        "autor": "Anitabi@初晨",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=148099&pid=5etveck"
+       },
+       "original": "https://image.anitabi.cn/points/148099/5etveck_1758790967875.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "toradora",
+     "nombre": "Toradora!",
+     "estudio": "J.C.Staff",
+     "escenas": [
+      {
+       "id": "909-pzsdacyb0",
+       "punto": "新宿駅南口",
+       "ep": "9",
+       "s": 246,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Xmなのだ",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=909&pid=pzsdacyb0"
+       },
+       "original": "https://image.anitabi.cn/user/1099/bangumi/909/points/pzsdacyb0-1731475488522.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "torre-tokio": {
+   "obras": [
+    {
+     "serie": "suzume",
+     "nombre": "Suzume",
+     "romaji": "Suzume no Tojimari",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "362577-srjlyce9a",
+       "punto": "東京タワー",
+       "ep": null,
+       "s": 3392,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=362577&pid=srjlyce9a"
+       },
+       "original": "https://image.anitabi.cn/points/362577/srjlyce9a_1739292841345.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "tenki-no-ko",
+     "nombre": "El tiempo contigo",
+     "romaji": "Tenki no Ko",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "269235-ouzqmg9l7",
+       "punto": "芝公園",
+       "ep": null,
+       "s": 3212,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=269235&pid=ouzqmg9l7"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/269235/points/ouzqmg9l7-1728278742617.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "sword-art-online",
+     "nombre": "Sword Art Online",
+     "estudio": "A-1 Pictures",
+     "escenas": [
+      {
+       "id": "92382-odh4x07de",
+       "punto": "東京タワー東側上空からみた皇居",
+       "ep": null,
+       "s": null,
+       "parte": "Sword Art Online II",
+       "fuente": {
+        "autor": "Anitabi@卜卜口",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=92382&pid=odh4x07de"
+       },
+       "original": "https://image.anitabi.cn/points/92382/odh4x07de_1726905912489.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "love-live",
+     "nombre": "Love Live!",
+     "estudio": "Sunrise",
+     "escenas": [
+      {
+       "id": "165553-ks0j3x7gb",
+       "punto": "東京タワー",
+       "ep": "8",
+       "s": 251,
+       "parte": "Sunshine!!",
+       "fuente": {
+        "autor": "Anitabi@うに",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=165553&pid=ks0j3x7gb"
+       },
+       "original": "https://image.anitabi.cn/user/1093/bangumi/165553/points/ks0j3x7gb-1716760790990.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "harajuku": {
+   "obras": [
+    {
+     "serie": "love-live",
+     "nombre": "Love Live!",
+     "estudio": "Sunrise",
+     "escenas": [
+      {
+       "id": "306742-51i52g2fq",
+       "punto": "原宿駅東口",
+       "ep": "1",
+       "s": 154,
+       "parte": "Superstar!!",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1CcrNtSsfPfnaC2oktSP48sdC2vIRiMz3&ll=35.669975%2C139.702733&z=17"
+       },
+       "original": "https://image.anitabi.cn/user/1468/bangumi/306742/points/51i52g2fq-1735581759677.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "404480-pr3v553z0",
+       "punto": "コロンビアスポーツウェア原宿店前",
+       "ep": "1",
+       "s": 1050,
+       "parte": "Superstar!! temporada 3",
+       "fuente": {
+        "autor": "Anitabi@月即别",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=404480&pid=pr3v553z0"
+       },
+       "original": "https://image.anitabi.cn/points/404480/pr3v553z0_1730795241678.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "404480-pr728k9zs",
+       "punto": "フォンテーヌ​原宿​ビル",
+       "ep": "2",
+       "s": 655,
+       "parte": "Superstar!! temporada 3",
+       "fuente": {
+        "autor": "是贝比啊",
+        "enlace": "https://www.bilibili.com/video/BV1zeyDYZERz"
+       },
+       "original": "https://image.anitabi.cn/points/404480/pr728k9zs_1730802202347.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "404480-pr79sf23j",
+       "punto": "表参道ヒルズ",
+       "ep": "2",
+       "s": 1003,
+       "parte": "Superstar!! temporada 3",
+       "fuente": {
+        "autor": "是贝比啊",
+        "enlace": "https://www.bilibili.com/video/BV1zeyDYZERz"
+       },
+       "original": "https://image.anitabi.cn/points/404480/pr79sf23j_1730802663321.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "306742-51i52g3cd",
+       "punto": "原宿駅東口むかい",
+       "ep": null,
+       "s": null,
+       "parte": "Superstar!!",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1CcrNtSsfPfnaC2oktSP48sdC2vIRiMz3&ll=35.669812%2C139.702926&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/306742/51i52g3cd_1672382916602.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "306742-51i52g3s0",
+       "punto": "竹下通り入口",
+       "ep": null,
+       "s": null,
+       "parte": "Superstar!!",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1CcrNtSsfPfnaC2oktSP48sdC2vIRiMz3&ll=35.671619%2C139.703085&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/306742/51i52g3s0_1672382920872.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "306742-51i52g4v9",
+       "punto": "原宿 スノッブの前",
+       "ep": null,
+       "s": null,
+       "parte": "Superstar!!",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1CcrNtSsfPfnaC2oktSP48sdC2vIRiMz3&ll=35.667468%2C139.705384&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/306742/51i52g4v9_1672382996621.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "306742-51i52g4tg",
+       "punto": "東急プラザ表参道店正面",
+       "ep": null,
+       "s": null,
+       "parte": "Superstar!!",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1CcrNtSsfPfnaC2oktSP48sdC2vIRiMz3&ll=35.668559%2C139.705681&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/306742/51i52g4tg_1672383005859.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "306742-51i52g6cw",
+       "punto": "トゥミ表参道店の横",
+       "ep": null,
+       "s": null,
+       "parte": "Superstar!!",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1CcrNtSsfPfnaC2oktSP48sdC2vIRiMz3&ll=35.666847%2C139.707238&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/306742/51i52g6cw_1672383032707.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "306742-51i52g6kn",
+       "punto": "笑たこ　原宿表参道店",
+       "ep": null,
+       "s": null,
+       "parte": "Superstar!!",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1CcrNtSsfPfnaC2oktSP48sdC2vIRiMz3&ll=35.666704%2C139.706139&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/306742/51i52g6kn_1672383035039.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "306742-51i52g6ib",
+       "punto": "Garland表参道の前",
+       "ep": null,
+       "s": null,
+       "parte": "Superstar!!",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1CcrNtSsfPfnaC2oktSP48sdC2vIRiMz3&ll=35.666024%2C139.706474&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/306742/51i52g6ib_1672383059965.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "jujutsu-kaisen",
+     "nombre": "Jujutsu Kaisen",
+     "estudio": "MAPPA",
+     "escenas": [
+      {
+       "id": "294993-lrff55dcr",
+       "punto": "原宿駅旧駅舎",
+       "ep": "3",
+       "s": 41,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@AmaiAya",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=294993&pid=lrff55dcr"
+       },
+       "original": "https://image.anitabi.cn/points/294993/lrff55dcr_1719541887696.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "294993-lrfpbfqye",
+       "punto": "原宿駅竹下口",
+       "ep": "3",
+       "s": 55,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@AmaiAya",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=294993&pid=lrfpbfqye"
+       },
+       "original": "https://image.anitabi.cn/points/294993/lrfpbfqye_1719541889263.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "294993-e1fafab4",
+       "punto": "竹下通り入口",
+       "ep": "3",
+       "s": 57,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1szRFjkAXOmd-He4PYBDIB3RDeHZ97LRg&ll=35.671563%2C139.703099&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/294993/e1fafab4_1719541889846.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "294993-lrfqpykpl",
+       "punto": "竹下通り",
+       "ep": "3",
+       "s": 65,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@AmaiAya",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=294993&pid=lrfqpykpl"
+       },
+       "original": "https://image.anitabi.cn/points/294993/lrfqpykpl_1719541890232.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "294993-lrfnk2hl4",
+       "punto": "原宿駅東口",
+       "ep": "3",
+       "s": 71,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@AmaiAya",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=294993&pid=lrfnk2hl4"
+       },
+       "original": "https://image.anitabi.cn/points/294993/lrfnk2hl4_1719541888891.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "294993-e66cba36",
+       "punto": "原宿アルタ",
+       "ep": "3",
+       "s": 127,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1szRFjkAXOmd-He4PYBDIB3RDeHZ97LRg&ll=35.671187%2C139.704299&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/294993/e66cba36_1719541890992.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "294993-lrfu9zotm",
+       "punto": "原宿アルタ前",
+       "ep": "3",
+       "s": 139,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@AmaiAya",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=294993&pid=lrfu9zotm"
+       },
+       "original": "https://image.anitabi.cn/points/294993/lrfu9zotm_1719541891362.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "294993-efe5df08",
+       "punto": "コロンビアスポーツウェア原宿店前",
+       "ep": "6",
+       "s": 1168,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1szRFjkAXOmd-He4PYBDIB3RDeHZ97LRg&ll=35.666518%2C139.705972&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/294993/efe5df08_1719541893198.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-45c5d937",
+       "punto": "明治神宮前〈原宿〉駅",
+       "ep": "8",
+       "s": 943,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.668017%2C139.70506&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/45c5d937_1719534492539.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "369304-381ce644",
+       "punto": "表参道駅",
+       "ep": "10",
+       "s": 761,
+       "parte": "Temporada 2",
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.665205%2C139.712247&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/369304/381ce644_1719534495379.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "death-note",
+     "nombre": "Death Note",
+     "estudio": "Madhouse",
+     "escenas": [
+      {
+       "id": "1773-kyrtqoizc",
+       "punto": "竹下通り",
+       "ep": "11",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@AmaiAya",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=1773&pid=kyrtqoizc"
+       },
+       "original": "https://image.anitabi.cn/points/1773/kyrtqoizc_1717292599044.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "your-name",
+     "nombre": "Your Name",
+     "romaji": "Kimi no Na wa.",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "160209-3ik9kiwz",
+       "punto": "表参道",
+       "ep": null,
+       "s": 4418,
+       "parte": null,
+       "fuente": {
+        "autor": "@nekoumi",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
+       },
+       "original": "https://image.anitabi.cn/points/160209/3ik9kiwz.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "byousoku-5-cm",
+     "nombre": "5 centímetros por segundo",
+     "romaji": "Byousoku 5 Centimeter",
+     "estudio": "CoMix Wave Films",
+     "escenas": [
+      {
+       "id": "927-a99qrfmm",
+       "punto": "竹下通り歩道橋",
+       "ep": null,
+       "s": 3497,
+       "parte": null,
+       "fuente": {
+        "autor": "Google Maps",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=1Lzk9kGUgtjJzqjpFcba29uybjxI&ll=35.669395%2C139.702866&z=17"
+       },
+       "original": "https://image.anitabi.cn/points/927/a99qrfmm_1719893982684.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "blue-lock",
+     "nombre": "Blue Lock",
+     "estudio": "8-bit",
+     "escenas": [
+      {
+       "id": "426124-p1t2t04do",
+       "punto": "原宿駅",
+       "ep": null,
+       "s": null,
+       "parte": "Episode Nagi (película)",
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=426124&pid=p1t2t04do"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/341163/points/p1t2t04do-1728812995664.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "shimokitazawa": {
+   "obras": [
+    {
+     "serie": "bocchi-the-rock",
+     "nombre": "Bocchi the Rock!",
+     "estudio": "CloverWorks",
+     "escenas": [
+      {
+       "id": "328609-uqdj3kh28",
+       "punto": "下北沢SHELTER",
+       "ep": "1",
+       "s": 253,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=328609&pid=uqdj3kh28"
+       },
+       "original": "https://image.anitabi.cn/points/328609/uqdj3kh28_1744843458012.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "328609-4yd2vzb5s",
+       "punto": "下北沢駅前",
+       "ep": "1",
+       "s": 626,
+       "parte": null,
+       "fuente": {
+        "autor": "林宏",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=18yUGs7Ekm9vaZe4Ym2zK4oAxFEc56uU"
+       },
+       "original": "https://image.anitabi.cn/points/328609/4yd2vzb5s.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "328609-uqesctl9j",
+       "punto": "ヴィレッジヴァンガード下北沢店",
+       "ep": "1",
+       "s": 619,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=328609&pid=uqesctl9j"
+       },
+       "original": "https://image.anitabi.cn/points/328609/uqesctl9j_1744846193527.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "328609-4xygg8inc",
+       "punto": "ヴィレッジヴァンガード下北沢店",
+       "ep": "1",
+       "s": 633,
+       "parte": null,
+       "fuente": {
+        "autor": "7th-august",
+        "enlace": "https://7th-august.com/bocchi-rocks_seichi/"
+       },
+       "original": "https://image.anitabi.cn/points/328609/4xygg8inc_1672251053625.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "328609-croeok",
+       "punto": "下北沢 美容室",
+       "ep": "3",
+       "s": 566,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=328609&pid=croeok"
+       },
+       "original": "https://image.anitabi.cn/points/328609/croeok_1747782442251.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "328609-cpdz63",
+       "punto": "下北沢 時代屋",
+       "ep": "4",
+       "s": 599,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=328609&pid=cpdz63"
+       },
+       "original": "https://image.anitabi.cn/points/328609/cpdz63_1747778591856.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "328609-4yd2vzc6m",
+       "punto": "下北沢第二自転車等駐車場",
+       "ep": "4",
+       "s": 613,
+       "parte": null,
+       "fuente": {
+        "autor": "林宏",
+        "enlace": "https://www.google.com/maps/d/viewer?mid=18yUGs7Ekm9vaZe4Ym2zK4oAxFEc56uU"
+       },
+       "original": "https://image.anitabi.cn/points/328609/4yd2vzc6m.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "328609-cp5nbm",
+       "punto": "下北沢パーキング",
+       "ep": "4",
+       "s": 621,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=328609&pid=cp5nbm"
+       },
+       "original": "https://image.anitabi.cn/points/328609/cp5nbm_1747778203048.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "328609-uqeh3wddi",
+       "punto": "タイムズ下北沢第８",
+       "ep": "4",
+       "s": 646,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=328609&pid=uqeh3wddi"
+       },
+       "original": "https://image.anitabi.cn/points/328609/uqeh3wddi_1744845513051.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "328609-cmok9d",
+       "punto": "下北沢プラッツ",
+       "ep": "5",
+       "s": 736,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@Lilin",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=328609&pid=cmok9d"
+       },
+       "original": "https://image.anitabi.cn/points/328609/cmok9d_1747774046198.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "328609-cgrti44c0",
+       "punto": "下北沢駅西口",
+       "ep": "MV",
+       "s": 2,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=328609&pid=cgrti44c0"
+       },
+       "original": "https://image.anitabi.cn/points/328609/cgrti44c0_1747779799383.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    },
+    {
+     "serie": "chou-kaguya-hime",
+     "nombre": "Cosmic Princess Kaguya!",
+     "romaji": "Chou Kaguya-hime!",
+     "estudio": "Studio Colorido y Studio Chromato",
+     "escenas": [
+      {
+       "id": "604826-ai7g8l2",
+       "punto": "下北沢南口商店街",
+       "ep": "MV",
+       "s": null,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi@澄蔦",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=604826&pid=ai7g8l2"
+       },
+       "original": "https://image.anitabi.cn/points/604826/ai7g8l2_1769879090241.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  },
+  "yokohama": {
+   "obras": [
+    {
+     "serie": "bungo-stray-dogs",
+     "nombre": "Bungo Stray Dogs",
+     "romaji": "Bungou Stray Dogs",
+     "estudio": "Bones",
+     "escenas": [
+      {
+       "id": "144357-55emti6ur",
+       "punto": "横浜​赤​レンガ​倉庫​2号館",
+       "ep": "9",
+       "s": 632,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=144357&pid=55emti6ur"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/144357/points/55emti6ur-1726460339606.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "144357-55evp38gq",
+       "punto": "横浜税関",
+       "ep": "9",
+       "s": 621,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=144357&pid=55evp38gq"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/144357/points/7.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "144357-55exzdj02",
+       "punto": "横浜大桟橋",
+       "ep": "9",
+       "s": 1270,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=144357&pid=55exzdj02"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/144357/points/5.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "144357-iggxy3cfi",
+       "punto": "横浜駅",
+       "ep": "8",
+       "s": 254,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=144357&pid=iggxy3cfi"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/144357/points/iggxy3cfi-1710213934778.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "144357-iggufyd42",
+       "punto": "横浜外国人墓地",
+       "ep": "9",
+       "s": 297,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=144357&pid=iggufyd42"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/144357/points/iggufyd42-1710213720164.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "144357-iggrldcoh",
+       "punto": "横浜元町ショッピングストリート",
+       "ep": "2",
+       "s": 443,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=144357&pid=iggrldcoh"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/144357/points/iggrldcoh-1710213589217.jpg",
+       "estado": "por-confirmar"
+      },
+      {
+       "id": "144357-iggmvdoiu",
+       "punto": "横浜スタジアム",
+       "ep": "9",
+       "s": 600,
+       "parte": null,
+       "fuente": {
+        "autor": "Anitabi",
+        "enlace": "https://www.anitabi.cn/map?bangumiId=144357&pid=iggmvdoiu"
+       },
+       "original": "https://image.anitabi.cn/user/0/bangumi/144357/points/iggmvdoiu-1710213256037.jpg",
+       "estado": "por-confirmar"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}
