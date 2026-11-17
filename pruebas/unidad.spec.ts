@@ -6,6 +6,7 @@ import { SEMILLAS, TEMAS, TEMPORADAS, ZONAS, etiquetaMeses } from '../src/data/l
 import { secciones } from '../src/data/secciones';
 import { kana, primeraKana } from '../src/scripts/kana';
 import { ESCENAS, momento, resumenTarjeta } from '../src/data/escenas';
+import { escribirDireccion, leerDireccion, pasa, queDejaVacio, sinFiltros, textoMenu } from '../src/scripts/filtros';
 
 const fotos: Record<string, { archivo: string; autor: string; licencia: string; fuente: string }> =
   JSON.parse(readFileSync('src/data/fotos.json', 'utf8'));
@@ -285,5 +286,64 @@ test.describe('escenas de anime', () => {
     expect(momento({ ep: '7', s: 946 })).toBe('Ep 7 · 15:46');
     expect(momento({ ep: 'ED2', s: 45 })).toBe('ED2 · 0:45');
     expect(momento({ ep: null, s: null })).toBeNull();
+  });
+});
+
+test.describe('filtros de Lugares', () => {
+  const lugar = (zona: string, meses: number[] | null = null, mio = false, escenas = false) => ({ zona, meses, mio, escenas });
+  const f = (cambios: Partial<ReturnType<typeof sinFiltros>>) => ({ ...sinFiltros(), ...cambios });
+
+  test('dentro de un filtro se suman las opciones', () => {
+    const filtro = f({ zona: ['tokio', 'norte'] });
+    expect(pasa(lugar('tokio'), filtro)).toBe(true);
+    expect(pasa(lugar('norte'), filtro)).toBe(true);
+    expect(pasa(lugar('kansai'), filtro)).toBe(false);
+    const temporadas = f({ temp: ['verano', 'invierno'] });
+    expect(pasa(lugar('tokio', [7]), temporadas)).toBe(true);
+    expect(pasa(lugar('tokio', [2]), temporadas)).toBe(true);
+    expect(pasa(lugar('tokio', [4]), temporadas)).toBe(false);
+  });
+
+  test('entre filtros se cruzan, y un lugar de todo el año no se esconde por la temporada', () => {
+    const filtro = f({ zona: ['tokio', 'norte'], temp: ['verano'], anime: true });
+    expect(pasa(lugar('tokio', null, false, true), filtro)).toBe(true);
+    expect(pasa(lugar('tokio', null, false, false), filtro)).toBe(false);
+    expect(pasa(lugar('tokio', [4], false, true), filtro)).toBe(false);
+    expect(pasa(lugar('kansai', null, false, true), filtro)).toBe(false);
+    expect(pasa(lugar('tokio'), f({ mios: true }))).toBe(false);
+    expect(pasa(lugar('tokio', null, true), f({ mios: true }))).toBe(true);
+    expect(pasa(lugar('sur', [1]), sinFiltros())).toBe(true);
+  });
+
+  test('la dirección: listas, enlaces viejos de un valor y valores desconocidos', () => {
+    expect(leerDireccion('?zona=norte,tokio&t=invierno,verano&mios=1&anime=1')).toEqual({
+      // en el orden del catálogo, no en el de la dirección
+      zona: ['tokio', 'norte'], temp: ['verano', 'invierno'], mios: true, anime: true,
+    });
+    expect(leerDireccion('?t=otono')).toEqual(f({ temp: ['otono'] }));
+    expect(leerDireccion('?zona=marte,tokio,tokio&t=nunca&mios=si&otra=<script>')).toEqual(f({ zona: ['tokio'] }));
+    expect(leerDireccion('')).toEqual(sinFiltros());
+    expect(escribirDireccion(f({ zona: ['tokio', 'norte'], temp: ['verano'], anime: true }))).toBe('?zona=tokio,norte&t=verano&anime=1');
+    expect(escribirDireccion(sinFiltros())).toBe('');
+    const ida = f({ zona: ['kanto', 'sur'], temp: ['primavera'], mios: true });
+    expect(leerDireccion(escribirDireccion(ida))).toEqual(ida);
+  });
+
+  test('sin resultados dice qué filtros dejan la lista vacía', () => {
+    expect(queDejaVacio(f({ anime: true, zona: ['norte'] }))).toBe('Ningún lugar que salga en anime en Norte.');
+    expect(queDejaVacio(f({ zona: ['tokio', 'kanto', 'norte'], temp: ['verano', 'invierno'] }))).toBe(
+      'Ningún lugar en Tokio, Cerca de Tokio o Norte en verano o invierno.',
+    );
+    expect(queDejaVacio(f({ mios: true }))).toBe('Ningún lugar con tu sello.');
+    expect(queDejaVacio(sinFiltros())).toBe('No hay nada con ese filtro.');
+  });
+
+  test('el texto de los menús', () => {
+    expect(textoMenu('zona', [])).toBe('Todas las zonas');
+    expect(textoMenu('zona', ['kansai'])).toBe('Kioto y Osaka');
+    expect(textoMenu('zona', ['tokio', 'norte'])).toBe('Zona · 2');
+    expect(textoMenu('temp', [])).toBe('Todo el año');
+    expect(textoMenu('temp', ['otono'])).toBe('En otoño');
+    expect(textoMenu('temp', ['otono', 'verano'])).toBe('Temporada · 2');
   });
 });
