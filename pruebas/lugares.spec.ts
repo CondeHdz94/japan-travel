@@ -225,7 +225,7 @@ test.describe('filtros', () => {
       await page.locator('#abrir-filtros').click();
       for (const z of ZONAS) {
         const ficha = page.locator(`#hoja-filtros [data-grupo="zona"][data-v="${z.id}"]`);
-        await expect(ficha.locator('[data-n]')).toHaveText(String(enInvierno(z.id)));
+        await expect(ficha.locator('.off [data-n]')).toHaveText(String(enInvierno(z.id)));
         if (enInvierno(z.id) === 0) await expect(ficha).toHaveClass(/apagado/);
       }
     } else {

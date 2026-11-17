@@ -87,7 +87,7 @@ test.describe('el filtro «聖地 Solo anime»', () => {
 
   test('deja solo los lugares con escenas, queda en la dirección, y se quita', async ({ page }) => {
     await abrir(page, '/lugares', 'no');
-    await expect(page.locator('#f-anime [data-n]')).toHaveText(String(CON_ANIME.length));
+    await expect(page.locator('#f-anime .off [data-n]')).toHaveText(String(CON_ANIME.length));
     const todos = await visibles(page).count();
 
     await filtrarPor(page, { anime: true });
@@ -105,10 +105,10 @@ test.describe('el filtro «聖地 Solo anime»', () => {
   test('su número sigue a los demás filtros, y en 0 se apaga', async ({ page }) => {
     await abrir(page, '/lugares?zona=kansai', 'no');
     const enKansai = await page.locator('article.lugar[data-zona="kansai"][data-escenas]').count();
-    await expect(page.locator('#f-anime [data-n]')).toHaveText(String(enKansai));
+    await expect(page.locator('#f-anime .off [data-n]')).toHaveText(String(enKansai));
     await expect(page.locator('#f-anime')).not.toHaveClass(/apagado/);
     await page.goto('/lugares?zona=norte');
-    await expect(page.locator('#f-anime [data-n]')).toHaveText('0');
+    await expect(page.locator('#f-anime .off [data-n]')).toHaveText('0');
     await expect(page.locator('#f-anime')).toHaveClass(/apagado/);
   });
 

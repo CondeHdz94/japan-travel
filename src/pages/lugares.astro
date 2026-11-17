@@ -114,17 +114,17 @@ const GRUPOS = [
         ))
       }
       <button type="button" class="ficha solo-mios" id="f-mios" aria-pressed="false" data-si-no="mios">
-        <span class="ch" aria-hidden="true" />Mis sellos<small class="mono" data-n />
+        <span class="ficha-cuerpo"><span class="capa off">Mis sellos<small class="mono" data-n></small></span><span class="capa on" aria-hidden="true">✓ Mis sellos<small class="mono" data-n></small></span></span>
       </button>
       {
         conAnime > 0 && (
-          <button type="button" class="ficha" id="f-anime" aria-pressed="false" data-si-no="anime">
-            <span class="ch" aria-hidden="true" /><span class="marca-sello" aria-hidden="true">聖地</span>Solo anime<small class="mono" data-n>{conAnime}</small>
+          <button type="button" class="ficha con-tapa" id="f-anime" aria-pressed="false" data-si-no="anime">
+            <span class="tapa" aria-hidden="true">聖地</span><span class="ficha-cuerpo"><span class="capa off">Solo anime<small class="mono" data-n>{conAnime}</small></span><span class="capa on" aria-hidden="true">✓ Solo anime<small class="mono" data-n>{conAnime}</small></span></span>
           </button>
         )
       }
       <span class="mono total"><b id="f-total">{todos.length}</b> a la vista</span>
-      <button type="button" class="proponer" data-proponer="">＋ Proponer lugar</button>
+      <button type="button" class="proponer" data-proponer="">＋ Proponer<span class="largo"> lugar</span></button>
     </div>
     {/* por debajo de 960 px: un botón abre la hoja; al lado, lo que está puesto */}
     <div class="filtros-cel">
@@ -277,8 +277,8 @@ const GRUPOS = [
             <span class="mono" id={`hf-${g.id}`}>{g.nombre} · una o varias</span>
             <div class="hf-opciones">
               {g.opciones.map((o) => (
-                <button type="button" class="ficha" aria-pressed="false" data-grupo={g.id} data-v={o.id}>
-                  <span class="ch" aria-hidden="true" />{o.nombre}<small class="mono" data-n />
+                <button type="button" class="ficha" aria-pressed="false" data-grupo={g.id} data-v={o.id} data-nombre={o.nombre}>
+                  <span class="ficha-cuerpo"><span class="capa off">{o.nombre}<small class="mono" data-n /></span><span class="capa on" aria-hidden="true">✓ {o.nombre}<small class="mono" data-n /></span></span>
                 </button>
               ))}
             </div>
@@ -289,12 +289,12 @@ const GRUPOS = [
         <span class="mono" id="hf-solo">Mostrar solo</span>
         <div class="hf-opciones">
           <button type="button" class="ficha solo-mios" aria-pressed="false" data-si-no="mios">
-            <span class="ch" aria-hidden="true" />Mis sellos<small class="mono" data-n />
+            <span class="ficha-cuerpo"><span class="capa off">Mis sellos<small class="mono" data-n></small></span><span class="capa on" aria-hidden="true">✓ Mis sellos<small class="mono" data-n></small></span></span>
           </button>
           {
             conAnime > 0 && (
-              <button type="button" class="ficha" aria-pressed="false" data-si-no="anime">
-                <span class="ch" aria-hidden="true" /><span class="marca-sello" aria-hidden="true">聖地</span>Solo anime<small class="mono" data-n />
+              <button type="button" class="ficha con-tapa" aria-pressed="false" data-si-no="anime">
+                <span class="tapa" aria-hidden="true">聖地</span><span class="ficha-cuerpo"><span class="capa off">Solo anime<small class="mono" data-n></small></span><span class="capa on" aria-hidden="true">✓ Solo anime<small class="mono" data-n></small></span></span>
               </button>
             )
           }
@@ -417,7 +417,7 @@ const GRUPOS = [
         const k = n[`${g}:${el.dataset.v}`];
         el.setAttribute('aria-pressed', String(on));
         el.classList.toggle('apagado', !on && k === 0);
-        el.querySelector('[data-n]')!.textContent = String(k);
+        for (const x of el.querySelectorAll('[data-n]')) x.textContent = String(k);
       }
       const menu = raiz.querySelector<HTMLElement>(`#f-${g}`);
       if (menu) {
@@ -429,7 +429,7 @@ const GRUPOS = [
     for (const el of raiz.querySelectorAll<HTMLElement>('[data-si-no]')) {
       const que = el.dataset.siNo as 'mios' | 'anime';
       el.setAttribute('aria-pressed', String(f[que]));
-      el.querySelector('[data-n]')!.textContent = String(n[que]);
+      for (const x of el.querySelectorAll('[data-n]')) x.textContent = String(n[que]);
       // «Mis sellos» siempre se puede tocar (sin sellos, la lista vacía lo explica); anime se apaga en 0
       if (que === 'anime') el.classList.toggle('apagado', !f.anime && n.anime === 0);
     }
@@ -438,7 +438,7 @@ const GRUPOS = [
   /** Lo que está puesto, como fichas con ✕ al lado del botón «Filtros» (celular). */
   function pintarPuestos(f: Filtros) {
     const puestos = $('puestos')!;
-    const nombre = (g: Grupo, v: string) => document.querySelector(`[data-grupo="${g}"][data-v="${v}"]`)!.firstChild!.nextSibling!.textContent!.trim();
+    const nombre = (g: Grupo, v: string) => document.querySelector<HTMLElement>(`[data-grupo="${g}"][data-v="${v}"]`)!.dataset.nombre!;
     const fichas = [
       ...GRUPOS.flatMap((g) => f[g].map((v) => ({ g, v, t: nombre(g, v) }))),
       ...(f.mios ? [{ g: 'mios', v: '', t: 'Mis sellos' }] : []),
@@ -842,7 +842,13 @@ const GRUPOS = [
     gap: 0.5rem 0.6rem;
     padding: 0.55rem var(--gutter);
   }
-  /* todos los controles de la fila miden lo mismo y comparten eje; se tocan en 44 px */
+  /* todos los controles de la fila miden lo mismo, comparten eje y el mismo aire: --px a los lados,
+     --sep entre lo de adentro. Se tocan en 44 px */
+  .barra,
+  .hoja-filtros {
+    --px: 0.9rem;
+    --sep: 0.45rem;
+  }
   .menu,
   .ficha,
   .proponer,
@@ -852,9 +858,9 @@ const GRUPOS = [
     flex: none;
     display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
+    gap: var(--sep);
     height: 2rem;
-    padding: 0 0.85rem;
+    padding: 0 var(--px);
     border: 1px solid var(--ink);
     border-radius: 99px;
     background: var(--paper);
@@ -990,19 +996,42 @@ const GRUPOS = [
   .quitar-grupo[hidden] {
     display: none;
   }
-  /* fichas de sí o no (y las opciones de la hoja): el ✓ tiene su sitio reservado, nada se corre */
+  /* fichas de sí o no (y las opciones de la hoja): dos capas en la misma celda, apagada y prendida
+     con ✓. La ficha mide lo que la más ancha y cada capa va centrada: el aire queda igual a lado y
+     lado, y prender no mueve nada. La capa apagada se esconde con opacidad (no con visibility) para
+     que el lector de pantalla siga leyendo su texto; la prendida va con aria-hidden */
   .ficha {
-    padding-left: 0.6rem;
+    display: inline-grid;
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    /* el aire lo ponen la tapa y el cuerpo; la separación de la base no aplica aquí */
+    gap: 0;
+    padding: 0;
   }
-  .ficha .ch {
-    display: inline-block;
-    width: 0.75rem;
-    text-align: center;
+  .ficha.con-tapa {
+    grid-template-columns: auto 1fr;
   }
-  .ficha[aria-pressed='true'] .ch::before {
-    content: '✓';
+  .ficha-cuerpo {
+    display: grid;
+    padding: 0 var(--px);
   }
+  .capa {
+    grid-area: 1 / 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sep);
+  }
+  .capa.on,
+  .ficha[aria-pressed='true'] .capa.off {
+    opacity: 0;
+  }
+  .ficha[aria-pressed='true'] .capa.on {
+    opacity: 1;
+  }
+  /* el número cambia con los demás filtros: su espacio es fijo (dos cifras), así «26» → «0» no corre la fila */
   .ficha small {
+    min-width: 2.6ch;
     color: var(--ink-soft);
     font-variant-numeric: tabular-nums;
   }
@@ -1014,24 +1043,25 @@ const GRUPOS = [
     opacity: 0.35;
     pointer-events: none;
   }
-  /* la marca 聖地 de las tarjetas, en pequeño */
-  .marca-sello {
-    padding: 0.08rem 0.3rem;
-    background: var(--ink);
-    color: var(--paper);
-    box-shadow:
-      0 0 0 1.5px var(--paper),
-      0 0 0 2.5px var(--ink);
+  /* la tapa: el sello 聖地 de las tarjetas, a todo el alto. Apagada va dibujada; prendida, la ficha
+     entera se llena de negro y queda igual al sello de la tarjeta */
+  .tapa {
+    display: grid;
+    place-items: center;
+    padding: 0 0.6rem 0 0.75rem;
+    border-right: 1px dashed currentColor;
     font-family: var(--f-display);
     font-weight: 800;
-    font-size: 0.66rem;
+    font-size: 0.8rem;
     letter-spacing: 0;
-    line-height: 1.2;
   }
-  .ficha[aria-pressed='true'] .marca-sello {
-    box-shadow:
-      0 0 0 1.5px var(--ink),
-      0 0 0 2.5px var(--paper);
+  .ficha[aria-pressed='true'] .tapa {
+    border-right-color: rgba(241, 236, 225, 0.5);
+  }
+  @media (max-width: 1199px) {
+    .proponer .largo {
+      display: none;
+    }
   }
 
   /* ───── por debajo de 960 px: botón «Filtros», lo puesto y la hoja ───── */
