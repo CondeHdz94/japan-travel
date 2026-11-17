@@ -53,6 +53,11 @@ const conCredito = SEMILLAS.filter((l) => fotos[l.id]);
 // Escenas de anime: el sello «聖地 N obras» en la foto y la línea «Sale en: …» en el texto.
 // La ventana con las escenas la pinta src/scripts/escenas.ts al tocar «Ver escenas».
 const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
+// los filtros de varias opciones: los menús con casillas (escritorio) y las fichas de la hoja (celular)
+const GRUPOS = [
+  { id: 'zona', nombre: 'Zona', todos: 'Todas las zonas', opciones: ZONAS },
+  { id: 'temp', nombre: 'Temporada', todos: 'Todo el año', opciones: TEMPORADAS },
+];
 ---
 
 <Base title="Lugares" description="Lugares y eventos de Japón para votar entre todos.">
@@ -78,39 +83,57 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
               <span>{tema.corto}</span>
               <small class="mono">{lugares.length}</small>
             </a>
-            {/* el filtro de anime va justo después de Otaku: filtra todas las secciones, no lleva a una */}
-            {tema.id === 'otaku' && conAnime > 0 && (
-              <Fragment>
-                <button type="button" class="lente" id="f-anime" aria-pressed="false">
-                  <b aria-hidden="true">聖</b>
-                  <span>Anime</span>
-                  <small class="mono">{conAnime}</small>
-                </button>
-                <span class="corte" aria-hidden="true" />
-              </Fragment>
-            )}
           </Fragment>
         ))
       }
     </nav>
+    {/* desde 960 px: los filtros en una fila, aplican al instante */}
     <div class="filtros">
-      <label>
-        <span class="oculto">Zona</span>
-        <select id="f-zona">
-          <option value="" data-corto="Zona">Todas las zonas</option>
-          {ZONAS.map((z) => <option value={z.id}>{z.nombre}</option>)}
-        </select>
-      </label>
-      <label>
-        <span class="oculto">Temporada</span>
-        <select id="f-temp">
-          <option value="" data-corto="Temporada">Todo el año</option>
-          {TEMPORADAS.map((t) => <option value={t.id} data-meses={t.meses.join(',')}>En {t.nombre.toLowerCase()}</option>)}
-        </select>
-      </label>
-      <button type="button" class="poner solo-mios" id="f-mios" aria-pressed="false">Mis sellos</button>
+      {
+        GRUPOS.map((g) => (
+          <div class="desp">
+            <button type="button" class="menu" id={`f-${g.id}`} popovertarget={`p-${g.id}`} aria-expanded="false" aria-haspopup="true">
+              <span data-texto>{g.todos}</span>
+              <span class="flecha" aria-hidden="true" />
+            </button>
+            <div class="panel" id={`p-${g.id}`} popover>
+              <fieldset>
+                <legend class="oculto">{g.nombre}: se pueden escoger varias</legend>
+                {g.opciones.map((o) => (
+                  <label class="casilla">
+                    <input type="checkbox" name={g.id} value={o.id} />
+                    <span class="caja" aria-hidden="true" />
+                    <span class="nom">{o.nombre}</span>
+                    <small class="mono" data-n />
+                  </label>
+                ))}
+              </fieldset>
+              <button type="button" class="quitar-grupo" data-vaciar={g.id} hidden>Quitar</button>
+            </div>
+          </div>
+        ))
+      }
+      <button type="button" class="ficha solo-mios" id="f-mios" aria-pressed="false" data-si-no="mios">
+        <span class="ch" aria-hidden="true" />Mis sellos<small class="mono" data-n />
+      </button>
+      {
+        conAnime > 0 && (
+          <button type="button" class="ficha" id="f-anime" aria-pressed="false" data-si-no="anime">
+            <span class="ch" aria-hidden="true" /><span class="marca-sello" aria-hidden="true">聖地</span>Solo anime<small class="mono" data-n>{conAnime}</small>
+          </button>
+        )
+      }
       <span class="mono total"><b id="f-total">{todos.length}</b> a la vista</span>
       <button type="button" class="proponer" data-proponer="">＋ Proponer lugar</button>
+    </div>
+    {/* por debajo de 960 px: un botón abre la hoja; al lado, lo que está puesto */}
+    <div class="filtros-cel">
+      <button type="button" class="abrir-filtros" id="abrir-filtros" aria-haspopup="dialog">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 4h12M4.5 8h7M7 12h2" /></svg>
+        Filtros<span class="cuantos" id="n-filtros" />
+      </button>
+      <div class="puestos" id="puestos" aria-label="Filtros puestos"><span class="sin mono">Sin filtros</span></div>
+      <button type="button" class="proponer" data-proponer="">＋ Proponer</button>
     </div>
   </div>
 
@@ -242,6 +265,48 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
 
   <Escenas />
 
+  <dialog class="hoja-filtros" id="hoja-filtros" aria-labelledby="hf-titulo">
+    <div class="hf">
+      <header>
+        <h2 id="hf-titulo" tabindex="-1">Filtros</h2>
+        <button type="button" class="hf-cerrar" data-cerrar-hoja>Cerrar ✕</button>
+      </header>
+      {
+        GRUPOS.map((g) => (
+          <div class="hf-grupo" role="group" aria-labelledby={`hf-${g.id}`}>
+            <span class="mono" id={`hf-${g.id}`}>{g.nombre} · una o varias</span>
+            <div class="hf-opciones">
+              {g.opciones.map((o) => (
+                <button type="button" class="ficha" aria-pressed="false" data-grupo={g.id} data-v={o.id}>
+                  <span class="ch" aria-hidden="true" />{o.nombre}<small class="mono" data-n />
+                </button>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+      <div class="hf-grupo" role="group" aria-labelledby="hf-solo">
+        <span class="mono" id="hf-solo">Mostrar solo</span>
+        <div class="hf-opciones">
+          <button type="button" class="ficha solo-mios" aria-pressed="false" data-si-no="mios">
+            <span class="ch" aria-hidden="true" />Mis sellos<small class="mono" data-n />
+          </button>
+          {
+            conAnime > 0 && (
+              <button type="button" class="ficha" aria-pressed="false" data-si-no="anime">
+                <span class="ch" aria-hidden="true" /><span class="marca-sello" aria-hidden="true">聖地</span>Solo anime<small class="mono" data-n />
+              </button>
+            )
+          }
+        </div>
+      </div>
+      <div class="hf-pie">
+        <button type="button" class="hf-limpiar" data-limpiar-hoja>Quitar todo</button>
+        <button type="button" class="hf-ver" data-aplicar>Ver lugares</button>
+      </div>
+    </div>
+  </dialog>
+
   <dialog id="proponer" class="registro" aria-labelledby="proponer-t">
     <form method="dialog">
       <button type="button" class="cerrar mono" data-cerrar aria-label="Cerrar">Cerrar ✕</button>
@@ -291,38 +356,135 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
 </Base>
 
 <script>
+  import { copiar, cuantosPuestos, escribirDireccion, leerDireccion, pasa, queDejaVacio, sinFiltros, textoMenu, type Filtros, type LugarFiltrable } from '../scripts/filtros';
+
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T | null;
-  const zona = $<HTMLSelectElement>('f-zona')!;
-  const temp = $<HTMLSelectElement>('f-temp')!;
-  const mios = $<HTMLButtonElement>('f-mios')!;
-  // el filtro de anime puede no estar (si ningún lugar tuviera escenas)
-  const anime = $<HTMLButtonElement>('f-anime');
+  // ───── filtros ─────
+  // Desde 960 px: menús con casillas y fichas que aplican al instante. Por debajo: la hoja, que
+  // trabaja sobre un borrador y aplica con «Ver N lugares». La lógica sin DOM está en scripts/filtros.ts.
   const total = $('f-total')!;
   const vacio = $('vacio')!;
+  const hoja = $<HTMLDialogElement>('hoja-filtros')!;
   const dlg = $<HTMLDialogElement>('proponer')!;
   const form = dlg.querySelector('form')!;
   const aviso = dlg.querySelector<HTMLElement>('[role=alert]')!;
   const conSesion = () => document.documentElement.dataset.sesion === 'si';
+  const GRUPOS = ['zona', 'temp'] as const;
+  type Grupo = (typeof GRUPOS)[number];
+  const angosto = matchMedia('(max-width: 959px)');
 
-  /** Muestra u oculta tarjetas según los filtros y actualiza los conteos. */
+  let aplicado: Filtros = sinFiltros();
+  let borrador: Filtros | null = null;
+
+  const tarjetas = () => [...document.querySelectorAll<HTMLElement>('.tema .lugar')];
+  const datosDe = (c: HTMLElement): LugarFiltrable => ({
+    zona: c.dataset.zona ?? '',
+    meses: c.dataset.meses ? c.dataset.meses.split(',').map(Number) : null,
+    mio: !!c.querySelector('.poner[aria-pressed="true"]'),
+    escenas: !!c.dataset.escenas,
+  });
+  /** Cuántos lugares pasan con estos filtros. */
+  const cuenta = (lugares: LugarFiltrable[], f: Filtros) => lugares.filter((l) => pasa(l, f)).length;
+
+  /**
+   * Los números de cada opción para unos filtros: en una zona o temporada, cuántos lugares tiene
+   * esa opción con los demás filtros puestos; en Mis sellos y Solo anime, cuántos quedarían al prenderlo.
+   */
+  function numeros(lugares: LugarFiltrable[], f: Filtros) {
+    const n: Record<string, number> = {};
+    for (const g of GRUPOS)
+      for (const el of document.querySelectorAll<HTMLInputElement>(`.panel input[name="${g}"]`))
+        n[`${g}:${el.value}`] = cuenta(lugares, { ...copiar(f), [g]: [el.value] });
+    n.mios = cuenta(lugares, { ...copiar(f), mios: true });
+    n.anime = cuenta(lugares, { ...copiar(f), anime: true });
+    return n;
+  }
+
+  /** Pinta un juego de controles (la barra o la hoja) con unos filtros y sus números. */
+  function pintarControles(raiz: ParentNode, f: Filtros, n: Record<string, number>) {
+    for (const g of GRUPOS) {
+      // casillas del menú (escritorio)
+      for (const el of raiz.querySelectorAll<HTMLInputElement>(`.panel input[name="${g}"]`)) {
+        const on = f[g].includes(el.value);
+        const k = n[`${g}:${el.value}`];
+        el.checked = on;
+        el.disabled = !on && k === 0;
+        el.closest('label')!.querySelector('[data-n]')!.textContent = String(k);
+      }
+      // fichas de la hoja (celular)
+      for (const el of raiz.querySelectorAll<HTMLElement>(`[data-grupo="${g}"]`)) {
+        const on = f[g].includes(el.dataset.v!);
+        const k = n[`${g}:${el.dataset.v}`];
+        el.setAttribute('aria-pressed', String(on));
+        el.classList.toggle('apagado', !on && k === 0);
+        el.querySelector('[data-n]')!.textContent = String(k);
+      }
+      const menu = raiz.querySelector<HTMLElement>(`#f-${g}`);
+      if (menu) {
+        menu.querySelector('[data-texto]')!.textContent = textoMenu(g, f[g]);
+        menu.classList.toggle('escogido', f[g].length > 0);
+        $(`p-${g}`)!.querySelector<HTMLElement>('[data-vaciar]')!.hidden = f[g].length === 0;
+      }
+    }
+    for (const el of raiz.querySelectorAll<HTMLElement>('[data-si-no]')) {
+      const que = el.dataset.siNo as 'mios' | 'anime';
+      el.setAttribute('aria-pressed', String(f[que]));
+      el.querySelector('[data-n]')!.textContent = String(n[que]);
+      // «Mis sellos» siempre se puede tocar (sin sellos, la lista vacía lo explica); anime se apaga en 0
+      if (que === 'anime') el.classList.toggle('apagado', !f.anime && n.anime === 0);
+    }
+  }
+
+  /** Lo que está puesto, como fichas con ✕ al lado del botón «Filtros» (celular). */
+  function pintarPuestos(f: Filtros) {
+    const puestos = $('puestos')!;
+    const nombre = (g: Grupo, v: string) => document.querySelector(`[data-grupo="${g}"][data-v="${v}"]`)!.firstChild!.nextSibling!.textContent!.trim();
+    const fichas = [
+      ...GRUPOS.flatMap((g) => f[g].map((v) => ({ g, v, t: nombre(g, v) }))),
+      ...(f.mios ? [{ g: 'mios', v: '', t: 'Mis sellos' }] : []),
+      ...(f.anime ? [{ g: 'anime', v: '', t: '聖地 Solo anime' }] : []),
+    ];
+    puestos.replaceChildren(
+      ...(fichas.length
+        ? fichas.map(({ g, v, t }) => {
+            const s = document.createElement('span');
+            s.className = 'puesto';
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.dataset.quitar = g;
+            b.dataset.v = v;
+            b.setAttribute('aria-label', `Quitar ${t}`);
+            b.textContent = '✕';
+            s.append(t, b);
+            return s;
+          })
+        : [Object.assign(document.createElement('span'), { className: 'sin mono', textContent: 'Sin filtros' })]),
+    );
+    // los estilos de la página son de alcance local: lo nuevo hereda la marca del contenedor
+    const marca = [...puestos.attributes].filter((a) => a.name.startsWith('data-astro-cid-'));
+    for (const el of puestos.querySelectorAll('*')) for (const a of marca) el.setAttribute(a.name, '');
+    const n = cuantosPuestos(f);
+    $('n-filtros')!.textContent = n ? String(n) : '';
+    marcarDesborde();
+  }
+
+  /** Si lo puesto no cabe, el borde derecho se desvanece: así se nota que hay más deslizando. */
+  function marcarDesborde() {
+    const p = $('puestos')!;
+    p.classList.toggle('hay-mas', p.scrollLeft + p.clientWidth < p.scrollWidth - 2);
+  }
+  $('puestos')!.addEventListener('scroll', marcarDesborde, { passive: true });
+  addEventListener('resize', marcarDesborde);
+
+  /** Muestra u oculta tarjetas según lo aplicado y actualiza números, controles y dirección. */
   function filtrar() {
-    const z = zona.value;
-    const meses = temp.selectedOptions[0]?.dataset.meses?.split(',');
-    const soloMios = mios.getAttribute('aria-pressed') === 'true';
-    const soloAnime = anime?.getAttribute('aria-pressed') === 'true';
+    const cs = tarjetas();
+    const datos = cs.map(datosDe);
     let suma = 0;
-    // cuántos lugares con anime hay con los demás filtros puestos: es el número de la píldora
-    let conAnime = 0;
-
     for (const tema of document.querySelectorAll<HTMLElement>('.tema')) {
       let n = 0;
       for (const c of tema.querySelectorAll<HTMLElement>('.lugar')) {
-        const enZona = !z || c.dataset.zona === z;
-        const enFecha = !meses || !c.dataset.meses || c.dataset.meses.split(',').some((m) => meses.includes(m));
-        const mio = !soloMios || !!c.querySelector('.poner[aria-pressed="true"]');
-        const tieneEscenas = !!c.dataset.escenas;
-        if (enZona && enFecha && mio && tieneEscenas) conAnime++;
-        const ver = enZona && enFecha && mio && (!soloAnime || tieneEscenas);
+        const ver = pasa(datos[cs.indexOf(c)], aplicado);
         c.hidden = !ver;
         if (ver) n++;
       }
@@ -337,54 +499,21 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
     }
     total.textContent = String(suma);
     vacio.hidden = suma > 0;
-    if (anime) {
-      anime.querySelector('small')!.textContent = String(conAnime);
-      // sin ninguno, se apaga como los temas; prendida sigue tocable para poder quitarla
-      anime.classList.toggle('apagado', conAnime === 0 && !soloAnime);
-    }
-    // sin resultados: dice qué filtros dejan la lista vacía
-    if (suma === 0) {
-      const que = [
-        soloAnime && 'que salga en anime',
-        soloMios && 'con tu sello',
-        z && `en ${zona.selectedOptions[0].text}`,
-        meses && temp.selectedOptions[0].text.toLowerCase(),
-      ].filter(Boolean);
-      $('vacio-dice')!.textContent = que.length ? `Ningún lugar ${que.join(' ')}.` : 'No hay nada con ese filtro.';
-    }
-
+    if (suma === 0) $('vacio-dice')!.textContent = queDejaVacio(aplicado);
+    pintarControles(document.querySelector('.filtros')!, aplicado, numeros(datos, aplicado));
+    pintarPuestos(aplicado);
+    if (borrador) pintarHoja();
     // los filtros quedan en la dirección: se pueden compartir y sobreviven a una recarga
-    const q = new URLSearchParams();
-    if (z) q.set('zona', z);
-    if (temp.value) q.set('t', temp.value);
-    if (soloMios) q.set('mios', '1');
-    if (soloAnime) q.set('anime', '1');
-    history.replaceState(null, '', `${location.pathname}${q.size ? `?${q}` : ''}${location.hash}`);
+    history.replaceState(history.state, '', `${location.pathname}${escribirDireccion(aplicado)}${location.hash}`);
   }
-
-  // estado inicial desde la dirección (p. ej. /lugares?t=otono viene de «Cuándo ir»)
-  const q = new URLSearchParams(location.search);
-  if ([...zona.options].some((o) => o.value === q.get('zona'))) zona.value = q.get('zona')!;
-  if ([...temp.options].some((o) => o.value === q.get('t'))) temp.value = q.get('t')!;
-  const quiereMios = q.get('mios') === '1';
-  if (anime && q.get('anime') === '1') anime.setAttribute('aria-pressed', 'true');
-  if (zona.value || temp.value || anime?.getAttribute('aria-pressed') === 'true') filtrar();
-
-  // en celular el valor por defecto dice solo de qué es el filtro («Zona», «Temporada») para que quepa
-  const celular = matchMedia('(max-width: 720px)');
-  const porDefecto = [zona, temp].map((s) => s.options[0]);
-  const largos = porDefecto.map((o) => o.text);
-  const nombrarPorDefecto = () =>
-    porDefecto.forEach((o, i) => (o.text = celular.matches ? o.dataset.corto! : largos[i]));
-  nombrarPorDefecto();
-  celular.addEventListener('change', nombrarPorDefecto);
 
   /**
    * Cuando la persona cambia un filtro estando más abajo del comienzo de la lista, la página
    * sube al comienzo: la lista se encoge y si no, queda frente a los créditos o una sola tarjeta.
    * Arriba de la lista no se mueve nada.
    */
-  function filtrarDesdeArriba() {
+  function aplicar(f: Filtros) {
+    aplicado = f;
     filtrar();
     const barra = document.querySelector<HTMLElement>('.barra')!;
     const primero = [vacio, ...document.querySelectorAll<HTMLElement>('.tema')].find((e) => !e.hidden);
@@ -393,41 +522,156 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
     // de una, sin animación: deslizar miles de píxeles marea y deja ver pasar media página
     if (scrollY > comienzo + 1) scrollTo({ top: comienzo, behavior: 'instant' });
   }
+  /** Prende o apaga un valor de una lista, dejando el orden del catálogo. */
+  function alternar(f: Filtros, g: Grupo, v: string): Filtros {
+    const nuevo = copiar(f);
+    const orden = [...document.querySelectorAll<HTMLInputElement>(`.panel input[name="${g}"]`)].map((i) => i.value);
+    const set = new Set(nuevo[g]);
+    if (set.has(v)) set.delete(v);
+    else set.add(v);
+    nuevo[g] = orden.filter((x) => set.has(x));
+    return nuevo;
+  }
+  /** «Mis sellos» sin sesión abre el registro en vez de filtrar. */
+  const pideSesion = (que: string) => que === 'mios' && !conSesion() && (document.querySelector<HTMLElement>('#quien [data-entrar]')?.click(), true);
 
-  zona.addEventListener('change', filtrarDesdeArriba);
-  temp.addEventListener('change', filtrarDesdeArriba);
-  mios.addEventListener('click', () => {
-    if (!conSesion()) return document.querySelector<HTMLElement>('#quien [data-entrar]')?.click();
-    mios.setAttribute('aria-pressed', String(mios.getAttribute('aria-pressed') !== 'true'));
-    filtrarDesdeArriba();
+  // escritorio: casillas y fichas aplican al instante
+  document.querySelector('.filtros')!.addEventListener('change', (ev) => {
+    const el = ev.target as HTMLInputElement;
+    if (el.type === 'checkbox') aplicar(alternar(aplicado, el.name as Grupo, el.value));
   });
-  // el filtro de anime: un toque lo prende y otro lo apaga, como «Mis sellos»
-  anime?.addEventListener('click', () => {
-    anime.setAttribute('aria-pressed', String(anime.getAttribute('aria-pressed') !== 'true'));
-    filtrarDesdeArriba();
+  document.querySelector('.filtros')!.addEventListener('click', (ev) => {
+    const el = ev.target as Element;
+    const ficha = el.closest<HTMLElement>('[data-si-no]');
+    if (ficha) {
+      const que = ficha.dataset.siNo as 'mios' | 'anime';
+      if (pideSesion(que)) return;
+      aplicar({ ...copiar(aplicado), [que]: !aplicado[que] });
+      return;
+    }
+    const vaciar = el.closest<HTMLElement>('[data-vaciar]');
+    if (vaciar) {
+      const g = vaciar.dataset.vaciar as Grupo;
+      aplicar({ ...copiar(aplicado), [g]: [] });
+      $(`p-${g}`)!.hidePopover();
+    }
   });
-  $('limpiar')!.addEventListener('click', () => {
-    zona.value = '';
-    temp.value = '';
-    mios.setAttribute('aria-pressed', 'false');
-    anime?.setAttribute('aria-pressed', 'false');
-    filtrarDesdeArriba();
-  });
-  // «mis sellos» depende de que los sellos ya estén pintados
-  if (quiereMios) {
-    const aplicar = () => {
-      if (!conSesion()) return false;
-      mios.setAttribute('aria-pressed', 'true');
-      filtrar();
-      return true;
+  // los menús: el panel se abre debajo de su botón y lo sigue si la página se mueve
+  for (const g of GRUPOS) {
+    const panel = $(`p-${g}`)!;
+    const boton = $(`f-${g}`)!;
+    const ubicar = () => {
+      const r = boton.getBoundingClientRect();
+      panel.style.top = `${r.bottom + 6}px`;
+      panel.style.left = `${Math.min(r.left, innerWidth - panel.offsetWidth - 16)}px`;
     };
-    requestAnimationFrame(() => {
-      if (aplicar()) return;
-      // Dispositivo recién ingresado: todavía no hay estado guardado y la sesión se confirma
-      // cuando responde el servidor. Se espera a ese momento (los sellos se pintan en la misma pasada).
-      const ojo = new MutationObserver(() => aplicar() && ojo.disconnect());
-      ojo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-sesion'] });
+    panel.addEventListener('toggle', (ev) => {
+      const abierto = (ev as ToggleEvent).newState === 'open';
+      boton.setAttribute('aria-expanded', String(abierto));
+      if (abierto) {
+        ubicar();
+        addEventListener('scroll', ubicar, { passive: true });
+        panel.querySelector<HTMLInputElement>('input:not(:disabled)')?.focus();
+      } else removeEventListener('scroll', ubicar);
     });
+  }
+
+  // celular: el botón «Filtros», las fichas de lo puesto y la hoja
+  function pintarHoja() {
+    if (!borrador) return;
+    const datos = tarjetas().map(datosDe);
+    pintarControles(hoja, borrador, numeros(datos, borrador));
+    const n = cuenta(datos, borrador);
+    const ver = hoja.querySelector<HTMLButtonElement>('[data-aplicar]')!;
+    ver.disabled = n === 0;
+    ver.textContent = n === 0 ? 'Ningún lugar' : `Ver ${n} ${n === 1 ? 'lugar' : 'lugares'}`;
+  }
+  // la hoja vive en el historial: «atrás» la cierra sin salir de la página
+  let hojaEmpujada = false;
+  /** Lo que se hace una vez cerrada la hoja (aplicar), ya con el historial en su sitio. */
+  let alCerrar: (() => void) | null = null;
+  const despuesDeCerrar = () => {
+    const f = alCerrar;
+    alCerrar = null;
+    f?.();
+  };
+  function abrirHoja() {
+    borrador = copiar(aplicado);
+    pintarHoja();
+    history.pushState({ hoja: true }, '', location.href);
+    hojaEmpujada = true;
+    hoja.showModal();
+    hoja.querySelector<HTMLElement>('#hf-titulo')!.focus();
+  }
+  hoja.addEventListener('close', () => {
+    borrador = null;
+    $('abrir-filtros')!.focus();
+    if (hojaEmpujada) {
+      // «atrás» es asíncrono: lo que haya que aplicar espera a que termine (ver popstate)
+      hojaEmpujada = false;
+      history.back();
+    } else despuesDeCerrar();
+  });
+  addEventListener('popstate', () => {
+    if (hoja.open) {
+      // «atrás» del navegador con la hoja abierta: se cierra sin aplicar
+      hojaEmpujada = false;
+      alCerrar = null;
+      hoja.close();
+    } else despuesDeCerrar();
+  });
+  $('abrir-filtros')!.addEventListener('click', abrirHoja);
+  hoja.addEventListener('click', (ev) => {
+    const el = ev.target as Element;
+    if (el === hoja || el.closest('[data-cerrar-hoja]')) return hoja.close();
+    if (!borrador) return;
+    const op = el.closest<HTMLElement>('[data-grupo]');
+    const sn = el.closest<HTMLElement>('[data-si-no]');
+    if (op) borrador = alternar(borrador, op.dataset.grupo as Grupo, op.dataset.v!);
+    else if (sn) borrador = { ...copiar(borrador), [sn.dataset.siNo!]: !borrador[sn.dataset.siNo as 'mios' | 'anime'] };
+    else if (el.closest('[data-limpiar-hoja]')) borrador = sinFiltros();
+    else if (el.closest('[data-aplicar]')) {
+      const f = borrador;
+      alCerrar = () => aplicar(f);
+      hoja.close();
+      return;
+    } else return;
+    pintarHoja();
+  });
+  $('puestos')!.addEventListener('click', (ev) => {
+    const b = (ev.target as Element).closest<HTMLElement>('[data-quitar]');
+    if (!b) return;
+    const g = b.dataset.quitar!;
+    aplicar(g === 'mios' || g === 'anime' ? { ...copiar(aplicado), [g]: false } : alternar(aplicado, g as Grupo, b.dataset.v!));
+  });
+  // al pasar a escritorio con la hoja abierta, se cierra sin aplicar
+  angosto.addEventListener('change', () => !angosto.matches && hoja.open && hoja.close());
+
+  $('limpiar')!.addEventListener('click', () => aplicar(sinFiltros()));
+
+  // estado inicial desde la dirección (p. ej. /lugares?t=otono viene de «Cuándo ir»)
+  {
+    const pedido = leerDireccion(location.search);
+    if (!$('f-anime')) pedido.anime = false;
+    const quiereMios = pedido.mios;
+    aplicado = { ...pedido, mios: false };
+    filtrar();
+    // «mis sellos» depende de que los sellos ya estén pintados
+    if (quiereMios) {
+      const prender = () => {
+        if (!conSesion()) return false;
+        aplicado = { ...copiar(aplicado), mios: true };
+        filtrar();
+        return true;
+      };
+      requestAnimationFrame(() => {
+        if (prender()) return;
+        // Dispositivo recién ingresado: todavía no hay estado guardado y la sesión se confirma
+        // cuando responde el servidor. Se espera a ese momento (los sellos se pintan en la misma pasada).
+        const ojo = new MutationObserver(() => prender() && ojo.disconnect());
+        ojo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-sesion'] });
+      });
+    }
   }
 
   // Una foto que no carga (el enlace de un lugar propuesto se cayó) se cambia por el kanji
@@ -484,7 +728,8 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
     if (p) {
       if (!conSesion()) return document.querySelector<HTMLElement>('#quien [data-entrar]')?.click();
       if (p.dataset.proponer) (form.elements.namedItem('tema') as HTMLSelectElement).value = p.dataset.proponer;
-      if (zona.value) (form.elements.namedItem('zona') as HTMLSelectElement).value = zona.value;
+      // con una sola zona escogida, el lugar nuevo empieza en esa zona
+      if (aplicado.zona.length === 1) (form.elements.namedItem('zona') as HTMLSelectElement).value = aplicado.zona[0];
       aviso.textContent = '';
       dlg.showModal();
       return;
@@ -575,102 +820,378 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
     opacity: 0.3;
     pointer-events: none;
   }
-  /* «聖 Anime»: filtra, no lleva a una sección; por eso es una píldora con borde y no un tema más.
-     Se ve del alto de los otros filtros (2 rem) y se toca en 44 px: la zona de toque sobra hacia
-     arriba y abajo sin hacer más alta la fila */
-  .temas .lente {
-    position: relative;
-    flex: none;
+  /* ───── filtros (desde 960 px): una fila que aplica al instante ───── */
+  .filtros {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    align-self: center;
+    gap: 0.5rem 0.6rem;
+    padding: 0.55rem var(--gutter);
+  }
+  /* todos los controles de la fila miden lo mismo y comparten eje; se tocan en 44 px */
+  .menu,
+  .ficha,
+  .proponer,
+  .abrir-filtros {
+    position: relative;
+    box-sizing: border-box;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
     height: 2rem;
-    margin: 0 0.3rem;
-    padding: 0 0.8rem;
+    padding: 0 0.85rem;
     border: 1px solid var(--ink);
     border-radius: 99px;
-    background: none;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-mono);
+    font-size: 0.68rem;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     white-space: nowrap;
+    cursor: pointer;
   }
-  .temas .lente::after {
+  :is(.menu, .ficha, .abrir-filtros)::after {
     content: '';
     position: absolute;
     inset: -0.4rem 0;
   }
-  .temas .lente b {
-    font-size: 1rem;
-  }
-  .temas .lente small {
-    font-variant-numeric: tabular-nums;
-  }
-  .temas .lente:hover {
+  :is(.menu, .ficha, .abrir-filtros):hover {
     background: var(--paper-2);
   }
-  .temas .lente[aria-pressed='true'] {
+  /* el menú: «Todas las zonas», «Tokio» o «Zona · 2». Ancho reservado: cambiar el texto no corre la fila */
+  .menu {
+    justify-content: space-between;
+    min-width: 10.5rem;
+  }
+  .menu .flecha {
+    width: 0.62rem;
+    height: 0.38rem;
+    background: currentColor;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transition: transform 0.15s;
+  }
+  .menu[aria-expanded='true'] .flecha {
+    transform: rotate(180deg);
+  }
+  /* algo escogido: se rellena, igual que una ficha prendida */
+  .menu.escogido,
+  .ficha[aria-pressed='true'] {
     background: var(--ink);
     color: var(--paper);
   }
-  .temas .lente[aria-pressed='true'] :is(b, small) {
-    color: var(--paper);
-  }
-  .temas .lente.apagado {
-    opacity: 0.3;
-    pointer-events: none;
-  }
-  .temas .corte {
-    flex: none;
-    align-self: stretch;
-    width: 1px;
-    margin-block: 0.45rem;
-    background: var(--hair);
-  }
-  .filtros {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem 0.75rem;
-    padding: 0.55rem var(--gutter);
-  }
-  /* todos los controles de la fila miden lo mismo y comparten eje */
-  .filtros label {
-    display: flex;
-  }
-  .filtros select,
-  .filtros .solo-mios,
-  .filtros .proponer {
-    box-sizing: border-box;
-    height: 2rem;
-    line-height: 1;
-    font-size: 0.68rem;
-  }
-  .filtros .solo-mios {
-    padding-block: 0;
-  }
-  .filtros select {
-    font-family: var(--f-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--ink);
-    /* flecha propia: la nativa cada navegador la pone donde quiere, pegada al borde.
-       Queda al mismo margen que el texto del otro lado, con su espacio reservado */
-    appearance: none;
-    --flecha: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23191714' stroke-width='1.4'/%3E%3C/svg%3E");
-    background: var(--flecha) no-repeat right 0.9rem center / 0.62rem auto transparent;
+  /* el panel del menú: lista vertical con casillas y el número de cada opción */
+  .panel {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    min-width: 15rem;
+    padding: 0.4rem;
     border: 1px solid var(--ink);
-    border-radius: 99px;
-    padding: 0 2rem 0 0.9rem;
-    cursor: pointer;
-  }
-  /* un menú con algo escogido se rellena, igual que «Mis sellos» activo: se ve qué filtro está puesto */
-  .filtros select:not(:has(option[value='']:checked)) {
-    --flecha: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23f1ece1' stroke-width='1.4'/%3E%3C/svg%3E");
-    background-color: var(--ink);
-    color: var(--paper);
-  }
-  .filtros option {
     background: var(--paper);
     color: var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .panel fieldset {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .casilla {
+    display: grid;
+    grid-template-columns: 1.1rem minmax(0, 1fr) auto;
+    gap: 0.65rem;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0 0.6rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  .casilla:hover {
+    background: var(--paper-2);
+  }
+  /* la casilla nativa sigue ahí (teclado, lector de pantalla); se ve la dibujada con la tinta del sitio */
+  .casilla input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .caja {
+    display: grid;
+    place-items: center;
+    width: 1.1rem;
+    height: 1.1rem;
+    border: 1.5px solid var(--ink);
+    border-radius: 3px;
+    font-size: 0.75rem;
+    line-height: 1;
+  }
+  .casilla input:checked + .caja {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .casilla input:checked + .caja::before {
+    content: '✓';
+  }
+  .casilla input:checked ~ .nom {
+    font-weight: 700;
+  }
+  .casilla input:focus-visible + .caja {
+    outline: 2px solid var(--shu);
+    outline-offset: 2px;
+  }
+  .casilla:has(input:disabled) {
+    opacity: 0.35;
+    cursor: default;
+  }
+  .casilla small {
+    font-size: 0.62rem;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .quitar-grupo {
+    min-height: 2.75rem;
+    margin: 0.2rem 0.6rem 0;
+    padding: 0;
+    border: 0;
+    border-top: 1px solid var(--hair);
+    width: calc(100% - 1.2rem);
+    text-align: left;
+    background: none;
+    font-family: var(--f-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-decoration-color: var(--shu);
+    text-underline-offset: 0.25em;
+  }
+  .quitar-grupo[hidden] {
+    display: none;
+  }
+  /* fichas de sí o no (y las opciones de la hoja): el ✓ tiene su sitio reservado, nada se corre */
+  .ficha {
+    padding-left: 0.6rem;
+  }
+  .ficha .ch {
+    display: inline-block;
+    width: 0.75rem;
+    text-align: center;
+  }
+  .ficha[aria-pressed='true'] .ch::before {
+    content: '✓';
+  }
+  .ficha small {
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .ficha[aria-pressed='true'] small {
+    color: var(--paper);
+    opacity: 0.75;
+  }
+  .ficha.apagado {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+  /* la marca 聖地 de las tarjetas, en pequeño */
+  .marca-sello {
+    padding: 0.08rem 0.3rem;
+    background: var(--ink);
+    color: var(--paper);
+    box-shadow:
+      0 0 0 1.5px var(--paper),
+      0 0 0 2.5px var(--ink);
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: 0.66rem;
+    letter-spacing: 0;
+    line-height: 1.2;
+  }
+  .ficha[aria-pressed='true'] .marca-sello {
+    box-shadow:
+      0 0 0 1.5px var(--ink),
+      0 0 0 2.5px var(--paper);
+  }
+
+  /* ───── por debajo de 960 px: botón «Filtros», lo puesto y la hoja ───── */
+  .filtros-cel {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem var(--gutter);
+  }
+  .abrir-filtros svg {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+  .cuantos {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.15rem;
+    height: 1.15rem;
+    padding: 0 0.25rem;
+    border-radius: 99px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.56rem;
+  }
+  .cuantos:empty {
+    display: none;
+  }
+  /* lo puesto: una fila de alto fijo que se desliza de lado si no cabe */
+  .puestos {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    height: 2.75rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .puestos.hay-mas {
+    mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+  }
+  .puestos .sin {
+    color: var(--ink-soft);
+    font-size: 0.62rem;
+  }
+  .puesto {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    height: 2rem;
+    padding: 0 0.2rem 0 0.75rem;
+    border-radius: 99px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--f-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .puesto button {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: var(--paper);
+    font-size: 0.8rem;
+  }
+  .puesto button::after {
+    content: '';
+    position: absolute;
+    inset: -0.6rem -0.3rem;
+  }
+  @media (max-width: 1199px) {
+    .filtros .total {
+      display: none;
+    }
+  }
+  @media (max-width: 959px) {
+    .filtros {
+      display: none;
+    }
+    .filtros-cel {
+      display: flex;
+    }
+  }
+  /* la hoja: sube desde abajo, como la de las escenas */
+  .hoja-filtros {
+    inset: auto 0 0 0;
+    width: auto;
+    max-width: 40rem;
+    max-height: 92dvh;
+    margin: 0 auto;
+    padding: 0;
+    border: 1px solid var(--ink);
+    border-bottom: 0;
+    border-radius: 1rem 1rem 0 0;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .hoja-filtros::backdrop {
+    background: rgba(25, 23, 20, 0.55);
+  }
+  .hf {
+    display: grid;
+    gap: 1.1rem;
+    padding: 1rem 16px calc(1.1rem + env(safe-area-inset-bottom));
+  }
+  .hf header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .hf h2 {
+    font-size: 1.4rem;
+  }
+  .hf h2:focus {
+    outline: none;
+  }
+  .hf-cerrar,
+  .hf-limpiar {
+    min-height: 2.75rem;
+    padding: 0 0.2rem;
+    border: 0;
+    background: none;
+    font-family: var(--f-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .hf-limpiar {
+    text-decoration: underline;
+    text-decoration-color: var(--shu);
+    text-underline-offset: 0.25em;
+  }
+  .hf-grupo {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .hf-grupo > .mono {
+    font-size: 0.6rem;
+    color: var(--ink-soft);
+  }
+  .hf-opciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 0.45rem;
+  }
+  .hf .ficha {
+    height: 2.4rem;
+    font-size: 0.7rem;
+  }
+  .hf-pie {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 0.8rem;
+    border-top: 1px dashed var(--ink);
+  }
+  .hf-ver {
+    flex: 1;
+    height: 3rem;
+    border: 0;
+    border-radius: 3px;
+    background: var(--shu-tinta);
+    color: var(--paper);
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .hf-ver:disabled {
+    background: var(--ink-soft);
+    cursor: default;
   }
   .total {
     line-height: 1;
@@ -700,6 +1221,14 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
   }
   .proponer:hover {
     background: var(--ink);
+  }
+  .proponer {
+    background: var(--shu-tinta);
+    color: var(--paper);
+    border: 0;
+  }
+  .filtros-cel .proponer {
+    flex: none;
   }
   :global([data-sesion='no']) .solo-mios {
     display: none;
@@ -1073,7 +1602,7 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
     display: none;
   }
   @media (max-width: 720px) {
-    .filtros .proponer {
+    .filtros-cel .proponer {
       display: none;
     }
     .flotante {
@@ -1157,37 +1686,12 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
   }
 
   @media (max-width: 720px) {
-    /* los tres controles caben sin deslizar: los menús se reparten el ancho y «Mis sellos» va completo */
-    .filtros {
-      gap: 0.5rem;
-    }
-    .filtros label {
-      flex: 1 1 0;
-      min-width: 0;
-    }
-    .filtros select {
-      width: 100%;
-      min-width: 0;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-    /* ancho reservado para «✓ Mis sellos»: al activarlo los menús no se encogen */
-    .filtros .solo-mios {
-      flex: none;
-      min-width: 7.4rem;
-    }
     .total {
       display: none;
     }
     .tema > header {
       grid-template-columns: auto 1fr;
       align-items: center;
-    }
-    /* en celular, márgenes un poco más justos pero iguales a lado y lado */
-    .filtros select {
-      padding-inline: 0.8rem 1.75rem;
-      background-position: right 0.8rem center;
     }
     .cuenta {
       display: none;
