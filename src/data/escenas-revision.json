@@ -4,13 +4,19 @@
       "aparte": "en puntos cercanos: la estación Kamakurakōkō-mae y Enoshima, en el tren Enoden"
     },
     "kawaguchiko": {
-      "aparte": "varias en el lago Motosu, a unos 16 km"
+      "aparte": "varias en los lagos vecinos (Sai, Shōji y Motosu, a 6–16 km) y en Fujiyoshida"
     },
     "takayama": {
       "aparte": "varias en Hida-Furukawa, a unos 12 km en tren"
     },
     "museo-nintendo": {
       "aparte": "en el centro de Uji, a unos 2 km del museo"
+    },
+    "museo-ghibli": {
+      "aparte": "varias en Kichijōji, a unos 20 min a pie por el parque Inokashira"
+    },
+    "meiji-jingu": {
+      "aparte": "algunas en Meiji Jingū Gaien, a unos 2 km del santuario"
     }
   },
   "escenas": {
@@ -752,6 +758,471 @@
     "359930-hiiavog": {
       "estado": "confirmada",
       "confirmacion": "https://anime.eiga.com/news/115756"
+    },
+    "49294-knnoxih4g": {
+      "estado": "validada"
+    },
+    "165553-krvyyoq9e": {
+      "estado": "validada"
+    },
+    "165553-ks0f8r4p5": {
+      "estado": "validada"
+    },
+    "210272-kr44exiop": {
+      "estado": "validada"
+    },
+    "10380-nzk0qmsv1": {
+      "estado": "validada"
+    },
+    "10380-6ajjjoh": {
+      "estado": "validada"
+    },
+    "10380-6ajkkly": {
+      "estado": "validada"
+    },
+    "10380-6ajmz9u": {
+      "estado": "validada"
+    },
+    "10380-spwogmkmy": {
+      "estado": "validada"
+    },
+    "386809-o6lkl2qum": {
+      "estado": "validada"
+    },
+    "386809-o6lpwx3ky": {
+      "estado": "validada"
+    },
+    "362577-ss59sn15f": {
+      "estado": "validada"
+    },
+    "2463-3c86aht": {
+      "estado": "validada"
+    },
+    "2463-3c766uh": {
+      "estado": "validada"
+    },
+    "2463-3c8int2": {
+      "estado": "validada"
+    },
+    "269235-bq0atq4": {
+      "estado": "validada"
+    },
+    "110467-jr6q4t6": {
+      "estado": "validada"
+    },
+    "129807-ko4rp4lmm": {
+      "estado": "validada"
+    },
+    "294993-20bf3321": {
+      "estado": "validada"
+    },
+    "294993-lrgzme5td": {
+      "estado": "validada"
+    },
+    "110467-jr1gyrw": {
+      "estado": "validada"
+    },
+    "110467-jr5qq6a": {
+      "estado": "validada"
+    },
+    "93714-p8f7f7uox": {
+      "estado": "validada"
+    },
+    "93714-rkdpiruun": {
+      "estado": "validada"
+    },
+    "296659-4s6dzr651": {
+      "estado": "validada"
+    },
+    "386809-o6nei7z99": {
+      "estado": "validada"
+    },
+    "386809-js3apek1c": {
+      "estado": "validada"
+    },
+    "269235-k16vnpm17": {
+      "estado": "validada"
+    },
+    "269235-32hpjv6": {
+      "estado": "validada"
+    },
+    "362577-srixpynuo": {
+      "estado": "validada"
+    },
+    "115908-qys7i1": {
+      "estado": "validada"
+    },
+    "115908-7f3s0088": {
+      "estado": "validada"
+    },
+    "115908-7gu3e7rw": {
+      "estado": "validada"
+    },
+    "115908-7gs3o1mm": {
+      "estado": "validada"
+    },
+    "115908-j2sjku1v4": {
+      "estado": "validada"
+    },
+    "283643-jyqu17je3": {
+      "estado": "validada"
+    },
+    "283643-khsc8hvyx": {
+      "estado": "validada"
+    },
+    "283643-jyqqfkxxr": {
+      "estado": "validada"
+    },
+    "216372-kqi28iqbf": {
+      "estado": "validada"
+    },
+    "386195-ksq0m69d7": {
+      "estado": "validada"
+    },
+    "115908-qys7ii": {
+      "estado": "validada"
+    },
+    "115908-k97znz3w": {
+      "estado": "validada"
+    },
+    "115908-7jhnw9ev": {
+      "estado": "validada"
+    },
+    "115908-7jj2ywzo": {
+      "estado": "validada"
+    },
+    "115908-qys7i8": {
+      "estado": "validada"
+    },
+    "115908-qys7il": {
+      "estado": "validada"
+    },
+    "115908-qys7hu": {
+      "estado": "validada"
+    },
+    "115908-3plnxvy": {
+      "estado": "validada"
+    },
+    "152091-kq5h19o6l": {
+      "estado": "validada"
+    },
+    "152091-kq6qqpdzb": {
+      "estado": "validada"
+    },
+    "152091-kq61a7s69": {
+      "estado": "validada"
+    },
+    "152091-s8naucehu": {
+      "estado": "validada"
+    },
+    "152091-2106zs5": {
+      "estado": "validada"
+    },
+    "283643-jyw3i3zjz": {
+      "estado": "validada"
+    },
+    "283643-l97o7hnpz": {
+      "estado": "validada"
+    },
+    "283643-jyx68ib21": {
+      "estado": "validada"
+    },
+    "283643-jyxc31f60": {
+      "estado": "validada"
+    },
+    "283643-kffgg2gnd": {
+      "estado": "validada"
+    },
+    "283643-lor0m1wwc": {
+      "estado": "validada"
+    },
+    "115908-gob9wwd": {
+      "estado": "validada"
+    },
+    "216372-kqhylwcti": {
+      "estado": "validada"
+    },
+    "216372-kqhbg05yp": {
+      "estado": "validada"
+    },
+    "152091-s8mi4z9jp": {
+      "estado": "validada"
+    },
+    "283643-ndgomevp8": {
+      "estado": "validada"
+    },
+    "442615-5572650f": {
+      "estado": "validada"
+    },
+    "442615-2c160051": {
+      "estado": "validada"
+    },
+    "442615-e626b925": {
+      "estado": "validada"
+    },
+    "3774-oii997w3u": {
+      "estado": "validada"
+    },
+    "276-50d363zd4": {
+      "estado": "validada"
+    },
+    "92382-pxn4odjgn": {
+      "estado": "validada"
+    },
+    "49294-knic0b9ff": {
+      "estado": "validada"
+    },
+    "49294-kni7ht8er": {
+      "estado": "validada"
+    },
+    "269235-jwcqfl3pn": {
+      "estado": "validada"
+    },
+    "306742-51i52g729": {
+      "estado": "validada"
+    },
+    "160209-3ik9kj5n": {
+      "estado": "validada"
+    },
+    "1608-40tzbwx": {
+      "estado": "validada"
+    },
+    "1608-np5o3v3o6": {
+      "estado": "validada"
+    },
+    "1608-ir7n8xp": {
+      "estado": "validada"
+    },
+    "328609-cn0zxm": {
+      "estado": "validada"
+    },
+    "328609-civzmb": {
+      "estado": "validada"
+    },
+    "160209-3ik9kjli": {
+      "estado": "validada"
+    },
+    "160209-3ik9kjbn": {
+      "estado": "validada"
+    },
+    "160209-3ik9kj9r": {
+      "estado": "validada"
+    },
+    "160209-3ik9kize": {
+      "estado": "validada"
+    },
+    "207195-u5w8higfq": {
+      "estado": "validada"
+    },
+    "262897-5fchw27sy": {
+      "estado": "validada"
+    },
+    "262897-5fchw2912": {
+      "estado": "validada"
+    },
+    "405785-487d7iz": {
+      "estado": "validada"
+    },
+    "262897-f5jd54z": {
+      "estado": "validada"
+    },
+    "405785-487eitk": {
+      "estado": "validada"
+    },
+    "405785-487faij": {
+      "estado": "validada"
+    },
+    "262898-4ie4b6p": {
+      "estado": "validada"
+    },
+    "405785-487e8br": {
+      "estado": "validada"
+    },
+    "3774-s9p345e6q": {
+      "estado": "validada"
+    },
+    "3774-s9p62gpnx": {
+      "estado": "validada"
+    },
+    "3774-s9p7vdnd9": {
+      "estado": "validada"
+    },
+    "443428-ufhl5xfqw": {
+      "estado": "validada"
+    },
+    "927-a99qrfpm": {
+      "estado": "validada"
+    },
+    "1424-25idmgr": {
+      "estado": "validada"
+    },
+    "283643-ll0l14rq1": {
+      "estado": "validada"
+    },
+    "442615-03d49d29": {
+      "estado": "validada"
+    },
+    "386809-jrz6fqtoh": {
+      "estado": "validada"
+    },
+    "443428-o60l6hu5q": {
+      "estado": "validada"
+    },
+    "517057-acnk5nh": {
+      "estado": "validada"
+    },
+    "359930-hiim7yl": {
+      "estado": "validada"
+    },
+    "359930-hiiyl9c": {
+      "estado": "validada"
+    },
+    "1773-kysocn6vl": {
+      "estado": "validada"
+    },
+    "362577-ss5heo9me": {
+      "estado": "validada"
+    },
+    "502499-m15p7f3pm": {
+      "estado": "validada"
+    },
+    "502499-m15qdcse8": {
+      "estado": "validada"
+    },
+    "160209-3ik9kixn": {
+      "estado": "validada"
+    },
+    "115292-q083tjzuv": {
+      "estado": "validada"
+    },
+    "160209-3ik9kj50": {
+      "estado": "validada"
+    },
+    "160209-3ik9kjg2": {
+      "estado": "validada"
+    },
+    "160209-7b6h2pw": {
+      "estado": "validada"
+    },
+    "160209-7b0zia7": {
+      "estado": "validada"
+    },
+    "58949-6b517e1d": {
+      "estado": "validada"
+    },
+    "58949-3pemrzr": {
+      "estado": "validada"
+    },
+    "58949-3pem7ap": {
+      "estado": "validada"
+    },
+    "58949-0857d78a": {
+      "estado": "validada"
+    },
+    "294993-lrfkpxxey": {
+      "estado": "validada"
+    },
+    "110467-jr6tni0": {
+      "estado": "validada"
+    },
+    "110467-jr52hzn": {
+      "estado": "validada"
+    },
+    "110467-jr6vwux": {
+      "estado": "validada"
+    },
+    "362577-srj741k8q": {
+      "estado": "validada"
+    },
+    "362577-srjtsvu6g": {
+      "estado": "validada"
+    },
+    "269235-f9glcow": {
+      "estado": "validada"
+    },
+    "269235-9orz3j4": {
+      "estado": "validada"
+    },
+    "93714-p8c1uwvz7": {
+      "estado": "validada"
+    },
+    "93714-p8cwoe6m1": {
+      "estado": "validada"
+    },
+    "443428-oclhhvirc": {
+      "estado": "validada"
+    },
+    "328609-50slhscxa": {
+      "estado": "validada"
+    },
+    "1773-kysspl28c": {
+      "estado": "validada"
+    },
+    "148099-5etveck": {
+      "estado": "validada"
+    },
+    "909-pzsdacyb0": {
+      "estado": "validada"
+    },
+    "362577-srjlyce9a": {
+      "estado": "validada"
+    },
+    "165553-ks0j3x7gb": {
+      "estado": "validada"
+    },
+    "404480-pr728k9zs": {
+      "estado": "validada"
+    },
+    "294993-lrfpbfqye": {
+      "estado": "validada"
+    },
+    "294993-lrfqpykpl": {
+      "estado": "validada"
+    },
+    "294993-lrfnk2hl4": {
+      "estado": "validada"
+    },
+    "294993-lrfu9zotm": {
+      "estado": "validada"
+    },
+    "1773-kyrtqoizc": {
+      "estado": "validada"
+    },
+    "160209-3ik9kiwz": {
+      "estado": "validada"
+    },
+    "426124-p1t2t04do": {
+      "estado": "validada"
+    },
+    "328609-uqdj3kh28": {
+      "estado": "validada"
+    },
+    "328609-4yd2vzb5s": {
+      "estado": "validada"
+    },
+    "328609-croeok": {
+      "estado": "validada"
+    },
+    "604826-ai7g8l2": {
+      "estado": "validada"
+    },
+    "144357-55emti6ur": {
+      "estado": "validada"
+    },
+    "144357-55evp38gq": {
+      "estado": "validada"
+    },
+    "144357-55exzdj02": {
+      "estado": "validada"
+    },
+    "144357-iggxy3cfi": {
+      "estado": "validada"
+    },
+    "144357-iggufyd42": {
+      "estado": "validada"
+    },
+    "144357-iggmvdoiu": {
+      "estado": "validada"
     }
   },
   "principal": {},
@@ -781,6 +1252,18 @@
     "269235-bm3zbak": "Son nombres de líneas de tren, no un punto al que se pueda ir",
     "92382-odh4x07de": "Es el Palacio Imperial visto desde el aire, no la Torre de Tokio",
     "207195-u5v2chc1y": "La oficina de turismo de Minobu queda a unos 25 km del lago Motosu",
-    "262897-45do68t": "Laid-Back Camp no pasa por Hida: el punto «飛騨小町» solo coincide por el nombre (el mapa lo ubica en Nagano)"
+    "262897-45do68t": "Laid-Back Camp no pasa por Hida: el punto «飛騨小町» solo coincide por el nombre (el mapa lo ubica en Nagano)",
+    "369304-cea675ab": "Es un tramo de la línea Keiō Inokashira a unos 12 km, no un punto de Kichijōji",
+    "369304-0db45303": "Es un parqueadero en Yoyogi 1-chōme, cerca de Shinjuku sur, no en Shibuya",
+    "100444-ubrpygj3a": "Es el parque de Shimo-Ochiai, a unos 3 km del Shinjuku de la tarjeta",
+    "115908-qys7kd": "Es una calle residencial de Kohata (Uji), a unos 5 km del museo y lejos del centro",
+    "115908-qys7hz": "Es un McDonald’s de Kohata (Uji), a unos 4 km del museo y lejos del centro",
+    "115908-qys7kc": "Es una tienda de Ōbaku (Uji), a unos 3 km del museo y lejos del centro",
+    "152091-kq8fcosqk": "Es un centro de actividades al aire libre en las montañas de Uji, a unos 8 km",
+    "152091-kq8hqhod6": "Es un centro de actividades al aire libre en las montañas de Uji, a unos 8 km",
+    "283643-l2m6i6jwg": "Es un centro de actividades al aire libre en las montañas de Uji, a unos 8 km",
+    "216372-kqj05rom9": "Es un centro de actividades al aire libre en las montañas de Uji, a unos 8 km",
+    "216372-kqiq2cs78": "Es un salón comunal de un barrio residencial de Uji, lejos del centro",
+    "152091-s8ngdtqtf": "«Té de Uji» no es un lugar al que se pueda ir"
   }
 }
