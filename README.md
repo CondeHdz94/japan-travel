@@ -204,7 +204,7 @@ en el puerto 4399, con clave y base propias (`.data/pruebas.db`): no leen el `.e
 | `lugares.spec.ts` | Filtros (menús, hoja, varias opciones, dirección), sellos, proponer, quitar y avisos en vivo |
 | `decisiones.unidad.spec.ts` | Las cuentas de Decisiones, iniciales y giro de los sellos (sin navegador) |
 | `decisiones.spec.ts` | Decisiones: privacidad, la que va adelante, mi parte, temprano, empate, todas tachadas y lugares |
-| `escenas.spec.ts` | Escenas de anime: sello y línea de la tarjeta, filtro «聖地 Solo anime», ventana, imágenes con sesión |
+| `escenas.spec.ts` | Escenas de anime: sello y línea de la tarjeta, filtro «聖地 Solo anime», ventana, imágenes desde anitabi (interceptadas) |
 
 ## Lugares y fotos
 
@@ -281,15 +281,13 @@ node scripts/escenas.mjs --refrescar   # vuelve a pedirle todo a anitabi
   (`confirmada` con su enlace, `validada` o `por-confirmar`), distancia si es otro punto
   («Queda»), la escena principal de una obra y lo que se excluye.
 
-**Imágenes.** Los fotogramas tienen derechos de su estudio: viven en `privado/escenas/` (no en
-`public/`) y solo se sirven con sesión, por `/api/escena/<id>.webp` (y `<id>-p.webp`, la
-miniatura). Sin sesión la ventana muestra todo menos las imágenes. Se bajan despacio con:
-
-```sh
-node scripts/imagenes-escenas.mjs   # solo las que faltan; se detiene si anitabi no responde
-```
-
-Mientras falte una imagen, la ventana deja un marco del mismo tamaño.
+**Imágenes.** No se copian: la ventana las muestra desde anitabi, como indica su
+[documentación](https://github.com/anitabi/anitabi.cn-document/blob/main/api.md): la mediana
+(`?plan=h360`) para la escena grande, la pequeña (`?plan=h160`) para las miniaturas, nunca la
+completa, y la fuente con su enlace al lado. Solo se piden con sesión (sin sesión la ventana
+muestra todo menos las imágenes) y cuando alguien abre la ventana. Si una no carga, el marco del
+mismo tamaño lleva a verla en anitabi. Las pruebas nunca le piden nada a anitabi: interceptan
+sus imágenes.
 
 ## Estructura
 
@@ -297,12 +295,10 @@ Mientras falte una imagen, la ventana deja un marco del mismo tamaño.
 scripts/fotos-lugares.mjs    baja y comprime las fotos del catálogo
 scripts/articulos-lugares.mjs resuelve a qué artículo de Wikipedia lleva cada lugar
 scripts/escenas.mjs          arma las escenas de anime (y escenas.config.mjs, su configuración)
-scripts/imagenes-escenas.mjs baja las imágenes de las escenas a privado/escenas/
 scripts/iconos.mjs           saca los íconos a partir de public/favicon.svg
 scripts/tarjeta.html         la tarjeta que sale al compartir el enlace (public/tarjeta.png)
 public/                      íconos, manifiesto y tarjeta para compartir
 public/lugares/              fotos del catálogo
-privado/escenas/             imágenes de las escenas de anime (solo con sesión)
 src/
 ├── components/              Intro.astro (entrada del Inicio) y Sello.astro (el sello pintado en el servidor)
 ├── data/                    secciones, ventanas, catálogo de lugares, créditos de fotos, formas de sello

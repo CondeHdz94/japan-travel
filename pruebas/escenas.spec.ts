@@ -8,6 +8,14 @@ const CON_ANIME = Object.keys(ESCENAS);
 const tarjeta = (page: Page, id: string) => page.locator(`article.lugar[data-marca="lugar:${id}"]`);
 const ventana = (page: Page) => page.locator('dialog.escenas');
 const visibles = (page: Page) => page.locator('article.lugar:visible');
+const ANITABI = 'https://image.anitabi.cn/**';
+/** Una imagen de mentira (un punto gris), para que ninguna prueba le pida nada a anitabi. */
+const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=', 'base64');
+
+// las pruebas nunca salen a anitabi: por defecto sus imágenes fallan; la que necesite una, la sirve
+test.beforeEach(async ({ page }) => {
+  await page.route(ANITABI, (ruta) => ruta.abort());
+});
 
 /** Abre la ventana de un lugar desde su tarjeta y espera a que esté pintada. */
 async function abrirVentana(page: Page, id: string) {
@@ -231,19 +239,56 @@ test.describe('la ventana', () => {
 
   test('sin sesión no se piden imágenes: un marco invita a entrar', async ({ page }) => {
     const pedidas: string[] = [];
-    page.on('request', (r) => r.url().includes('/api/escena/') && pedidas.push(r.url()));
+    page.on('request', (r) => r.url().startsWith('https://image.anitabi.cn/') && pedidas.push(r.url()));
     await abrir(page, '/lugares', 'no');
     await abrirVentana(page, 'kamakura');
     await expect(ventana(page).locator('.es-grande .es-falta').first()).toContainText('Entra para verla');
     expect(pedidas).toEqual([]);
   });
 
-  test('con sesión, una imagen que todavía no está deja un marco del mismo tamaño', async ({ page }) => {
+  test('con sesión, las imágenes se piden a anitabi en el tamaño que indican', async ({ page }) => {
+    const pedidas: string[] = [];
+    await page.route(ANITABI, (ruta) => {
+      pedidas.push(ruta.request().url());
+      return ruta.fulfill({ contentType: 'image/png', body: PNG });
+    });
+    await entrarEn(page, 'Camilo');
+    await abrir(page, '/lugares', 'si');
+    await abrirVentana(page, 'shibuya');
+    await expect(ventana(page).locator('.es-grande img').first()).toBeVisible();
+    // la grande en h360, las miniaturas en h160; nunca la imagen completa
+    expect(pedidas.some((u) => u.endsWith('?plan=h360'))).toBe(true);
+    expect(pedidas.some((u) => u.endsWith('?plan=h160'))).toBe(true);
+    expect(pedidas.every((u) => /\?plan=h(160|360)$/.test(u))).toBe(true);
+    // con su fuente al lado (el origen de la captura que da anitabi, con su enlace)
+    const fuente = ESCENAS.shibuya.obras[0].escenas[0].fuente;
+    await expect(ventana(page).locator('.es-fuente a').first()).toHaveAttribute('href', fuente.enlace);
+    await expect(ventana(page).locator('.es-fuente a').first()).toContainText(fuente.autor);
+  });
+
+  test('un enlace directo con sesión muestra las imágenes (no se queda en «Entra para verla»)', async ({ page }) => {
+    await page.route(ANITABI, (ruta) => ruta.fulfill({ contentType: 'image/png', body: PNG }));
+    await entrarEn(page, 'Camilo');
+    await page.goto('/lugares#escenas-shibuya');
+    await expect(ventana(page).locator('.es-grande img').first()).toBeVisible();
+    await expect(ventana(page).locator('[data-entrar]')).toHaveCount(0);
+  });
+
+  test('en celular el índice de obras empieza cerrado', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'solo celular');
+    await abrir(page, '/lugares', 'no');
+    await abrirVentana(page, 'shibuya');
+    await expect(ventana(page).locator('.es-emergente')).toBeHidden();
+    await expect(ventana(page).locator('.es-obra').first()).toBeInViewport();
+  });
+
+  test('con sesión, si una imagen no carga queda un marco del mismo tamaño que lleva a verla en anitabi', async ({ page }) => {
     await entrarEn(page, 'Camilo');
     await abrir(page, '/lugares', 'si');
     await abrirVentana(page, 'kamakura');
     const marco = ventana(page).locator('.es-grande .es-falta').first();
-    await expect(marco).toContainText('Imagen no disponible');
+    await expect(marco).toContainText('No se pudo cargar la imagen.');
+    await expect(marco.locator('a')).toHaveAttribute('href', ESCENAS.kamakura.obras[0].escenas[0].fuente.enlace);
     const proporcion = await marco.evaluate((m) => m.getBoundingClientRect().width / m.getBoundingClientRect().height);
     expect(proporcion).toBeCloseTo(16 / 9, 1);
   });
@@ -254,16 +299,5 @@ test.describe('la ventana', () => {
     expect(await desborde(page)).toBe(0);
     const v = await ventana(page).evaluate((d) => d.getBoundingClientRect().right <= innerWidth + 1);
     expect(v).toBe(true);
-  });
-});
-
-test.describe('las imágenes', () => {
-  test('sin sesión la ruta responde 401; con sesión, 404 si la imagen no está', async ({ page, grupo }) => {
-    const anonimo = await grupo.anonimo();
-    expect((await anonimo.get('/api/escena/1608-np5n8b8ys.webp')).status()).toBe(401);
-    const v = await grupo.entrar('Camilo');
-    expect((await v.api.get('/api/escena/1608-noexiste.webp')).status()).toBe(404);
-    expect((await v.api.get('/api/escena/..%2F..%2Fsecreto.webp')).status()).toBe(400);
-    void page;
   });
 });

@@ -1,5 +1,5 @@
 // Las escenas de un lugar, para la ventana de Lugares (src/scripts/escenas.ts). Se arma al compilar:
-// es información pública (sin imágenes; esas pasan por /api/escena/ y piden sesión).
+// es información pública. Las imágenes se muestran desde anitabi (la ventana solo las pide con sesión).
 
 import type { APIRoute, GetStaticPaths } from 'astro';
 import { ESCENAS } from '../../data/escenas';
@@ -19,8 +19,7 @@ export const GET: APIRoute = ({ params }) => {
   const cuerpo = {
     lugar: { id, nombre: l.nombre, foto: fotos[id] ? `/lugares/${fotos[id].archivo}` : null },
     aparte: aparte ?? null,
-    // la miniatura original de anitabi no sale de aquí: las imágenes se sirven desde el sitio
-    obras: obras.map((o) => ({ ...o, escenas: o.escenas.map(({ original: _, ...e }) => e) })),
+    obras: obras.map((o) => ({ ...o, escenas: o.escenas.map(({ original, ...e }) => ({ ...e, imagen: original })) })),
   };
   return new Response(JSON.stringify(cuerpo), { headers: { 'content-type': 'application/json' } });
 };

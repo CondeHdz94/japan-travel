@@ -1,7 +1,6 @@
 // Escenas de anime que pasan en lugares del catálogo (聖地巡礼). Los datos los arma
 // scripts/escenas.mjs a partir de anitabi (CC BY-NC-SA 4.0); lo revisado a mano está en
-// escenas-revision.json. Las imágenes viven fuera de public/ y solo se sirven con sesión
-// (src/pages/api/escena/[archivo].ts).
+// escenas-revision.json. Las imágenes no se copian: la ventana las muestra desde anitabi.
 
 import datos from './escenas.json' with { type: 'json' };
 
@@ -20,7 +19,7 @@ export interface Escena {
   /** la entrega, si no es la primera («Temporada 2», «Película: …») */
   parte: string | null;
   fuente: { autor: string; enlace: string };
-  /** la miniatura original en anitabi: solo la usa el script que baja las imágenes */
+  /** la captura en anitabi; la ventana la muestra desde allá con ?plan=h360 o h160 */
   original: string;
   estado: EstadoEscena;
   /** enlace de la fuente aparte que la confirma */

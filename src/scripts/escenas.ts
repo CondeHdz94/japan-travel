@@ -3,7 +3,9 @@
 //   data-abrir-escenas="<id del lugar>"   botón que la abre («Ver escenas →» en la tarjeta)
 //
 // Las escenas de cada lugar se piden a /escenas/<id>.json al abrir (no van en la página).
-// Las imágenes salen de /api/escena/, que pide sesión: sin sesión se ve todo menos las imágenes.
+// Las imágenes se muestran desde anitabi, como indica su documentación: la mediana (?plan=h360) para la
+// escena grande y la pequeña (?plan=h160) para las miniaturas, con la fuente al lado. No se guardan
+// copias. Sin sesión se ve todo menos las imágenes; si una no carga, el marco lleva a verla en anitabi.
 // La ventana vive en la dirección (#escenas-<id>): se puede compartir, y «atrás» o Esc la cierran.
 
 import { momento } from '../lib/momento';
@@ -15,6 +17,8 @@ interface Escena {
   s: number | null;
   parte: string | null;
   fuente: { autor: string; enlace: string };
+  /** la captura en anitabi (sin tamaño: se pide con ?plan=) */
+  imagen: string;
   estado: 'confirmada' | 'validada' | 'por-confirmar';
   confirmacion?: string;
   queda?: string;
@@ -69,7 +73,7 @@ function iniciar(dlg: HTMLDialogElement) {
       return chica
         ? falta('', true)
         : '<span class="es-falta"><b aria-hidden="true">聖</b><span>Las escenas se ven con sesión.</span><button type="button" data-entrar>Entra para verla</button></span>';
-    return `<img src="/api/escena/${e.id}${chica ? '-p' : ''}.webp" alt="${esc(alt)}" loading="lazy" decoding="async">`;
+    return `<img src="${esc(e.imagen)}?plan=${chica ? 'h160' : 'h360'}" alt="${esc(alt)}" loading="lazy" decoding="async" data-enlace="${esc(e.fuente.enlace)}">`;
   }
 
   function bloque(o: Obra, oi: number, ei: number) {
@@ -312,7 +316,7 @@ function iniciar(dlg: HTMLDialogElement) {
     }
   });
 
-  // una imagen que no carga (todavía no se ha bajado, o se cayó): un marco del mismo tamaño
+  // una imagen que no carga (anitabi no responde o la quitó): un marco del mismo tamaño que lleva a verla allá
   dlg.addEventListener(
     'error',
     (ev) => {
@@ -320,7 +324,10 @@ function iniciar(dlg: HTMLDialogElement) {
       if (!(im instanceof HTMLImageElement) || !im.closest('.es-ficha') || im.closest('.es-hoy')) return;
       const chica = !!im.closest('.es-fila, .es-indice');
       const t = document.createElement('template');
-      t.innerHTML = falta('Imagen no disponible', chica);
+      const enlace = im.dataset.enlace ?? '';
+      t.innerHTML = chica
+        ? falta('', true)
+        : `<span class="es-falta"><b aria-hidden="true">聖</b><span>No se pudo cargar la imagen.</span><a href="${esc(enlace)}" target="_blank" rel="noopener noreferrer">Ver la escena en anitabi ↗</a></span>`;
       im.replaceWith(t.content);
     },
     true,
@@ -330,4 +337,15 @@ function iniciar(dlg: HTMLDialogElement) {
   angosto.addEventListener('change', () => {
     if (dlg.open && actual) pintar(actual);
   });
+
+  // abierta desde un enlace, la ventana puede pintarse antes de que se sepa si hay sesión: cuando se
+  // sabe, se vuelve a pintar (con imágenes o con «Entra para verla»), en la misma obra
+  new MutationObserver(() => {
+    if (!dlg.open || !actual) return;
+    const ficha = dlg.querySelector<HTMLElement>('.es-ficha');
+    const donde = ficha?.scrollTop ?? 0;
+    pintar(actual);
+    const nueva = dlg.querySelector<HTMLElement>('.es-ficha');
+    if (nueva) nueva.scrollTop = donde;
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-sesion'] });
 }

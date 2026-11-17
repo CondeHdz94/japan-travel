@@ -121,6 +121,10 @@
     border: 1px solid var(--ink);
     background: var(--hair);
   }
+  /* el índice del celular empieza cerrado: sin esto, display: grid le gana al atributo hidden */
+  .es-indice[hidden] {
+    display: none;
+  }
   .es-recorrido > .es-indice {
     position: sticky;
     top: 0;
@@ -339,7 +343,9 @@
     color: var(--ink);
     opacity: 0.25;
   }
-  .es-falta button {
+  .es-falta :is(button, a) {
+    display: inline-flex;
+    align-items: center;
     min-height: 2.75rem;
     padding: 0 0.2rem;
     background: none;
