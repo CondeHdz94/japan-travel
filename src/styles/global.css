@@ -5,6 +5,7 @@
   --ink-soft: #5e574c;
   --hair: rgba(25, 23, 20, 0.18);
   --shu: #d2391f; /* bermellón de torii */
+  --shu-tinta: #b8301a; /* el mismo bermellón para letra pequeña: 5,1 : 1 sobre el papel (el de arriba da 4,1) */
   --ai: #1f3a5f; /* índigo */
   --matcha: #5d6b3a;
 
@@ -56,7 +57,7 @@ a {
   text-underline-offset: 0.2em;
 }
 a:hover {
-  color: var(--shu);
+  color: var(--shu-tinta);
 }
 
 ::selection {
@@ -212,7 +213,7 @@ p {
   border-bottom: 1px solid var(--ink);
 }
 .sec > header .mono {
-  color: var(--shu);
+  color: var(--shu-tinta);
 }
 .sec > header h2 {
   font-size: clamp(1.5rem, 3vw, 2.1rem);
@@ -235,7 +236,7 @@ p {
   color: var(--matcha);
 }
 .chip.warn {
-  color: var(--shu);
+  color: var(--shu-tinta);
 }
 .chip.soft {
   color: var(--ink-soft);
@@ -314,8 +315,8 @@ button {
   color: var(--paper);
 }
 .quien button:hover {
-  background: var(--shu);
-  border-color: var(--shu);
+  background: var(--shu-tinta);
+  border-color: var(--shu-tinta);
   color: var(--paper);
 }
 
@@ -604,7 +605,7 @@ button {
   border-bottom: 2px solid var(--shu);
 }
 .registro .error {
-  color: var(--shu);
+  color: var(--shu-tinta);
   font-weight: 500;
   min-height: 1.4em;
 }
@@ -616,7 +617,7 @@ button {
 }
 .registro .sellar {
   justify-self: start;
-  background: var(--shu);
+  background: var(--shu-tinta);
   color: var(--paper);
   border: 0;
   border-radius: 3px;
@@ -677,7 +678,7 @@ button {
   transform: rotate(6deg);
 }
 .quien button[data-perfil]:hover .yo {
-  color: var(--shu);
+  color: var(--shu-tinta);
 }
 /* escoger la forma del sello: dos filas de seis, con el sello propio en cada forma */
 .registro .formas {
@@ -792,8 +793,8 @@ button {
 }
 .registro .salida button:hover,
 .registro .salida [data-borrarme].seguro {
-  color: var(--shu);
-  text-decoration-color: var(--shu);
+  color: var(--shu-tinta);
+  text-decoration-color: var(--shu-tinta);
 }
 
 
@@ -962,7 +963,7 @@ button {
   opacity: 0;
 }
 .llegada .saltar:hover {
-  color: var(--shu);
+  color: var(--shu-tinta);
 }
 
 /* ───── de quién es un sello (src/scripts/de-quien.ts) ─────
@@ -1000,7 +1001,7 @@ button {
   font-weight: 700;
   font-size: 0.78rem;
   line-height: 1.3;
-  color: var(--shu);
+  color: var(--shu-tinta);
 }
 .de-quien small {
   font-family: var(--f-mono);
