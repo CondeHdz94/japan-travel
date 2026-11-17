@@ -78,29 +78,40 @@ test.describe('la tarjeta', () => {
 });
 
 test.describe('el filtro «聖 Anime»', () => {
-  test('deja solo los lugares con escenas, avisa, queda en la dirección y «Quitar» lo apaga', async ({ page }) => {
+  test('un toque deja solo los lugares con escenas, queda en la dirección, y otro toque lo apaga', async ({ page }) => {
     await abrir(page, '/lugares', 'no');
     const pildora = page.locator('#f-anime');
-    await expect(pildora).toContainText(String(CON_ANIME.length));
+    await expect(pildora.locator('small')).toHaveText(String(CON_ANIME.length));
     const todos = await visibles(page).count();
 
     await pildora.click();
     await expect(pildora).toHaveAttribute('aria-pressed', 'true');
     await expect(visibles(page)).toHaveCount(CON_ANIME.length);
-    await expect(page.locator('#aviso-anime')).toBeVisible();
-    await expect(page.locator('#aviso-anime')).toContainText(`Solo los ${CON_ANIME.length} lugares que salen en anime`);
     expect(new URL(page.url()).searchParams.get('anime')).toBe('1');
-    // los temas sin ninguno se apagan
+    // los temas sin ninguno se apagan; el total a la vista cuadra
     await expect(page.locator('[data-ir-tema="motor"]')).toHaveClass(/apagado/);
+    if (await page.locator('#f-total').isVisible()) await expect(page.locator('#f-total')).toHaveText(String(CON_ANIME.length));
 
-    await page.locator('#quitar-anime').click();
+    await pildora.click();
     await expect(pildora).toHaveAttribute('aria-pressed', 'false');
     await expect(visibles(page)).toHaveCount(todos);
-    await expect(page.locator('#aviso-anime')).toBeHidden();
     expect(new URL(page.url()).searchParams.get('anime')).toBeNull();
   });
 
-  test('sobrevive a una recarga y se combina con la zona', async ({ page }) => {
+  test('el número de la píldora sigue a los demás filtros, y en 0 se apaga', async ({ page }) => {
+    await abrir(page, '/lugares', 'no');
+    const pildora = page.locator('#f-anime');
+    await page.locator('#f-zona').selectOption('kansai');
+    const enKansai = await page.locator('article.lugar[data-zona="kansai"][data-escenas]').count();
+    await expect(pildora.locator('small')).toHaveText(String(enKansai));
+    await expect(pildora).not.toHaveClass(/apagado/);
+    // en el norte no hay ninguno: la píldora se apaga
+    await page.locator('#f-zona').selectOption('norte');
+    await expect(pildora.locator('small')).toHaveText('0');
+    await expect(pildora).toHaveClass(/apagado/);
+  });
+
+  test('sobrevive a una recarga, se combina con la zona y sin resultados dice qué filtros los dejan vacíos', async ({ page }) => {
     await page.goto('/lugares?anime=1&zona=kansai');
     await expect(page.locator('#f-anime')).toHaveAttribute('aria-pressed', 'true');
     const zonas = await visibles(page).evaluateAll((cs) => cs.map((c) => [(c as HTMLElement).dataset.zona, !!(c as HTMLElement).dataset.escenas]));
@@ -109,22 +120,56 @@ test.describe('el filtro «聖 Anime»', () => {
       expect(zona).toBe('kansai');
       expect(anime).toBe(true);
     }
-    // «Quitar filtros» (cuando no queda nada) también apaga el de anime
-    await page.locator('#f-temp').selectOption('invierno');
-    if (await page.locator('#vacio').isVisible()) {
-      await page.locator('#limpiar').click();
-      await expect(page.locator('#f-anime')).toHaveAttribute('aria-pressed', 'false');
-    }
+    await page.locator('#f-zona').selectOption('norte');
+    await expect(page.locator('#vacio')).toBeVisible();
+    await expect(page.locator('#vacio')).toContainText('Ningún lugar que salga en anime en Norte.');
+    // prendida y sin resultados, la píldora sigue tocable para quitarla
+    await page.locator('#f-anime').click();
+    await expect(page.locator('#f-anime')).toHaveAttribute('aria-pressed', 'false');
+    // «Quitar filtros» también apaga la de anime
+    await page.locator('#f-anime').click({ force: true }).catch(() => {});
+    await page.goto('/lugares?anime=1&zona=norte');
+    await page.locator('#limpiar').click();
+    await expect(page.locator('#f-anime')).toHaveAttribute('aria-pressed', 'false');
+    await expect(page.locator('#f-zona')).toHaveValue('');
   });
 
-  test('la píldora se ve sin deslizar la fila de temas y mide 44 px', async ({ page }) => {
+  test('prenderlo desde abajo sube al comienzo de la lista', async ({ page }) => {
+    await abrir(page, '/lugares', 'no');
+    await page.evaluate(() => scrollTo(0, document.body.scrollHeight * 0.7));
+    await page.locator('#f-anime').click();
+    await expect(page.locator('#f-anime')).toHaveAttribute('aria-pressed', 'true');
+    const m = await page.evaluate(() => {
+      const barra = document.querySelector('.barra')!.getBoundingClientRect();
+      const primera = [...document.querySelectorAll('section.tema')].find((t) => !(t as HTMLElement).hidden)!.getBoundingClientRect();
+      return { debajoDeLaBarra: Math.round(primera.top - barra.bottom) };
+    });
+    // la primera sección con resultados queda justo bajo la barra fija
+    expect(Math.abs(m.debajoDeLaBarra)).toBeLessThanOrEqual(2);
+  });
+
+  test('arriba de la lista, filtrar no mueve la página', async ({ page }) => {
+    await abrir(page, '/lugares', 'no');
+    await page.evaluate(() => scrollTo(0, 0));
+    await page.locator('#f-anime').click();
+    expect(await page.evaluate(() => scrollY)).toBe(0);
+  });
+
+  test('la píldora se ve sin deslizar la fila de temas, mide lo que los otros filtros y se toca en 44 px', async ({ page }) => {
     await abrir(page, '/lugares', 'no');
     const m = await page.locator('#f-anime').evaluate((b) => {
       const r = b.getBoundingClientRect();
       const fila = b.parentElement!.getBoundingClientRect();
-      return { alto: r.height, dentro: r.left >= fila.left && r.right <= fila.right };
+      const toque = getComputedStyle(b, '::after');
+      return {
+        alto: Math.round(r.height),
+        toque: Math.round(r.height - parseFloat(toque.top) - parseFloat(toque.bottom)),
+        filtro: Math.round(document.getElementById('f-zona')!.getBoundingClientRect().height),
+        dentro: r.left >= fila.left && r.right <= fila.right,
+      };
     });
-    expect(m.alto).toBeGreaterThanOrEqual(44);
+    expect(m.alto).toBe(m.filtro);
+    expect(m.toque).toBeGreaterThanOrEqual(44);
     expect(m.dentro).toBe(true);
   });
 });

@@ -114,13 +114,8 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
     </div>
   </div>
 
-  <p class="aviso-anime" id="aviso-anime" hidden>
-    <span><b aria-hidden="true">聖</b> Solo los <b id="n-anime">{conAnime}</b> lugares que salen en anime</span>
-    <button type="button" id="quitar-anime">Quitar</button>
-  </p>
-
   <p class="vacio wrap" id="vacio" hidden>
-    No hay nada con ese filtro. <button type="button" id="limpiar">Quitar filtros</button>
+    <span id="vacio-dice">No hay nada con ese filtro.</span> <button type="button" id="limpiar">Quitar filtros</button>
   </p>
 
   {
@@ -302,7 +297,6 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
   const mios = $<HTMLButtonElement>('f-mios')!;
   // el filtro de anime puede no estar (si ningún lugar tuviera escenas)
   const anime = $<HTMLButtonElement>('f-anime');
-  const avisoAnime = $('aviso-anime')!;
   const total = $('f-total')!;
   const vacio = $('vacio')!;
   const dlg = $<HTMLDialogElement>('proponer')!;
@@ -317,6 +311,8 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
     const soloMios = mios.getAttribute('aria-pressed') === 'true';
     const soloAnime = anime?.getAttribute('aria-pressed') === 'true';
     let suma = 0;
+    // cuántos lugares con anime hay con los demás filtros puestos: es el número de la píldora
+    let conAnime = 0;
 
     for (const tema of document.querySelectorAll<HTMLElement>('.tema')) {
       let n = 0;
@@ -324,8 +320,9 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
         const enZona = !z || c.dataset.zona === z;
         const enFecha = !meses || !c.dataset.meses || c.dataset.meses.split(',').some((m) => meses.includes(m));
         const mio = !soloMios || !!c.querySelector('.poner[aria-pressed="true"]');
-        const conEscenas = !soloAnime || !!c.dataset.escenas;
-        const ver = enZona && enFecha && mio && conEscenas;
+        const tieneEscenas = !!c.dataset.escenas;
+        if (enZona && enFecha && mio && tieneEscenas) conAnime++;
+        const ver = enZona && enFecha && mio && (!soloAnime || tieneEscenas);
         c.hidden = !ver;
         if (ver) n++;
       }
@@ -340,9 +337,21 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
     }
     total.textContent = String(suma);
     vacio.hidden = suma > 0;
-    // prendido, se avisa arriba cuántos quedan y cómo quitarlo
-    avisoAnime.hidden = !soloAnime || suma === 0;
-    $('n-anime')!.textContent = String(suma);
+    if (anime) {
+      anime.querySelector('small')!.textContent = String(conAnime);
+      // sin ninguno, se apaga como los temas; prendida sigue tocable para poder quitarla
+      anime.classList.toggle('apagado', conAnime === 0 && !soloAnime);
+    }
+    // sin resultados: dice qué filtros dejan la lista vacía
+    if (suma === 0) {
+      const que = [
+        soloAnime && 'que salga en anime',
+        soloMios && 'con tu sello',
+        z && `en ${zona.selectedOptions[0].text}`,
+        meses && temp.selectedOptions[0].text.toLowerCase(),
+      ].filter(Boolean);
+      $('vacio-dice')!.textContent = que.length ? `Ningún lugar ${que.join(' ')}.` : 'No hay nada con ese filtro.';
+    }
 
     // los filtros quedan en la dirección: se pueden compartir y sobreviven a una recarga
     const q = new URLSearchParams();
@@ -370,28 +379,39 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
   nombrarPorDefecto();
   celular.addEventListener('change', nombrarPorDefecto);
 
-  zona.addEventListener('change', filtrar);
-  temp.addEventListener('change', filtrar);
+  /**
+   * Cuando la persona cambia un filtro estando más abajo del comienzo de la lista, la página
+   * sube al comienzo: la lista se encoge y si no, queda frente a los créditos o una sola tarjeta.
+   * Arriba de la lista no se mueve nada.
+   */
+  function filtrarDesdeArriba() {
+    filtrar();
+    const barra = document.querySelector<HTMLElement>('.barra')!;
+    const primero = [vacio, ...document.querySelectorAll<HTMLElement>('.tema')].find((e) => !e.hidden);
+    if (!primero) return;
+    const comienzo = primero.getBoundingClientRect().top + scrollY - barra.offsetHeight;
+    // de una, sin animación: deslizar miles de píxeles marea y deja ver pasar media página
+    if (scrollY > comienzo + 1) scrollTo({ top: comienzo, behavior: 'instant' });
+  }
+
+  zona.addEventListener('change', filtrarDesdeArriba);
+  temp.addEventListener('change', filtrarDesdeArriba);
   mios.addEventListener('click', () => {
     if (!conSesion()) return document.querySelector<HTMLElement>('#quien [data-entrar]')?.click();
     mios.setAttribute('aria-pressed', String(mios.getAttribute('aria-pressed') !== 'true'));
-    filtrar();
+    filtrarDesdeArriba();
   });
-  // el filtro de anime: prender y apagar desde la píldora, o apagar desde el aviso
+  // el filtro de anime: un toque lo prende y otro lo apaga, como «Mis sellos»
   anime?.addEventListener('click', () => {
     anime.setAttribute('aria-pressed', String(anime.getAttribute('aria-pressed') !== 'true'));
-    filtrar();
-  });
-  $('quitar-anime')!.addEventListener('click', () => {
-    anime?.setAttribute('aria-pressed', 'false');
-    filtrar();
+    filtrarDesdeArriba();
   });
   $('limpiar')!.addEventListener('click', () => {
     zona.value = '';
     temp.value = '';
     mios.setAttribute('aria-pressed', 'false');
     anime?.setAttribute('aria-pressed', 'false');
-    filtrar();
+    filtrarDesdeArriba();
   });
   // «mis sellos» depende de que los sellos ya estén pintados
   if (quiereMios) {
@@ -555,14 +575,17 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
     opacity: 0.3;
     pointer-events: none;
   }
-  /* «聖 Anime»: filtra, no lleva a una sección; por eso es una píldora con borde y no un tema más */
+  /* «聖 Anime»: filtra, no lleva a una sección; por eso es una píldora con borde y no un tema más.
+     Se ve del alto de los otros filtros (2 rem) y se toca en 44 px: la zona de toque sobra hacia
+     arriba y abajo sin hacer más alta la fila */
   .temas .lente {
+    position: relative;
     flex: none;
     display: flex;
     align-items: center;
     gap: 0.4rem;
     align-self: center;
-    min-height: 2.75rem;
+    height: 2rem;
     margin: 0 0.3rem;
     padding: 0 0.8rem;
     border: 1px solid var(--ink);
@@ -570,8 +593,16 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
     background: none;
     white-space: nowrap;
   }
+  .temas .lente::after {
+    content: '';
+    position: absolute;
+    inset: -0.4rem 0;
+  }
   .temas .lente b {
     font-size: 1rem;
+  }
+  .temas .lente small {
+    font-variant-numeric: tabular-nums;
   }
   .temas .lente:hover {
     background: var(--paper-2);
@@ -583,41 +614,16 @@ const conAnime = todos.filter((l) => resumenTarjeta(l.id)).length;
   .temas .lente[aria-pressed='true'] :is(b, small) {
     color: var(--paper);
   }
+  .temas .lente.apagado {
+    opacity: 0.3;
+    pointer-events: none;
+  }
   .temas .corte {
     flex: none;
     align-self: stretch;
     width: 1px;
     margin-block: 0.45rem;
     background: var(--hair);
-  }
-  /* prendido el filtro: cuántos quedan y cómo quitarlo */
-  .aviso-anime {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    max-width: none;
-    margin: 0;
-    padding: 0.35rem var(--gutter);
-    background: var(--ink);
-    color: var(--paper);
-    font-size: 0.9rem;
-  }
-  .aviso-anime[hidden] {
-    display: none;
-  }
-  .aviso-anime b {
-    font-family: var(--f-display);
-  }
-  .aviso-anime button {
-    min-height: 2.75rem;
-    padding: 0 0.2rem;
-    background: none;
-    border: 0;
-    color: var(--paper);
-    font-weight: 700;
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
   }
   .filtros {
     display: flex;
