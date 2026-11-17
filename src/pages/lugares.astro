@@ -113,8 +113,8 @@ const GRUPOS = [
           </div>
         ))
       }
-      <button type="button" class="ficha solo-mios" id="f-mios" aria-pressed="false" data-si-no="mios">
-        <span class="ficha-cuerpo"><span class="capa off">Mis sellos<small class="mono" data-n></small></span><span class="capa on" aria-hidden="true">✓ Mis sellos<small class="mono" data-n></small></span></span>
+      <button type="button" class="ficha solo-mios con-tapa" id="f-mios" aria-pressed="false" data-si-no="mios">
+        <span class="tapa tapa-sello" data-mi-sello aria-hidden="true"></span><span class="ficha-cuerpo"><span class="capa off">Mis sellos<small class="mono" data-n></small></span><span class="capa on" aria-hidden="true">✓ Mis sellos<small class="mono" data-n></small></span></span>
       </button>
       {
         conAnime > 0 && (
@@ -288,8 +288,8 @@ const GRUPOS = [
       <div class="hf-grupo" role="group" aria-labelledby="hf-solo">
         <span class="mono" id="hf-solo">Mostrar solo</span>
         <div class="hf-opciones">
-          <button type="button" class="ficha solo-mios" aria-pressed="false" data-si-no="mios">
-            <span class="ficha-cuerpo"><span class="capa off">Mis sellos<small class="mono" data-n></small></span><span class="capa on" aria-hidden="true">✓ Mis sellos<small class="mono" data-n></small></span></span>
+          <button type="button" class="ficha solo-mios con-tapa" aria-pressed="false" data-si-no="mios">
+            <span class="tapa tapa-sello" data-mi-sello aria-hidden="true"></span><span class="ficha-cuerpo"><span class="capa off">Mis sellos<small class="mono" data-n></small></span><span class="capa on" aria-hidden="true">✓ Mis sellos<small class="mono" data-n></small></span></span>
           </button>
           {
             conAnime > 0 && (
@@ -475,6 +475,26 @@ const GRUPOS = [
   }
   $('puestos')!.addEventListener('scroll', marcarDesborde, { passive: true });
   addEventListener('resize', marcarDesborde);
+
+  /**
+   * Al poner o quitar mi sello en una tarjeta («Quiero ir») cambian los números de los filtros
+   * (cuántos «Mis sellos» hay): se actualizan de una. Las tarjetas no se esconden ni se mueven
+   * hasta el próximo cambio de filtro: poner un sello nunca mueve la página.
+   */
+  let numerosPendientes = false;
+  function actualizarNumeros() {
+    if (numerosPendientes) return;
+    numerosPendientes = true;
+    requestAnimationFrame(() => {
+      numerosPendientes = false;
+      const datos = tarjetas().map(datosDe);
+      pintarControles(document.querySelector('.filtros')!, aplicado, numeros(datos, aplicado));
+      if (borrador) pintarHoja();
+    });
+  }
+  const ojoSellos = new MutationObserver(actualizarNumeros);
+  for (const b of document.querySelectorAll('.tema .lugar [data-poner]'))
+    ojoSellos.observe(b, { attributes: true, attributeFilter: ['aria-pressed'] });
 
   /** Muestra u oculta tarjetas según lo aplicado y actualiza números, controles y dirección. */
   function filtrar() {
@@ -1080,6 +1100,34 @@ const GRUPOS = [
   }
   .ficha[aria-pressed='true'] .tapa {
     border-right-color: rgba(241, 236, 225, 0.5);
+  }
+  /* «Mis sellos» lleva mi sello: la misma marca que pongo en las tarjetas, como el 聖地 de «Solo
+     anime». Es el sello entero, reducido (cada forma acomoda su sílaba a su manera), sin las
+     iniciales, que en pequeño no se leen. Prendida, va en color papel, igual que el 聖地 */
+  .tapa-sello {
+    position: relative;
+    width: 1.1rem;
+    box-sizing: content-box;
+  }
+  .tapa-sello :global(.sello-p) {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0.62);
+  }
+  /* sin iniciales la sílaba queda centrada en la silueta */
+  .tapa-sello :global(.sello-p i) {
+    display: none;
+  }
+  /* el círculo y el cuadrado van en la parte de arriba del sello: se bajan para quedar al centro */
+  .tapa-sello :global(.sello-p:is(.f-maru, .f-masu)) {
+    top: calc(50% + 0.26rem);
+  }
+  .ficha[aria-pressed='true'] .tapa-sello :global(.sello-p) {
+    color: var(--paper);
+  }
+  .tapa-sello:empty {
+    display: none;
   }
   @media (max-width: 1199px) {
     .proponer .largo {

@@ -483,6 +483,24 @@ test.describe('sellar lugares', () => {
     await expect(page.locator('[data-si-no=mios]:visible')).toHaveCount(1);
   });
 
+  test('el número de «Mis sellos» cambia de una al poner o quitar mi sello, sin mover las tarjetas', async ({ page }) => {
+    await entrarEn(page, 'Camilo');
+    await abrir(page, '/lugares', 'si');
+    const numero = page.locator('#f-mios .off [data-n]');
+    await expect(numero).toHaveText('0');
+    // mi sello va en la ficha
+    await expect(page.locator('#f-mios [data-mi-sello] .sello-p')).toHaveCount(1);
+    const antes = await plano(page, 'article.lugar');
+    await tarjeta(page, 'akihabara').locator('[data-poner]').click();
+    await expect(numero).toHaveText('1');
+    await tarjeta(page, 'gion').locator('[data-poner]').click();
+    await expect(numero).toHaveText('2');
+    await tarjeta(page, 'akihabara').locator('[data-poner]').click();
+    await expect(numero).toHaveText('1');
+    await page.waitForTimeout(700);
+    expect(await plano(page, 'article.lugar')).toEqual(antes);
+  });
+
   test('«Mis sellos» deja solo los míos, queda en la dirección y sobrevive a recargar', async ({ page, grupo }) => {
     const ana = await grupo.entrar('Ana');
     await ana.marcar('lugar', 'himeji', 1);

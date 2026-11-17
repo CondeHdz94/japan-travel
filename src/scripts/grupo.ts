@@ -7,6 +7,7 @@
 //     data-valor="n"            …solo los que marcaron ese valor
 //     data-fantasmas            …y los que faltan, en tenue
 //   data-entrar               abre el registro
+//   data-mi-sello             aquí va mi sello, recto (vacío sin sesión): la ficha «Mis sellos» de Lugares
 //
 // Y en el Inicio, para las llegadas al viaje:
 //   data-pasajeros            los sellos de todo el grupo (la casilla «Pasajeros» del boleto)
@@ -255,6 +256,10 @@ function pintar(animar = false) {
   const ini = iniciales();
   document.documentElement.dataset.sesion = E.yo ? 'si' : 'no';
   recordar();
+
+  // mi sello donde se pida (recto: es una marca, no un sello puesto a mano)
+  for (const lugar of document.querySelectorAll<HTMLElement>('[data-mi-sello]'))
+    lugar.replaceChildren(...(E.yo ? [sello(E.yo, ini, false, 0)] : []));
 
   const quien = document.getElementById('quien');
   if (quien) {
