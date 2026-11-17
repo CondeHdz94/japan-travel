@@ -49,6 +49,9 @@ function puntaje(e, principal) {
   return (principal && e.punto.includes(principal) ? 4 : 0) + (/^\d+$/.test(ep) ? 2 : 0) - (/^(ED|OP)/.test(ep) ? 2 : 0) + (e.s ? 1 : 0);
 }
 
+/** Para comparar nombres sin mayúsculas, corchetes ni signos. */
+const mismoNombre = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '');
+
 const NIVEL = { confirmada: 2, validada: 1, 'por-confirmar': 0 };
 
 const porLugar = new Map(); // lugar → serie → escenas
@@ -89,7 +92,8 @@ for (const [serie, info] of Object.entries(SERIES)) {
           enlace: p.originURL || p.originLink || `https://www.anitabi.cn/map?bangumiId=${bgm}&pid=${p.id}`,
         },
         // la miniatura en anitabi; scripts/imagenes-escenas.mjs la baja a privado/escenas/
-        original: String(p.image).replace(/\?plan=.*/, ''),
+        // sin tamaño: la ventana pide el que necesita. Algunas vienen con «&plan=» en vez de «?plan=»
+        original: String(p.image).replace(/[?&]plan=.*/, ''),
         estado: r.estado ?? 'por-confirmar',
         ...(r.confirmacion ? { confirmacion: r.confirmacion } : {}),
         ...(r.queda ? { queda: r.queda } : {}),
@@ -113,7 +117,8 @@ for (const [lugar, series] of porLugar) {
     return {
       serie,
       nombre: info.nombre,
-      ...(info.romaji && info.romaji !== info.nombre ? { romaji: info.romaji } : {}),
+      // el rōmaji va debajo solo si es otro nombre: «K-ON!» o «[Oshi no Ko]» no lo son
+      ...(info.romaji && mismoNombre(info.romaji) !== mismoNombre(info.nombre) ? { romaji: info.romaji } : {}),
       estudio: info.estudio,
       ...(info.dudoso ? { dudoso: true } : {}),
       escenas,

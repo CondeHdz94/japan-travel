@@ -212,17 +212,40 @@
     min-width: 0;
   }
   .es-grande {
+    position: relative;
     display: grid;
     gap: 0.3rem;
     margin: 0;
   }
+  /* mientras llega la imagen (anitabi queda lejos y a veces tarda), el marco dice que viene en camino */
+  .es-grande::before {
+    content: 'Cargando la escena…';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    aspect-ratio: 16 / 9;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--ink);
+    background: var(--paper-2);
+    color: var(--ink-soft);
+    font-family: var(--f-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
   .es-grande img {
+    position: relative;
     display: block;
     width: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
     border: 1px solid var(--ink);
-    background: var(--paper-2);
+    background: transparent;
+  }
+  .es-grande .es-falta {
+    position: relative;
   }
   .es-grande figcaption {
     display: flex;

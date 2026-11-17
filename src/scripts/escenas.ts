@@ -73,7 +73,9 @@ function iniciar(dlg: HTMLDialogElement) {
       return chica
         ? falta('', true)
         : '<span class="es-falta"><b aria-hidden="true">聖</b><span>Las escenas se ven con sesión.</span><button type="button" data-entrar>Entra para verla</button></span>';
-    return `<img src="${esc(e.imagen)}?plan=${chica ? 'h160' : 'h360'}" alt="${esc(alt)}" loading="lazy" decoding="async" data-enlace="${esc(e.fuente.enlace)}">`;
+    // la grande es lo que se mira: va primero; las miniaturas esperan su turno para no quitarle velocidad
+    const prioridad = chica ? 'loading="lazy" fetchpriority="low"' : 'loading="eager" fetchpriority="high"';
+    return `<img src="${esc(e.imagen)}?plan=${chica ? 'h160' : 'h360'}" alt="${esc(alt)}" ${prioridad} decoding="async" data-enlace="${esc(e.fuente.enlace)}">`;
   }
 
   function bloque(o: Obra, oi: number, ei: number) {
@@ -322,6 +324,14 @@ function iniciar(dlg: HTMLDialogElement) {
     (ev) => {
       const im = ev.target;
       if (!(im instanceof HTMLImageElement) || !im.closest('.es-ficha') || im.closest('.es-hoy')) return;
+      // un fallo pasajero (anitabi queda lejos): se intenta una vez más antes de dar la imagen por perdida
+      if (!im.dataset.reintento) {
+        im.dataset.reintento = '1';
+        setTimeout(() => {
+          if (im.isConnected) im.src = im.src;
+        }, 1500);
+        return;
+      }
       const chica = !!im.closest('.es-fila, .es-indice');
       const t = document.createElement('template');
       const enlace = im.dataset.enlace ?? '';

@@ -16,7 +16,7 @@ export const SERIES = {
   'your-name': { nombre: 'Your Name', romaji: 'Kimi no Na wa.', estudio: 'CoMix Wave Films', partes: { 160209: null } },
   suzume: { nombre: 'Suzume', romaji: 'Suzume no Tojimari', estudio: 'CoMix Wave Films', partes: { 362577: null } },
   'tenki-no-ko': { nombre: 'El tiempo contigo', romaji: 'Tenki no Ko', estudio: 'CoMix Wave Films', partes: { 269235: null } },
-  'oshi-no-ko': { nombre: 'Oshi no Ko', romaji: '[Oshi no Ko]', estudio: 'Doga Kobo', partes: { 386809: null, 443428: 'Temporada 2', 517057: 'Temporada 3' } },
+  'oshi-no-ko': { nombre: 'Oshi no Ko', estudio: 'Doga Kobo', partes: { 386809: null, 443428: 'Temporada 2', 517057: 'Temporada 3' } },
   'bocchi-the-rock': { nombre: 'Bocchi the Rock!', romaji: 'Bocchi the Rock!', estudio: 'CloverWorks', partes: { 328609: null } },
   'tokyo-ghoul': { nombre: 'Tokyo Ghoul', romaji: 'Tokyo Ghoul', estudio: 'Studio Pierrot', partes: { 93714: null, 115292: '√A' } },
   'lycoris-recoil': { nombre: 'Lycoris Recoil', romaji: 'Lycoris Recoil', estudio: 'A-1 Pictures', partes: { 364450: null } },

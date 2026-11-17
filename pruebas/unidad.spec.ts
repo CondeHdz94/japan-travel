@@ -289,6 +289,14 @@ test.describe('escenas de anime', () => {
   });
 });
 
+test('escenas: cada imagen es una dirección de anitabi sin tamaño (la ventana le pone ?plan=)', () => {
+  for (const l of Object.values(ESCENAS))
+    for (const o of l.obras)
+      for (const e of o.escenas) {
+        expect(e.original, e.id).toMatch(/^https:\/\/image\.anitabi\.cn\/[^?&#]+$/);
+      }
+});
+
 test.describe('filtros de Lugares', () => {
   const lugar = (zona: string, meses: number[] | null = null, mio = false, escenas = false) => ({ zona, meses, mio, escenas });
   const f = (cambios: Partial<ReturnType<typeof sinFiltros>>) => ({ ...sinFiltros(), ...cambios });
