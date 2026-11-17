@@ -250,7 +250,9 @@ test.describe('contenido de Cuándo ir', () => {
     const otono = page.locator('.temporada a[href="/lugares?t=otono"]');
     await otono.click();
     await expect(page).toHaveURL(/\/lugares\?t=otono$/);
-    await expect(page.locator('#f-temp')).toHaveValue('otono');
+    // la temporada queda escogida: en el menú (escritorio) y como ficha de lo puesto (celular)
+    await expect(page.locator('#p-temp input[value="otono"]')).toBeChecked();
+    await expect(page.locator('#puestos .puesto')).toHaveText(['Otoño✕']);
     const total = Number(await page.locator('#f-total').textContent());
     expect(total).toBeGreaterThan(0);
     expect(total).toBeLessThan(116);

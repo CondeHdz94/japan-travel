@@ -451,7 +451,7 @@ const GRUPOS = [
             s.className = 'puesto';
             const b = document.createElement('button');
             b.type = 'button';
-            b.dataset.quitar = g;
+            b.dataset.quitarFiltro = g;
             b.dataset.v = v;
             b.setAttribute('aria-label', `Quitar ${t}`);
             b.textContent = '✕';
@@ -563,6 +563,8 @@ const GRUPOS = [
     const ubicar = () => {
       const r = boton.getBoundingClientRect();
       panel.style.top = `${r.bottom + 6}px`;
+      // nunca más alto que lo que queda de pantalla: si no cabe, se desliza por dentro
+      panel.style.maxHeight = `${Math.max(160, innerHeight - r.bottom - 22)}px`;
       panel.style.left = `${Math.min(r.left, innerWidth - panel.offsetWidth - 16)}px`;
     };
     panel.addEventListener('toggle', (ev) => {
@@ -598,6 +600,9 @@ const GRUPOS = [
   function abrirHoja() {
     borrador = copiar(aplicado);
     pintarHoja();
+    // la restauración del scroll se guarda en cada entrada del historial: la de esta página no debe
+    // devolver a donde estaba al cerrar la hoja, o pisaría el salto al comienzo de la lista
+    history.scrollRestoration = 'manual';
     history.pushState({ hoja: true }, '', location.href);
     hojaEmpujada = true;
     hoja.showModal();
@@ -618,7 +623,17 @@ const GRUPOS = [
       hojaEmpujada = false;
       alCerrar = null;
       hoja.close();
-    } else despuesDeCerrar();
+    } else {
+      despuesDeCerrar();
+      // la restauración del navegador llega tarde y sin aviso: vuelve a «auto» con lo próximo que haga la persona
+      if (history.scrollRestoration === 'manual') {
+        const devolver = () => {
+          history.scrollRestoration = 'auto';
+          for (const t of ['pointerdown', 'keydown', 'wheel', 'touchstart']) removeEventListener(t, devolver);
+        };
+        for (const t of ['pointerdown', 'keydown', 'wheel', 'touchstart']) addEventListener(t, devolver, { passive: true });
+      }
+    }
   });
   $('abrir-filtros')!.addEventListener('click', abrirHoja);
   hoja.addEventListener('click', (ev) => {
@@ -639,9 +654,9 @@ const GRUPOS = [
     pintarHoja();
   });
   $('puestos')!.addEventListener('click', (ev) => {
-    const b = (ev.target as Element).closest<HTMLElement>('[data-quitar]');
+    const b = (ev.target as Element).closest<HTMLElement>('[data-quitar-filtro]');
     if (!b) return;
-    const g = b.dataset.quitar!;
+    const g = b.dataset.quitarFiltro!;
     aplicar(g === 'mios' || g === 'anime' ? { ...copiar(aplicado), [g]: false } : alternar(aplicado, g as Grupo, b.dataset.v!));
   });
   // al pasar a escritorio con la hoja abierta, se cierra sin aplicar
@@ -892,6 +907,10 @@ const GRUPOS = [
     background: var(--paper);
     color: var(--ink);
     box-shadow: 4px 4px 0 var(--ink);
+  }
+  .panel {
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
   .panel fieldset {
     display: grid;

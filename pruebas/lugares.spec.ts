@@ -2,7 +2,7 @@
 
 import type { Page } from '@playwright/test';
 import { SEMILLAS, TEMAS, TEMPORADAS, ZONAS } from '../src/data/lugares';
-import { abrir, desborde, entrarEn, estadoDe, expect, llenarRegistro, plano, test } from './ayudas';
+import { abrir, desborde, entrarEn, estadoDe, expect, filtrarPor, filtrosEnHoja, llenarRegistro, plano, test } from './ayudas';
 
 const TOTAL = SEMILLAS.length;
 const LUGAR = { nombre: 'Mirador de prueba', tema: 'raro', zona: 'tokio' };
@@ -133,7 +133,8 @@ test.describe('catálogo', () => {
     await abrir(page, '/lugares', 'si');
     expect(await desborde(page)).toBeLessThanOrEqual(0);
     // todos los controles de filtro se pueden alcanzar, y «Proponer» también
-    for (const control of [...['#f-zona', '#f-temp', '#f-mios'].map((sel) => page.locator(sel)), proponer(page)]) {
+    const filtros = isMobile ? ['#abrir-filtros'] : ['#f-zona', '#f-temp', '#f-mios', '#f-anime'];
+    for (const control of [...filtros.map((sel) => page.locator(sel)), proponer(page)]) {
       await expect(control).toHaveCount(1);
       await control.scrollIntoViewIfNeeded();
       await expect(control).toBeInViewport();
@@ -144,12 +145,15 @@ test.describe('catálogo', () => {
 });
 
 test.describe('filtros', () => {
+  const ids = (page: Page) => visibles(page).evaluateAll((as) => as.map((a) => a.id).sort());
+  const deZona = (zs: string[]) => SEMILLAS.filter((l) => zs.includes(l.zona)).map((l) => l.id).sort();
+  const enMeses = (ms: number[]) => (l: (typeof SEMILLAS)[number]) => !l.meses || l.meses.some((m) => ms.includes(m));
+
   for (const z of ZONAS) {
     test(`zona «${z.nombre}»: solo se ven las de esa zona`, async ({ page }) => {
       await abrir(page, '/lugares', 'no');
-      await page.locator('#f-zona').selectOption(z.id);
-      const esperadas = SEMILLAS.filter((l) => l.zona === z.id).map((l) => l.id).sort();
-      expect((await visibles(page).evaluateAll((as) => as.map((a) => a.id))).sort()).toEqual(esperadas);
+      await filtrarPor(page, { zona: [z.id] });
+      expect(await ids(page)).toEqual(deZona([z.id]));
       await cuadra(page);
       await expect(page).toHaveURL(new RegExp(`\\?zona=${z.id}$`));
     });
@@ -158,56 +162,89 @@ test.describe('filtros', () => {
   for (const t of TEMPORADAS) {
     test(`temporada «${t.nombre}»: lo de esos meses y lo de todo el año`, async ({ page }) => {
       await abrir(page, '/lugares', 'no');
-      await page.locator('#f-temp').selectOption(t.id);
-      const esperadas = SEMILLAS.filter((l) => !l.meses || l.meses.some((m) => t.meses.includes(m))).map((l) => l.id).sort();
-      expect((await visibles(page).evaluateAll((as) => as.map((a) => a.id))).sort()).toEqual(esperadas);
+      await filtrarPor(page, { temp: [t.id] });
+      expect(await ids(page)).toEqual(SEMILLAS.filter(enMeses(t.meses)).map((l) => l.id).sort());
       await cuadra(page);
       await expect(page).toHaveURL(new RegExp(`\\?t=${t.id}$`));
     });
   }
 
-  test('zona y temporada juntas, y los filtros sobreviven a una recarga', async ({ page }) => {
+  test('varias zonas se suman, y varias temporadas también', async ({ page }) => {
     await abrir(page, '/lugares', 'no');
-    await page.locator('#f-zona').selectOption('kansai');
-    await page.locator('#f-temp').selectOption('invierno');
-    const esperadas = SEMILLAS.filter(
-      (l) => l.zona === 'kansai' && (!l.meses || l.meses.some((m) => [12, 1, 2].includes(m))),
-    ).length;
+    await filtrarPor(page, { zona: ['tokio', 'norte'] });
+    expect(await ids(page)).toEqual(deZona(['tokio', 'norte']));
+    await expect(page).toHaveURL(/\?zona=tokio,norte$/);
+    await filtrarPor(page, { temp: ['verano', 'invierno'] });
+    const esperadas = SEMILLAS.filter((l) => ['tokio', 'norte'].includes(l.zona) && enMeses([6, 7, 8, 9, 12, 1, 2])(l));
+    expect(await ids(page)).toEqual(esperadas.map((l) => l.id).sort());
+    await expect(page).toHaveURL(/\?zona=tokio,norte&t=verano,invierno$/);
+    await cuadra(page);
+  });
+
+  test('zona y temporada se cruzan, y los filtros sobreviven a una recarga', async ({ page }) => {
+    await abrir(page, '/lugares', 'no');
+    await filtrarPor(page, { zona: ['kansai'], temp: ['invierno'] });
+    const esperadas = SEMILLAS.filter((l) => l.zona === 'kansai' && enMeses([12, 1, 2])(l)).length;
     await expect(visibles(page)).toHaveCount(esperadas);
     await expect(page).toHaveURL(/\?zona=kansai&t=invierno$/);
 
     await page.reload();
-    await expect(page.locator('#f-zona')).toHaveValue('kansai');
-    await expect(page.locator('#f-temp')).toHaveValue('invierno');
     await expect(visibles(page)).toHaveCount(esperadas);
+    await expect(page.locator('#f-zona')).toContainText('Kioto y Osaka');
+    await expect(page.locator('#f-temp')).toContainText('En invierno');
     await cuadra(page);
   });
 
-  test('volver a «todas» lo muestra todo y limpia la dirección', async ({ page }) => {
+  test('un enlace viejo de un solo valor (el de «Cuándo ir») sigue sirviendo', async ({ page }) => {
+    await abrir(page, '/lugares?t=otono', 'no');
+    await expect(visibles(page)).toHaveCount(SEMILLAS.filter(enMeses([10, 11])).length);
+    await expect(page).toHaveURL(/\?t=otono$/);
+  });
+
+  test('quitar las opciones lo muestra todo y limpia la dirección', async ({ page }) => {
     await abrir(page, '/lugares?zona=norte&t=verano', 'no');
-    await expect(page.locator('#f-zona')).toHaveValue('norte');
-    await page.locator('#f-zona').selectOption('');
-    await page.locator('#f-temp').selectOption('');
+    await filtrarPor(page, { zona: ['norte'], temp: ['verano'] });
     await expect(visibles(page)).toHaveCount(TOTAL);
     await expect(page).toHaveURL(/\/lugares$/);
+    await expect(page.locator('#f-zona')).toContainText('Todas las zonas');
     await cuadra(page);
   });
 
   test('valores inventados en la dirección se ignoran', async ({ page, errores }) => {
-    await abrir(page, '/lugares?zona=marte&t=nunca&mios=1&otra=<script>', 'no');
-    await expect(page.locator('#f-zona')).toHaveValue('');
-    await expect(page.locator('#f-temp')).toHaveValue('');
-    await expect(visibles(page)).toHaveCount(TOTAL);
+    await abrir(page, '/lugares?zona=marte,tokio&t=nunca&mios=1&otra=<script>', 'no');
+    expect(await ids(page)).toEqual(deZona(['tokio']));
     await expect(page.locator('#f-mios')).toHaveAttribute('aria-pressed', 'false');
+    await expect(page).toHaveURL(/\?zona=tokio$/);
     expect(errores).toEqual([]);
   });
 
-  test('sin resultados: mensaje, y «Quitar filtros» devuelve todo', async ({ page }) => {
+  test('cada opción dice cuántos lugares tiene con los demás filtros, y en 0 se apaga', async ({ page, isMobile }) => {
+    await abrir(page, '/lugares?t=invierno', 'no');
+    const enInvierno = (z: string) => SEMILLAS.filter((l) => l.zona === z && enMeses([12, 1, 2])(l)).length;
+    if (isMobile) {
+      await page.locator('#abrir-filtros').click();
+      for (const z of ZONAS) {
+        const ficha = page.locator(`#hoja-filtros [data-grupo="zona"][data-v="${z.id}"]`);
+        await expect(ficha.locator('[data-n]')).toHaveText(String(enInvierno(z.id)));
+        if (enInvierno(z.id) === 0) await expect(ficha).toHaveClass(/apagado/);
+      }
+    } else {
+      await page.locator('#f-zona').click();
+      for (const z of ZONAS) {
+        const casilla = page.locator(`#p-zona label:has(input[value="${z.id}"])`);
+        await expect(casilla.locator('[data-n]')).toHaveText(String(enInvierno(z.id)));
+        if (enInvierno(z.id) === 0) await expect(casilla.locator('input')).toBeDisabled();
+        else await expect(casilla.locator('input')).toBeEnabled();
+      }
+    }
+  });
+
+  test('sin resultados: mensaje que dice qué filtros, y «Quitar filtros» devuelve todo', async ({ page }) => {
     await entrarEn(page, 'Camilo');
-    await abrir(page, '/lugares', 'si');
-    await page.locator('#f-mios').click(); // no he sellado nada
+    await abrir(page, '/lugares?mios=1&zona=norte,sur', 'si'); // no he sellado nada
     await expect(visibles(page)).toHaveCount(0);
     await expect(page.locator('#vacio')).toBeVisible();
+    await expect(page.locator('#vacio')).toContainText('Ningún lugar con tu sello en Norte o Sur.');
     await expect(page.locator('section.tema:visible')).toHaveCount(0);
     await cuadra(page);
 
@@ -221,8 +258,147 @@ test.describe('filtros', () => {
 
   test('el ancla se conserva al filtrar', async ({ page }) => {
     await abrir(page, '/lugares#jardines', 'no');
-    await page.locator('#f-zona').selectOption('tokio');
+    await filtrarPor(page, { zona: ['tokio'] });
     await expect(page).toHaveURL(/\/lugares\?zona=tokio#jardines$/);
+  });
+
+  test('escoger no mueve los controles de la barra', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'en celular lo que se escoge se aplica desde la hoja');
+    await abrir(page, '/lugares', 'no');
+    const donde = () => page.locator('.filtros > *:visible').evaluateAll((es) => es.map((e) => Math.round(e.getBoundingClientRect().left)));
+    const antes = await donde();
+    await filtrarPor(page, { zona: ['tokio', 'kanto'], temp: ['primavera'], anime: true });
+    expect(await donde()).toEqual(antes);
+  });
+});
+
+test.describe('filtros en escritorio', () => {
+  test.skip(({ isMobile }) => isMobile, 'solo escritorio');
+
+  test('el menú: teclado, Esc devuelve el foco y un clic fuera lo cierra', async ({ page }) => {
+    await abrir(page, '/lugares', 'no');
+    const boton = page.locator('#f-zona');
+    const panel = page.locator('#p-zona');
+    await boton.focus();
+    await page.keyboard.press('Enter');
+    await expect(panel).toBeVisible();
+    await expect(boton).toHaveAttribute('aria-expanded', 'true');
+    // el foco entra a la primera casilla; Espacio la marca y aplica al instante
+    await page.keyboard.press('Space');
+    await expect(page).toHaveURL(/\?zona=tokio$/);
+    await expect(boton).toContainText('Tokio');
+    await page.keyboard.press('Escape');
+    await expect(panel).toBeHidden();
+    await expect(boton).toBeFocused();
+    await expect(boton).toHaveAttribute('aria-expanded', 'false');
+
+    await boton.click();
+    await expect(panel).toBeVisible();
+    await page.locator('.page-head h1').click();
+    await expect(panel).toBeHidden();
+  });
+
+  test('«Quitar» del menú vacía solo ese filtro', async ({ page }) => {
+    await abrir(page, '/lugares?zona=tokio,norte&t=verano', 'no');
+    await expect(page.locator('#f-zona')).toContainText('Zona · 2');
+    await page.locator('#f-zona').click();
+    await page.locator('#p-zona [data-vaciar]').click();
+    await expect(page).toHaveURL(/\?t=verano$/);
+    await expect(page.locator('#f-zona')).toContainText('Todas las zonas');
+  });
+
+  for (const ancho of [1280, 960]) {
+    test(`a ${ancho} px los filtros caben en una fila`, async ({ page }) => {
+      await page.setViewportSize({ width: ancho, height: 800 });
+      await abrir(page, '/lugares?zona=tokio,kanto&t=primavera,verano&anime=1', 'no');
+      await expect(page.locator('.filtros')).toBeVisible();
+      await expect(page.locator('#abrir-filtros')).toBeHidden();
+      const sobra = await page.locator('.filtros').evaluate((f) => f.scrollWidth - f.clientWidth);
+      expect(sobra).toBeLessThanOrEqual(0);
+      expect(await desborde(page)).toBeLessThanOrEqual(0);
+    });
+  }
+
+  test('a 768 px (tablet) se usa el botón «Filtros» y la hoja', async ({ page }) => {
+    await page.setViewportSize({ width: 768, height: 1000 });
+    await abrir(page, '/lugares', 'no');
+    await expect(page.locator('.filtros')).toBeHidden();
+    await filtrarPor(page, { zona: ['kansai'] });
+    await expect(page).toHaveURL(/\?zona=kansai$/);
+    expect(await desborde(page)).toBeLessThanOrEqual(0);
+  });
+});
+
+test.describe('filtros en celular', () => {
+  test.skip(({ isMobile }) => !isMobile, 'solo celular');
+  const hoja = (page: Page) => page.locator('#hoja-filtros');
+
+  test('la hoja no cambia nada hasta «Ver N lugares», y dice cuántos van a quedar', async ({ page }) => {
+    await abrir(page, '/lugares', 'no');
+    await page.locator('#abrir-filtros').click();
+    await hoja(page).locator('[data-grupo="zona"][data-v="tokio"]').click();
+    await hoja(page).locator('[data-grupo="zona"][data-v="norte"]').click();
+    const n = SEMILLAS.filter((l) => ['tokio', 'norte'].includes(l.zona)).length;
+    await expect(hoja(page).locator('[data-aplicar]')).toHaveText(`Ver ${n} lugares`);
+    // detrás sigue todo
+    await expect(page.locator('article.lugar:not([hidden])')).toHaveCount(TOTAL);
+    await expect(page).toHaveURL(/\/lugares$/);
+    await hoja(page).locator('[data-aplicar]').click();
+    await expect(hoja(page)).toBeHidden();
+    await expect(visibles(page)).toHaveCount(n);
+    await expect(page).toHaveURL(/\?zona=tokio,norte$/);
+    await expect(page.locator('#abrir-filtros')).toBeFocused();
+    await expect(page.locator('#n-filtros')).toHaveText('2');
+  });
+
+  test('sin resultados el botón dice «Ningún lugar» y no se puede tocar', async ({ page }) => {
+    // las opciones que dan 0 se apagan; «Mis sellos» no, y sin sellos la lista queda vacía
+    await entrarEn(page, 'Camilo');
+    await abrir(page, '/lugares', 'si');
+    await page.locator('#abrir-filtros').click();
+    await expect(hoja(page).locator('[data-grupo="zona"][data-v="norte"]')).not.toHaveClass(/apagado/);
+    await hoja(page).locator('[data-si-no="mios"]').click();
+    // y con eso, cada zona dice 0 y se apaga
+    await expect(hoja(page).locator('[data-grupo="zona"][data-v="norte"]')).toHaveClass(/apagado/);
+    await expect(hoja(page).locator('[data-aplicar]')).toHaveText('Ningún lugar');
+    await expect(hoja(page).locator('[data-aplicar]')).toBeDisabled();
+  });
+
+  test('Cerrar, Esc y «atrás» cierran la hoja sin aplicar y sin salir de la página', async ({ page }) => {
+    await abrir(page, '/lugares', 'no');
+    const escoger = async () => {
+      await page.locator('#abrir-filtros').click();
+      await expect(hoja(page)).toBeVisible();
+      await hoja(page).locator('[data-grupo="zona"][data-v="tokio"]').click();
+    };
+    await escoger();
+    await hoja(page).locator('[data-cerrar-hoja]').click();
+    await expect(hoja(page)).toBeHidden();
+    await escoger();
+    await page.keyboard.press('Escape');
+    await expect(hoja(page)).toBeHidden();
+    await escoger();
+    await page.goBack();
+    await expect(hoja(page)).toBeHidden();
+    expect(new URL(page.url()).pathname).toBe('/lugares');
+    await expect(visibles(page)).toHaveCount(TOTAL);
+    await expect(page.locator('#n-filtros')).toHaveText('');
+  });
+
+  test('lo puesto aparece al lado del botón y se quita de un toque', async ({ page }) => {
+    await abrir(page, '/lugares?zona=tokio,norte&t=invierno', 'no');
+    const puestos = page.locator('#puestos .puesto');
+    await expect(puestos).toHaveText(['Tokio✕', 'Norte✕', 'Invierno✕']);
+    await expect(page.locator('#n-filtros')).toHaveText('3');
+    await page.locator('#puestos [aria-label="Quitar Norte"]').click();
+    await expect(puestos).toHaveText(['Tokio✕', 'Invierno✕']);
+    await expect(page).toHaveURL(/\?zona=tokio&t=invierno$/);
+    // lo que se toca mide al menos 44 px
+    const alto = await page.locator('#puestos [aria-label="Quitar Tokio"]').evaluate((b) => {
+      const z = getComputedStyle(b, '::after');
+      return b.getBoundingClientRect().height - parseFloat(z.top) - parseFloat(z.bottom);
+    });
+    expect(alto).toBeGreaterThanOrEqual(44);
   });
 });
 
@@ -298,7 +474,9 @@ test.describe('sellar lugares', () => {
     await expect(tarjeta(page, 'gion').locator('[data-poner]')).toHaveAttribute('aria-pressed', 'true');
     await expect(tarjeta(page, 'gion').locator('.sello-p')).toHaveCount(1);
     expect((await estadoDe(page)).marcas.map((m) => m.c)).toEqual(['gion']);
-    await expect(page.locator('#f-mios')).toBeVisible();
+    // con sesión aparece «Mis sellos» (en celular, dentro de la hoja)
+    if (await filtrosEnHoja(page)) await page.locator('#abrir-filtros').click();
+    await expect(page.locator('[data-si-no=mios]:visible')).toHaveCount(1);
   });
 
   test('«Mis sellos» deja solo los míos, queda en la dirección y sobrevive a recargar', async ({ page, grupo }) => {
@@ -308,7 +486,7 @@ test.describe('sellar lugares', () => {
     await abrir(page, '/lugares', 'si');
     for (const id of ['akihabara', 'gion']) await tarjeta(page, id).locator('[data-poner]').click();
 
-    await page.locator('#f-mios').click();
+    await filtrarPor(page, { mios: true });
     await expect(page.locator('#f-mios')).toHaveAttribute('aria-pressed', 'true');
     expect((await visibles(page).evaluateAll((as) => as.map((a) => a.id))).sort()).toEqual(['akihabara', 'gion']);
     await cuadra(page);
@@ -320,10 +498,10 @@ test.describe('sellar lugares', () => {
     await cuadra(page);
 
     // combinado con zona
-    await page.locator('#f-zona').selectOption('tokio');
+    await filtrarPor(page, { zona: ['tokio'] });
     expect(await visibles(page).evaluateAll((as) => as.map((a) => a.id))).toEqual(['akihabara']);
 
-    await page.locator('#f-mios').click();
+    await filtrarPor(page, { mios: true });
     await expect(page.locator('#f-mios')).toHaveAttribute('aria-pressed', 'false');
     await expect(page).toHaveURL(/\?zona=tokio$/);
   });
@@ -485,7 +663,7 @@ test.describe('proponer', () => {
     await expect(tarjeta(page, id)).toHaveCount(0);
     await expect(page.locator('html')).toHaveAttribute('data-sesion', 'si');
     // se conserva el filtro que había
-    await expect(page.locator('#f-zona')).toHaveValue('tokio');
+    await expect(page).toHaveURL(/\?zona=tokio$/);
     expect((await ana.estado()).marcas).toEqual([]);
     await expect(page.locator('article.lugar')).toHaveCount(TOTAL);
   });

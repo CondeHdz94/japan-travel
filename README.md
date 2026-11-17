@@ -201,10 +201,10 @@ en el puerto 4399, con clave y base propias (`.data/pruebas.db`): no leen el `.e
 | `paginas.spec.ts` | Cada página: carga limpia, cabecera, enlaces, desborde, entrada animada |
 | `grupo.spec.ts` | Registro, sellos, en vivo, perfil, sin conexión y «nada salta» |
 | `llegadas.spec.ts` | Bienvenida, llegadas desde mi última visita con varios viajeros y aparatos, «¿eres tú?» y el boleto |
-| `lugares.spec.ts` | Filtros, sellos, proponer, quitar y avisos en vivo |
+| `lugares.spec.ts` | Filtros (menús, hoja, varias opciones, dirección), sellos, proponer, quitar y avisos en vivo |
 | `decisiones.unidad.spec.ts` | Las cuentas de Decisiones, iniciales y giro de los sellos (sin navegador) |
 | `decisiones.spec.ts` | Decisiones: privacidad, la que va adelante, mi parte, temprano, empate, todas tachadas y lugares |
-| `escenas.spec.ts` | Escenas de anime: sello y línea de la tarjeta, filtro «聖 Anime», ventana, imágenes con sesión |
+| `escenas.spec.ts` | Escenas de anime: sello y línea de la tarjeta, filtro «聖地 Solo anime», ventana, imágenes con sesión |
 
 ## Lugares y fotos
 
@@ -232,15 +232,31 @@ en el puerto 4399, con clave y base propias (`.data/pruebas.db`): no leen el `.e
   otra cosa, `sinArticulo: true` deja el nombre sin enlace; si no existe el artículo, también.
 - Para agregar un lugar al catálogo: añadirlo a `SEMILLAS` y correr los dos scripts.
 
+### La barra de Lugares
+
+Dos filas con dos trabajos: arriba los **temas**, que solo llevan a su sección (su número cuenta lo
+que se ve con los filtros puestos; en 0 se apagan); abajo los **filtros**.
+
+- **Desde 960 px:** Zona y Temporada son menús con casillas (se escogen una o varias y aplican al
+  instante; el botón dice «Todas las zonas», «Tokio» o «Zona · 2»); Mis sellos y «聖地 Solo anime»
+  son fichas con ✓. Cada opción dice cuántos lugares tiene con los demás filtros puestos.
+- **Por debajo de 960 px:** un botón «Filtros (n)» abre una hoja con las mismas opciones como
+  fichas. La hoja trabaja sobre un borrador: nada cambia detrás hasta «Ver N lugares». Al lado del
+  botón quedan los filtros puestos, cada uno con ✕ para quitarlo.
+- **Cómo se combinan:** dentro de un filtro se suman (Tokio o Norte), entre filtros se cruzan.
+  Un lugar de todo el año no se esconde por la temporada.
+- **Dirección:** `/lugares?zona=tokio,norte&t=verano,invierno&mios=1&anime=1`. Los enlaces de un
+  solo valor (`?t=otono`, el de «Cuándo ir») siguen sirviendo y los valores desconocidos se ignoran.
+- La lógica sin DOM (qué pasa, dirección, mensaje vacío) está en `src/scripts/filtros.ts`.
+
 ## Escenas de anime (聖地巡礼)
 
 Lugares marca los sitios del catálogo donde pasa una escena de anime:
 
 - **Tarjeta:** sello «聖地 N obras» arriba a la izquierda de la foto (solo avisa, no se toca) y,
   al fondo del texto, «聖 Sale en: A, B y N más · Ver escenas →».
-- **Filtro:** la píldora «聖 Anime» de la fila de temas, justo después de Otaku. No es una
-  sección: deja en cada tema solo sus lugares con escenas, se combina con los demás filtros y
-  queda en la dirección (`?anime=1`).
+- **Filtro:** «聖地 Solo anime», una ficha más de la barra de filtros (ver arriba). No es una
+  sección: deja en cada tema solo sus lugares con escenas y queda en la dirección (`?anime=1`).
 - **Ventana:** todas las obras del lugar seguidas, de la que más escenas tiene ahí a la que
   menos. En escritorio, índice fijo que marca la obra que se ve; en celular, hoja con una barra
   fija «Viendo · 2 de 16 · Índice». Vive en la dirección (`#escenas-<id>`): Esc y «atrás» la

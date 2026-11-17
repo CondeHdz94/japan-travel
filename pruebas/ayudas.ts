@@ -204,3 +204,42 @@ export const plano = (page: Page, selector: string) =>
       }),
     };
   }, selector);
+
+/** Lo que se quiere cambiar en los filtros de Lugares: los valores de zona y temporada se alternan. */
+export interface CambioFiltros {
+  zona?: string[];
+  temp?: string[];
+  mios?: true;
+  anime?: true;
+}
+
+/** ¿Lugares está en su forma angosta (botón «Filtros» y hoja)? */
+export const filtrosEnHoja = (page: Page) => page.locator('#abrir-filtros').isVisible();
+
+/**
+ * Cambia filtros de Lugares como lo haría una persona: en escritorio con los menús de casillas y
+ * las fichas (aplican al instante); en celular abriendo la hoja, tocando las fichas y «Ver N lugares».
+ */
+export async function filtrarPor(page: Page, cambio: CambioFiltros) {
+  if (await filtrosEnHoja(page)) {
+    const hoja = page.locator('#hoja-filtros');
+    await page.locator('#abrir-filtros').click();
+    await expect(hoja).toBeVisible();
+    for (const g of ['zona', 'temp'] as const)
+      for (const v of cambio[g] ?? []) await hoja.locator(`[data-grupo="${g}"][data-v="${v}"]`).click();
+    for (const que of ['mios', 'anime'] as const) if (cambio[que]) await hoja.locator(`[data-si-no="${que}"]`).click();
+    await hoja.locator('[data-aplicar]').click();
+    await expect(hoja).toBeHidden();
+    return;
+  }
+  for (const g of ['zona', 'temp'] as const) {
+    if (!cambio[g]?.length) continue;
+    await page.locator(`#f-${g}`).click();
+    const panel = page.locator(`#p-${g}`);
+    await expect(panel).toBeVisible();
+    for (const v of cambio[g]) await panel.locator(`label:has(input[value="${v}"])`).click();
+    await page.keyboard.press('Escape');
+    await expect(panel).toBeHidden();
+  }
+  for (const que of ['mios', 'anime'] as const) if (cambio[que]) await page.locator(`#f-${que}`).click();
+}
