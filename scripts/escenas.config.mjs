@@ -67,7 +67,7 @@ export const SERIES = {
  * representa el lugar (se puede cambiar a mano en src/data/escenas-revision.json).
  */
 export const LUGARES = [
-  ['shinjuku-gyoen', ['新宿御苑'], null],
+  ['shinjuku-gyoen', ['新宿御苑', '千駄ヶ谷'], null],
   ['shibuya', ['渋谷', 'スクランブル', 'ハチ公', '宮下', 'センター街'], 'スクランブル'],
   ['shinjuku', ['新宿駅', '新宿東口', '新宿西口', '歌舞伎町', '西新宿', 'LABI新宿', '新宿南口', '新宿'], null],
   ['akihabara', ['秋葉原', 'アキバ', '神田明神', '末広町', '万世橋', 'ラジオ会館'], null],

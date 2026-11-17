@@ -13,7 +13,719 @@
       "aparte": "en el centro de Uji, a unos 2 km del museo"
     }
   },
-  "escenas": {},
+  "escenas": {
+    "49294-cxfdy2b0l": {
+      "estado": "validada"
+    },
+    "49294-knlbeybai": {
+      "estado": "validada"
+    },
+    "49294-cxfz4st2i": {
+      "estado": "validada"
+    },
+    "49294-lo9h36cje": {
+      "estado": "validada"
+    },
+    "210272-4t2lo5uue": {
+      "estado": "validada"
+    },
+    "210272-4t2lo5vc9": {
+      "estado": "validada"
+    },
+    "296659-4s6dzr8e3": {
+      "estado": "validada"
+    },
+    "10380-kpx6og70a": {
+      "estado": "validada"
+    },
+    "10380-8r2oep4": {
+      "estado": "validada"
+    },
+    "10380-kf9p6tg": {
+      "estado": "validada"
+    },
+    "10380-5u3psrk": {
+      "estado": "validada"
+    },
+    "10380-5u41n79": {
+      "estado": "validada"
+    },
+    "10380-kpx6og826": {
+      "estado": "validada"
+    },
+    "386809-jrz27kxku": {
+      "estado": "validada"
+    },
+    "276-50cjwj41j": {
+      "estado": "validada"
+    },
+    "276-50cjwj4a4": {
+      "estado": "validada"
+    },
+    "110467-5q875hy5": {
+      "estado": "validada"
+    },
+    "248175-51i51ugzx": {
+      "estado": "validada"
+    },
+    "241158-51i523myq": {
+      "estado": "validada"
+    },
+    "241158-51i523n9y": {
+      "estado": "validada"
+    },
+    "2463-kpx6ol3sx": {
+      "estado": "validada"
+    },
+    "2463-kpx6ol6sj": {
+      "estado": "validada"
+    },
+    "2463-kpx6ol5y8": {
+      "estado": "validada"
+    },
+    "2463-kpx6ol5nl": {
+      "estado": "validada"
+    },
+    "2463-3c7jch8": {
+      "estado": "validada"
+    },
+    "269235-4ui73kr2z": {
+      "estado": "validada"
+    },
+    "269235-bq0duws": {
+      "estado": "validada"
+    },
+    "148099-db6rgwg": {
+      "estado": "validada"
+    },
+    "294993-lrgvxiylh": {
+      "estado": "validada"
+    },
+    "294993-fdcdf66d": {
+      "estado": "validada"
+    },
+    "369304-ec29275f": {
+      "estado": "validada"
+    },
+    "110467-jr1lfgc": {
+      "estado": "validada"
+    },
+    "110467-5q875dvn": {
+      "estado": "validada"
+    },
+    "110467-5q875du8": {
+      "estado": "validada"
+    },
+    "443428-o60vawv2r": {
+      "estado": "validada"
+    },
+    "296659-4s6dzr6l2": {
+      "estado": "validada"
+    },
+    "296659-4s6dzr6fk": {
+      "estado": "validada"
+    },
+    "296659-4s6dzr6em": {
+      "estado": "validada"
+    },
+    "296659-4s6dzr67m": {
+      "estado": "validada"
+    },
+    "296659-4s6dzr678": {
+      "estado": "validada"
+    },
+    "296659-4s6dzr701": {
+      "estado": "validada"
+    },
+    "296659-4s6dzr7ar": {
+      "estado": "validada"
+    },
+    "296659-4s6dzr76r": {
+      "estado": "validada"
+    },
+    "296659-4s6dzr79z": {
+      "estado": "validada"
+    },
+    "296659-4s6dzr73e": {
+      "estado": "validada"
+    },
+    "296659-4s6dzr87c": {
+      "estado": "validada"
+    },
+    "296659-4s6dzr81s": {
+      "estado": "validada"
+    },
+    "296659-4s6dzr7si": {
+      "estado": "validada"
+    },
+    "296659-4s6dzr8io": {
+      "estado": "validada"
+    },
+    "296659-4s6dzr8ha": {
+      "estado": "validada"
+    },
+    "386809-9pgv4hd": {
+      "estado": "validada"
+    },
+    "115908-kq1wg6e2b": {
+      "estado": "validada"
+    },
+    "115908-7ghhgxql": {
+      "estado": "validada"
+    },
+    "115908-7gia835k": {
+      "estado": "validada"
+    },
+    "115908-7ipvee45": {
+      "estado": "validada"
+    },
+    "115908-7giv34em": {
+      "estado": "validada"
+    },
+    "115908-7jjozvi3": {
+      "estado": "validada"
+    },
+    "115908-7jn2zoll": {
+      "estado": "validada"
+    },
+    "115908-7oun8aol": {
+      "estado": "validada"
+    },
+    "115908-hsi1kiyqq": {
+      "estado": "validada"
+    },
+    "115908-4qkomh3": {
+      "estado": "validada"
+    },
+    "152091-kq5gkb5y5": {
+      "estado": "validada"
+    },
+    "152091-kq5y9d6d9": {
+      "estado": "validada"
+    },
+    "152091-kq72ewk7h": {
+      "estado": "validada"
+    },
+    "152091-kq7bug0r0": {
+      "estado": "validada"
+    },
+    "152091-kq8ge35q3": {
+      "estado": "validada"
+    },
+    "152091-ptcrup9aq": {
+      "estado": "validada"
+    },
+    "152091-emth9gw": {
+      "estado": "validada"
+    },
+    "283643-kffmz640b": {
+      "estado": "validada"
+    },
+    "152091-s8n19fbyj": {
+      "estado": "validada"
+    },
+    "216372-kqgz3hrio": {
+      "estado": "validada"
+    },
+    "283643-jywiof0xv": {
+      "estado": "validada"
+    },
+    "283643-jywhhw529": {
+      "estado": "validada"
+    },
+    "283643-jyw56dt5a": {
+      "estado": "validada"
+    },
+    "3774-s9p1t7a2i": {
+      "estado": "validada"
+    },
+    "115908-qys7k6": {
+      "estado": "validada"
+    },
+    "276-50cjwj50x": {
+      "estado": "validada"
+    },
+    "442615-36aacd69": {
+      "estado": "validada"
+    },
+    "49294-knid7qtfi": {
+      "estado": "validada"
+    },
+    "364450-4t2xtafho": {
+      "estado": "validada"
+    },
+    "364450-4t2xtag0b": {
+      "estado": "validada"
+    },
+    "110467-jr489bl": {
+      "estado": "validada"
+    },
+    "110467-5q875hsj": {
+      "estado": "validada"
+    },
+    "362577-4uisgzjv1": {
+      "estado": "validada"
+    },
+    "92382-kpwobjh1k": {
+      "estado": "validada"
+    },
+    "283643-kc6he63mj": {
+      "estado": "validada"
+    },
+    "306742-51i52g56z": {
+      "estado": "validada"
+    },
+    "1608-np5n8b8ys": {
+      "estado": "validada"
+    },
+    "1608-ir7b7zb": {
+      "estado": "validada"
+    },
+    "328609-f0ff9fbe": {
+      "estado": "validada"
+    },
+    "328609-b40ee17a": {
+      "estado": "validada"
+    },
+    "442615-18819f55": {
+      "estado": "validada"
+    },
+    "442615-ea131893": {
+      "estado": "validada"
+    },
+    "442615-0b0c4157": {
+      "estado": "validada"
+    },
+    "210272-4t2lo5wvg": {
+      "estado": "validada"
+    },
+    "160209-3ik9kjfi": {
+      "estado": "validada"
+    },
+    "160209-3ik9kjaa": {
+      "estado": "validada"
+    },
+    "160209-3ik9kj2o": {
+      "estado": "validada"
+    },
+    "27364-u3z4mo7nc": {
+      "estado": "validada"
+    },
+    "27364-cwuduh0": {
+      "estado": "validada"
+    },
+    "207195-u5ve7l7wt": {
+      "estado": "validada"
+    },
+    "265-2m71cf11x": {
+      "estado": "validada"
+    },
+    "3774-25idmgb": {
+      "estado": "validada"
+    },
+    "3774-25idmew": {
+      "estado": "validada"
+    },
+    "3774-25idmgk": {
+      "estado": "validada"
+    },
+    "3774-25idmfi": {
+      "estado": "validada"
+    },
+    "3774-25idmgv": {
+      "estado": "validada"
+    },
+    "3774-25idmeu": {
+      "estado": "validada"
+    },
+    "3774-25idmgs": {
+      "estado": "validada"
+    },
+    "442615-987c3d0e": {
+      "estado": "validada"
+    },
+    "442615-ccec62ff": {
+      "estado": "validada"
+    },
+    "442615-ffaf2f62": {
+      "estado": "validada"
+    },
+    "58949-25a9b035": {
+      "estado": "validada"
+    },
+    "58949-3pmckoe": {
+      "estado": "validada"
+    },
+    "369304-7f15bf3d": {
+      "estado": "validada"
+    },
+    "369304-999eb252": {
+      "estado": "validada"
+    },
+    "369304-25a69727": {
+      "estado": "validada"
+    },
+    "369304-342ca2c1": {
+      "estado": "validada"
+    },
+    "369304-1ee3f2cd": {
+      "estado": "validada"
+    },
+    "369304-9a222afa": {
+      "estado": "validada"
+    },
+    "369304-e8bdeb32": {
+      "estado": "validada"
+    },
+    "369304-d18270a7": {
+      "estado": "validada"
+    },
+    "369304-ffa75aaf": {
+      "estado": "validada"
+    },
+    "369304-ca40610c": {
+      "estado": "validada"
+    },
+    "369304-d9400d77": {
+      "estado": "validada"
+    },
+    "369304-bbfabb02": {
+      "estado": "validada"
+    },
+    "369304-68c049ae": {
+      "estado": "validada"
+    },
+    "369304-9d3e57e3": {
+      "estado": "validada"
+    },
+    "369304-9cb2780a": {
+      "estado": "validada"
+    },
+    "369304-327a4971": {
+      "estado": "validada"
+    },
+    "369304-e3bcf476": {
+      "estado": "validada"
+    },
+    "369304-731f6924": {
+      "estado": "validada"
+    },
+    "369304-bfba6ee0": {
+      "estado": "validada"
+    },
+    "369304-7f9cbeb4": {
+      "estado": "validada"
+    },
+    "369304-f485e36f": {
+      "estado": "validada"
+    },
+    "369304-d9742027": {
+      "estado": "validada"
+    },
+    "369304-f9f882f4": {
+      "estado": "validada"
+    },
+    "369304-45f55c54": {
+      "estado": "validada"
+    },
+    "369304-08174c1b": {
+      "estado": "validada"
+    },
+    "369304-ae962169": {
+      "estado": "validada"
+    },
+    "369304-65d8b10c": {
+      "estado": "validada"
+    },
+    "369304-eb581b14": {
+      "estado": "validada"
+    },
+    "369304-6ac9d424": {
+      "estado": "validada"
+    },
+    "369304-0af62fed": {
+      "estado": "validada"
+    },
+    "369304-3dea890e": {
+      "estado": "validada"
+    },
+    "369304-82a5187a": {
+      "estado": "validada"
+    },
+    "1773-kysm1rtng": {
+      "estado": "validada"
+    },
+    "362577-ss5cutuq6": {
+      "estado": "validada"
+    },
+    "306742-51i52g3ep": {
+      "estado": "validada"
+    },
+    "306742-51i52g7y8": {
+      "estado": "validada"
+    },
+    "248175-51i51ugl0": {
+      "estado": "validada"
+    },
+    "293049-106ft7vg23": {
+      "estado": "validada"
+    },
+    "364450-4t2xtageb": {
+      "estado": "validada"
+    },
+    "58949-558fec3e": {
+      "estado": "validada"
+    },
+    "927-a99qrfcd": {
+      "estado": "validada"
+    },
+    "604826-ai11604": {
+      "estado": "validada"
+    },
+    "315069-rlbg1jhch": {
+      "estado": "validada"
+    },
+    "927-a99qr9xh": {
+      "estado": "validada"
+    },
+    "927-a99qra32": {
+      "estado": "validada"
+    },
+    "927-a99qrahk": {
+      "estado": "validada"
+    },
+    "927-a99qrae8": {
+      "estado": "validada"
+    },
+    "927-a99qradf": {
+      "estado": "validada"
+    },
+    "927-a99qrdry": {
+      "estado": "validada"
+    },
+    "927-a99qre5f": {
+      "estado": "validada"
+    },
+    "927-a99qrdqe": {
+      "estado": "validada"
+    },
+    "927-a99qrehl": {
+      "estado": "validada"
+    },
+    "927-a99qrekk": {
+      "estado": "validada"
+    },
+    "927-a99qrers": {
+      "estado": "validada"
+    },
+    "927-a99qrfsy": {
+      "estado": "validada"
+    },
+    "927-a99qrfjw": {
+      "estado": "validada"
+    },
+    "927-a99qrghp": {
+      "estado": "validada"
+    },
+    "927-a99qrgew": {
+      "estado": "validada"
+    },
+    "927-a99qrge8": {
+      "estado": "validada"
+    },
+    "58949-b19f8f8c": {
+      "estado": "validada"
+    },
+    "58949-bc7c885c": {
+      "estado": "validada"
+    },
+    "58949-3pb7wp6": {
+      "estado": "validada"
+    },
+    "58949-3pexhyb": {
+      "estado": "validada"
+    },
+    "58949-5309a13c": {
+      "estado": "validada"
+    },
+    "58949-7933a2ec": {
+      "estado": "validada"
+    },
+    "58949-3b87b04a": {
+      "estado": "validada"
+    },
+    "160209-3ik9kjew": {
+      "estado": "validada"
+    },
+    "160209-3ik9kj6d": {
+      "estado": "validada"
+    },
+    "160209-3ik9kjf5": {
+      "estado": "validada"
+    },
+    "160209-3ik9kj20": {
+      "estado": "validada"
+    },
+    "160209-3ik9kjcb": {
+      "estado": "validada"
+    },
+    "160209-7b307zt": {
+      "estado": "validada"
+    },
+    "294993-lrgn9haeb": {
+      "estado": "validada"
+    },
+    "294993-23b91d32": {
+      "estado": "validada"
+    },
+    "294993-42233d57": {
+      "estado": "validada"
+    },
+    "369304-eb171aa4": {
+      "estado": "validada"
+    },
+    "294993-62d87e9e": {
+      "estado": "validada"
+    },
+    "269235-4ui73krj7": {
+      "estado": "validada"
+    },
+    "269235-36o4m6k": {
+      "estado": "validada"
+    },
+    "110467-jr3l3w9": {
+      "estado": "validada"
+    },
+    "110467-jr3nrqm": {
+      "estado": "validada"
+    },
+    "362577-9da95c92": {
+      "estado": "validada"
+    },
+    "362577-e132148d": {
+      "estado": "validada"
+    },
+    "93714-p8cmzth4a": {
+      "estado": "validada"
+    },
+    "443428-ocmnm2jfy": {
+      "estado": "validada"
+    },
+    "328609-cqsz7t": {
+      "estado": "validada"
+    },
+    "364450-4t2xtag2p": {
+      "estado": "validada"
+    },
+    "364450-4t2xtag0e": {
+      "estado": "validada"
+    },
+    "306742-51i52g2fq": {
+      "estado": "validada"
+    },
+    "404480-pr3v553z0": {
+      "estado": "validada"
+    },
+    "404480-pr79sf23j": {
+      "estado": "validada"
+    },
+    "306742-51i52g3cd": {
+      "estado": "validada"
+    },
+    "306742-51i52g3s0": {
+      "estado": "validada"
+    },
+    "306742-51i52g4v9": {
+      "estado": "validada"
+    },
+    "306742-51i52g4tg": {
+      "estado": "validada"
+    },
+    "306742-51i52g6cw": {
+      "estado": "validada"
+    },
+    "306742-51i52g6kn": {
+      "estado": "validada"
+    },
+    "306742-51i52g6ib": {
+      "estado": "validada"
+    },
+    "294993-lrff55dcr": {
+      "estado": "validada"
+    },
+    "294993-e1fafab4": {
+      "estado": "validada"
+    },
+    "294993-e66cba36": {
+      "estado": "validada"
+    },
+    "294993-efe5df08": {
+      "estado": "validada"
+    },
+    "369304-45c5d937": {
+      "estado": "validada"
+    },
+    "369304-381ce644": {
+      "estado": "validada"
+    },
+    "927-a99qrfmm": {
+      "estado": "validada"
+    },
+    "328609-uqesctl9j": {
+      "estado": "validada"
+    },
+    "328609-4xygg8inc": {
+      "estado": "validada"
+    },
+    "328609-cpdz63": {
+      "estado": "validada"
+    },
+    "328609-4yd2vzc6m": {
+      "estado": "validada"
+    },
+    "328609-cp5nbm": {
+      "estado": "validada"
+    },
+    "328609-uqeh3wddi": {
+      "estado": "validada"
+    },
+    "328609-cmok9d": {
+      "estado": "validada"
+    },
+    "328609-cgrti44c0": {
+      "estado": "validada"
+    },
+    "144357-iggrldcoh": {
+      "estado": "validada"
+    },
+    "58949-3pfh07n": {
+      "estado": "validada"
+    },
+    "58949-8e5d70ba": {
+      "estado": "validada"
+    },
+    "58949-39ad0243": {
+      "estado": "validada"
+    },
+    "58949-9bfb03ca": {
+      "estado": "validada"
+    },
+    "58949-cde9896e": {
+      "estado": "validada"
+    },
+    "58949-89660ad1": {
+      "estado": "validada"
+    },
+    "294993-c89b9945": {
+      "estado": "validada"
+    },
+    "160209-3ik9kj5p": {
+      "estado": "validada"
+    },
+    "504678-1kn4ynj": {
+      "estado": "validada"
+    }
+  },
   "principal": {},
   "excluir": {
     "876-5c4dgq9td": "Es otro sitio (Aomori, Hakodate o el barrio Kanazawa de Yokohama), no el puerto de Yokohama (陸奥横浜駅２)",
@@ -35,6 +747,11 @@
     "276-50cjwj463": "Es el cruce de la estación de Omiya, no el de Shibuya (大宮駅西口スクランブル交差点)",
     "165553-krxhjq2qp": "Es un cine de Numazu: solo coincide «サンシャイン» (シネマサンシャイン沼津)",
     "262897-45dtmtj": "Okuhida queda a 27 km de Takayama (奥飛騨温泉郷平湯)",
-    "362577-ss4sdjguk": "Suzume no pasa por Kioto: es otro cruce llamado Gion (祇園踏切)"
+    "362577-ss4sdjguk": "Suzume no pasa por Kioto: es otro cruce llamado Gion (祇園踏切)",
+    "100444-ubuwfm5dw": "Es un cruce en Kami-Shakujii (Nerima), a unos 12 km: solo coincide «Seibu Shinjuku» en el nombre de la línea",
+    "58949-caf4140b": "Es un tramo de tren entre Ikebukuro y Shinjuku, no un punto al que se pueda ir",
+    "269235-bm3zbak": "Son nombres de líneas de tren, no un punto al que se pueda ir",
+    "92382-odh4x07de": "Es el Palacio Imperial visto desde el aire, no la Torre de Tokio",
+    "207195-u5v2chc1y": "La oficina de turismo de Minobu queda a unos 25 km del lago Motosu"
   }
 }
