@@ -49,6 +49,8 @@ function puntaje(e, principal) {
   return (principal && e.punto.includes(principal) ? 4 : 0) + (/^\d+$/.test(ep) ? 2 : 0) - (/^(ED|OP)/.test(ep) ? 2 : 0) + (e.s ? 1 : 0);
 }
 
+const NIVEL = { confirmada: 2, validada: 1, 'por-confirmar': 0 };
+
 const porLugar = new Map(); // lugar → serie → escenas
 let bajados = 0;
 const sinLugar = [];
@@ -101,7 +103,12 @@ for (const [lugar, series] of porLugar) {
   const principal = LUGARES.find(([id]) => id === lugar)[2];
   const obras = [...series].map(([serie, escenas]) => {
     const fija = revision.principal?.[`${lugar}/${serie}`];
-    escenas.sort((a, b) => (b.id === fija) - (a.id === fija) || puntaje(b, principal) - puntaje(a, principal));
+    // la escena grande es la más verificada que haya: la fijada a mano, luego confirmada, validada y
+    // por confirmar; dentro de cada nivel, la más representativa del lugar
+    escenas.sort(
+      (a, b) =>
+        (b.id === fija) - (a.id === fija) || NIVEL[b.estado] - NIVEL[a.estado] || puntaje(b, principal) - puntaje(a, principal),
+    );
     const info = SERIES[serie];
     return {
       serie,

@@ -241,6 +241,18 @@ test.describe('escenas de anime', () => {
     }
   });
 
+  test('dentro de cada obra van primero las más verificadas: confirmada, validada, por confirmar', () => {
+    const nivel = { confirmada: 2, validada: 1, 'por-confirmar': 0 } as const;
+    const fijadas: Record<string, string> = JSON.parse(readFileSync('src/data/escenas-revision.json', 'utf8')).principal ?? {};
+    for (const [id, l] of lugares)
+      for (const o of l.obras) {
+        // una escena fijada a mano como principal va primera aunque esté menos verificada
+        const desde = fijadas[`${id}/${o.serie}`] === o.escenas[0].id ? 1 : 0;
+        const n = o.escenas.slice(desde).map((e) => nivel[e.estado]);
+        expect(n, `${id}: ${o.nombre}`).toEqual([...n].sort((a, b) => b - a));
+      }
+  });
+
   test('una obra no se repite en un mismo lugar, y el rōmaji solo va si es distinto', () => {
     for (const [id, l] of lugares) {
       expect(new Set(l.obras.map((o) => o.serie)).size, id).toBe(l.obras.length);
