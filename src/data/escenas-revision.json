@@ -15,7 +15,8 @@
   },
   "escenas": {
     "49294-cxfdy2b0l": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://www.daily.co.jp/gossip/subculture/2021/09/08/0014660994.shtml"
     },
     "49294-knlbeybai": {
       "estado": "validada"
@@ -36,7 +37,8 @@
       "estado": "validada"
     },
     "10380-kpx6og70a": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://animeanime.jp/article/2012/02/16/9452.html"
     },
     "10380-8r2oep4": {
       "estado": "validada"
@@ -99,7 +101,8 @@
       "estado": "validada"
     },
     "294993-lrgvxiylh": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://fun-japan.jp/jp/articles/14021"
     },
     "294993-fdcdf66d": {
       "estado": "validada"
@@ -120,7 +123,8 @@
       "estado": "validada"
     },
     "296659-4s6dzr6l2": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://travel.watch.impress.co.jp/docs/news/1293504.html"
     },
     "296659-4s6dzr6fk": {
       "estado": "validada"
@@ -168,7 +172,8 @@
       "estado": "validada"
     },
     "115908-kq1wg6e2b": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://www.keihan.co.jp/euphonium/"
     },
     "115908-7ghhgxql": {
       "estado": "validada"
@@ -276,13 +281,15 @@
       "estado": "validada"
     },
     "1608-np5n8b8ys": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://www.j-cast.com/2015/07/29241467.html"
     },
     "1608-ir7b7zb": {
       "estado": "validada"
     },
     "328609-f0ff9fbe": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://tetsudo-ch.com/12963190.html"
     },
     "328609-b40ee17a": {
       "estado": "validada"
@@ -300,7 +307,8 @@
       "estado": "validada"
     },
     "160209-3ik9kjfi": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://www.buzzfeed.com/harunayamazaki/hida-kiminonaha"
     },
     "160209-3ik9kjaa": {
       "estado": "validada"
@@ -309,16 +317,19 @@
       "estado": "validada"
     },
     "27364-u3z4mo7nc": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://honichi.com/news/2018/09/19/hyokaseichi/"
     },
     "27364-cwuduh0": {
       "estado": "validada"
     },
     "207195-u5ve7l7wt": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://www.yamanashi-kankou.jp/special/sp_yurucamp/story1.html"
     },
     "265-2m71cf11x": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://www.hakonenavi.jp/event/14731"
     },
     "3774-25idmgb": {
       "estado": "validada"
@@ -357,7 +368,8 @@
       "estado": "validada"
     },
     "369304-7f15bf3d": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://www.famitsu.com/news/202309/04315576.html"
     },
     "369304-999eb252": {
       "estado": "validada"
@@ -555,7 +567,8 @@
       "estado": "validada"
     },
     "160209-3ik9kjew": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://www.knt.co.jp/meito/sp/kiminonaha/"
     },
     "160209-3ik9kj6d": {
       "estado": "validada"
@@ -573,7 +586,8 @@
       "estado": "validada"
     },
     "294993-lrgn9haeb": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://fun-japan.jp/jp/articles/14021"
     },
     "294993-23b91d32": {
       "estado": "validada"
@@ -588,7 +602,8 @@
       "estado": "validada"
     },
     "269235-4ui73krj7": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://rurubu.jp/andmore/article/8333"
     },
     "269235-36o4m6k": {
       "estado": "validada"
@@ -621,7 +636,8 @@
       "estado": "validada"
     },
     "306742-51i52g2fq": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://anime.eiga.com/news/113253"
     },
     "404480-pr3v553z0": {
       "estado": "validada"
@@ -651,7 +667,8 @@
       "estado": "validada"
     },
     "294993-lrff55dcr": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://fun-japan.jp/jp/articles/14021"
     },
     "294993-e1fafab4": {
       "estado": "validada"
@@ -672,7 +689,8 @@
       "estado": "validada"
     },
     "328609-uqesctl9j": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://tetsudo-ch.com/12963190.html"
     },
     "328609-4xygg8inc": {
       "estado": "validada"
@@ -696,10 +714,12 @@
       "estado": "validada"
     },
     "144357-iggrldcoh": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://www.kadokawa.co.jp/topics/5733/"
     },
     "58949-3pfh07n": {
-      "estado": "validada"
+      "estado": "confirmada",
+      "confirmacion": "https://www.japan.travel/tw/spot/1659/"
     },
     "58949-8e5d70ba": {
       "estado": "validada"
@@ -724,6 +744,14 @@
     },
     "504678-1kn4ynj": {
       "estado": "validada"
+    },
+    "269235-ouzqmg9l7": {
+      "estado": "confirmada",
+      "confirmacion": "https://www.fun-japan.jp/tw/articles/12519"
+    },
+    "359930-hiiavog": {
+      "estado": "confirmada",
+      "confirmacion": "https://anime.eiga.com/news/115756"
     }
   },
   "principal": {},
@@ -752,6 +780,7 @@
     "58949-caf4140b": "Es un tramo de tren entre Ikebukuro y Shinjuku, no un punto al que se pueda ir",
     "269235-bm3zbak": "Son nombres de líneas de tren, no un punto al que se pueda ir",
     "92382-odh4x07de": "Es el Palacio Imperial visto desde el aire, no la Torre de Tokio",
-    "207195-u5v2chc1y": "La oficina de turismo de Minobu queda a unos 25 km del lago Motosu"
+    "207195-u5v2chc1y": "La oficina de turismo de Minobu queda a unos 25 km del lago Motosu",
+    "262897-45do68t": "Laid-Back Camp no pasa por Hida: el punto «飛騨小町» solo coincide por el nombre (el mapa lo ubica en Nagano)"
   }
 }

@@ -20,7 +20,8 @@
         "enlace": "https://www.google.com/maps/d/viewer?mid=1yjZUbvfXNwpnwYgoHbPpiWJnbRM&ll=35.70168%2C139.767926&z=17"
        },
        "original": "https://image.anitabi.cn/user/0/bangumi/49294/points/cxfdy2b0l-1694617233071.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://www.daily.co.jp/gossip/subculture/2021/09/08/0014660994.shtml"
       },
       {
        "id": "49294-knlbeybai",
@@ -170,7 +171,8 @@
         "enlace": "https://www.google.com/maps/d/viewer?mid=1ETfERFhxsc9JGJgsDVvh-qQidsU&ll=35.698174%2C139.771946&z=17"
        },
        "original": "https://image.anitabi.cn/user/0/bangumi/10380/points/kovdimeor-1716514541178.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://animeanime.jp/article/2012/02/16/9452.html"
       },
       {
        "id": "10380-8r2oep4",
@@ -746,7 +748,8 @@
         "enlace": "https://www.anitabi.cn/map?bangumiId=294993&pid=lrgvxiylh"
        },
        "original": "https://image.anitabi.cn/points/294993/lrgvxiylh_1719541898363.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://fun-japan.jp/jp/articles/14021"
       },
       {
        "id": "294993-fdcdf66d",
@@ -960,7 +963,8 @@
         "enlace": "https://www.google.com/maps/d/viewer?mid=1xRkcdzHJgkANcwCtcPFa-x0Crgknlyzg&ll=35.627685%2C139.771319&z=17"
        },
        "original": "https://image.anitabi.cn/points/296659/4s6dzr6l2.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://travel.watch.impress.co.jp/docs/news/1293504.html"
       },
       {
        "id": "296659-4s6dzr6fk",
@@ -1282,7 +1286,8 @@
         "enlace": "https://www.anitabi.cn/map?bangumiId=115908&pid=kq1wg6e2b"
        },
        "original": "https://image.anitabi.cn/points/115908/kq1wg6e2b_1716607069889.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://www.keihan.co.jp/euphonium/"
       },
       {
        "id": "115908-7ghhgxql",
@@ -2616,7 +2621,8 @@
         "enlace": "https://www.anitabi.cn/map?bangumiId=1608&pid=np5n8b8ys"
        },
        "original": "https://image.anitabi.cn/user/0/bangumi/1608/points/6uhlkmcos-1677460086131.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://www.j-cast.com/2015/07/29241467.html"
       },
       {
        "id": "1608-ir7b7zb",
@@ -2688,7 +2694,8 @@
         "enlace": "https://www.google.com/maps/d/viewer?mid=18yUGs7Ekm9vaZe4Ym2zK4oAxFEc56uU"
        },
        "original": "https://image.anitabi.cn/points/328609/f0ff9fbe_1739361977717.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://tetsudo-ch.com/12963190.html"
       },
       {
        "id": "328609-b40ee17a",
@@ -2827,7 +2834,8 @@
         "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
        },
        "original": "https://image.anitabi.cn/points/160209/3ik9kjfi.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://www.buzzfeed.com/harunayamazaki/hida-kiminonaha"
       },
       {
        "id": "160209-3ik9kjaa",
@@ -2925,7 +2933,8 @@
         "enlace": "https://www.anitabi.cn/map?bangumiId=27364&pid=u3z4mo7nc"
        },
        "original": "https://image.anitabi.cn/user/2192/bangumi/27364/points/u3z4mo7nc-1755786535729.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://honichi.com/news/2018/09/19/hyokaseichi/"
       },
       {
        "id": "27364-cwuduh0",
@@ -2939,27 +2948,6 @@
        },
        "original": "https://image.anitabi.cn/user/0/bangumi/27364/points/cwuduh0-1775118071002.jpg",
        "estado": "validada"
-      }
-     ]
-    },
-    {
-     "serie": "yuru-camp",
-     "nombre": "Laid-Back Camp",
-     "romaji": "Yuru Camp△",
-     "estudio": "C-Station y 8-bit",
-     "escenas": [
-      {
-       "id": "262897-45do68t",
-       "punto": "飛騨小町",
-       "ep": "1",
-       "s": null,
-       "parte": "Temporada 2",
-       "fuente": {
-        "autor": "Anitabi@甜食伯爵",
-        "enlace": "https://www.anitabi.cn/map?bangumiId=262897&pid=45do68t"
-       },
-       "original": "https://image.anitabi.cn/points/262897/45do68t_1756042796135.jpg",
-       "estado": "por-confirmar"
       }
      ]
     }
@@ -2985,7 +2973,8 @@
         "enlace": "https://www.anitabi.cn/map?bangumiId=207195&pid=u5ve7l7wt"
        },
        "original": "https://image.anitabi.cn/points/207195/u5ve7l7wt_1743236724022.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://www.yamanashi-kankou.jp/special/sp_yurucamp/story1.html"
       },
       {
        "id": "207195-u5w8higfq",
@@ -3127,7 +3116,8 @@
         "enlace": "https://www.google.com/maps/d/viewer?mid=1ODFeoYj14UaaLPtuEEvNBxmkJJA&ll=35.233189%2C139.104056&z=17"
        },
        "original": "https://image.anitabi.cn/user/0/bangumi/265/points/2m71cf11x-1725815885738.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://www.hakonenavi.jp/event/14731"
       }
      ]
     }
@@ -3339,7 +3329,8 @@
         "enlace": "https://www.anitabi.cn/map?bangumiId=58949&pid=3pfh07n"
        },
        "original": "https://image.anitabi.cn/points/58949/3pfh07n_1755078453132.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://www.japan.travel/tw/spot/1659/"
       },
       {
        "id": "58949-25a9b035",
@@ -3639,7 +3630,8 @@
         "enlace": "https://www.google.com/maps/d/viewer?mid=1Q46Jt3mn7jaRLKrAlvuZMUn8Qru35oA&ll=35.65962%2C139.700361&z=17"
        },
        "original": "https://image.anitabi.cn/points/369304/7f15bf3d_1719534456714.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://www.famitsu.com/news/202309/04315576.html"
       },
       {
        "id": "369304-999eb252",
@@ -4122,7 +4114,8 @@
         "enlace": "https://www.anitabi.cn/map?bangumiId=359930&pid=hiiavog"
        },
        "original": "https://image.anitabi.cn/user/0/bangumi/359930/points/hiiavog-1785134897234.webp",
-       "estado": "por-confirmar"
+       "estado": "confirmada",
+       "confirmacion": "https://anime.eiga.com/news/115756"
       },
       {
        "id": "359930-hiim7yl",
@@ -4681,7 +4674,8 @@
         "enlace": "https://www.google.com/maps/d/viewer?mid=1x6VZkTtu6d0FLZV_i_MFBYhwqYY"
        },
        "original": "https://image.anitabi.cn/points/160209/3ik9kjew.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://www.knt.co.jp/meito/sp/kiminonaha/"
       },
       {
        "id": "160209-3ik9kj6d",
@@ -4982,7 +4976,8 @@
         "enlace": "https://www.anitabi.cn/map?bangumiId=294993&pid=lrgn9haeb"
        },
        "original": "https://image.anitabi.cn/points/294993/lrgn9haeb_1719541894207.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://fun-japan.jp/jp/articles/14021"
       },
       {
        "id": "294993-23b91d32",
@@ -5200,7 +5195,8 @@
         "enlace": "https://www.google.com/maps/d/viewer?mid=14kcxx9iP_cOuHXHsP0nFzYCPt8Pw2Suy&ll=35.694206%2C139.700618&z=17"
        },
        "original": "https://image.anitabi.cn/user/0/bangumi/269235/points/4ui73krj7-1710234719464.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://rurubu.jp/andmore/article/8333"
       },
       {
        "id": "269235-36o4m6k",
@@ -5511,7 +5507,8 @@
         "enlace": "https://www.anitabi.cn/map?bangumiId=269235&pid=ouzqmg9l7"
        },
        "original": "https://image.anitabi.cn/user/0/bangumi/269235/points/ouzqmg9l7-1728278742617.jpg",
-       "estado": "por-confirmar"
+       "estado": "confirmada",
+       "confirmacion": "https://www.fun-japan.jp/tw/articles/12519"
       }
      ]
     },
@@ -5555,7 +5552,8 @@
         "enlace": "https://www.google.com/maps/d/viewer?mid=1CcrNtSsfPfnaC2oktSP48sdC2vIRiMz3&ll=35.669975%2C139.702733&z=17"
        },
        "original": "https://image.anitabi.cn/user/1468/bangumi/306742/points/51i52g2fq-1735581759677.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://anime.eiga.com/news/113253"
       },
       {
        "id": "404480-pr3v553z0",
@@ -5705,7 +5703,8 @@
         "enlace": "https://www.anitabi.cn/map?bangumiId=294993&pid=lrff55dcr"
        },
        "original": "https://image.anitabi.cn/points/294993/lrff55dcr_1719541887696.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://fun-japan.jp/jp/articles/14021"
       },
       {
        "id": "294993-e1fafab4",
@@ -5928,7 +5927,8 @@
         "enlace": "https://www.anitabi.cn/map?bangumiId=328609&pid=uqesctl9j"
        },
        "original": "https://image.anitabi.cn/points/328609/uqesctl9j_1744846193527.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://tetsudo-ch.com/12963190.html"
       },
       {
        "id": "328609-4xygg8inc",
@@ -6104,7 +6104,8 @@
         "enlace": "https://www.anitabi.cn/map?bangumiId=144357&pid=iggrldcoh"
        },
        "original": "https://image.anitabi.cn/user/0/bangumi/144357/points/iggrldcoh-1710213589217.jpg",
-       "estado": "validada"
+       "estado": "confirmada",
+       "confirmacion": "https://www.kadokawa.co.jp/topics/5733/"
       },
       {
        "id": "144357-55emti6ur",
