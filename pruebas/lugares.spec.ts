@@ -269,6 +269,10 @@ test.describe('filtros', () => {
     const antes = await donde();
     await filtrarPor(page, { zona: ['tokio', 'kanto'], temp: ['primavera'], anime: true });
     expect(await donde()).toEqual(antes);
+    // la zona de nombre más largo tampoco agranda el menú
+    await page.goto('/lugares?zona=oeste');
+    await page.waitForFunction(() => document.fonts.status === 'loaded');
+    expect(await donde()).toEqual(antes);
   });
 });
 

@@ -556,6 +556,29 @@ const GRUPOS = [
       $(`p-${g}`)!.hidePopover();
     }
   });
+  /**
+   * Cada menú reserva el ancho del texto más largo que puede mostrar («Hiroshima y Shikoku», «Zona · 7»…):
+   * así escoger una opción nunca lo agranda ni corre la fila. Se mide con las fuentes ya cargadas.
+   */
+  function reservarAnchoMenus() {
+    for (const g of GRUPOS) {
+      const boton = $(`f-${g}`)!;
+      const texto = boton.querySelector<HTMLElement>('[data-texto]')!;
+      const valores = [...document.querySelectorAll<HTMLInputElement>(`.panel input[name="${g}"]`)].map((i) => i.value);
+      const posibles = [textoMenu(g, []), textoMenu(g, valores), ...valores.map((v) => textoMenu(g, [v]))];
+      const actual = texto.textContent;
+      boton.style.minWidth = '';
+      let mayor = 0;
+      for (const t of posibles) {
+        texto.textContent = t;
+        mayor = Math.max(mayor, boton.getBoundingClientRect().width);
+      }
+      texto.textContent = actual;
+      boton.style.minWidth = `${Math.ceil(mayor)}px`;
+    }
+  }
+  document.fonts.ready.then(reservarAnchoMenus);
+
   // los menús: el panel se abre debajo de su botón y lo sigue si la página se mueve
   for (const g of GRUPOS) {
     const panel = $(`p-${g}`)!;
@@ -882,9 +905,9 @@ const GRUPOS = [
     background: var(--paper-2);
   }
   /* el menú: «Todas las zonas», «Tokio» o «Zona · 2». Ancho reservado: cambiar el texto no corre la fila */
+  /* el ancho mínimo de cada menú lo pone el script: el de su texto más largo (ver reservarAnchoMenus) */
   .menu {
     justify-content: space-between;
-    min-width: 10.5rem;
   }
   .menu .flecha {
     width: 0.62rem;
