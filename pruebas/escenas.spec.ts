@@ -194,6 +194,56 @@ test.describe('la ventana', () => {
     await expect(ventana(page)).toContainText(ESCENAS.shinjuku.obras[0].nombre);
   });
 
+  test('la X sigue a la vista después de bajar, y cierra', async ({ page }) => {
+    await abrir(page, '/lugares', 'no');
+    await abrirVentana(page, 'shibuya');
+    const v = ventana(page);
+    await v.locator('.es-ficha').evaluate((f) => (f.scrollTop = f.scrollHeight));
+    await page.waitForTimeout(300);
+    const cerrar = v.locator('.es-cerrar');
+    await expect(cerrar).toBeInViewport();
+    const caja = (await cerrar.boundingBox())!;
+    expect(Math.min(caja.width, caja.height)).toBeGreaterThanOrEqual(44);
+    await cerrar.click();
+    await expect(v).not.toBeVisible();
+  });
+
+  test('«Confirmada» y «Por confirmar» miden lo mismo', async ({ page }) => {
+    await abrir(page, '/lugares', 'no');
+    await abrirVentana(page, 'akihabara');
+    const altos = await ventana(page).evaluate((d) =>
+      ['.chip.ok', '.chip.warn'].map((s) => Math.round(d.querySelector(s)!.getBoundingClientRect().height)),
+    );
+    expect(altos[0]).toBe(altos[1]);
+  });
+
+  test('en celular, arrastrar la hoja hacia abajo la cierra; un tironcito no', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'el gesto es del celular');
+    await abrir(page, '/lugares', 'no');
+    await abrirVentana(page, 'shibuya');
+    const v = ventana(page);
+    const arrastrar = (px: number) =>
+      v.evaluate((d, px) => {
+        const asa = d.querySelector('.es-cabeza')!;
+        const r = asa.getBoundingClientRect();
+        const x = r.left + r.width / 2;
+        const y = r.top + 10;
+        const toque = (yy: number) => new Touch({ identifier: 1, target: asa, clientX: x, clientY: yy });
+        const ev = (tipo: string, yy: number) =>
+          asa.dispatchEvent(new TouchEvent(tipo, { bubbles: true, cancelable: true, touches: tipo === 'touchend' ? [] : [toque(yy)], changedTouches: [toque(yy)] }));
+        ev('touchstart', y);
+        for (let i = 1; i <= 10; i++) ev('touchmove', y + (px * i) / 10);
+        ev('touchend', y + px);
+      }, px);
+    await arrastrar(30);
+    await page.waitForTimeout(400);
+    await expect(v).toBeVisible();
+    await expect(v.locator('.es-ficha')).toHaveAttribute('style', /transform: ;|^$|transition: ;/);
+    await arrastrar(260);
+    await expect(v).not.toBeVisible();
+    expect(new URL(page.url()).hash).toBe('');
+  });
+
   test('con una sola obra no hay índice ni barra', async ({ page }) => {
     const una = CON_ANIME.find((id) => ESCENAS[id].obras.length === 1)!;
     await abrir(page, '/lugares', 'no');
@@ -219,7 +269,7 @@ test.describe('la ventana', () => {
     await page.waitForTimeout(900);
     const distancia = await v.evaluate((d, i) => {
       const ficha = d.querySelector('.es-ficha')!.getBoundingClientRect();
-      const salto = d.querySelector('.es-salto')?.getBoundingClientRect();
+      const salto = d.querySelector('.es-cabeza')?.getBoundingClientRect();
       const sec = d.querySelectorAll('.es-obra')[i].getBoundingClientRect();
       return sec.top - (salto ? salto.bottom : ficha.top);
     }, destino);

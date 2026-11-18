@@ -558,6 +558,73 @@ button {
   font-weight: 700;
 }
 
+/* ───── entrada y salida de las ventanas ─────
+   Las tres del sitio (registro, filtros, escenas) se mueven igual: las ventanas del centro suben
+   un poquito mientras aparecen; las hojas del celular suben desde el borde de abajo y bajan al
+   cerrarse. El fondo oscuro entra y sale con fundido. Con «reducir movimiento» no se anima nada
+   (ver la regla general de prefers-reduced-motion). */
+/* --sale: la opacidad fuera de pantalla (las hojas no se desvanecen: solo se deslizan) */
+:is(.registro, .hoja-filtros, dialog.escenas) {
+  --entra: translateY(0.6rem);
+  --sale: 0;
+  opacity: var(--sale);
+  transform: var(--entra);
+  transition:
+    opacity 0.16s ease-in,
+    transform 0.16s ease-in,
+    overlay 0.16s ease-in allow-discrete,
+    display 0.16s ease-in allow-discrete;
+}
+:is(.registro, .hoja-filtros, dialog.escenas)[open] {
+  opacity: 1;
+  transform: none;
+  transition-duration: 0.22s;
+  transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@starting-style {
+  :is(.registro, .hoja-filtros, dialog.escenas)[open] {
+    opacity: var(--sale);
+    transform: var(--entra);
+  }
+}
+/* las hojas: entran y salen enteras por abajo, sin fundido (el papel no se vuelve transparente) */
+dialog.hoja-filtros {
+  --entra: translateY(100%);
+  --sale: 1;
+}
+@media (max-width: 640px) {
+  /* en pantallas y no en % de la hoja: la hoja crece cuando llegan las escenas, y el recorrido no salta */
+  dialog.escenas {
+    --entra: translateY(100dvh);
+    --sale: 1;
+  }
+}
+/* las hojas recorren más camino: un poco más de tiempo */
+:is(dialog.hoja-filtros, dialog.escenas)[open] {
+  transition-duration: 0.28s;
+}
+@media (min-width: 641px) {
+  dialog.escenas[open] {
+    transition-duration: 0.22s;
+  }
+}
+:is(.registro, .hoja-filtros, dialog.escenas)::backdrop {
+  opacity: 0;
+  transition:
+    opacity 0.16s ease-in,
+    overlay 0.16s ease-in allow-discrete,
+    display 0.16s ease-in allow-discrete;
+}
+:is(.registro, .hoja-filtros, dialog.escenas)[open]::backdrop {
+  opacity: 1;
+  transition-duration: 0.22s;
+}
+@starting-style {
+  :is(.registro, .hoja-filtros, dialog.escenas)[open]::backdrop {
+    opacity: 0;
+  }
+}
+
 /* registro */
 .registro {
   width: min(26rem, calc(100vw - 2rem));

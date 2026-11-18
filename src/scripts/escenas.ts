@@ -121,16 +121,22 @@ function iniciar(dlg: HTMLDialogElement) {
     const n = d.obras.length;
     const total = d.obras.reduce((s, o) => s + o.escenas.length, 0);
     const sinFotos = conSesion() ? '' : ' sin-fotos';
-    const arriba = `<div class="es-arriba"><span class="mono">聖地 · ${esc(d.lugar.nombre)}</span><button type="button" class="es-cerrar" data-accion="cerrar">Cerrar ✕</button></div>`;
+    const lugar = `<span class="mono es-lugar">聖地 · ${esc(d.lugar.nombre)}</span>`;
     const titulo = `<h2 id="es-titulo">${n} ${n === 1 ? 'obra' : 'obras'}<small>${nEsc(total)}</small></h2>`;
     const secciones = d.obras.map(seccion).join('');
+    // el encabezado se queda pegado arriba: cerrar siempre está a la mano, también abajo del todo.
+    // En celular con varias obras, ahí mismo va la barra que dice qué obra se ve y abre el índice.
+    const conSalto = n >= 2 && angosto.matches;
+    const izquierda = conSalto
+      ? `<button type="button" class="es-salto-b" data-accion="indice" aria-expanded="false"><span><small>Viendo</small><b data-viendo>${esc(d.obras[0].nombre)}</b></span><span class="mono" data-n>1 de ${n} · Índice ▾</span></button>`
+      : lugar;
+    const cabeza = `<div class="es-cabeza${conSalto ? ' es-salto' : ''}"><span class="es-asa" aria-hidden="true"></span><div class="es-cabeza-fila">${izquierda}<button type="button" class="es-cerrar" data-accion="cerrar">Cerrar ✕</button></div></div>`;
     let html: string;
-    if (n < 2) html = arriba + titulo + hoy(d) + secciones;
+    if (n < 2) html = cabeza + titulo + hoy(d) + secciones;
     else if (!angosto.matches)
-      html = `${arriba}${titulo}<div class="es-recorrido"><nav class="es-indice${sinFotos}" aria-label="Obras">${d.obras.map((o, i) => filaIndice(o, i, 0)).join('')}</nav><div class="es-feed">${hoy(d)}${secciones}</div></div>`;
+      html = `${cabeza}${titulo}<div class="es-recorrido"><nav class="es-indice${sinFotos}" aria-label="Obras">${d.obras.map((o, i) => filaIndice(o, i, 0)).join('')}</nav><div class="es-feed">${hoy(d)}${secciones}</div></div>`;
     else
-      html = `${arriba}${titulo}
-        <div class="es-salto"><button type="button" class="es-salto-b" data-accion="indice" aria-expanded="false"><span><small>Viendo</small><b data-viendo>${esc(d.obras[0].nombre)}</b></span><span class="mono" data-n>1 de ${n} · Índice ▾</span></button></div>
+      html = `${cabeza}<p class="es-sobre">${lugar}</p>${titulo}
         <nav class="es-indice es-emergente${sinFotos}" aria-label="Obras" hidden>${d.obras.map((o, i) => filaIndice(o, i, null)).join('')}</nav>
         ${hoy(d)}${secciones}`;
     dlg.innerHTML = `<div class="es-ficha">${html}</div>`;
@@ -142,7 +148,7 @@ function iniciar(dlg: HTMLDialogElement) {
   function espiar() {
     const ficha = dlg.querySelector<HTMLElement>('.es-ficha');
     if (!ficha || !actual || ficha.classList.contains('indice-abierto')) return;
-    const salto = ficha.querySelector<HTMLElement>('.es-salto');
+    const salto = ficha.querySelector<HTMLElement>('.es-cabeza');
     const linea = (salto ? salto.getBoundingClientRect().bottom : ficha.getBoundingClientRect().top) + 24;
     const secs = [...ficha.querySelectorAll<HTMLElement>('.es-obra')];
     let i = 0;
@@ -199,7 +205,7 @@ function iniciar(dlg: HTMLDialogElement) {
       dlg.querySelector<HTMLElement>('.es-cerrar')?.focus();
     } catch {
       cache.delete(id);
-      dlg.innerHTML = '<div class="es-ficha"><div class="es-arriba"><span class="mono">聖地</span><button type="button" class="es-cerrar" data-accion="cerrar">Cerrar ✕</button></div><p class="es-cargando">No se pudieron cargar las escenas. Revisa la conexión e intenta de nuevo.</p></div>';
+      dlg.innerHTML = '<div class="es-ficha"><div class="es-cabeza"><span class="es-asa" aria-hidden="true"></span><div class="es-cabeza-fila"><span class="mono es-lugar">聖地</span><button type="button" class="es-cerrar" data-accion="cerrar">Cerrar ✕</button></div></div><p class="es-cargando">No se pudieron cargar las escenas. Revisa la conexión e intenta de nuevo.</p></div>';
     }
   }
 
@@ -287,7 +293,7 @@ function iniciar(dlg: HTMLDialogElement) {
         b.setAttribute('aria-expanded', String(abrirlo));
         if (abrirlo) {
           ficha.querySelector('[data-n]')!.textContent = 'Cerrar índice ▴';
-          ficha.scrollTop = ficha.querySelector<HTMLElement>('.es-salto')!.offsetTop;
+          ficha.scrollTop = 0;
         } else {
           ficha.scrollTop = Number(ficha.dataset.volver ?? 0);
           espiar();
@@ -303,7 +309,7 @@ function iniciar(dlg: HTMLDialogElement) {
           ficha.querySelector('.es-salto-b')?.setAttribute('aria-expanded', 'false');
         }
         const sec = ficha.querySelector<HTMLElement>(`.es-obra[data-oi="${oi}"]`)!;
-        const salto = ficha.querySelector<HTMLElement>('.es-salto');
+        const salto = ficha.querySelector<HTMLElement>('.es-cabeza');
         const borde = salto
           ? Math.max(salto.getBoundingClientRect().bottom, ficha.getBoundingClientRect().top + salto.offsetHeight)
           : ficha.getBoundingClientRect().top;
@@ -317,6 +323,70 @@ function iniciar(dlg: HTMLDialogElement) {
       }
     }
   });
+
+  // ── celular: arrastrar la hoja hacia abajo la cierra ──
+  // Desde el encabezado siempre; desde el contenido solo cuando ya está arriba del todo, para no
+  // pelear con el desplazamiento normal. Si no se arrastra lo suficiente, la hoja vuelve a su sitio.
+  {
+    let y0 = 0;
+    let t0 = 0;
+    let dy = 0;
+    let posible = false;
+    let arrastrando = false;
+    const hoja = () => dlg.querySelector<HTMLElement>('.es-ficha');
+    const enCabeza = (ev: TouchEvent) => !!(ev.target as Element).closest('.es-cabeza');
+
+    dlg.addEventListener(
+      'touchstart',
+      (ev) => {
+        const f = hoja();
+        posible = !!f && angosto.matches && ev.touches.length === 1 && (enCabeza(ev) || f.scrollTop <= 0);
+        arrastrando = false;
+        dy = 0;
+        y0 = ev.touches[0].clientY;
+        t0 = ev.timeStamp;
+      },
+      { passive: true },
+    );
+
+    dlg.addEventListener(
+      'touchmove',
+      (ev) => {
+        const f = hoja();
+        if (!posible || !f) return;
+        dy = ev.touches[0].clientY - y0;
+        if (!arrastrando) {
+          // hacia arriba es desplazamiento normal; hace falta un poquito de recorrido para decidir
+          if (dy < -6) posible = false;
+          if (dy < 8) return;
+          if (f.scrollTop > 0 && !enCabeza(ev)) return void (posible = false);
+          arrastrando = true;
+          f.style.transition = 'none';
+        }
+        ev.preventDefault();
+        f.style.transform = `translateY(${Math.max(0, dy)}px)`;
+      },
+      { passive: false },
+    );
+
+    const soltar = (ev: TouchEvent) => {
+      const f = hoja();
+      const venia = arrastrando;
+      posible = arrastrando = false;
+      if (!venia || !f) return;
+      f.style.transition = '';
+      const rapido = dy / Math.max(1, ev.timeStamp - t0) > 0.5;
+      if (dy > Math.min(140, f.offsetHeight * 0.25) || (rapido && dy > 40)) {
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return dlg.close();
+        f.style.transform = 'translateY(100%)';
+        f.addEventListener('transitionend', () => dlg.close(), { once: true });
+      } else {
+        f.style.transform = '';
+      }
+    };
+    dlg.addEventListener('touchend', soltar);
+    dlg.addEventListener('touchcancel', soltar);
+  }
 
   // una imagen que no carga (anitabi no responde o la quitó): un marco del mismo tamaño que lleva a verla allá
   dlg.addEventListener(

@@ -3,8 +3,10 @@
 // «Ver escenas» en una tarjeta de Lugares (atributo data-abrir-escenas).
 //
 // Escritorio: ventana centrada, con el índice de obras fijo a la izquierda y todas las obras
-// seguidas a la derecha. Celular: hoja que sube desde abajo, con una barra fija que dice qué obra
-// se está viendo y abre el índice (el índice reemplaza al recorrido: nada se desliza dentro de otra cosa).
+// seguidas a la derecha. Celular: hoja que sube desde abajo, con manija (arrastrarla hacia abajo la
+// cierra) y en el encabezado la barra que dice qué obra se está viendo y abre el índice (el índice
+// reemplaza al recorrido: nada se desliza dentro de otra cosa). En los dos, el encabezado con la X
+// se queda pegado arriba: cerrar siempre está a la mano.
 ---
 
 <dialog class="escenas" id="escenas" aria-label="Escenas de anime"></dialog>
@@ -27,6 +29,10 @@
     background: rgba(25, 23, 20, 0.55);
   }
   .es-ficha {
+    /* relleno de los lados; el encabezado fijo lo cruza de borde a borde */
+    --pad: 1.35rem;
+    /* alto del encabezado fijo: el índice de escritorio se pega justo debajo */
+    --alto-cabeza: calc(2.75rem + 1.1rem + 1px);
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 0.95rem;
@@ -35,22 +41,52 @@
     /* el navegador no reacomoda solo el desplazamiento mientras se salta de obra en obra */
     overflow-anchor: none;
     overscroll-behavior: contain;
-    padding: 1.2rem 1.35rem 1.35rem;
+    padding: 0 var(--pad) var(--pad);
     border: 1px solid var(--ink);
     background: var(--paper);
     box-shadow: 8px 8px 0 var(--ink);
+    transition: transform 0.22s ease-out;
   }
-  .es-arriba {
+  @media (prefers-reduced-motion: reduce) {
+    .es-ficha {
+      transition: none;
+    }
+  }
+
+  /* el encabezado: pegado arriba siempre, así cerrar queda a la mano en cualquier punto del recorrido */
+  .es-cabeza {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    margin: 0 calc(-1 * var(--pad));
+    padding: 0.55rem var(--pad);
+    background: var(--paper);
+    border-bottom: 1px solid var(--ink);
+  }
+  .es-cabeza-fila {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
+    min-height: 2.75rem;
   }
-  .es-arriba .mono {
+  .es-asa {
+    display: none;
+  }
+  .es-lugar {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     color: var(--shu-tinta);
     font-size: 0.62rem;
   }
+  .es-sobre {
+    margin: 0;
+    max-width: none;
+  }
   .es-cerrar {
+    flex: none;
     min-height: 2.75rem;
     padding: 0 0.2rem;
     background: none;
@@ -127,10 +163,11 @@
   }
   .es-recorrido > .es-indice {
     position: sticky;
-    top: 0;
+    /* justo debajo del encabezado fijo, con aire */
+    top: calc(var(--alto-cabeza) + 0.95rem);
     z-index: 1;
     /* nunca más alto que la ventana: si no cabe, se desliza solo */
-    max-height: calc(100dvh - 9rem);
+    max-height: calc(100dvh - 2rem - var(--alto-cabeza) - 0.95rem - var(--pad));
     overflow: auto;
     overscroll-behavior: contain;
   }
@@ -287,10 +324,23 @@
     margin-left: 0.3rem;
   }
   /* el enlace del mapa mide 44 px para el dedo sin mover el renglón */
-  .es-datos a {
+  .es-datos a:not(.chip) {
     display: inline-block;
     padding-block: 0.75rem;
     margin-block: -0.75rem;
+  }
+  /* «Confirmada ↗» es enlace pero se ve igual que «Por confirmar»: el área del dedo va por fuera del borde */
+  .es-datos a.chip {
+    position: relative;
+    text-decoration: none;
+  }
+  .es-datos a.chip:hover {
+    background: color-mix(in srgb, currentColor 10%, transparent);
+  }
+  .es-datos a.chip::after {
+    content: '';
+    position: absolute;
+    inset: -0.7rem -0.25rem;
   }
   .es-fila {
     display: grid;
@@ -389,19 +439,10 @@
     font-size: 0.9rem;
   }
 
-  /* celular: la barra fija dice qué obra se ve y abre el índice */
-  .es-salto {
-    position: sticky;
-    /* la hoja tiene 1 rem de relleno arriba: así queda pegada al borde */
-    top: -1rem;
-    z-index: 3;
-    margin: 0 -16px;
-    padding: 0.55rem 16px;
-    background: var(--paper);
-    border-block: 1px solid var(--ink);
-  }
+  /* celular: en el encabezado fijo, la barra dice qué obra se ve y abre el índice */
   .es-salto-b {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
     min-height: 2.75rem;
     display: flex;
     justify-content: space-between;
@@ -420,8 +461,14 @@
     text-transform: uppercase;
     color: var(--ink-soft);
   }
+  .es-salto-b > span:first-child {
+    min-width: 0;
+  }
   .es-salto-b b {
     display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-family: var(--f-display);
     font-size: 1.05rem;
     line-height: 1.2;
@@ -454,11 +501,31 @@
       margin: 0;
     }
     dialog.escenas .es-ficha {
+      --pad: 16px;
       max-height: 92dvh;
-      padding: 1rem 16px 1.4rem;
+      padding: 0 16px 1.4rem;
       border-width: 1px 0 0;
       border-radius: 1rem 1rem 0 0;
       box-shadow: none;
+    }
+    /* la manija: dice que la hoja se arrastra hacia abajo para cerrarla */
+    .es-cabeza {
+      padding-top: 0.4rem;
+      padding-bottom: 0.45rem;
+    }
+    .es-asa {
+      display: block;
+      width: 2.5rem;
+      height: 4px;
+      margin: 0 auto 0.3rem;
+      border-radius: 99px;
+      background: var(--ink);
+      opacity: 0.28;
+    }
+    /* con la barra de la obra al lado, «Cerrar» se separa con un filete, como las celdas del acta */
+    .es-salto .es-cerrar {
+      padding-left: 0.85rem;
+      border-left: 1px solid var(--hair);
     }
     .es-fila {
       grid-template-columns: repeat(3, minmax(0, 1fr));

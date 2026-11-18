@@ -266,8 +266,9 @@ Lugares marca los sitios del catálogo donde pasa una escena de anime:
   sección: deja en cada tema solo sus lugares con escenas y queda en la dirección (`?anime=1`).
 - **Ventana:** todas las obras del lugar seguidas, de la que más escenas tiene ahí a la que
   menos. En escritorio, índice fijo que marca la obra que se ve; en celular, hoja con una barra
-  fija «Viendo · 2 de 16 · Índice». Vive en la dirección (`#escenas-<id>`): Esc y «atrás» la
-  cierran. La pinta `src/scripts/escenas.ts`; el `<dialog>` y sus estilos están en
+  fija «Viendo · 2 de 16 · Índice». El encabezado con la X queda pegado arriba en los dos, y en
+  celular la hoja tiene manija: arrastrarla hacia abajo la cierra. Vive en la dirección
+  (`#escenas-<id>`): la X, Esc, «atrás» y tocar afuera la cierran. La pinta `src/scripts/escenas.ts`; el `<dialog>` y sus estilos están en
   `src/components/Escenas.astro`.
 
 **Datos.** Los puntos salen de la API pública de [anitabi](https://github.com/anitabi/anitabi.cn-document),
