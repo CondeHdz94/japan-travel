@@ -107,8 +107,8 @@ test.describe('etiquetaMeses', () => {
 });
 
 test.describe('catálogo de lugares', () => {
-  test('el README dice 116 lugares', () => {
-    expect(SEMILLAS.length).toBe(116);
+  test('el README dice 121 lugares', () => {
+    expect(SEMILLAS.length).toBe(121);
   });
 
   test('ids únicos y con forma que la API de marcas acepta', () => {
@@ -172,8 +172,9 @@ test.describe('catálogo de lugares', () => {
 test.describe('fotos del catálogo', () => {
   const enDisco = existsSync('public/lugares') ? readdirSync('public/lugares') : [];
 
-  // Pendientes conocidos: el script no encontró foto libre para estos. Si aparece otro, avisa.
-  const SIN_FOTO = ['fuji-speedway', 'nagoro'];
+  // Todos tienen foto. Si el script no encuentra una libre, se busca a mano (ver README); si de verdad
+  // no hay, el lugar va aquí y la tarjeta muestra el kanji del tema.
+  const SIN_FOTO: string[] = [];
 
   test('cada lugar del catálogo tiene foto y crédito (salvo los pendientes conocidos)', () => {
     expect(SEMILLAS.filter((l) => !fotos[l.id]).map((l) => l.id)).toEqual(SIN_FOTO);

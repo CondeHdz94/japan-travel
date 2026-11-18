@@ -7,21 +7,24 @@
   },
   "nakano-broadway": {
     "archivo": "nakano-broadway.jpg",
-    "autor": "User:Kentin",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Nakano_broadway_entrance.JPG"
+    "autor": "Tokyo Tourism",
+    "licencia": "foto de prensa ©",
+    "fuente": "https://www.tokyotourism.org/?p=2151",
+    "aMano": true
   },
   "super-potato": {
     "archivo": "super-potato.jpg",
-    "autor": "Federico Lehmann",
-    "licencia": "CC BY 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Super_Potato_360%C2%BA_1_of_3.webm"
+    "autor": "Rob Sheridan",
+    "licencia": "CC BY-NC-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/8182915@N06/4099434138",
+    "aMano": true
   },
   "ikebukuro": {
     "archivo": "ikebukuro.jpg",
-    "autor": "Guilhem Vellut from Annecy, France",
-    "licencia": "CC BY 2.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Sunshine_60_Observatory_@_Sunshine_Building_@_Ikebukuro_(11547419543).jpg"
+    "autor": "Like_the_Grand_Canyon",
+    "licencia": "CC BY-NC 2.0",
+    "fuente": "https://www.flickr.com/photos/22508531@N08/43911989225",
+    "aMano": true
   },
   "museo-ghibli": {
     "archivo": "museo-ghibli.jpg",
@@ -31,21 +34,24 @@
   },
   "gundam-odaiba": {
     "archivo": "gundam-odaiba.jpg",
-    "autor": "ITA-ATU",
-    "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Diver-City_Tokyo.jpg"
+    "autor": "daisukekoba",
+    "licencia": "CC BY-NC-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/131017027@N06/36906750484",
+    "aMano": true
   },
   "den-den-town": {
     "archivo": "den-den-town.jpg",
-    "autor": "Oilstreet",
-    "licencia": "CC BY 2.5",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Nipponbashi_Osaka_Japan01-r.jpg"
+    "autor": "Osaka Convention & Tourism Bureau",
+    "licencia": "foto oficial ©",
+    "fuente": "https://discover.osaka-info.jp/en/articles/cyberpunk",
+    "aMano": true
   },
   "museo-manga-kioto": {
     "archivo": "museo-manga-kioto.jpg",
-    "autor": "ja:利用者:珈琲ルンバ",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:%E4%BA%AC%E9%83%BD%E5%9B%BD%E9%9A%9B%E3%83%9E%E3%83%B3%E3%82%AC%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%A2%E3%83%A0.jpg"
+    "autor": "kento.ikeda",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/14789435@N03/4566447398",
+    "aMano": true
   },
   "fushimi-inari": {
     "archivo": "fushimi-inari.jpg",
@@ -79,9 +85,10 @@
   },
   "castillo-osaka": {
     "archivo": "castillo-osaka.jpg",
-    "autor": "663highland",
-    "licencia": "CC BY 2.5",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Osaka_Castle_03bs3200.jpg"
+    "autor": "DXR",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Osaka_Castle,_Keep_tower,_South_view_20190415_1.jpg",
+    "aMano": true
   },
   "koyasan": {
     "archivo": "koyasan.jpg",
@@ -91,33 +98,38 @@
   },
   "toei-kioto": {
     "archivo": "toei-kioto.jpg",
-    "autor": "Japanexperterna.se",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Eigamura_set.jpg"
+    "autor": "663highland",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:130706_Toei_Kyoto_Studio_Park_Kyoto_Japan04s3.jpg",
+    "aMano": true
   },
   "sensoji": {
     "archivo": "sensoji.jpg",
-    "autor": "Akonnchiroll",
-    "licencia": "CC0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Sensoji_2023.jpg"
+    "autor": "Daderot",
+    "licencia": "Public domain",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Kaminarimon_(outer_gate),_Sensoji_Temple,_Akakusa,_Tokyo.jpg",
+    "aMano": true
   },
   "meiji-jingu": {
     "archivo": "meiji-jingu.jpg",
-    "autor": "Akonnchiroll",
+    "autor": "Jakub Hałun",
     "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Meiji_Jingu_2023-3.jpg"
+    "fuente": "https://commons.wikimedia.org/wiki/File:Tokyo_Shinto_wedding_20100731_7614.jpg",
+    "aMano": true
   },
   "sengakuji": {
     "archivo": "sengakuji.jpg",
-    "autor": "Reggaeman",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Sengakuji_03.JPG"
+    "autor": "Hyppolyte de Saint-Rambert",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Sengaku-ji_Porte_principale.jpg",
+    "aMano": true
   },
   "nikko": {
     "archivo": "nikko.jpg",
-    "autor": "663highland",
+    "autor": "Jpatokal",
     "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:200801_Nikko_Tosho-gu_Nikko_Japan03s3.jpg"
+    "fuente": "https://commons.wikimedia.org/wiki/File:Nikko_Toshogu_Yomeimon_Gate_2024.jpg",
+    "aMano": true
   },
   "kamakura": {
     "archivo": "kamakura.jpg",
@@ -157,15 +169,17 @@
   },
   "yanaka": {
     "archivo": "yanaka.jpg",
-    "autor": "Joe Mabel",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Tokyo_-_Yanaka_143.jpg"
+    "autor": "mittyoi",
+    "licencia": "CC BY-NC 2.0",
+    "fuente": "https://www.flickr.com/photos/40714793@N00/15900422819",
+    "aMano": true
   },
   "kawagoe": {
     "archivo": "kawagoe.jpg",
-    "autor": "Collin Grady",
-    "licencia": "CC BY-SA 2.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Alley_in_Kawagoe.jpg"
+    "autor": "randomwire",
+    "licencia": "CC BY-NC-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/61683005@N00/9104966679",
+    "aMano": true
   },
   "shirakawa-go": {
     "archivo": "shirakawa-go.jpg",
@@ -175,15 +189,17 @@
   },
   "takayama": {
     "archivo": "takayama.jpg",
-    "autor": "Nickaura (Nick Sevarg)",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Takayama%27s_Early_Winter_Welcome_(NE).jpg"
+    "autor": "jbeaulieu",
+    "licencia": "CC BY-NC 2.0",
+    "fuente": "https://www.flickr.com/photos/41782752@N00/28958207430",
+    "aMano": true
   },
   "kanazawa": {
     "archivo": "kanazawa.jpg",
-    "autor": "金沢市",
-    "licencia": "CC BY 2.1 jp",
-    "fuente": "https://commons.wikimedia.org/wiki/File:%E6%9C%9B%E6%B9%96%E5%8F%B0%EF%BC%92.jpg"
+    "autor": "Sergiy Galyonkin",
+    "licencia": "CC BY-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/22974618@N00/54425849939",
+    "aMano": true
   },
   "nakasendo": {
     "archivo": "nakasendo.jpg",
@@ -193,15 +209,17 @@
   },
   "kurashiki": {
     "archivo": "kurashiki.jpg",
-    "autor": "663highland",
-    "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:251101_Mount_Tsurugata_Kurashiki_Okayama_pref_Japan02s3.jpg"
+    "autor": "Joel Abroad",
+    "licencia": "CC BY-NC-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/40295335@N00/7722763470",
+    "aMano": true
   },
   "ouchi-juku": {
     "archivo": "ouchi-juku.jpg",
-    "autor": "No machine-readable author provided. Geomr~commonswiki assumed (based on copyright claims).",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Ouchijuku_2006-11-12.jpg"
+    "autor": "Σ64",
+    "licencia": "CC BY 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Ouchi-juku,_Fukushima_02.jpg",
+    "aMano": true
   },
   "hakone": {
     "archivo": "hakone.jpg",
@@ -211,15 +229,17 @@
   },
   "takao": {
     "archivo": "takao.jpg",
-    "autor": "Ans~jawiki at Japanese Wikipedia",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Mount_Takao_20051023.jpg"
+    "autor": "Dick Thomas Johnson",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/31029865@N06/15003646199",
+    "aMano": true
   },
   "arashiyama": {
     "archivo": "arashiyama.jpg",
-    "autor": "lumoplank",
-    "licencia": "CC0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Arashiyama,_Part_II_-_Arashiyama7534.jpg"
+    "autor": "Leng Cheng",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/48570982@N08/31737483285",
+    "aMano": true
   },
   "kamikochi": {
     "archivo": "kamikochi.jpg",
@@ -229,15 +249,17 @@
   },
   "alpine-route": {
     "archivo": "alpine-route.jpg",
-    "autor": "Papakuro at Japanese Wikipedia",
-    "licencia": "CC BY 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Murodoh.jpg"
+    "autor": "Ankur Panchbudhe",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/28747587@N00/35699237964",
+    "aMano": true
   },
   "monos-nieve": {
     "archivo": "monos-nieve.jpg",
-    "autor": "NY066",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Jigokudani_Hotspring_Gorakuen.JPG"
+    "autor": "butterforfilm",
+    "licencia": "CC BY-NC 2.0",
+    "fuente": "https://www.flickr.com/photos/95661440@N00/5576245501",
+    "aMano": true
   },
   "kenrokuen": {
     "archivo": "kenrokuen.jpg",
@@ -277,21 +299,24 @@
   },
   "adachi": {
     "archivo": "adachi.jpg",
-    "autor": "Motokoka",
-    "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Adachi_Museum_of_Art_01.jpg"
+    "autor": "digicacy",
+    "licencia": "CC BY-NC-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/23010381@N08/5143817907",
+    "aMano": true
   },
   "kintaikyo": {
     "archivo": "kintaikyo.jpg",
-    "autor": "Japanexperterna.se",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Kintaikyox2.jpg"
+    "autor": "Jakub Hałun",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:20100724_Iwakuni_5235.jpg",
+    "aMano": true
   },
   "iya": {
     "archivo": "iya.jpg",
-    "autor": "Naokijp",
-    "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Iya_Valley_seen_from_the_Iya_Valley_Observatory_001.jpg"
+    "autor": "KimonBerlin",
+    "licencia": "CC BY-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/81943113@N00/6551505725",
+    "aMano": true
   },
   "yanagawa": {
     "archivo": "yanagawa.jpg",
@@ -301,9 +326,10 @@
   },
   "naoshima": {
     "archivo": "naoshima.jpg",
-    "autor": "Japanexperterna.se",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Beachside_Torii,_Naoshima.jpg"
+    "autor": "jmhullot",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/32856635@N00/15563593814",
+    "aMano": true
   },
   "teshima": {
     "archivo": "teshima.jpg",
@@ -319,9 +345,10 @@
   },
   "museo-espadas": {
     "archivo": "museo-espadas.jpg",
-    "autor": "江戸村のとくぞう (Edomura no Tokuzo)",
+    "autor": "Kakidai",
     "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Japanese_Sword_Museum-1.jpg"
+    "fuente": "https://commons.wikimedia.org/wiki/File:Katana_-_Motoshige.JPG",
+    "aMano": true
   },
   "hakone-esculturas": {
     "archivo": "hakone-esculturas.jpg",
@@ -337,9 +364,10 @@
   },
   "hiroshima": {
     "archivo": "hiroshima.jpg",
-    "autor": "Wiiii",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Hiroshima_Peace_Memorial_Museum_2009.jpg"
+    "autor": "mwmosser",
+    "licencia": "CC BY-NC-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/9921010@N03/47999021138",
+    "aMano": true
   },
   "shibuya": {
     "archivo": "shibuya.jpg",
@@ -361,15 +389,17 @@
   },
   "harajuku": {
     "archivo": "harajuku.jpg",
-    "autor": "Rs1421",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:JRE-Harajuku-Station-07.jpg"
+    "autor": "Intforce",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Takeshita_Street_in_December_2018.jpg",
+    "aMano": true
   },
   "tsukiji": {
     "archivo": "tsukiji.jpg",
-    "autor": "Wpcpey",
-    "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Tsukiji_2015.jpg"
+    "autor": "Aimaimyi",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Tsukiji_Outer_Market_-04.jpg",
+    "aMano": true
   },
   "shimokitazawa": {
     "archivo": "shimokitazawa.jpg",
@@ -397,15 +427,17 @@
   },
   "daikoku": {
     "archivo": "daikoku.jpg",
-    "autor": "Nyao148",
-    "licencia": "CC BY 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Daikoku-PA.JPG"
+    "autor": "Top Gear",
+    "licencia": "foto de prensa ©",
+    "fuente": "https://www.topgear.com/car-news/retro/gallery-just-another-thursday-night-daikoku-pa-japan",
+    "aMano": true
   },
   "haruna": {
     "archivo": "haruna.jpg",
-    "autor": "Ans",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Haruna-san.JPG"
+    "autor": "FUN! JAPAN",
+    "licencia": "foto de prensa ©",
+    "fuente": "https://www.fun-japan.jp/en/articlesPromotion/14294",
+    "aMano": true
   },
   "turnpike": {
     "archivo": "turnpike.jpg",
@@ -421,9 +453,10 @@
   },
   "museo-toyota": {
     "archivo": "museo-toyota.jpg",
-    "autor": "Morio",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Toyota_Automobile_Museum_2013_September.jpg"
+    "autor": "MIKI Yoshihito. (#mikiyoshihito)",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/7940758@N07/2938447662",
+    "aMano": true
   },
   "kappabashi": {
     "archivo": "kappabashi.jpg",
@@ -445,9 +478,10 @@
   },
   "okunoshima": {
     "archivo": "okunoshima.jpg",
-    "autor": "Vickerman625",
-    "licencia": "Public domain",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Okunoshima_2.JPG"
+    "autor": "kimbleton",
+    "licencia": "CC BY-NC-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/49364380@N00/14936109145",
+    "aMano": true
   },
   "tottori": {
     "archivo": "tottori.jpg",
@@ -457,9 +491,10 @@
   },
   "tashirojima": {
     "archivo": "tashirojima.jpg",
-    "autor": "ひでゆき",
-    "licencia": "Public domain",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Tashirojima_Island.JPG"
+    "autor": "S.R.G - msucoo93",
+    "licencia": "CC BY-NC-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/125066719@N03/28416144123",
+    "aMano": true
   },
   "gunkanjima": {
     "archivo": "gunkanjima.jpg",
@@ -493,15 +528,17 @@
   },
   "subir-fuji": {
     "archivo": "subir-fuji.jpg",
-    "autor": "Suicasmo",
-    "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:View_of_Mount_Fuji_from_%C5%8Cwakudani_20211202.jpg"
+    "autor": "Ludovic Lubeigt from Taiwan",
+    "licencia": "CC BY-SA 2.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Sunrise_from_summit_of_Mount_Fuji_(15302019357).jpg",
+    "aMano": true
   },
   "kanamara": {
     "archivo": "kanamara.jpg",
-    "autor": "Stealth3327",
-    "licencia": "CC0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Kanamara-matsuri2014.jpg"
+    "autor": "Mashthetics",
+    "licencia": "CC BY-NC-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/62817898@N07/13949311211",
+    "aMano": true
   },
   "gion-matsuri": {
     "archivo": "gion-matsuri.jpg",
@@ -511,9 +548,10 @@
   },
   "momiji-kioto": {
     "archivo": "momiji-kioto.jpg",
-    "autor": "PlusMinus",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:TofukujiHondo.jpg"
+    "autor": "Patrick Vierthaler",
+    "licencia": "CC BY-NC 2.0",
+    "fuente": "https://www.flickr.com/photos/74399113@N07/50405256858",
+    "aMano": true
   },
   "takayama-matsuri": {
     "archivo": "takayama-matsuri.jpg",
@@ -535,15 +573,17 @@
   },
   "nieve-sapporo": {
     "archivo": "nieve-sapporo.jpg",
-    "autor": "Materialscientist",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:SapporoFestival8.JPG"
+    "autor": "Sapporo Snow Festival",
+    "licencia": "foto oficial ©",
+    "fuente": "https://www.snowfes.com/english/",
+    "aMano": true
   },
   "niseko": {
     "archivo": "niseko.jpg",
-    "autor": "No machine-readable author provided. Oga~commonswiki assumed (based on copyright claims).",
-    "licencia": "Public domain",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Mt-nisekoannupuri-summer.jpg"
+    "autor": "Excellent moniteur de ski",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Namara_Slope.jpg",
+    "aMano": true
   },
   "ghibli-park": {
     "archivo": "ghibli-park.jpg",
@@ -553,15 +593,17 @@
   },
   "chureito": {
     "archivo": "chureito.jpg",
-    "autor": "Ximonic (Simo Räsänen)",
-    "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:View_towards_Mount_Fuji_from_Arakurayama_Sengen_Park_in_Fujiyoshida,_Yamanashi,_Japan,_2024_May_-_2.jpg"
+    "autor": "Olivier Bruchez",
+    "licencia": "CC BY-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/73293249@N00/34099246612",
+    "aMano": true
   },
   "ashikaga": {
     "archivo": "ashikaga.jpg",
-    "autor": "ja:User:京浜にけ",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Ashikaga_Flower_Park_Flower_Stage_In_Late_Autumn_1.jpg"
+    "autor": "Manish Prabhune",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/53903864@N00/13906506947",
+    "aMano": true
   },
   "museo-mazda": {
     "archivo": "museo-mazda.jpg",
@@ -583,15 +625,17 @@
   },
   "zao-zorros": {
     "archivo": "zao-zorros.jpg",
-    "autor": "Piccolist",
-    "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Kitsune_mura_H26Dec13.JPG"
+    "autor": "Autor desconocido",
+    "licencia": "CC0 1.0",
+    "fuente": "https://www.rawpixel.com/image/3285673/free-photo-image-fox-animal-cc0",
+    "aMano": true
   },
   "sumo": {
     "archivo": "sumo.jpg",
-    "autor": "Koronokorone",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Ryogoku_Kokugikan_wall.JPG"
+    "autor": "Simon Q",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Sumo_dohyo-iri_May_2014_002.jpg",
+    "aMano": true
   },
   "game-show": {
     "archivo": "game-show.jpg",
@@ -607,9 +651,10 @@
   },
   "museo-nintendo": {
     "archivo": "museo-nintendo.jpg",
-    "autor": "Nagomijirap",
-    "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Nintendo_Museum_Entrance.jpg"
+    "autor": "Nintendo Museum",
+    "licencia": "foto oficial ©",
+    "fuente": "https://museum.nintendo.com/",
+    "aMano": true
   },
   "super-nintendo-world": {
     "archivo": "super-nintendo-world.jpg",
@@ -619,15 +664,17 @@
   },
   "kumano-kodo": {
     "archivo": "kumano-kodo.jpg",
-    "autor": "663highland",
-    "licencia": "CC BY 2.5",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Kumano_Kodo_Banner.jpg"
+    "autor": "davidfg",
+    "licencia": "CC BY-NC 2.0",
+    "fuente": "https://www.flickr.com/photos/51035603197@N01/6959657348",
+    "aMano": true
   },
   "shimanami": {
     "archivo": "shimanami.jpg",
-    "autor": "AudaCity3371",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Shimanami_Kaido,_Kurushima-Kaiky%C5%8D_Bridge_-_panoramio.jpg"
+    "autor": "OKJaguar",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Kurushima-Kaikyo_Bridge,_Seto_Inland_Sea,_Japan.jpg",
+    "aMano": true
   },
   "yakushima": {
     "archivo": "yakushima.jpg",
@@ -637,15 +684,17 @@
   },
   "shuto": {
     "archivo": "shuto.jpg",
-    "autor": "Morio",
-    "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Route_5_(Shuto_Expressway)_night_2015_July.jpg"
+    "autor": "asvensson",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/39698666@N00/29900981641",
+    "aMano": true
   },
   "suzuka": {
     "archivo": "suzuka.jpg",
-    "autor": "Tokumeigakarinoaoshima",
-    "licencia": "CC0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Ferris_wheel_at_SUZUKA_CIRCUIT_(1).JPG"
+    "autor": "carloshonda",
+    "licencia": "CC BY-NC 2.0",
+    "fuente": "https://www.flickr.com/photos/55852457@N07/11283674195",
+    "aMano": true
   },
   "ebisu": {
     "archivo": "ebisu.jpg",
@@ -661,15 +710,17 @@
   },
   "f1-suzuka": {
     "archivo": "f1-suzuka.jpg",
-    "autor": "musume miyuki",
+    "autor": "Michael Elleray",
     "licencia": "CC BY 2.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:2012_Formula_1_Japanese_Grand_Prix!_Suzuka!_(8070681535).jpg"
+    "fuente": "https://www.flickr.com/photos/36021014@N06/8090952770",
+    "aMano": true
   },
   "museo-doraemon": {
     "archivo": "museo-doraemon.jpg",
-    "autor": "Aimaimyi",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Fujiko%EF%BD%A5F%EF%BD%A5Fujio_Museum_-01.jpg"
+    "autor": "MIKI Yoshihito. (#mikiyoshihito)",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/7940758@N07/48196465331",
+    "aMano": true
   },
   "kawaguchiko": {
     "archivo": "kawaguchiko.jpg",
@@ -682,5 +733,54 @@
     "autor": "Sasa0403",
     "licencia": "CC BY-SA 4.0",
     "fuente": "https://commons.wikimedia.org/wiki/File:Photos_at_teamlab_planets_tokyo.jpg"
+  },
+  "shingeki-hita": {
+    "archivo": "shingeki-hita.jpg",
+    "autor": "進撃の巨人 in HITA",
+    "licencia": "foto oficial ©",
+    "fuente": "https://shingeki-hita.com/spot/001.html",
+    "aMano": true
+  },
+  "pokepark-kanto": {
+    "archivo": "pokepark-kanto.jpg",
+    "autor": "PokéPark Kanto",
+    "licencia": "foto oficial ©",
+    "fuente": "https://www.pokepark-kanto.co.jp/ppark/about/ppark/index",
+    "aMano": true
+  },
+  "one-piece-kumamoto": {
+    "archivo": "one-piece-kumamoto.jpg",
+    "autor": "SocialHermit",
+    "licencia": "CC BY-NC 2.0",
+    "fuente": "https://www.flickr.com/photos/188722632@N04/50633440102",
+    "aMano": true
+  },
+  "fuji-speedway": {
+    "archivo": "fuji-speedway.jpg",
+    "autor": "MATSUOKA Kohei",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Fuji_Speedway_with_Mount_Fuji.jpg",
+    "aMano": true
+  },
+  "nagoro": {
+    "archivo": "nagoro.jpg",
+    "autor": "Roberto Maxwell",
+    "licencia": "CC BY-NC-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/19456478@N00/17340898091",
+    "aMano": true
+  },
+  "nijigen-no-mori": {
+    "archivo": "nijigen-no-mori.jpg",
+    "autor": "Nijigen no Mori",
+    "licencia": "foto oficial ©",
+    "fuente": "https://www.nijigennomori.com/en/?p=17182",
+    "aMano": true
+  },
+  "nu-gundam-fukuoka": {
+    "archivo": "nu-gundam-fukuoka.jpg",
+    "autor": "紅色死神",
+    "licencia": "CC BY-NC-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/8873441@N06/54008623810",
+    "aMano": true
   }
 }

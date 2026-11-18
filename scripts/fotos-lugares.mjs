@@ -17,7 +17,9 @@ const DIR = 'public/lugares';
 const JSON_OUT = 'src/data/fotos.json';
 
 const todo = process.argv.includes('--todo');
-const fotos = !todo && existsSync(JSON_OUT) ? JSON.parse(readFileSync(JSON_OUT, 'utf8')) : {};
+const previas = existsSync(JSON_OUT) ? JSON.parse(readFileSync(JSON_OUT, 'utf8')) : {};
+// las que se pusieron a mano (`aMano: true`, de fuera de Commons) se quedan aunque se baje todo de nuevo
+const fotos = todo ? Object.fromEntries(Object.entries(previas).filter(([, f]) => f.aMano)) : previas;
 mkdirSync(DIR, { recursive: true });
 
 const pausa = (ms) => new Promise((r) => setTimeout(r, ms));

@@ -2,6 +2,7 @@
 // y que la entrada animada del Inicio nunca deje la portada tapada.
 
 import { MESES, PAPELES, VENTANAS } from '../src/data/claves';
+import { SEMILLAS } from '../src/data/lugares';
 import { abrir, desborde, entrarEn, expect, test } from './ayudas';
 
 const PAGINAS = [
@@ -255,7 +256,7 @@ test.describe('contenido de Cuándo ir', () => {
     await expect(page.locator('#puestos .puesto')).toHaveText(['Otoño✕']);
     const total = Number(await page.locator('#f-total').textContent());
     expect(total).toBeGreaterThan(0);
-    expect(total).toBeLessThan(116);
+    expect(total).toBeLessThan(SEMILLAS.length);
   });
 
   test('en celular el año se desliza de lado sin arrastrar la página', async ({ page }) => {

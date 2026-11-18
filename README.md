@@ -26,7 +26,7 @@ No hay framework de interfaz: lo interactivo es TypeScript sin dependencias.
 | `/` | Lista | Portada, «boleto» del viaje con los pasajeros, índice, animación de entrada y llegadas al viaje |
 | `/cuando-ir` | Lista | El año en Tokio mes a mes, cuatro ventanas candidatas para votar, fechas a evitar |
 | `/requisitos` | Lista | Visa, rutas sin visa americana y checklist personal de papeles |
-| `/lugares` | Lista | Catálogo de 116 lugares y eventos por tema, con filtros, votos y propuestas del grupo |
+| `/lugares` | Lista | Catálogo de 121 lugares y eventos por tema, con filtros, votos y propuestas del grupo |
 | `/decisiones` | Lista | Los votos de todos cruzados: ventana que va ganando, meses, lugares fijos, posible reparto de días, papeles y lo que me falta |
 | Itinerario, Presupuesto, Apps | Pendientes | Aparecen en el índice como «Pronto» |
 
@@ -160,7 +160,7 @@ lo que voten los demás sale al volver a abrirla. Las reglas:
   el primero que el grupo ya empezó o, si no, el primero que le falte a alguien.
 
 **Sin saltos.** El espacio de los sellos se reserva de antemano, el último estado se guarda en
-`localStorage` para pintar de una, y en Lugares el orden por votos se fija al cargar.
+`localStorage` para pintar de una, y en Lugares las tarjetas van siempre en el orden del catálogo: sellar no las mueve, ni al recargar.
 
 **Privacidad.** Sin sesión se ve la información, pero no los nombres, los sellos ni los lugares
 propuestos por el grupo. Decisiones, sin sesión, solo muestra cómo se cuenta. Los documentos
@@ -220,6 +220,13 @@ en el puerto 4399, con clave y base propias (`.data/pruebas.db`): no leen el `.e
   El script toma la imagen principal del artículo indicado en `wiki`; si es un logo o un mapa,
   el campo `foto` permite dar una búsqueda en Commons. Deja las imágenes en `public/lugares/`
   y los créditos en `src/data/fotos.json`, que se muestran al final de la página.
+- Si Commons no tiene nada (pasa con las estatuas y parques de anime), la foto se busca con
+  licencia libre en [Openverse](https://openverse.org), se recorta y se pone a mano en
+  `public/lugares/`, con su crédito en `fotos.json` y `aMano: true` para que `--todo` no la borre.
+  Una licencia «NC» (no comercial) sirve, porque el sitio no es comercial.
+- La foto tiene que mostrar lo famoso del lugar (la pagoda con el Fuji, los monos en el agua), no lo
+  primero que salga. Si no hay ninguna libre, se usa la foto oficial del lugar, con crédito y
+  `licencia: "foto oficial ©"` (pasa con Nijigen no Mori y Attack on Titan en Hita).
 - El nombre de cada lugar lleva a leer sobre él: al artículo de `wiki` en Wikipedia en español
   si existe, y si no en inglés; en los propuestos, al enlace que puso quien lo propuso. «Mapa»
   siempre lleva a Google Maps. Los enlaces a Wikipedia se resuelven una vez con:
