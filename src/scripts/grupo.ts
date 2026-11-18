@@ -304,8 +304,10 @@ function pintar(animar = false) {
       const filtro = zona.dataset.valor;
       // Se reutilizan los sellos que ya están: solo se crean los nuevos y se quitan los que
       // sobran, para que los demás no se muevan ni repitan su animación.
+      // Los que se están yendo (animación de salida) ya no cuentan como puestos.
       const puestos = new Map<string, HTMLElement>();
-      for (const n of zona.children) puestos.set((n as HTMLElement).dataset.k ?? '', n as HTMLElement);
+      for (const n of zona.children as HTMLCollectionOf<HTMLElement>)
+        if (!('sale' in n.dataset)) puestos.set(n.dataset.k ?? '', n);
 
       const nodos: HTMLElement[] = [];
       E.personas.forEach((p) => {
@@ -325,11 +327,29 @@ function pintar(animar = false) {
             n.classList.add('nuevo');
             n.addEventListener('animationend', () => n!.classList.remove('nuevo'), { once: true });
           }
+          // quitar el sello en una zona con fantasmas: el sello se destiñe hasta quedar tenue
+          const destine = animar && fantasma && [...puestos.keys()].some((x) => x.startsWith(`${p.id}|s|`));
+          if (destine) {
+            n.classList.add('apaga');
+            n.addEventListener('animationend', () => n!.classList.remove('apaga'), { once: true });
+          }
         }
         nodos.push(n);
       });
 
-      for (const viejo of puestos.values()) viejo.remove();
+      // quiénes siguen en la zona: si solo cambió su sello (forma, color, nombre), se cambia sin animar
+      const siguen = new Set(nodos.map((n) => n.dataset.k!.split('|')[0]));
+      for (const viejo of puestos.values()) {
+        // sin fantasmas, el sello que se quita se levanta del papel antes de irse
+        const sigue = siguen.has(viejo.dataset.k?.split('|')[0] ?? '');
+        if (!animar || sigue || movimientoReducido() || viejo.classList.contains('fantasma')) {
+          viejo.remove();
+          continue;
+        }
+        viejo.dataset.sale = '';
+        viejo.addEventListener('animationend', () => viejo.remove(), { once: true });
+        setTimeout(() => viejo.remove(), 400); // por si la zona está oculta y la animación no corre
+      }
       nodos.forEach((n, i) => {
         if (zona.children[i] !== n) zona.insertBefore(n, zona.children[i] ?? null);
       });
@@ -729,8 +749,16 @@ document.addEventListener('click', (ev) => {
   if (b && caja) {
     const [t, c] = caja.dataset.marca!.split(':');
     const v = Number(b.dataset.poner);
-    if (E.yo) poner(t, c, v);
-    else {
+    if (E.yo) {
+      poner(t, c, v);
+      // al marcarse, el botón da un golpe de sello; al desmarcarse solo cambia de tinta
+      if (b.getAttribute('aria-pressed') === 'true') {
+        b.classList.remove('golpe');
+        void b.offsetWidth; // reinicia la animación si se toca dos veces seguidas
+        b.classList.add('golpe');
+        b.addEventListener('animationend', () => b.classList.remove('golpe'), { once: true });
+      }
+    } else {
       // se guarda la intención y se aplica apenas entre
       pendiente = () => poner(t, c, v, false);
       abrir({ voto: caja });

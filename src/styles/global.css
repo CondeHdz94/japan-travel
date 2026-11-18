@@ -390,6 +390,25 @@ button {
 .sello-p.nuevo {
   animation: caer 0.3s cubic-bezier(0.2, 1.5, 0.4, 1);
 }
+/* quitar el sello: se levanta del papel (zonas sin fantasmas) o se destiñe a tenue */
+.sello-p[data-sale] {
+  pointer-events: none;
+  animation: levantar 0.18s ease-in forwards;
+}
+.sello-p.fantasma.apaga {
+  animation: destenir 0.35s ease-out;
+}
+@keyframes levantar {
+  to {
+    opacity: 0;
+    scale: 1.25;
+  }
+}
+@keyframes destenir {
+  from {
+    opacity: 1;
+  }
+}
 .sello-p b {
   font-family: var(--f-display);
   font-weight: 800;
@@ -551,12 +570,27 @@ button {
   border: 1px solid var(--ink);
   border-radius: 99px;
   padding: 0.3rem 0.7rem;
+  -webkit-tap-highlight-color: transparent;
   transition:
     background 0.15s,
-    color 0.15s;
+    color 0.15s,
+    scale 0.08s;
 }
 .poner:hover {
   background: var(--paper-2);
+}
+/* al tocar, el botón se hunde un poquito (en el celular no hay hover que avise) */
+:is(.poner, .sellar):not(:disabled):active {
+  scale: 0.96;
+}
+/* al marcarse, golpe de sello: baja contra el papel y rebota */
+.poner.golpe {
+  animation: golpe 0.28s cubic-bezier(0.2, 1.5, 0.4, 1);
+}
+@keyframes golpe {
+  35% {
+    scale: 0.92;
+  }
 }
 .poner[aria-pressed='true'] {
   background: var(--ink);
@@ -728,6 +762,7 @@ dialog.hoja-filtros {
   font-family: var(--f-display);
   font-weight: 700;
   font-size: 1.1rem;
+  transition: scale 0.08s;
 }
 .registro .sellar:hover {
   background: var(--ink);
