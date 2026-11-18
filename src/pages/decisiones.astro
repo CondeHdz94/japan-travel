@@ -153,7 +153,13 @@ const pendientesMios = mia
         texto:
           mia.ventanas.length === VENTANAS_VIAJE.length && !mia.decido
             ? 'No has votado ninguna ventana.'
-            : `Te falta votar ${y(mia.ventanas.filter((v) => v !== mia.decido?.ventana).map((v) => V[v].nombre))}.`,
+            : (() => {
+                const faltan = mia.ventanas.filter((v) => v !== mia.decido?.ventana);
+                // sin voto no se sabe si no te sirve o si no la has visto: el 否 es lo que la cierra
+                return faltan.length === 1
+                  ? `Te falta votar ${V[faltan[0]].nombre}: si no te sirve, márcala «No puedo».`
+                  : `Te falta votar ${y(faltan.map((v) => V[v].nombre))}: las que no te sirvan, márcalas «No puedo».`;
+              })(),
         href: '/cuando-ir',
       },
       mia.meses && { clave: 'meses', texto: 'No has marcado en qué meses puedes viajar.', href: '/cuando-ir' },
