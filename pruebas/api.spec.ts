@@ -875,7 +875,7 @@ test.describe('página de lugares en el servidor', () => {
     expect(deBeto).not.toContain('data-quitar');
   });
 
-  test('dentro de cada tema van primero los más sellados; sin sesión, el orden del catálogo', async ({ grupo }) => {
+  test('dentro de cada tema va siempre el orden del catálogo: los sellos no reordenan al recargar', async ({ grupo }) => {
     const ana = await grupo.entrar('Ana');
     const beto = await grupo.entrar('Beto');
     const otaku = SEMILLAS.filter((l) => l.tema === 'otaku').map((l) => l.id);
@@ -888,8 +888,8 @@ test.describe('página de lugares en el servidor', () => {
       const sec = html.slice(html.indexOf('<section class="tema'), html.indexOf('</section>', html.indexOf('<section class="tema')));
       return [...sec.matchAll(/data-marca="lugar:([^"]+)"/g)].map((m) => m[1]);
     };
-    const esperado = [quinto, tercero, ...otaku.filter((id) => id !== quinto && id !== tercero)];
-    expect(orden(await (await ana.api.get('/lugares')).text())).toEqual(esperado);
+    expect(orden(await (await ana.api.get('/lugares')).text())).toEqual(otaku);
+    expect(orden(await (await beto.api.get('/lugares')).text())).toEqual(otaku);
     expect(orden(await (await (await grupo.anonimo()).get('/lugares')).text())).toEqual(otaku);
   });
 });

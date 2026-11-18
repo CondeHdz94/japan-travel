@@ -32,12 +32,3 @@ export async function propuestos(): Promise<LugarPropuesto[]> {
     };
   });
 }
-
-/** Cuántos sellos de «quiero ir» tiene cada lugar. */
-export async function sellosPorLugar(): Promise<Map<string, number>> {
-  const c = await db();
-  const r = await c.execute(
-    "SELECT clave, COUNT(*) AS n FROM marcas WHERE tipo = 'lugar' GROUP BY clave",
-  );
-  return new Map(r.rows.map((f) => [String(f.clave), Number(f.n)]));
-}

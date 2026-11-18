@@ -3,13 +3,13 @@ import Base from '../layouts/Base.astro';
 import { SEMILLAS, TEMAS, TEMPORADAS, ZONAS, etiquetaMeses, type Lugar } from '../data/lugares';
 import creditos from '../data/fotos.json';
 import articulos from '../data/articulos.json';
-import { propuestos, sellosPorLugar, type LugarPropuesto } from '../lib/lugares';
+import { propuestos, type LugarPropuesto } from '../lib/lugares';
 import { sesion } from '../lib/sesion';
 import { resumenTarjeta } from '../data/escenas';
 import Escenas from '../components/Escenas.astro';
 
 // Se arma en el servidor en cada visita: con sesión se suman los lugares que propuso el grupo
-// y se ordena por sellos. Sin sesión solo se ve el catálogo inicial.
+// al final de su tema. Sin sesión solo se ve el catálogo inicial.
 export const prerender = false;
 Astro.response.headers.set('cache-control', 'private, no-store');
 
@@ -18,27 +18,21 @@ const fotos = creditos as Record<string, { archivo: string; autor: string; licen
 
 const yo = sesion(Astro.cookies);
 let delGrupo: LugarPropuesto[] = [];
-let sellos = new Map<string, number>();
 if (yo) {
   try {
-    [delGrupo, sellos] = await Promise.all([propuestos(), sellosPorLugar()]);
+    delGrupo = await propuestos();
   } catch {
     // sin base de datos igual se muestra el catálogo
   }
 }
 
 const todos: Ficha[] = [...SEMILLAS, ...delGrupo];
-const n = (l: Ficha) => sellos.get(l.id) ?? 0;
 
-// Dentro de cada tema: primero los más sellados; a igualdad, el orden del catálogo.
-// El orden se fija al cargar: votar no reacomoda las tarjetas bajo el dedo.
+// Dentro de cada tema, siempre el orden del catálogo (y al final los propuestos): sellar no
+// mueve nada, ni al momento ni al recargar. Lo que el grupo prefiere se ve en Decisiones.
 const porTema = TEMAS.map((tema) => ({
   tema,
-  lugares: todos
-    .map((l, i) => ({ l, i }))
-    .filter((x) => x.l.tema === tema.id)
-    .sort((a, b) => n(b.l) - n(a.l) || a.i - b.i)
-    .map((x) => x.l),
+  lugares: todos.filter((l) => l.tema === tema.id),
 }));
 
 const zonaDe = Object.fromEntries(ZONAS.map((z) => [z.id, z.nombre]));
@@ -242,7 +236,7 @@ const GRUPOS = [
       <h2>Créditos</h2>
     </header>
     <details>
-      <summary>Las fotos del catálogo son de Wikimedia Commons, de uso libre con atribución. Ver autores</summary>
+      <summary>Las fotos del catálogo son de Wikimedia Commons y Flickr, con licencias libres y atribución; las que no tienen foto libre usan la oficial del lugar. Ver autores</summary>
       <ul>
         {
           conCredito.map((l) => (
