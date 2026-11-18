@@ -111,7 +111,16 @@ test.describe('catálogo', () => {
       await page.locator(`[data-ir-tema="${id}"]`).click();
       await expect(page).toHaveURL(new RegExp(`#${id}$`));
       await expect(page.locator(`section#${id} h2`)).toBeInViewport();
-      // el título no queda debajo de la barra fija
+      // el título no queda debajo de la barra fija. El salto es suave (en el celular tarda más
+      // de un segundo y, al subir, el título pasa por detrás de la barra): se mide cuando
+      // la página ya se quedó quieta.
+      await expect
+        .poll(async () => {
+          const antes = await page.evaluate(() => scrollY);
+          await page.waitForTimeout(150);
+          return (await page.evaluate(() => scrollY)) === antes;
+        })
+        .toBe(true);
       const barra = (await page.locator('.barra').boundingBox())!;
       const titulo = (await page.locator(`section#${id} h2`).boundingBox())!;
       expect(titulo.y).toBeGreaterThanOrEqual(barra.y + barra.height - 1);
