@@ -435,6 +435,20 @@ test.describe('la foto a la vista', () => {
     await expect.poll(filtroDe(page, 'akihabara')).toContain('grayscale');
   });
 
+  test('en el celular, el nombre del lugar a la vista se subraya como con el cursor', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'en escritorio lo hace el cursor');
+    const subrayado = (id: string) => () =>
+      tarjeta(page, id).locator('.leer span').evaluate((s) => getComputedStyle(s).textDecorationColor);
+    await abrir(page, '/lugares', 'no');
+    await alCentro(page, 'akihabara');
+    await expect.poll(subrayado('akihabara')).not.toBe('rgba(0, 0, 0, 0)');
+    expect(await subrayado('fushimi-inari')()).toBe('rgba(0, 0, 0, 0)');
+
+    await alCentro(page, 'fushimi-inari');
+    await expect.poll(subrayado('fushimi-inari')).not.toBe('rgba(0, 0, 0, 0)');
+    await expect.poll(subrayado('akihabara')).toBe('rgba(0, 0, 0, 0)');
+  });
+
   test('en escritorio no se prende sola: sigue siendo el cursor', async ({ page, isMobile }) => {
     test.skip(isMobile, 'solo escritorio');
     await abrir(page, '/lugares', 'no');

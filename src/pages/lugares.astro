@@ -1650,6 +1650,22 @@ const GRUPOS = [
   .leer:focus-visible::after {
     color: var(--shu-tinta);
   }
+  /* En el celular, el nombre del lugar que pasa por el medio de la pantalla se subraya igual que
+     con el cursor, y al ritmo de la foto que se prende a color (la misma clase .a-la-vista) */
+  @media (hover: none) {
+    .leer span {
+      transition-duration: 0.45s;
+    }
+    .leer::after {
+      transition: color 0.45s;
+    }
+    .lugar.a-la-vista .leer span {
+      text-decoration-color: var(--shu);
+    }
+    .lugar.a-la-vista .leer::after {
+      color: var(--shu-tinta);
+    }
+  }
   .jp {
     margin: 0.2rem 0 0;
     font-family: var(--f-display);
