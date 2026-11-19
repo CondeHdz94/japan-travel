@@ -415,16 +415,46 @@ test.describe('filtros en celular', () => {
   });
 });
 
+test.describe('la foto a la vista', () => {
+  const filtroDe = (page: Page, id: string) => () =>
+    tarjeta(page, id).locator('.foto img').evaluate((i) => getComputedStyle(i).filter);
+  const alCentro = (page: Page, id: string) =>
+    tarjeta(page, id).locator('.foto').evaluate((e) => e.scrollIntoView({ block: 'center' }));
+
+  test('en el celular, la foto del medio de la pantalla va a color y las demás en gris', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'en escritorio lo hace el cursor');
+    await abrir(page, '/lugares', 'no');
+    await alCentro(page, 'akihabara');
+    await expect.poll(filtroDe(page, 'akihabara')).toBe('none');
+    await expect(page.locator('article.lugar.a-la-vista')).toHaveCount(1);
+    expect(await filtroDe(page, 'fushimi-inari')()).toContain('grayscale');
+
+    // al seguir bajando, la que sale vuelve a gris y se prende la siguiente
+    await alCentro(page, 'fushimi-inari');
+    await expect.poll(filtroDe(page, 'fushimi-inari')).toBe('none');
+    await expect.poll(filtroDe(page, 'akihabara')).toContain('grayscale');
+  });
+
+  test('en escritorio no se prende sola: sigue siendo el cursor', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'solo escritorio');
+    await abrir(page, '/lugares', 'no');
+    await alCentro(page, 'akihabara');
+    await page.mouse.move(0, 0);
+    await expect.poll(filtroDe(page, 'akihabara')).toContain('grayscale');
+  });
+});
+
 test.describe('sellar lugares', () => {
   test('«Quiero ir» pone mi sello y la foto a color; otro toque lo quita', async ({ page }) => {
     const id = await entrarEn(page, 'Camilo');
     await abrir(page, '/lugares', 'si');
     const t = tarjeta(page, 'akihabara');
-    await t.scrollIntoViewIfNeeded();
+    // arriba y no al centro: en el celular la foto que pasa por el medio ya va a color sola
+    await t.evaluate((e) => e.scrollIntoView({ block: 'start' }));
     const filtro = () => t.locator('.foto img').evaluate((i) => getComputedStyle(i).filter);
 
     await page.mouse.move(0, 0);
-    expect(await filtro()).toContain('grayscale');
+    await expect.poll(filtro).toContain('grayscale');
     await t.locator('[data-poner]').click();
     await expect(t.locator('[data-poner]')).toHaveAttribute('aria-pressed', 'true');
     await expect(t.locator('[data-sellos] .sello-p')).toHaveCount(1);

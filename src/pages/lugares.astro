@@ -371,6 +371,17 @@ const GRUPOS = [
   let borrador: Filtros | null = null;
 
   const tarjetas = () => [...document.querySelectorAll<HTMLElement>('.tema .lugar')];
+
+  // ───── la foto a la vista ─────
+  // El hover del escritorio, en el celular: la foto que cruza la franja del medio de la pantalla
+  // (el 20 % central) pasa a color, y vuelve a gris cuando sale. El CSS solo lo aplica sin cursor.
+  const franja = new IntersectionObserver(
+    (entradas) => {
+      for (const e of entradas) e.target.closest('.lugar')?.classList.toggle('a-la-vista', e.isIntersecting);
+    },
+    { rootMargin: '-40% 0px -40% 0px' },
+  );
+  for (const f of document.querySelectorAll('.tema .lugar .foto')) franja.observe(f);
   const datosDe = (c: HTMLElement): LugarFiltrable => ({
     zona: c.dataset.zona ?? '',
     meses: c.dataset.meses ? c.dataset.meses.split(',').map(Number) : null,
@@ -1432,18 +1443,56 @@ const GRUPOS = [
     height: 100%;
     object-fit: cover;
     filter: grayscale(1) contrast(1.1);
-    mix-blend-mode: multiply;
     transition: filter 0.45s;
   }
+  /* El tono del papel va en una capa encima, y no como modo de mezcla de la foto: un modo de
+     mezcla no se puede animar y saltaba de golpe. La opacidad sí, así que el papel se desvanece
+     al mismo ritmo que el gris y todo el paso es un solo movimiento. */
+  .foto {
+    isolation: isolate;
+  }
+  .foto:has(img)::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--paper-2);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    transition: opacity 0.45s;
+  }
+  .cuando,
+  .sello-anime {
+    z-index: 2;
+  }
   /* …y a color cuando lleva mi sello (o al pasar el cursor) */
-  .lugar:has(.poner[aria-pressed='true']) .foto img {
-    filter: none;
-    mix-blend-mode: normal;
+  .lugar:has(.poner[aria-pressed='true']) .foto {
+    & img {
+      filter: none;
+    }
+    &::before {
+      opacity: 0;
+    }
   }
   @media (hover: hover) {
-    .lugar:hover .foto img {
-      filter: none;
-      mix-blend-mode: normal;
+    .lugar:hover .foto {
+      & img {
+        filter: none;
+      }
+      &::before {
+        opacity: 0;
+      }
+    }
+  }
+  /* En el celular no hay cursor: se prende la foto que pasa por el centro de la pantalla */
+  @media (hover: none) {
+    .lugar.a-la-vista .foto {
+      & img {
+        filter: none;
+      }
+      &::before {
+        opacity: 0;
+      }
     }
   }
   .sin-foto {
