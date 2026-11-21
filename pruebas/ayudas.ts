@@ -20,7 +20,7 @@ export interface Estado {
   yo: { id: number; nombre: string; forma: string; tinta: number } | null;
   personas: { id: number; nombre: string; forma: string; tinta: number }[];
   marcas: { p: number; t: string; c: string; v: number }[];
-  visto?: number;
+  pendientes?: number[];
 }
 
 /** Borra todo lo que haya en la base de pruebas. Nunca toca .data/local.db. */
@@ -28,7 +28,7 @@ export async function vaciarBase() {
   mkdirSync('.data', { recursive: true });
   const c = createClient({ url: BASE_DATOS });
   try {
-    for (const tabla of ['marcas', 'lugares', 'personas']) {
+    for (const tabla of ['vistos', 'marcas', 'lugares', 'personas']) {
       for (let intento = 0; ; intento++) {
         try {
           await c.execute(`DELETE FROM ${tabla}`);
@@ -40,6 +40,19 @@ export async function vaciarBase() {
         }
       }
     }
+  } finally {
+    c.close();
+  }
+}
+
+/**
+ * Deja a la persona como quedó en producción quien entró antes de `vistos`: nadie le presentó
+ * a los que ya iban cuando entró (solo en la base de pruebas).
+ */
+export async function sinPresentarLosDeAntes(persona: number) {
+  const c = createClient({ url: BASE_DATOS });
+  try {
+    await c.execute({ sql: 'DELETE FROM vistos WHERE persona = ? AND otro < ?', args: [persona, persona] });
   } finally {
     c.close();
   }

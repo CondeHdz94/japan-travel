@@ -39,8 +39,8 @@ interface Estado {
   yo: Persona | null;
   personas: Persona[];
   marcas: Marca[];
-  /** El id más alto que ya se me anunció. */
-  visto?: number;
+  /** Los que todavía no me han presentado (ids). */
+  pendientes?: number[];
   /** Solo al registrarse: es una persona nueva. */
   nuevo?: boolean;
 }
@@ -459,19 +459,20 @@ async function cargar(respaldo: Estado = E) {
   } catch {
     E = respaldo;
   }
-  // los nuevos solo cuentan con el estado fresco: la copia local puede estar vieja
-  const nuevos = fresco && enInicio ? llegaronDesdeMiVisita() : [];
+  // los pendientes solo cuentan con el estado fresco: la copia local puede estar vieja
+  const nuevos = fresco && enInicio ? porPresentar() : [];
   for (const p of nuevos) esperando.add(p.id);
   pintar();
   avisarLugaresNuevos();
   if (nuevos.length) presentar(nuevos);
 }
 
-// ───── llegadas en el Inicio: los que entraron desde mi última visita ─────
+// ───── llegadas en el Inicio: los que todavía no me han presentado ─────
+// Casi siempre son los que entraron desde mi última visita. También pueden ser los que ya iban
+// cuando entré y nunca vi (antes la bienvenida no los mostraba): esos salen una vez, «contigo».
 const enInicio = !!document.querySelector('[data-pasajeros]');
 
-const llegaronDesdeMiVisita = () =>
-  E.yo && E.visto !== undefined ? E.personas.filter((p) => p.id > E.visto!) : [];
+const porPresentar = () => (E.yo && E.pendientes ? E.personas.filter((p) => E.pendientes!.includes(p.id)) : []);
 
 // Si la persona ya está haciendo otra cosa (un clic, una tecla que no es de scroll), no se le
 // impone el golpe. Un poco de scroll no cuenta: lo que importa es si el titular sigue a la vista.
@@ -535,13 +536,24 @@ async function presentar(nuevos: Persona[]) {
       };
       document.addEventListener('visibilitychange', f);
     });
-  const titulo = `${nombres(nuevos)} ${nuevos.length > 1 ? 'se montaron' : 'se montó'} al viaje`;
+  const varios = nuevos.length > 1;
+  // si hay alguien que ya iba antes que yo, no es que «se montó»: es que va conmigo
+  const ponerseAlDia = nuevos.some((p) => p.id < E.yo!.id);
+  const titulo = ponerseAlDia
+    ? `${nombres(nuevos)} ${varios ? 'van' : 'va'} a bordo contigo`
+    : `${nombres(nuevos)} ${varios ? 'se montaron' : 'se montó'} al viaje`;
+  // al ponerse al día, la línea de abajo habla de mí, como en la bienvenida: «Asiento 2 · ラウ · van 4»
+  const yo = E.yo!;
+  const sub = ponerseAlDia
+    ? [`Asiento ${E.personas.findIndex((p) => p.id === yo.id) + 1}`, kana(yo.nombre), `van ${E.personas.length}`].filter(Boolean).join(' · ')
+    : `Desde tu última visita · van ${E.personas.length}`;
+  const etiqueta = `${ponerseAlDia ? 'Contigo' : 'Nuevos'}: ${nombres(nuevos)}`;
   // «ya bajó del titular»: menos de la mitad del titular a la vista (un poco de scroll no cuenta)
   const portadaEl = document.querySelector('[data-portada]');
   const titular = portadaEl?.querySelector('h1') ?? portadaEl;
   const r = titular?.getBoundingClientRect();
   const aLaVista = !r || r.bottom > r.height / 2;
-  if (movimientoReducido() || tarde || hizoOtraCosa || !aLaVista || hayMomento()) return enLinea(nuevos, titulo);
+  if (movimientoReducido() || tarde || hizoOtraCosa || !aLaVista || hayMomento()) return enLinea(nuevos, titulo, etiqueta);
 
   const destino = (id: number) => () =>
     document.querySelector<HTMLElement>(`[data-pasajeros] .sello-p[data-de="${id}"]`);
@@ -550,12 +562,12 @@ async function presentar(nuevos: Persona[]) {
     destino: destino(p.id),
     aterriza: () => mostrar(p.id, destino(p.id)()),
   }));
-  await momento(llegadas, titulo, `Desde tu última visita · van ${E.personas.length}`, { bajar: true });
+  await momento(llegadas, titulo, sub, { bajar: true });
   guardarVisto(nuevos);
 }
 
 /** Sin golpe: los sellos caen en el boleto cuando se ve, y abajo dice quiénes son nuevos. */
-function enLinea(nuevos: Persona[], titulo: string) {
+function enLinea(nuevos: Persona[], titulo: string, etiqueta: string) {
   anunciar(titulo);
   const celda = document.querySelector('[data-pasajeros]');
   if (!celda) return;
@@ -563,7 +575,7 @@ function enLinea(nuevos: Persona[], titulo: string) {
     async ([e]) => {
       if (!e.isIntersecting) return;
       obs.disconnect();
-      avisoPasajeros = `Nuevos: ${nombres(nuevos)}`;
+      avisoPasajeros = etiqueta;
       for (const [i, p] of nuevos.entries()) {
         if (!movimientoReducido()) await new Promise((r) => setTimeout(r, i ? 160 : 300));
         mostrar(p.id, null);
@@ -580,10 +592,10 @@ function enLinea(nuevos: Persona[], titulo: string) {
 
 /** Ya se mostraron: no se vuelven a anunciar, ni aquí ni en mis otros aparatos. */
 function guardarVisto(nuevos: Persona[]) {
-  const hasta = Math.max(...nuevos.map((p) => p.id));
-  E = { ...E, visto: Math.max(E.visto ?? 0, hasta) };
+  const ids = nuevos.map((p) => p.id);
+  E = { ...E, pendientes: E.pendientes?.filter((id) => !ids.includes(id)) };
   recordar();
-  api('visto', { hasta }).catch(() => {}); // si falla, sale otra vez la próxima: mejor que perderlo
+  api('visto', { ids }).catch(() => {}); // si falla, sale otra vez la próxima: mejor que perderlo
 }
 
 // ───── en vivo: se consulta el estado cada pocos segundos mientras la pestaña está a la vista ─────
@@ -802,7 +814,12 @@ async function entrarAlViaje(soyYo: boolean) {
     const nuevo = !!E.nuevo;
     // a quien llega le cae su sello: mientras vuela, sus sellos ocupan el puesto sin verse
     const conMomento = nuevo && !movimientoReducido();
-    if (conMomento) esperando.add(yo.id);
+    if (conMomento) {
+      esperando.add(yo.id);
+      // en el Inicio los que ya iban también vuelan a su puesto en el boleto: mientras tanto
+      // su puesto queda reservado y vacío, y aparecen al aterrizar (nada cae encima de nada)
+      if (enInicio) for (const p of E.personas) esperando.add(p.id);
+    }
     dlg?.close();
     pintar();
     await pendiente?.();
@@ -819,11 +836,21 @@ async function entrarAlViaje(soyYo: boolean) {
   }
 }
 
-/** «Ya vas a bordo»: el sello de quien llega cae y aterriza donde hizo clic. */
+/**
+ * «Ya vas a bordo»: primero caen chiquitos los sellos de los que ya iban y después el de quien
+ * llega, grande, que aterriza donde hizo clic. Sale una sola vez (al registrarse): así cada uno
+ * ve una vez a los de antes; a los que lleguen después los ve en el Inicio (ver `presentar`).
+ */
 async function bienvenida(yo: Persona, conMomento: boolean) {
   const titulo = `Ya vas a bordo, ${yo.nombre}`;
-  const enKana = kana(yo.nombre);
-  const sub = `Asiento ${E.personas.findIndex((p) => p.id === yo.id) + 1}${enKana ? ` · ${enKana}` : ''}`;
+  const otros = E.personas.filter((p) => p.id !== yo.id);
+  const sub = [
+    `Asiento ${E.personas.findIndex((p) => p.id === yo.id) + 1}`,
+    kana(yo.nombre),
+    otros.length ? `con ${nombres(otros)}` : '',
+  ]
+    .filter(Boolean)
+    .join(' · ');
   if (!conMomento) return anunciar(`${titulo}. ${sub}`);
 
   const mio = `.sello-p[data-de="${yo.id}"]:not(.fantasma)`;
@@ -836,7 +863,17 @@ async function bienvenida(yo: Persona, conMomento: boolean) {
       : desde === 'boleto'
         ? document.querySelector<HTMLElement>(`[data-pasajeros] ${mio}`)
         : null) ?? enCabecera();
-  await momento([{ sello: selloQueCae(yo, destino()), destino, aterriza: () => mostrar(yo.id, destino()) }], titulo, sub);
+  // los que ya iban vuelan a su puesto en el boleto si está en la página; si no, se desvanecen
+  const suyo = (id: number) => () =>
+    document.querySelector<HTMLElement>(`[data-pasajeros] .sello-p[data-de="${id}"]:not(.fantasma)`);
+  const yaVan: Llegada[] = otros.map((p) => ({
+    sello: selloQueCae(p, suyo(p.id)()),
+    destino: suyo(p.id),
+    aterriza: () => mostrar(p.id, suyo(p.id)()),
+    chico: true,
+  }));
+  const llego: Llegada = { sello: selloQueCae(yo, destino()), destino, aterriza: () => mostrar(yo.id, destino()) };
+  await momento([...yaVan, llego], titulo, sub);
 }
 
 formPerfil?.addEventListener('submit', async (ev) => {

@@ -82,18 +82,30 @@ color. Si el grupo pasa de 6, los colores se repiten. Todas las formas se dibuja
 en la misma caja, así que cambiar de forma no mueve nada; donde los sellos se montan, cada uno
 tapa al de abajo solo con su silueta.
 
-**Llegadas al viaje.** Dos momentos, en `src/scripts/llegadas.ts` (lo dibuja) y `grupo.ts`
+**Llegadas al viaje.** Tres momentos, en `src/scripts/llegadas.ts` (lo dibuja) y `grupo.ts`
 (decide cuándo):
 
-- *«Ya vas a bordo»*: quien se registra ve caer su sello en grande, y aterriza donde hizo clic
-  (el voto que le pidió entrar, el boleto del Inicio o, si no, la cabecera). Nunca lo saca de
-  la página. En Lugares, la página se recarga al terminar.
-- *Desde tu última visita*: al abrir el Inicio, los que entraron después de mi «visto» caen
+La regla: cada persona ve la entrada de cada una de las demás **una sola vez**. Se guarda por
+parejas en la tabla `vistos` («Lau ya vio a Juan»), así que vale para todos mis aparatos, y
+solo cuando de verdad se mostró.
+
+- *«Ya vas a bordo»*: quien se registra ve caer primero, chiquitos, los sellos de los que ya
+  iban, y después el suyo en grande («Asiento 3 · ヘス · con Juan y Lau»). El suyo aterriza donde
+  hizo clic (el voto que le pidió entrar, el boleto del Inicio o, si no, la cabecera); los
+  chiquitos vuelan a su puesto en el boleto si está en la página, y si no se desvanecen. Nunca lo
+  saca de la página. En Lugares, la página se recarga al terminar. Al registrarse, a todos los
+  que ya iban se los da por vistos.
+- *Desde tu última visita*: al abrir el Inicio, los que todavía no me han presentado caen
   juntos con un solo anuncio («Laura y Santiago se montaron al viaje») y vuelan a la casilla
-  Pasajeros del boleto; si no se ve, la página baja lo justo. «Visto» es el id más alto que ya se
-  me anunció; se guarda por persona en la base, así que vale para todos mis aparatos, y solo
-  cuando de verdad se mostró. Quien se registra arranca con su propio id: no se le anuncian los
-  que ya estaban.
+  Pasajeros del boleto; si no se ve, la página baja lo justo.
+- *Ponerse al día*: si entre ellos hay alguien que ya iba cuando entré (quedó así en las bases
+  de antes de `vistos`, cuando la bienvenida no mostraba a los de antes), el anuncio es «Juan y
+  Jess van a bordo contigo» y, debajo, como en la bienvenida, «Asiento 2 · ラウ · van 4». Sale una
+  vez.
+
+Al crear `vistos` en una base que ya existía, se llena una sola vez con la columna vieja
+`personas.visto` (el id más alto que ya se me había anunciado): cuenta como visto quien llegó
+después de mí y hasta ese id; los de antes quedan pendientes. La columna se deja, ya sin uso.
 
 Arranca cuando termina de caer el sello 計画中 (después de la intro, si la hay), más 0,6 s, y
 solo con el estado fresco del servidor. Solo se salta a propósito («Saltar», un toque o
@@ -172,9 +184,9 @@ Todas en `src/pages/api/`, responden JSON.
 
 | Ruta | Qué hace |
 | :-- | :-- |
-| `GET estado` | Quién soy, quiénes somos (con forma y color), todas las marcas y mi `visto` (vacío sin sesión) |
+| `GET estado` | Quién soy, quiénes somos (con forma y color), todas las marcas y mis `pendientes`: los ids que todavía no me han presentado (vacío sin sesión) |
 | `POST entrar` | `{nombre, clave, soyYo?}` → abre sesión; `nuevo: true` si se registró. Si el nombre ya existe y no viene `soyYo: true`, responde 409 con `existe` (para el «¿eres tú?») |
-| `POST visto` | `{hasta}` → ya se me anunció hasta ese viajero. Solo sube, y nunca más allá del último que existe |
+| `POST visto` | `{ids}` → ya me presentaron a esos viajeros. Solo suma; ignora ids que no existen y el mío |
 | `POST salir` | Cierra la sesión de este dispositivo |
 | `POST renombrar` | `{nombre, forma?, tinta?}` → cambia mi nombre (y la forma o el color de mi sello, si vienen) conservando marcas. Un color de otro: 409 con de quién es |
 | `POST borrarme` | Me saca del grupo, con mis marcas y los lugares que propuse |
@@ -200,7 +212,7 @@ en el puerto 4399, con clave y base propias (`.data/pruebas.db`): no leen el `.e
 | `api.spec.ts` | Toda la API: sesión, marcas, renombrar, borrarse, proponer y quitar, privacidad |
 | `paginas.spec.ts` | Cada página: carga limpia, cabecera, enlaces, desborde, entrada animada |
 | `grupo.spec.ts` | Registro, sellos, en vivo, perfil, sin conexión y «nada salta» |
-| `llegadas.spec.ts` | Bienvenida, llegadas desde mi última visita con varios viajeros y aparatos, «¿eres tú?» y el boleto |
+| `llegadas.spec.ts` | Bienvenida (con los que ya iban), llegadas desde mi última visita con varios viajeros y aparatos, ponerse al día, «¿eres tú?» y el boleto |
 | `lugares.spec.ts` | Filtros (menús, hoja, varias opciones, dirección), sellos, proponer, quitar y avisos en vivo |
 | `decisiones.unidad.spec.ts` | Las cuentas de Decisiones, iniciales y giro de los sellos (sin navegador) |
 | `decisiones.spec.ts` | Decisiones: privacidad, la que va adelante, mi parte, temprano, empate, todas tachadas y lugares |

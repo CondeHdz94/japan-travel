@@ -20,6 +20,7 @@ export const POST: APIRoute = async ({ cookies }) => {
       },
       { sql: 'DELETE FROM lugares WHERE persona = ?', args: [yo] },
       { sql: 'DELETE FROM marcas WHERE persona = ?', args: [yo] },
+      { sql: 'DELETE FROM vistos WHERE persona = ? OR otro = ?', args: [yo, yo] },
       { sql: 'DELETE FROM personas WHERE id = ?', args: [yo] },
     ],
     'write',

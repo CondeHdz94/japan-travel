@@ -1054,7 +1054,11 @@ dialog.hoja-filtros {
 .llegada .caen {
   position: relative;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   gap: calc(var(--k) * 0.32rem);
+  max-width: 100%;
 }
 /* cada sello grande: la caja de un sello normal, agrandada */
 .llegada .cae {
@@ -1066,6 +1070,14 @@ dialog.hoja-filtros {
 }
 .llegada .cae .sello-p {
   transform: rotate(var(--giro, -6deg)) scale(var(--k));
+}
+/* los que acompañan (los que ya iban a bordo): a la mitad, para que mande el que llega */
+.llegada .cae.chico {
+  width: calc(1.6rem * var(--k) * 0.5);
+  height: calc(2.4rem * var(--k) * 0.5);
+}
+.llegada .cae.chico .sello-p {
+  transform: rotate(var(--giro, -6deg)) scale(calc(var(--k) * 0.5));
 }
 .llegada .cae .sello-p svg {
   stroke-width: 2;

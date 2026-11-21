@@ -17,6 +17,8 @@ export interface Llegada {
   destino: () => HTMLElement | null;
   /** Se llama cuando aterriza (o al saltar): ahí se muestra el sello de verdad. */
   aterriza: () => void;
+  /** Acompaña al protagonista (p. ej. los que ya iban a bordo): cae más pequeño y primero. */
+  chico?: boolean;
 }
 
 const TECLAS_SCROLL = [' ', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End'];
@@ -62,7 +64,9 @@ export async function momento(llegadas: Llegada[], titulo: string, sub: string, 
   capa.setAttribute('aria-hidden', 'true');
   // cuántas veces el tamaño de un sello normal (16 px de base); entre más sellos, más pequeños
   const base = Math.min(136, Math.max(60, innerWidth * 0.105));
-  const tam = base * [1, 0.8, 0.66, 0.56][Math.min(llegadas.length, 4) - 1];
+  // el tamaño lo deciden los protagonistas: los chicos no achican al que llega
+  const grandes = Math.max(1, llegadas.filter((l) => !l.chico).length);
+  const tam = base * [1, 0.8, 0.66, 0.56][Math.min(grandes, 4) - 1];
   capa.style.setProperty('--k', String(tam / 16));
   const velo = document.createElement('div');
   velo.className = 'velo';
@@ -70,7 +74,7 @@ export async function momento(llegadas: Llegada[], titulo: string, sub: string, 
   fila.className = 'caen';
   const unos = llegadas.map((l) => {
     const u = document.createElement('span');
-    u.className = 'cae';
+    u.className = l.chico ? 'cae chico' : 'cae';
     l.sello.removeAttribute('title');
     u.append(l.sello);
     fila.append(u);
@@ -117,20 +121,22 @@ export async function momento(llegadas: Llegada[], titulo: string, sub: string, 
   capa.addEventListener('click', salta);
 
   try {
-    const GOLPE = 260, PASO = 120;
+    const GOLPE = 260, PASO = 120, PAUSA = 260;
+    // cuándo cae cada uno: al pasar de los chicos al protagonista hay una pausa corta
+    const cuando = llegadas.map((l, i) => i * PASO + (!l.chico && llegadas.slice(0, i).some((o) => o.chico) ? PAUSA : 0));
     // el velo y el primer sello arrancan juntos: no hay un instante de página gris y vacía
     velo.animate([{ opacity: 0 }, { opacity: 0.96 }], { duration: 200, easing: 'ease-out', fill: 'forwards' });
     unos.forEach((u, i) => {
       u.animate([{ transform: 'scale(2.4)', opacity: 0 }, { transform: 'none', opacity: 1 }], {
         duration: GOLPE,
-        delay: i * PASO,
+        delay: cuando[i],
         easing: 'cubic-bezier(0.6, 0, 0.9, 0.5)',
         fill: 'backwards',
       });
       // cada sello que cae hunde la fila un poquito
-      fila.animate([{ translate: '0 0' }, { translate: '0 3px' }, { translate: '0 0' }], { duration: 170, delay: GOLPE + i * PASO });
+      fila.animate([{ translate: '0 0' }, { translate: '0 3px' }, { translate: '0 0' }], { duration: 170, delay: GOLPE + cuando[i] });
     });
-    const impacto = GOLPE + (llegadas.length - 1) * PASO;
+    const impacto = GOLPE + Math.max(...cuando);
     txt.animate([{ opacity: 0, transform: 'translateY(0.5rem)' }, { opacity: 1, transform: 'none' }], {
       duration: 320,
       delay: impacto + 60,

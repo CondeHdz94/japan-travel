@@ -203,55 +203,57 @@ test.describe('nombre repetido: «¿eres tú?»', () => {
   });
 });
 
-test.describe('llegadas: lo que ya se me anunció («visto»)', () => {
-  test('a quien llega no se le anuncian los de antes; a los de antes, sí el que llega', async ({ grupo }) => {
+test.describe('llegadas: a quién ya me presentaron («pendientes»)', () => {
+  test('a quien llega se le presentan los de antes en su bienvenida; a los de antes, el que llega les queda pendiente', async ({ grupo }) => {
     const ana = await grupo.entrar('Ana');
     const beto = await grupo.entrar('Beto');
-    // el «visto» de cada quien arranca en su propio id
-    expect((await ana.estado()).visto).toBe(ana.id);
-    const eb = await beto.estado();
-    expect(eb.visto).toBe(beto.id);
-    expect(eb.personas.filter((p) => p.id > eb.visto!)).toEqual([]);
-    // Ana entró primero: para ella, Beto es nuevo
-    const ea = await ana.estado();
-    expect(ea.personas.filter((p) => p.id > ea.visto!).map((p) => p.nombre)).toEqual(['Beto']);
+    expect((await beto.estado()).pendientes).toEqual([]);
+    expect((await ana.estado()).pendientes).toEqual([beto.id]);
   });
 
-  test('visto solo sube, nunca más allá del último que existe, y vale en todos los aparatos', async ({ grupo }) => {
+  test('cada uno ve a cada otro una vez: Juan, Lau, Jess y Luca', async ({ grupo }) => {
+    const juan = await grupo.entrar('Juan');
+    const lau = await grupo.entrar('Lau');
+    await juan.api.post('/api/visto', { data: { ids: [lau.id] } }); // Juan abre el Inicio
+    const jess = await grupo.entrar('Jess');
+    const luca = await grupo.entrar('Luca');
+    expect((await juan.estado()).pendientes).toEqual([jess.id, luca.id]);
+    expect((await lau.estado()).pendientes).toEqual([jess.id, luca.id]);
+    expect((await jess.estado()).pendientes).toEqual([luca.id]);
+    expect((await luca.estado()).pendientes).toEqual([]);
+  });
+
+  test('visto solo suma, solo gente que existe y que no soy yo, y vale en todos los aparatos', async ({ grupo }) => {
     const ana = await grupo.entrar('Ana');
     const beto = await grupo.entrar('Beto');
-    const otroAparato = await grupo.entrar('Ana');
-    expect((await ana.api.post('/api/visto', { data: { hasta: beto.id } })).status()).toBe(200);
-    expect((await otroAparato.estado()).visto).toBe(beto.id);
-    // bajar no se puede
-    await ana.api.post('/api/visto', { data: { hasta: 1 } });
-    expect((await ana.estado()).visto).toBe(beto.id);
-    // ni dar por visto a alguien que no ha llegado
-    await ana.api.post('/api/visto', { data: { hasta: beto.id + 50 } });
-    expect((await ana.estado()).visto).toBe(beto.id);
     const caro = await grupo.entrar('Caro');
-    const e = await ana.estado();
-    expect(e.personas.filter((p) => p.id > e.visto!).map((p) => p.id)).toEqual([caro.id]);
+    const otroAparato = await grupo.entrar('Ana');
+    expect((await ana.api.post('/api/visto', { data: { ids: [beto.id] } })).status()).toBe(200);
+    expect((await otroAparato.estado()).pendientes).toEqual([caro.id]);
+    // repetir no hace nada, ni marcarme a mí, ni alguien que no ha llegado
+    expect((await ana.api.post('/api/visto', { data: { ids: [beto.id, ana.id, caro.id + 50] } })).status()).toBe(200);
+    expect((await ana.estado()).pendientes).toEqual([caro.id]);
+    const dani = await grupo.entrar('Dani');
+    expect((await ana.estado()).pendientes).toEqual([caro.id, dani.id]);
   });
 
   test('visto: sin sesión 401; con un valor raro 400', async ({ grupo }) => {
     const anonimo = await grupo.anonimo();
-    expect((await anonimo.post('/api/visto', { data: { hasta: 1 } })).status()).toBe(401);
+    expect((await anonimo.post('/api/visto', { data: { ids: [1] } })).status()).toBe(401);
     const ana = await grupo.entrar('Ana');
-    for (const hasta of [0, -3, 1.5, '2', null]) expect((await ana.api.post('/api/visto', { data: { hasta } })).status(), String(hasta)).toBe(400);
+    const raros = [[], [0], [-3], [1.5], ['2'], null, 3, Array.from({ length: 51 }, (_, i) => i + 1)];
+    for (const ids of raros) expect((await ana.api.post('/api/visto', { data: { ids } })).status(), JSON.stringify(ids)).toBe(400);
   });
 
   test('cambiar de nombre no es una llegada; salirse y volver sí (con otro id)', async ({ grupo }) => {
     const ana = await grupo.entrar('Ana');
     const beto = await grupo.entrar('Beto');
-    await ana.api.post('/api/visto', { data: { hasta: beto.id } });
+    await ana.api.post('/api/visto', { data: { ids: [beto.id] } });
     await beto.api.post('/api/renombrar', { data: { nombre: 'Roberto' } });
-    let e = await ana.estado();
-    expect(e.personas.filter((p) => p.id > e.visto!)).toEqual([]);
+    expect((await ana.estado()).pendientes).toEqual([]);
     await beto.api.post('/api/borrarme');
     const otraVez = await grupo.entrar('Roberto');
-    e = await ana.estado();
-    expect(e.personas.filter((p) => p.id > e.visto!).map((p) => p.id)).toEqual([otraVez.id]);
+    expect((await ana.estado()).pendientes).toEqual([otraVez.id]);
   });
 });
 

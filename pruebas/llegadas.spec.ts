@@ -2,7 +2,7 @@
 // mi última visita. Varias personas a la vez: cada navegador (contexto) es un viajero distinto.
 
 import type { BrowserContext, Page } from '@playwright/test';
-import { confirmarQueSoyYo, estadoDe, expect, llenarRegistro, sinMomento, test, type Grupo, type Viajero } from './ayudas';
+import { confirmarQueSoyYo, estadoDe, expect, llenarRegistro, sinMomento, sinPresentarLosDeAntes, test, type Grupo, type Viajero } from './ayudas';
 
 const capa = (page: Page) => page.locator('.llegada');
 const pasajeros = (page: Page) => page.locator('[data-pasajeros] .sello-p');
@@ -38,7 +38,7 @@ test.describe('Inicio: los que entraron desde mi última visita', () => {
     await expect(pasajeros(yo)).toHaveCount(3);
     await expect(yo.locator('[data-pasajeros] .sello-p.esperando')).toHaveCount(0);
     await expect(cuenta(yo)).toHaveText('Van 3 de 4–5');
-    await expect.poll(async () => (await camilo.estado()).visto).toBe(santiago.id);
+    await expect.poll(async () => (await camilo.estado()).pendientes).toEqual([]);
 
     // otra visita: ya no se anuncia
     await abrirInicio(yo);
@@ -64,7 +64,7 @@ test.describe('Inicio: los que entraron desde mi última visita', () => {
     await abrirInicio(celular);
     await expect(capa(celular)).toBeVisible();
     await sinMomento(celular);
-    await expect.poll(async () => (await camilo.estado()).visto).toBeGreaterThan(camilo.id);
+    await expect.poll(async () => (await camilo.estado()).pendientes).toEqual([]);
 
     const portatil = await navegadorDe(await browser.newContext(), camilo);
     await abrirInicio(portatil);
@@ -106,7 +106,7 @@ test.describe('Inicio: los que entraron desde mi última visita', () => {
     await expect(capa(yo)).toHaveCount(0);
     await expect(pasajeros(yo)).toHaveCount(2);
     await expect(yo.locator('[data-pasajeros] .sello-p.esperando')).toHaveCount(0);
-    await expect.poll(async () => (await camilo.estado()).visto).toBe(laura.id);
+    await expect.poll(async () => (await camilo.estado()).pendientes).toEqual([]);
   });
 
   test('Escape también lo salta', async ({ page, grupo }) => {
@@ -149,7 +149,7 @@ test.describe('Inicio: los que entraron desde mi última visita', () => {
     await expect(cuenta(yo)).toHaveText('Nuevos: Laura');
     await expect(pasajeros(yo)).toHaveCount(2);
     await expect(yo.locator('[data-pasajeros] .sello-p.esperando')).toHaveCount(0);
-    await expect.poll(async () => (await camilo.estado()).visto).toBe(laura.id);
+    await expect.poll(async () => (await camilo.estado()).pendientes).toEqual([]);
   });
 
   test('con movimiento reducido no hay golpe, y el anuncio queda en texto', async ({ page, grupo }) => {
@@ -174,7 +174,7 @@ test.describe('Inicio: los que entraron desde mi última visita', () => {
     await yo.goto('/');
     await yo.waitForTimeout(2500);
     await expect(capa(yo)).toHaveCount(0);
-    expect((await camilo.estado()).visto).toBe(camilo.id);
+    expect((await camilo.estado()).pendientes).toHaveLength(1);
   });
 
   test('con intro: espera a que caiga 計画中, nunca encima', async ({ page, grupo }) => {
@@ -234,7 +234,7 @@ test.describe('Inicio: los que entraron desde mi última visita', () => {
     await expect(yo.locator('#aviso-llegadas')).toHaveText('Laura se montó al viaje');
     await yo.locator('.pasajeros').scrollIntoViewIfNeeded();
     await expect(cuenta(yo)).toHaveText('Nuevos: Laura');
-    await expect.poll(async () => (await camilo.estado()).visto).toBe(laura.id);
+    await expect.poll(async () => (await camilo.estado()).pendientes).toEqual([]);
   });
 
   test('con la pestaña oculta espera a que la mire', async ({ page, grupo }) => {
@@ -253,7 +253,7 @@ test.describe('Inicio: los que entraron desde mi última visita', () => {
     await abrirInicio(yo);
     await yo.waitForTimeout(3000);
     await expect(capa(yo)).toHaveCount(0);
-    expect((await camilo.estado()).visto).toBe(camilo.id); // nada se dio por visto
+    expect((await camilo.estado()).pendientes).toHaveLength(1); // nada se dio por visto
     await yo.evaluate(() => (window as unknown as { mirar: () => void }).mirar());
     await expect(capa(yo)).toBeVisible();
     await sinMomento(yo);
@@ -293,12 +293,44 @@ test.describe('Inicio: los que entraron desde mi última visita', () => {
   });
 });
 
+test.describe('Inicio: ponerse al día con los que ya iban', () => {
+  // así quedó en producción quien entró antes de esta versión: nadie le presentó a los de antes
+  test('Lau ve una vez a Juan «a bordo contigo», junto a los que llegaron después', async ({ page, grupo }) => {
+    const juan = await grupo.entrar('Juan');
+    const lau = await grupo.entrar('Lau');
+    const jess = await grupo.entrar('Jess');
+    await sinPresentarLosDeAntes(lau.id);
+    expect((await lau.estado()).pendientes).toEqual([juan.id, jess.id]);
+    const yo = await navegadorDe(page.context(), lau);
+    await abrirInicio(yo);
+    await expect(capa(yo).locator('.dice strong')).toHaveText('Juan y Jess van a bordo contigo');
+    await expect(capa(yo).locator('.dice span')).toHaveText(/^Asiento 2 · .+ · van 3$/);
+    await sinMomento(yo);
+    await expect.poll(async () => (await lau.estado()).pendientes).toEqual([]);
+    await abrirInicio(yo);
+    await yo.waitForTimeout(2500);
+    await expect(capa(yo)).toHaveCount(0);
+  });
+
+  test('solo los de antes: «va a bordo contigo», y en el boleto «Contigo»', async ({ page, grupo }) => {
+    await grupo.entrar('Juan');
+    const lau = await grupo.entrar('Lau');
+    await sinPresentarLosDeAntes(lau.id);
+    const yo = await navegadorDe(page.context(), lau);
+    await yo.emulateMedia({ reducedMotion: 'reduce' });
+    await abrirInicio(yo);
+    await expect(yo.locator('#aviso-llegadas')).toHaveText('Juan va a bordo contigo');
+    await yo.locator('.pasajeros').scrollIntoViewIfNeeded();
+    await expect(cuenta(yo)).toHaveText('Contigo: Juan');
+  });
+});
+
 test.describe('Inicio: entre varias personas', () => {
   /** Camilo ya vio a Laura. */
   async function grupoVisto(grupo: Grupo) {
     const camilo = await grupo.entrar('Camilo');
     const laura = await grupo.entrar('Laura');
-    await camilo.api.post('/api/visto', { data: { hasta: laura.id } });
+    await camilo.api.post('/api/visto', { data: { ids: [laura.id] } });
     return { camilo, laura };
   }
 
@@ -337,7 +369,7 @@ test.describe('Inicio: entre varias personas', () => {
     await expect(nuevo.locator('html')).toHaveAttribute('data-sesion', 'si');
     await nuevo.waitForTimeout(800);
     await expect(capa(nuevo)).toHaveCount(0);
-    // al volver al Inicio, Laura ya estaba vista: su «visto» sigue en la base
+    // al volver al Inicio, Laura ya estaba vista: eso sigue en la base
     await abrirInicio(nuevo);
     await nuevo.waitForTimeout(2500);
     await expect(capa(nuevo)).toHaveCount(0);
@@ -408,13 +440,54 @@ test.describe('Inicio: el boleto', () => {
 });
 
 test.describe('bienvenida: «Ya vas a bordo»', () => {
+  test('primero caen chiquitos los que ya iban y después el mío, grande', async ({ page, grupo }) => {
+    const camilo = await grupo.entrar('Camilo');
+    const laura = await grupo.entrar('Laura');
+    await page.addInitScript(() => sessionStorage.setItem('intro', '1'));
+    await page.goto('/');
+    await page.locator('.pasajeros .subete').click();
+    await llenarRegistro(page, 'Jess');
+    const caen = capa(page).locator('.cae');
+    await expect(caen).toHaveCount(3);
+    await expect(caen.nth(0)).toHaveClass(/chico/);
+    await expect(caen.nth(0).locator('.sello-p')).toHaveAttribute('data-de', String(camilo.id));
+    await expect(caen.nth(1)).toHaveClass(/chico/);
+    await expect(caen.nth(1).locator('.sello-p')).toHaveAttribute('data-de', String(laura.id));
+    await expect(caen.nth(2)).not.toHaveClass(/chico/);
+    // mientras vuelan, sus puestos en el boleto quedan reservados y vacíos: nada cae encima de nada
+    await expect(page.locator('[data-pasajeros] .sello-p.esperando')).toHaveCount(3);
+    await expect(capa(page).locator('.dice strong')).toHaveText('Ya vas a bordo, Jess');
+    await expect(capa(page).locator('.dice span')).toHaveText(/^Asiento 3 · .+ · con Camilo y Laura$/);
+    // el mío manda: los chicos miden la mitad
+    // (offsetWidth: el tamaño de la caja, sin la animación de la caída)
+    const ancho = (i: number) => caen.nth(i).evaluate((e) => (e as HTMLElement).offsetWidth);
+    expect(Math.round(((await ancho(0)) / (await ancho(2))) * 10) / 10).toBe(0.5);
+    await sinMomento(page);
+    await expect(pasajeros(page)).toHaveCount(3);
+    await expect(page.locator('[data-pasajeros] .sello-p.esperando')).toHaveCount(0);
+    // ya los vio: en el Inicio no se los vuelven a anunciar
+    expect((await estadoDe(page)).pendientes).toEqual([]);
+    await abrirInicio(page);
+    await page.waitForTimeout(2500);
+    await expect(capa(page)).toHaveCount(0);
+  });
+
+  test('el primero en entrar: solo cae su sello', async ({ page }) => {
+    await page.addInitScript(() => sessionStorage.setItem('intro', '1'));
+    await page.goto('/');
+    await page.locator('.pasajeros .subete').click();
+    await llenarRegistro(page, 'Juan');
+    await expect(capa(page).locator('.cae')).toHaveCount(1);
+    await expect(capa(page).locator('.dice span')).toHaveText(/^Asiento 1 · [^·]+$/);
+  });
+
   test('desde un voto: el sello aterriza en ese voto y no sale de la página', async ({ page, grupo }) => {
     await grupo.entrar('Camilo');
     await page.goto('/cuando-ir');
     await page.locator('[data-marca="mes:oct"] [data-poner]').click();
     await llenarRegistro(page, 'Valentina');
     await expect(capa(page).locator('.dice strong')).toHaveText('Ya vas a bordo, Valentina');
-    await expect(capa(page).locator('.dice span')).toHaveText('Asiento 2 · バレンティナ');
+    await expect(capa(page).locator('.dice span')).toHaveText('Asiento 2 · バレンティナ · con Camilo');
     await sinMomento(page);
     expect(new URL(page.url()).pathname).toBe('/cuando-ir');
     const voto = page.locator('[data-marca="mes:oct"] [data-sellos] .sello-p:not(.fantasma)');

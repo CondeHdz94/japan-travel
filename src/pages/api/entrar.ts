@@ -13,8 +13,8 @@ const MAX_PERSONAS = 12;
  * una: se responde 409 con `existe` para que el registro pregunte «¿eres tú?». Solo con
  * `soyYo: true` se entra como esa persona. Así un segundo «Juan» no queda convertido en el primero.
  *
- * Quien se registra recibe `nuevo: true` (para su bienvenida) y su «visto» queda en su propio
- * id: a los que estaban antes no se los anuncia como llegadas.
+ * Quien se registra recibe `nuevo: true` (para su bienvenida, que le presenta a los que ya
+ * iban) y a todos ellos se los da por vistos: no se le vuelven a anunciar en el Inicio.
  */
 export const POST: APIRoute = async ({ request, cookies }) => {
   const body = await request.json().catch(() => null);
@@ -48,8 +48,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         args: [nombre, await formaLibre(c), await tintaLibre(c)],
       });
       id = Number(r.rows[0].id);
-      // su «visto» es su propio id: todos los de antes ya estaban cuando llegó
-      await c.execute({ sql: 'UPDATE personas SET visto = id WHERE id = ?', args: [id] });
+      // a los que ya estaban los ve en su bienvenida
+      await c.execute({
+        sql: 'INSERT OR IGNORE INTO vistos (persona, otro) SELECT ?, id FROM personas WHERE id <> ?',
+        args: [id, id],
+      });
       nuevo = true;
     } catch (e) {
       // dos registros al tiempo con el mismo nombre: el segundo recibe la misma pregunta

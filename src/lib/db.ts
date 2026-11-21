@@ -18,6 +18,7 @@ async function abrir(): Promise<Client> {
   const url = getSecret('TURSO_DATABASE_URL') || 'file:.data/local.db';
   if (url.startsWith('file:')) mkdirSync('.data', { recursive: true });
   const c = createClient({ url, authToken: getSecret('TURSO_AUTH_TOKEN') || undefined });
+  const [conVistos] = await c.batch(["SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'vistos'"], 'read');
   await c.batch(
     [
       `CREATE TABLE IF NOT EXISTS personas (
@@ -46,24 +47,35 @@ async function abrir(): Promise<Client> {
          persona INTEGER NOT NULL REFERENCES personas(id),
          creado TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
        )`,
+      // a quién ya le presenté a quién: cada persona ve la entrada de cada otra una sola vez
+      // (a los de antes en su bienvenida, a los de después en el Inicio)
+      `CREATE TABLE IF NOT EXISTS vistos (
+         persona INTEGER NOT NULL REFERENCES personas(id),
+         otro INTEGER NOT NULL REFERENCES personas(id),
+         PRIMARY KEY (persona, otro)
+       )`,
     ],
     'write',
   );
   // Bases creadas antes de que existieran estas columnas: se agregan.
   //   forma  la forma del sello
   //   tinta  el color del sello, fijo: no cambia si alguien de antes se sale del grupo
-  //   visto  el id más alto que ya se le anunció a la persona (las llegadas al viaje)
+  //   visto  ya no se usa: era el id más alto que ya se le anunció (ahora está en `vistos`)
   for (const col of ['forma TEXT', 'tinta INTEGER', 'visto INTEGER']) await columna(c, col);
-  // Quien ya estaba conserva el color que tenía (el de su puesto en la lista) y no recibe
-  // como «nuevos» a los que entraron antes de que existieran las llegadas.
-  await c.batch(
-    [
-      `UPDATE personas SET tinta = (SELECT COUNT(*) FROM personas p WHERE p.id < personas.id) % ${TINTAS}
-       WHERE tinta IS NULL`,
-      'UPDATE personas SET visto = (SELECT MAX(id) FROM personas) WHERE visto IS NULL',
-    ],
-    'write',
+  // Quien ya estaba conserva el color que tenía (el de su puesto en la lista).
+  await c.execute(
+    `UPDATE personas SET tinta = (SELECT COUNT(*) FROM personas p WHERE p.id < personas.id) % ${TINTAS}
+     WHERE tinta IS NULL`,
   );
+  // La primera vez que existe `vistos`, se llena con lo que ya pasó: antes solo se guardaba
+  // «ya vi hasta el id N», y la bienvenida no mostraba a los de antes. Entonces solo cuenta
+  // como visto quien llegó después de mí y hasta mi N; a los de antes nunca me los presentaron
+  // y me quedan pendientes (los veo una vez en el Inicio). Sin N, no vi a nadie.
+  if (!conVistos.rows.length)
+    await c.execute(
+      `INSERT OR IGNORE INTO vistos (persona, otro)
+       SELECT q.id, o.id FROM personas q JOIN personas o ON o.id > q.id AND o.id <= q.visto`,
+    );
   return c;
 }
 
@@ -102,8 +114,8 @@ export interface Estado {
   yo: Persona | null;
   personas: Persona[];
   marcas: Marca[];
-  /** El id más alto que ya se me anunció: quien tenga uno mayor llegó desde mi última visita. Sin sesión no viene. */
-  visto?: number;
+  /** Los del viaje que todavía no me han presentado (sus ids). Sin sesión no viene. */
+  pendientes?: number[];
 }
 
 const VACIO: Estado = { yo: null, personas: [], marcas: [] };
@@ -112,10 +124,11 @@ const VACIO: Estado = { yo: null, personas: [], marcas: [] };
 export async function estado(yoId: number | null): Promise<Estado> {
   if (!yoId) return VACIO;
   const c = await db();
-  const [ps, ms] = await c.batch(
+  const [ps, ms, vs] = await c.batch(
     [
-      'SELECT id, nombre, forma, tinta, visto FROM personas ORDER BY id',
+      'SELECT id, nombre, forma, tinta FROM personas ORDER BY id',
       'SELECT persona, tipo, clave, valor FROM marcas',
+      { sql: 'SELECT otro FROM vistos WHERE persona = ?', args: [yoId] },
     ],
     'read',
   );
@@ -127,11 +140,11 @@ export async function estado(yoId: number | null): Promise<Estado> {
   }));
   const yo = personas.find((p) => p.id === yoId) ?? null;
   if (!yo) return VACIO;
-  const mia = ps.rows.find((r) => Number(r.id) === yoId);
+  const vistos = new Set(vs.rows.map((r) => Number(r.otro)));
   return {
     yo,
     personas,
-    visto: Number(mia?.visto ?? yoId),
+    pendientes: personas.filter((p) => p.id !== yoId && !vistos.has(p.id)).map((p) => p.id),
     marcas: ms.rows.map((r) => ({
       p: Number(r.persona),
       t: String(r.tipo),
