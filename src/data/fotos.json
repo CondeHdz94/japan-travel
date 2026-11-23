@@ -782,5 +782,395 @@
     "licencia": "CC BY-NC-SA 2.0",
     "fuente": "https://www.flickr.com/photos/8873441@N06/54008623810",
     "aMano": true
+  },
+  "mizuki-shigeru": {
+    "archivo": "mizuki-shigeru.jpg",
+    "autor": "etsuko.nakamura",
+    "licencia": "CC BY-NC-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/25983237@N08/4867282845",
+    "aMano": true
+  },
+  "harry-potter": {
+    "archivo": "harry-potter.jpg",
+    "autor": "Jeremy Thompson",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Warner_Bros._Studio_Tour_Tokyo_-_The_Making_of_Harry_Potter_-_53408131300.jpg",
+    "aMano": true
+  },
+  "disneysea": {
+    "archivo": "disneysea.jpg",
+    "autor": "Okwhatev",
+    "licencia": "CC BY-SA 2.5",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Tokyo_DisneySea-Volcania.jpg",
+    "aMano": true
+  },
+  "kasuga-taisha": {
+    "archivo": "kasuga-taisha.jpg",
+    "autor": "KimonBerlin",
+    "licencia": "CC BY-SA 2.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Bronze_lanterns_in_Kasuga_Taisha_(3187665495).jpg",
+    "aMano": true
+  },
+  "byodoin": {
+    "archivo": "byodoin.jpg",
+    "autor": "Martin Falbisoner",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Phoenix_Hall,_Byodo-in,_November_2016_-01.jpg"
+  },
+  "shuri": {
+    "archivo": "shuri.jpg",
+    "autor": "CEphoto, Uwe Aranas",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Naha_Okinawa_Japan_Shuri-Castle-01.jpg"
+  },
+  "kurama-kibune": {
+    "archivo": "kurama-kibune.jpg",
+    "autor": "Patrick Vierthaler",
+    "licencia": "CC BY-NC 2.0",
+    "fuente": "https://www.flickr.com/photos/74399113@N07/54265310439",
+    "aMano": true
+  },
+  "edo-tokio": {
+    "archivo": "edo-tokio.jpg",
+    "autor": "Wiiii",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Edo-Tokyo_Museum.jpg"
+  },
+  "skytree": {
+    "archivo": "skytree.jpg",
+    "autor": "Kakidai",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Tokyo_Skytree_2014_%E2%85%A2.jpg"
+  },
+  "fukusaki": {
+    "archivo": "fukusaki.jpg",
+    "autor": "Pueblo de Fukusaki",
+    "licencia": "foto oficial ©",
+    "fuente": "https://www.town.fukusaki.hyogo.jp/0000002183.html",
+    "aMano": true
+  },
+  "g-cans": {
+    "archivo": "g-cans.jpg",
+    "autor": "AMANO Jun-ichi",
+    "licencia": "CC BY 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Geofront_Temple%5E_%E9%A6%96%E9%83%BD%E5%9C%8F%E5%A4%96%E9%83%AD%E6%94%BE%E6%B0%B4%E8%B7%AF_-_panoramio.jpg"
+  },
+  "kanda-sanja": {
+    "archivo": "kanda-sanja.jpg",
+    "autor": "Torsodog",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Sanja_Matsuri_mikoshi_2006.JPG"
+  },
+  "pokemon-cafe": {
+    "archivo": "pokemon-cafe.jpg",
+    "autor": "Sergiy Galyonkin",
+    "licencia": "CC BY-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/22974618@N00/52379469729",
+    "aMano": true
+  },
+  "toei-animacion": {
+    "archivo": "toei-animacion.jpg",
+    "autor": "正和",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:TOEI_ANIMATION_Oizumi_Studio.JPG"
+  },
+  "tezuka": {
+    "archivo": "tezuka.jpg",
+    "autor": "Asturio Cantabrio",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Osamu_Tezuka_Manga_Museum_ac_(2).jpg"
+  },
+  "ginkakuji": {
+    "archivo": "ginkakuji.jpg",
+    "autor": "Oilstreet",
+    "licencia": "CC BY 2.5",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Ginkakuji_Kyoto03-r.jpg"
+  },
+  "nijo": {
+    "archivo": "nijo.jpg",
+    "autor": "Autor desconocido",
+    "licencia": "Public domain",
+    "fuente": "https://commons.wikimedia.org/wiki/File:NinomaruPalace.jpg"
+  },
+  "izumo": {
+    "archivo": "izumo.jpg",
+    "autor": "663highland",
+    "licencia": "CC BY 2.5",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Izumo-taisha14bs4592.jpg"
+  },
+  "takachiho": {
+    "archivo": "takachiho.jpg",
+    "autor": "Takasunrise0921",
+    "licencia": "CC BY 2.5",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Takachiho-gorge.jpg"
+  },
+  "zao-juhyo": {
+    "archivo": "zao-juhyo.jpg",
+    "autor": "Toto-artist (talk)",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Zao_juhyo.jpg"
+  },
+  "furano": {
+    "archivo": "furano.jpg",
+    "autor": "掬茶",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Farm_Tomita_Lavender_East_20260704b.jpg"
+  },
+  "oirase": {
+    "archivo": "oirase.jpg",
+    "autor": "toshinori baba",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Oirase_keiryuu.JPG"
+  },
+  "kerama": {
+    "archivo": "kerama.jpg",
+    "autor": "SteFou!",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Kerama_Island_-_6081216280.jpg",
+    "aMano": true
+  },
+  "ryoanji": {
+    "archivo": "ryoanji.jpg",
+    "autor": "DXR",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Kare-sansui_zen_garden,_Ry%C5%8Dan-ji,_Kyoto_20190416_1.jpg"
+  },
+  "saihoji": {
+    "archivo": "saihoji.jpg",
+    "autor": "Hyppolyte de Saint-Rambert",
+    "licencia": "CC BY 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Saih%C5%8D-ji_(Nishikyo_Kyoto)_hdsr_Garden_S5_520.jpg",
+    "aMano": true
+  },
+  "kawachi-fujien": {
+    "archivo": "kawachi-fujien.jpg",
+    "autor": "そらみみ (Soramimi)",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Pink_wisteria_in_Kawachi_Wisteria_Garden_20150509-4.jpg"
+  },
+  "kinosaki": {
+    "archivo": "kinosaki.jpg",
+    "autor": "Samchan91",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Kinosaki_Onsen_by_day.jpg"
+  },
+  "dogo": {
+    "archivo": "dogo.jpg",
+    "autor": "Japanexperterna.se",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Dogo_onsen_honkan_long_exposure.jpg"
+  },
+  "ginzan": {
+    "archivo": "ginzan.jpg",
+    "autor": "ume-y",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:%E9%8A%80%E5%B1%B1%E6%B8%A9%E6%B3%89_Ginzan_Onsen_(7809473788).jpg"
+  },
+  "hokusai": {
+    "archivo": "hokusai.jpg",
+    "autor": "Kakidai",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:2018_Sumida_Hokusai_Museum_2.jpg"
+  },
+  "mori": {
+    "archivo": "mori.jpg",
+    "autor": "Dick Thomas Johnson",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/31029865@N06/6466042227",
+    "aMano": true
+  },
+  "otsuka": {
+    "archivo": "otsuka.jpg",
+    "autor": "Original uploader was EMS-62 (Edited by 663h)",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:The_Otsuka_Museum_of_Art20s3203-B-T.jpg"
+  },
+  "miyoshi": {
+    "archivo": "miyoshi.jpg",
+    "autor": "Lumi iori",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Mononoke_museum.jpg"
+  },
+  "nagasaki-bomba": {
+    "archivo": "nagasaki-bomba.jpg",
+    "autor": "Japanbird at Japanese Wikipedia (:ja:User:海人)",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Nagasakigenbaku.jpg"
+  },
+  "umeda-sky": {
+    "archivo": "umeda-sky.jpg",
+    "autor": "Kakidai",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:2018_Umeda_Sky_Building.jpg"
+  },
+  "toyosu": {
+    "archivo": "toyosu.jpg",
+    "autor": "Norwegian Seafood Council",
+    "licencia": "CC BY-NC 2.0",
+    "fuente": "https://www.flickr.com/photos/21786086@N00/46695363844",
+    "aMano": true
+  },
+  "nishiki": {
+    "archivo": "nishiki.jpg",
+    "autor": "matsuyuki",
+    "licencia": "CC BY-SA 2.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Nishiki_Ichiba_by_matsuyuki.jpg"
+  },
+  "kobe": {
+    "archivo": "kobe.jpg",
+    "autor": "Orlando G. Calvo",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:4_Kobe_Beef,_Kobe_Japan.jpg"
+  },
+  "okonomimura": {
+    "archivo": "okonomimura.jpg",
+    "autor": "そらみみ",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Signboard_of_Okonomimura_Building.jpg"
+  },
+  "yatai": {
+    "archivo": "yatai.jpg",
+    "autor": "shibuya246",
+    "licencia": "CC BY-NC 2.0",
+    "fuente": "https://www.flickr.com/photos/33479336@N05/4907054907",
+    "aMano": true
+  },
+  "honda-collection": {
+    "archivo": "honda-collection.jpg",
+    "autor": "PekePON",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Motorcycles_in_the_Honda_Collection_Hall_08.jpg",
+    "aMano": true
+  },
+  "akagi-irohazaka": {
+    "archivo": "akagi-irohazaka.jpg",
+    "autor": "津島修三",
+    "licencia": "CC BY 2.1 jp",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Irohazaka_01.jpg"
+  },
+  "fuji-q": {
+    "archivo": "fuji-q.jpg",
+    "autor": "Nayvik",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:FujiQ_Highland_MainGate.JPG"
+  },
+  "tono": {
+    "archivo": "tono.jpg",
+    "autor": "washuugenius",
+    "licencia": "CC BY-NC 2.0",
+    "fuente": "https://www.flickr.com/photos/92996378@N00/1325465200",
+    "aMano": true
+  },
+  "osorezan": {
+    "archivo": "osorezan.jpg",
+    "autor": "Itoshin87 at Japanese Wikipedia",
+    "licencia": "Public domain",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Osorezan_Aomori.JPG"
+  },
+  "aoi": {
+    "archivo": "aoi.jpg",
+    "autor": "Japanexperterna",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Aoi_Matsuri.jpg"
+  },
+  "tenjin": {
+    "archivo": "tenjin.jpg",
+    "autor": "663highland",
+    "licencia": "CC BY 2.5",
+    "fuente": "https://commons.wikimedia.org/wiki/File:120725_Osaka_Tenjinmatsuri_Japan08bs.jpg"
+  },
+  "gozan": {
+    "archivo": "gozan.jpg",
+    "autor": "J_o",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Gozanokuribi_Daimonji2.jpg"
+  },
+  "kishiwada": {
+    "archivo": "kishiwada.jpg",
+    "autor": "Kounosu",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Kishiwada-Danjiri-Matsuri_Osaka_Japan.jpg"
+  },
+  "jidai": {
+    "archivo": "jidai.jpg",
+    "autor": "PlusMinus",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:JidaiMatsuri_Gohouren.jpg"
+  },
+  "anime-japan": {
+    "archivo": "anime-japan.jpg",
+    "autor": "思弦 張",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Toei_Animation_booth_at_AnimeJapan_20150321.jpg"
+  },
+  "wonder-festival": {
+    "archivo": "wonder-festival.jpg",
+    "autor": "Bsarah-05",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Wonder_Festival_Shangai_2021.jpg"
+  },
+  "jump-festa": {
+    "archivo": "jump-festa.jpg",
+    "autor": "kirainet",
+    "licencia": "CC BY-NC-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/69078600@N00/36126664",
+    "aMano": true
+  },
+  "chichibu": {
+    "archivo": "chichibu.jpg",
+    "autor": "ちちびあん",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:ChichibuFes1.jpg"
+  },
+  "mobility-show": {
+    "archivo": "mobility-show.jpg",
+    "autor": "user:ChibaRagi",
+    "licencia": "CC BY 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Tms2007_01.jpg"
+  },
+  "nagaoka": {
+    "archivo": "nagaoka.jpg",
+    "autor": "Kropsoq",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:2007_Nagaoka_Festival_004_Edit.jpg"
+  },
+  "echigo-tsumari": {
+    "archivo": "echigo-tsumari.jpg",
+    "autor": "Drph17",
+    "licencia": "CC BY 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Echigo_Tsumari_Art_Field_Tokamachi_For_Lots_of_Lost_Windows_May2022.jpg"
+  },
+  "hakata-yamakasa": {
+    "archivo": "hakata-yamakasa.jpg",
+    "autor": "Pontafon",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Hakata_gion_yamakasa_2005_01.jpg"
+  },
+  "kunchi": {
+    "archivo": "kunchi.jpg",
+    "autor": "Marine-Blue",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Jaodori_of_Nagasaki_Kunchi.jpg"
+  },
+  "kanto-akita": {
+    "archivo": "kanto-akita.jpg",
+    "autor": "joxborough",
+    "licencia": "CC BY-NC-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/73925728@N04/14939408667",
+    "aMano": true
+  },
+  "omizutori": {
+    "archivo": "omizutori.jpg",
+    "autor": "Realmonkey",
+    "licencia": "CC BY-NC-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/83074476@N00/321953583",
+    "aMano": true
+  },
+  "oya": {
+    "archivo": "oya.jpg",
+    "autor": "掬茶",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Inside_of_the_Oya_History_Museum_20251012c.jpg",
+    "aMano": true
   }
 }

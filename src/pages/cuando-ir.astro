@@ -27,19 +27,21 @@ const ventanas = VENTANAS_VIAJE;
 // Qué hay de temporada en cada ventana: lugares y eventos del catálogo que solo se dan en esos
 // meses (se dejan por fuera los que duran medio año, que no distinguen una ventana de otra).
 // Abril tardío comparte mes con los cerezos: ahí se nombran a mano los que caen en esas fechas.
-const enVentana: Record<string, { meses: number[]; filtro: string; ids?: string[] }> = {
+// Otoño llega al 7 de diciembre: de diciembre entra solo lo de los primeros días (`mas`).
+const enVentana: Record<string, { meses: number[]; filtro: string; ids?: string[]; mas?: string[] }> = {
   cerezos: { meses: [3, 4], filtro: 'primavera' },
-  abril: { meses: [4], filtro: 'primavera', ids: ['takayama-matsuri', 'hitachi', 'ashikaga'] },
+  abril: { meses: [4], filtro: 'primavera', ids: ['takayama-matsuri', 'kawachi-fujien', 'hitachi', 'ashikaga'] },
   primavera: { meses: [5, 6], filtro: 'primavera' },
   verano: { meses: [7, 8], filtro: 'verano' },
-  otono: { meses: [10, 11], filtro: 'otono' },
+  otono: { meses: [10, 11], filtro: 'otono', mas: ['chichibu'] },
   invierno: { meses: [1, 2], filtro: 'invierno' },
 };
 const deTemporada = (id: string) => {
-  const { meses, ids } = enVentana[id];
+  const { meses, ids, mas = [] } = enVentana[id];
   if (ids) return ids.map((i) => SEMILLAS.find((l) => l.id === i)!);
   return SEMILLAS.filter(
-    (l) => l.meses && l.meses.length <= 4 && l.meses.some((m) => meses.includes(m)),
+    (l) =>
+      l.meses && l.meses.length <= 4 && (l.meses.some((m) => meses.includes(m)) || mas.includes(l.id)),
   ).sort((a, b) => a.meses!.length - b.meses!.length); // primero lo más puntual
 };
 

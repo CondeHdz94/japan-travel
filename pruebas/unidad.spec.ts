@@ -6,7 +6,7 @@ import { SEMILLAS, TEMAS, TEMPORADAS, ZONAS, etiquetaMeses } from '../src/data/l
 import { secciones } from '../src/data/secciones';
 import { kana, primeraKana } from '../src/scripts/kana';
 import { ESCENAS, momento, resumenTarjeta } from '../src/data/escenas';
-import { escribirDireccion, leerDireccion, pasa, queDejaVacio, sinFiltros, textoMenu } from '../src/scripts/filtros';
+import { escribirDireccion, leerDireccion, normalizar, pasa, queDejaVacio, sinFiltros, textoMenu } from '../src/scripts/filtros';
 
 const fotos: Record<string, { archivo: string; autor: string; licencia: string; fuente: string }> =
   JSON.parse(readFileSync('src/data/fotos.json', 'utf8'));
@@ -108,7 +108,7 @@ test.describe('etiquetaMeses', () => {
 
 test.describe('catálogo de lugares', () => {
   test('el README dice 121 lugares', () => {
-    expect(SEMILLAS.length).toBe(121);
+    expect(SEMILLAS.length).toBe(183);
   });
 
   test('ids únicos y con forma que la API de marcas acepta', () => {
@@ -299,7 +299,7 @@ test('escenas: cada imagen es una dirección de anitabi sin tamaño (la ventana 
 });
 
 test.describe('filtros de Lugares', () => {
-  const lugar = (zona: string, meses: number[] | null = null, mio = false, escenas = false) => ({ zona, meses, mio, escenas });
+  const lugar = (zona: string, meses: number[] | null = null, mio = false, escenas = false, texto = '') => ({ zona, meses, mio, escenas, texto });
   const f = (cambios: Partial<ReturnType<typeof sinFiltros>>) => ({ ...sinFiltros(), ...cambios });
 
   test('dentro de un filtro se suman las opciones', () => {
@@ -327,7 +327,7 @@ test.describe('filtros de Lugares', () => {
   test('la dirección: listas, enlaces viejos de un valor y valores desconocidos', () => {
     expect(leerDireccion('?zona=norte,tokio&t=invierno,verano&mios=1&anime=1')).toEqual({
       // en el orden del catálogo, no en el de la dirección
-      zona: ['tokio', 'norte'], temp: ['verano', 'invierno'], mios: true, anime: true,
+      zona: ['tokio', 'norte'], temp: ['verano', 'invierno'], mios: true, anime: true, q: '',
     });
     expect(leerDireccion('?t=otono')).toEqual(f({ temp: ['otono'] }));
     expect(leerDireccion('?zona=marte,tokio,tokio&t=nunca&mios=si&otra=<script>')).toEqual(f({ zona: ['tokio'] }));
@@ -336,6 +336,23 @@ test.describe('filtros de Lugares', () => {
     expect(escribirDireccion(sinFiltros())).toBe('');
     const ida = f({ zona: ['kanto', 'sur'], temp: ['primavera'], mios: true });
     expect(leerDireccion(escribirDireccion(ida))).toEqual(ida);
+  });
+
+  test('el buscador: sin tildes ni mayúsculas, todas las palabras, y queda en la dirección', () => {
+    expect(normalizar('  Tōno,  la TIERRA de los Kappa ')).toBe('tono, la tierra de los kappa');
+    const tono = lugar('norte', null, false, false, normalizar('Tōno, la tierra de los kappa 遠野 Norte'));
+    expect(pasa(tono, f({ q: 'tono' }))).toBe(true);
+    expect(pasa(tono, f({ q: 'KAPPA tōno' }))).toBe(true);
+    expect(pasa(tono, f({ q: '遠野' }))).toBe(true);
+    expect(pasa(tono, f({ q: 'kappa ramen' }))).toBe(false);
+    expect(pasa(tono, f({ q: '   ' }))).toBe(true);
+    // se cruza con los demás filtros
+    expect(pasa(tono, f({ q: 'kappa', zona: ['tokio'] }))).toBe(false);
+    expect(escribirDireccion(f({ zona: ['norte'], q: 'kappa tōno' }))).toBe('?zona=norte&q=kappa%20t%C5%8Dno');
+    expect(leerDireccion('?zona=norte&q=kappa%20t%C5%8Dno')).toEqual(f({ zona: ['norte'], q: 'kappa tōno' }));
+    expect(escribirDireccion(f({ q: '  ' }))).toBe('');
+    expect(leerDireccion(`?q=${'x'.repeat(80)}`).q).toHaveLength(60);
+    expect(queDejaVacio(f({ q: 'pizza', zona: ['norte'] }))).toBe('Ningún lugar con «pizza» en Norte.');
   });
 
   test('sin resultados dice qué filtros dejan la lista vacía', () => {

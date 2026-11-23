@@ -8,6 +8,8 @@ const TOTAL = SEMILLAS.length;
 const LUGAR = { nombre: 'Mirador de prueba', tema: 'raro', zona: 'tokio' };
 
 const visibles = (page: Page) => page.locator('article.lugar:visible');
+// los que pasan los filtros
+const enLista = (page: Page) => page.locator('article.lugar:not([hidden])');
 const tarjeta = (page: Page, id: string) => page.locator(`article.lugar[data-marca="lugar:${id}"]`);
 // «Proponer»: en escritorio va en la barra de filtros; en celular, flotante a la mano del pulgar
 const proponer = (page: Page) => page.locator('.filtros [data-proponer], .flotante[data-proponer]').filter({ visible: true });
@@ -45,7 +47,7 @@ async function cuadra(page: Page) {
 }
 
 test.describe('catálogo', () => {
-  test(`sin sesión: ${TOTAL} tarjetas en diez temas, con sus conteos`, async ({ page }) => {
+  test(`sin sesión: ${TOTAL} tarjetas en ${TEMAS.length} temas, con sus conteos`, async ({ page }) => {
     await abrir(page, '/lugares', 'no');
     await expect(page.locator('article.lugar')).toHaveCount(TOTAL);
     await expect(page.locator('section.tema')).toHaveCount(TEMAS.length);
@@ -80,7 +82,7 @@ test.describe('catálogo', () => {
   });
 
   test('el nombre lleva a leer sobre el lugar, en español cuando hay', async ({ page }) => {
-    await abrir(page, '/lugares', 'no');
+    await abrir(page, '/lugares#museo-ghibli', 'no');
     const ghibli = page.locator('#museo-ghibli h3 a');
     await expect(ghibli).toHaveAttribute('href', 'https://es.wikipedia.org/wiki/Museo_Ghibli');
     await expect(ghibli).toHaveAttribute('target', '_blank');
@@ -213,7 +215,7 @@ test.describe('filtros', () => {
   test('quitar las opciones lo muestra todo y limpia la dirección', async ({ page }) => {
     await abrir(page, '/lugares?zona=norte&t=verano', 'no');
     await filtrarPor(page, { zona: ['norte'], temp: ['verano'] });
-    await expect(visibles(page)).toHaveCount(TOTAL);
+    await expect(enLista(page)).toHaveCount(TOTAL);
     await expect(page).toHaveURL(/\/lugares$/);
     await expect(page.locator('#f-zona')).toContainText('Todas las zonas');
     await cuadra(page);
@@ -259,7 +261,7 @@ test.describe('filtros', () => {
 
     await page.locator('#limpiar').click();
     await expect(page.locator('#vacio')).toBeHidden();
-    await expect(visibles(page)).toHaveCount(TOTAL);
+    await expect(enLista(page)).toHaveCount(TOTAL);
     await expect(page.locator('#f-mios')).toHaveAttribute('aria-pressed', 'false');
     await expect(page).toHaveURL(/\/lugares$/);
     await cuadra(page);
@@ -394,7 +396,7 @@ test.describe('filtros en celular', () => {
     await page.goBack();
     await expect(hoja(page)).toBeHidden();
     expect(new URL(page.url()).pathname).toBe('/lugares');
-    await expect(visibles(page)).toHaveCount(TOTAL);
+    await expect(enLista(page)).toHaveCount(TOTAL);
     await expect(page.locator('#n-filtros')).toHaveText('');
   });
 
@@ -809,7 +811,7 @@ test.describe('lugares en vivo', () => {
 test.describe('de quién es un sello, con la barra de filtros pegada arriba', () => {
   test('la etiqueta nunca queda encima de los filtros: sale debajo del sello o se cierra', async ({ page, grupo }) => {
     const ana = await grupo.entrar('Ana');
-    const id = SEMILLAS[3].id;
+    const id = SEMILLAS[2].id;
     await ana.marcar('lugar', id, 1);
     await entrarEn(page, 'Camilo');
     await abrir(page, '/lugares', 'si');
@@ -840,5 +842,49 @@ test.describe('de quién es un sello, con la barra de filtros pegada arriba', ()
       expect(await pisa(), 'la etiqueta pisa los filtros').toBe(false);
     }
     await expect(etiqueta).toHaveCount(0);
+  });
+});
+
+test.describe('buscador', () => {
+  const ids = (page: Page) => visibles(page).evaluateAll((as) => as.map((a) => a.id).sort());
+
+  test('el buscador: la lupa lo abre encima de la fila sin mover la barra, encuentra sin tildes y se quita', async ({ page, isMobile }) => {
+    await abrir(page, '/lugares', 'no');
+    // a 1280 y en el celular no cabe en la fila con buen ancho: va detrás de la lupa
+    const fila = page.locator(isMobile ? '.filtros-cel' : '.filtros');
+    const lupa = fila.locator('[data-abrir-buscar]');
+    const campo = fila.locator('[data-buscador]');
+    const altoBarra = () => page.locator('.barra').evaluate((b) => b.getBoundingClientRect().height);
+    const antes = await altoBarra();
+    await lupa.click();
+    await expect(campo).toBeFocused();
+    expect(await altoBarra()).toBe(antes);
+    await campo.fill('tono kappa');
+    await expect(page).toHaveURL(/\?q=tono%20kappa$/);
+    expect(await ids(page)).toEqual(['tono']);
+    await cuadra(page);
+    // «buscar» del teclado lo cierra; la lupa rellena dice que hay algo buscado
+    await campo.press('Enter');
+    await expect(campo).toBeHidden();
+    await expect(lupa).toHaveClass(/escogido/);
+    await expect(lupa).toBeFocused();
+    if (isMobile) {
+      await expect(page.locator('#puestos .puesto')).toHaveText(['«tono kappa»✕']);
+      await page.locator('#puestos [data-quitar-filtro="q"]').click();
+    } else {
+      await lupa.click();
+      await expect(campo).toHaveValue('tono kappa');
+      await campo.fill('');
+      await page.keyboard.press('Escape');
+    }
+    await expect(page).toHaveURL(/\/lugares$/);
+    await expect(lupa).not.toHaveClass(/escogido/);
+    await expect(enLista(page)).toHaveCount(TOTAL);
+  });
+
+  test('una búsqueda sin resultados dice qué se buscó', async ({ page }) => {
+    await abrir(page, '/lugares?q=pizza', 'no');
+    await expect(page.locator('#f-buscar')).toHaveValue('pizza');
+    await expect(page.locator('#vacio')).toContainText('Ningún lugar con «pizza».');
   });
 });

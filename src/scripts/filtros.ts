@@ -2,7 +2,7 @@
 // decir cuando no queda ninguno. Los usa el script de src/pages/lugares.astro.
 //
 // Regla: dentro de un filtro las opciones se suman (Tokio o Norte; verano o invierno) y entre
-// filtros se cruzan (zona y temporada y mis sellos y anime).
+// filtros se cruzan (zona y temporada y mis sellos y anime y lo buscado).
 
 import { TEMPORADAS, ZONAS } from '../data/lugares';
 
@@ -11,20 +11,29 @@ export interface Filtros {
   temp: string[];
   mios: boolean;
   anime: boolean;
+  /** lo escrito en el buscador, tal cual (se compara sin tildes ni mayúsculas) */
+  q: string;
 }
 
-/** Lo que el filtro necesita saber de una tarjeta (sale de sus atributos data-*). */
+/** Lo que el filtro necesita saber de una tarjeta (sale de sus atributos data-* y su texto). */
 export interface LugarFiltrable {
   zona: string;
   /** meses en que se puede ir; sin meses, se puede todo el año */
   meses: number[] | null;
   mio: boolean;
   escenas: boolean;
+  /** nombre, japonés, descripción y zona, ya pasados por `normalizar` */
+  texto: string;
 }
 
-export const sinFiltros = (): Filtros => ({ zona: [], temp: [], mios: false, anime: false });
+/** Para buscar: minúsculas y sin tildes ni macrones («Tōno» se encuentra escribiendo «tono»). */
+export const normalizar = (s: string) =>
+  s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+
+export const sinFiltros = (): Filtros => ({ zona: [], temp: [], mios: false, anime: false, q: '' });
 export const copiar = (f: Filtros): Filtros => ({ ...f, zona: [...f.zona], temp: [...f.temp] });
-export const cuantosPuestos = (f: Filtros) => f.zona.length + f.temp.length + Number(f.mios) + Number(f.anime);
+export const cuantosPuestos = (f: Filtros) =>
+  f.zona.length + f.temp.length + Number(f.mios) + Number(f.anime) + Number(normalizar(f.q) !== '');
 
 const MESES = new Map(TEMPORADAS.map((t) => [t.id, t.meses]));
 
@@ -34,6 +43,8 @@ export function pasa(l: LugarFiltrable, f: Filtros): boolean {
   if (f.temp.length && l.meses && !l.meses.some((m) => f.temp.some((t) => MESES.get(t)?.includes(m)))) return false;
   if (f.mios && !l.mio) return false;
   if (f.anime && !l.escenas) return false;
+  // cada palabra buscada tiene que estar, en cualquier orden
+  if (normalizar(f.q).split(' ').some((p) => p && !l.texto.includes(p))) return false;
   return true;
 }
 
@@ -51,16 +62,19 @@ export function leerDireccion(search: string): Filtros {
     temp: lista(q.get('t'), TEMPORADAS.map((t) => t.id)),
     mios: q.get('mios') === '1',
     anime: q.get('anime') === '1',
+    q: (q.get('q') ?? '').trim().slice(0, 60),
   };
 }
 
-/** «?zona=tokio,norte&t=verano&anime=1», o «» sin filtros. Las comas quedan legibles. */
+/** «?zona=tokio,norte&t=verano&anime=1&q=kappa», o «» sin filtros. Las comas quedan legibles. */
 export function escribirDireccion(f: Filtros): string {
+  const q = f.q.trim();
   const partes = [
     f.zona.length && `zona=${f.zona.join(',')}`,
     f.temp.length && `t=${f.temp.join(',')}`,
     f.mios && 'mios=1',
     f.anime && 'anime=1',
+    q && `q=${encodeURIComponent(q)}`,
   ].filter(Boolean);
   return partes.length ? `?${partes.join('&')}` : '';
 }
@@ -72,7 +86,9 @@ const enLista = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, 
 
 /** Lo que dice la página cuando no queda ningún lugar: qué filtros la dejan vacía. */
 export function queDejaVacio(f: Filtros): string {
+  const q = f.q.trim();
   const que = [
+    q && `con «${q}»`,
     f.anime && 'que salga en anime',
     f.mios && 'con tu sello',
     f.zona.length && `en ${enLista(f.zona.map(nombreZona))}`,

@@ -83,6 +83,20 @@ const GRUPOS = [
     </nav>
     {/* desde 960 px: los filtros en una fila, aplican al instante */}
     <div class="filtros">
+      {/*
+        Busca en nombre, japonés, descripción y zona; lo buscado es un filtro más. Desde 1440 px el
+        campo va en la fila; por debajo no cabe con buen ancho y la lupa lo abre encima de la fila.
+      */}
+      <button type="button" class="lupa" data-abrir-buscar aria-label="Buscar" aria-expanded="false" aria-controls="buscar-esc">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="7" cy="7" r="4.75" /><path d="m10.5 10.5 3.5 3.5" /></svg>
+      </button>
+      <form class="buscar" role="search" id="buscar-esc" data-buscar>
+        <label for="f-buscar" class="oculto">Buscar un lugar</label>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="7" cy="7" r="4.75" /><path d="m10.5 10.5 3.5 3.5" /></svg>
+        <input type="search" id="f-buscar" data-buscador placeholder="Buscar" autocomplete="off" enterkeyhint="search" maxlength="60" />
+        <button type="button" class="borrar" data-borrar-busqueda aria-label="Borrar la búsqueda" hidden>✕</button>
+        <button type="button" class="cerrar-busqueda" data-cerrar-busqueda aria-label="Cerrar el buscador">✕</button>
+      </form>
       {
         GRUPOS.map((g) => (
           <div class="desp">
@@ -128,6 +142,16 @@ const GRUPOS = [
       </button>
       <div class="puestos" id="puestos" aria-label="Filtros puestos"><span class="sin mono">Sin filtros</span></div>
       <button type="button" class="proponer" data-proponer="">＋ Proponer</button>
+      {/* la lupa abre el buscador encima de esta misma fila: la barra no crece ni mueve nada */}
+      <button type="button" class="lupa" id="abrir-buscar" data-abrir-buscar aria-label="Buscar" aria-expanded="false" aria-controls="buscar-cel">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="7" cy="7" r="4.75" /><path d="m10.5 10.5 3.5 3.5" /></svg>
+      </button>
+      <form class="buscar" role="search" id="buscar-cel" data-buscar>
+        <label for="f-buscar-cel" class="oculto">Buscar un lugar</label>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="7" cy="7" r="4.75" /><path d="m10.5 10.5 3.5 3.5" /></svg>
+        <input type="search" id="f-buscar-cel" data-buscador placeholder="Buscar: kappa, ramen, Kioto…" autocomplete="off" enterkeyhint="search" maxlength="60" />
+        <button type="button" class="cerrar-busqueda" data-cerrar-busqueda aria-label="Cerrar el buscador">✕</button>
+      </form>
     </div>
   </div>
 
@@ -350,7 +374,7 @@ const GRUPOS = [
 </Base>
 
 <script>
-  import { copiar, cuantosPuestos, escribirDireccion, leerDireccion, pasa, queDejaVacio, sinFiltros, textoMenu, type Filtros, type LugarFiltrable } from '../scripts/filtros';
+  import { copiar, cuantosPuestos, escribirDireccion, leerDireccion, normalizar, pasa, queDejaVacio, sinFiltros, textoMenu, type Filtros, type LugarFiltrable } from '../scripts/filtros';
 
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T | null;
   // ───── filtros ─────
@@ -382,11 +406,22 @@ const GRUPOS = [
     { rootMargin: '-40% 0px -40% 0px' },
   );
   for (const f of document.querySelectorAll('.tema .lugar .foto')) franja.observe(f);
+  // lo que se busca de cada tarjeta: su nombre, el japonés, la descripción y la zona (no cambia)
+  const textos = new WeakMap<HTMLElement, string>();
+  const textoDe = (c: HTMLElement) => {
+    let t = textos.get(c);
+    if (t === undefined) {
+      t = normalizar(['h3', '.jp', '.desc', '.meta span'].map((s) => c.querySelector(s)?.textContent ?? '').join(' '));
+      textos.set(c, t);
+    }
+    return t;
+  };
   const datosDe = (c: HTMLElement): LugarFiltrable => ({
     zona: c.dataset.zona ?? '',
     meses: c.dataset.meses ? c.dataset.meses.split(',').map(Number) : null,
     mio: !!c.querySelector('.poner[aria-pressed="true"]'),
     escenas: !!c.dataset.escenas,
+    texto: textoDe(c),
   });
   /** Cuántos lugares pasan con estos filtros. */
   const cuenta = (lugares: LugarFiltrable[], f: Filtros) => lugares.filter((l) => pasa(l, f)).length;
@@ -448,6 +483,7 @@ const GRUPOS = [
       ...GRUPOS.flatMap((g) => f[g].map((v) => ({ g, v, t: nombre(g, v) }))),
       ...(f.mios ? [{ g: 'mios', v: '', t: 'Mis sellos' }] : []),
       ...(f.anime ? [{ g: 'anime', v: '', t: '聖地 Solo anime' }] : []),
+      ...(f.q.trim() ? [{ g: 'q', v: '', t: `«${f.q.trim()}»` }] : []),
     ];
     puestos.replaceChildren(
       ...(fichas.length
@@ -501,6 +537,68 @@ const GRUPOS = [
   for (const b of document.querySelectorAll('.tema .lugar [data-poner]'))
     ojoSellos.observe(b, { attributes: true, attributeFilter: ['aria-pressed'] });
 
+  // ───── buscador ─────
+  // Va en la barra pegada arriba, a la mano en cualquier parte de la lista. Desde 1440 px es un campo
+  // de la fila de filtros; por debajo (y en el celular) una lupa lo abre encima de su fila, sin que la
+  // barra crezca. Busca mientras se escribe, y lo buscado es un filtro más: con el buscador cerrado, la
+  // lupa queda rellena y en el celular sale además la ficha «kappa ✕».
+  const buscadores = [...document.querySelectorAll<HTMLInputElement>('[data-buscador]')];
+  const borrarBusqueda = document.querySelector<HTMLElement>('[data-borrar-busqueda]')!;
+  const lupas = [...document.querySelectorAll<HTMLElement>('[data-abrir-buscar]')];
+  const filaDe = (el: Element) => el.closest<HTMLElement>('.filtros, .filtros-cel')!;
+  let esperaBusqueda = 0;
+  const buscar = (q: string) => {
+    clearTimeout(esperaBusqueda);
+    if (q !== aplicado.q) aplicar({ ...copiar(aplicado), q });
+  };
+  function abrirBuscador(fila: HTMLElement) {
+    fila.classList.add('buscando');
+    fila.querySelector('[data-abrir-buscar]')!.setAttribute('aria-expanded', 'true');
+    fila.querySelector<HTMLInputElement>('[data-buscador]')!.focus();
+  }
+  /** Cierra el buscador que está encima de su fila (lo escrito queda aplicado). */
+  function cerrarBuscador(fila: HTMLElement, devolverFoco = true) {
+    if (!fila.classList.contains('buscando')) return;
+    buscar(fila.querySelector<HTMLInputElement>('[data-buscador]')!.value);
+    fila.classList.remove('buscando');
+    const lupa = fila.querySelector<HTMLElement>('[data-abrir-buscar]')!;
+    lupa.setAttribute('aria-expanded', 'false');
+    if (devolverFoco) lupa.focus();
+  }
+  for (const campo of buscadores) {
+    const fila = filaDe(campo);
+    campo.addEventListener('input', () => {
+      borrarBusqueda.hidden = !buscadores[0].value;
+      clearTimeout(esperaBusqueda);
+      esperaBusqueda = window.setTimeout(() => buscar(campo.value), 150);
+    });
+    campo.form!.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      buscar(campo.value);
+      // «buscar» del teclado: se guarda el teclado para ver los resultados
+      if (fila.classList.contains('buscando')) cerrarBuscador(fila);
+      else campo.blur();
+    });
+    campo.form!.addEventListener('keydown', (ev) => ev.key === 'Escape' && cerrarBuscador(fila));
+  }
+  for (const lupa of lupas) lupa.addEventListener('click', () => abrirBuscador(filaDe(lupa)));
+  for (const b of document.querySelectorAll('[data-cerrar-busqueda]')) b.addEventListener('click', () => cerrarBuscador(filaDe(b)));
+  borrarBusqueda.addEventListener('click', () => {
+    buscadores[0].value = '';
+    buscar('');
+    buscadores[0].focus();
+  });
+  // al cambiar de ancho, el buscador que estaba encima de su fila se cierra (lo escrito ya está aplicado)
+  for (const m of [angosto, matchMedia('(min-width: 1440px)')])
+    m.addEventListener('change', () => document.querySelectorAll<HTMLElement>('.buscando').forEach((f) => cerrarBuscador(f, false)));
+  /** Los campos dicen lo buscado (el que se está usando no se toca, para no pisar lo que se escribe). */
+  function pintarBusqueda() {
+    for (const campo of buscadores) if (document.activeElement !== campo) campo.value = aplicado.q;
+    borrarBusqueda.hidden = !buscadores[0].value;
+    for (const lupa of lupas) lupa.classList.toggle('escogido', aplicado.q.trim() !== '');
+  }
+
+
   /** Muestra u oculta tarjetas según lo aplicado y actualiza números, controles y dirección. */
   function filtrar() {
     const cs = tarjetas();
@@ -527,6 +625,7 @@ const GRUPOS = [
     if (suma === 0) $('vacio-dice')!.textContent = queDejaVacio(aplicado);
     pintarControles(document.querySelector('.filtros')!, aplicado, numeros(datos, aplicado));
     pintarPuestos(aplicado);
+    pintarBusqueda();
     if (borrador) pintarHoja();
     // los filtros quedan en la dirección: se pueden compartir y sobreviven a una recarga
     history.replaceState(history.state, '', `${location.pathname}${escribirDireccion(aplicado)}${location.hash}`);
@@ -705,7 +804,13 @@ const GRUPOS = [
     const b = (ev.target as Element).closest<HTMLElement>('[data-quitar-filtro]');
     if (!b) return;
     const g = b.dataset.quitarFiltro!;
-    aplicar(g === 'mios' || g === 'anime' ? { ...copiar(aplicado), [g]: false } : alternar(aplicado, g as Grupo, b.dataset.v!));
+    aplicar(
+      g === 'mios' || g === 'anime'
+        ? { ...copiar(aplicado), [g]: false }
+        : g === 'q'
+          ? { ...copiar(aplicado), q: '' }
+          : alternar(aplicado, g as Grupo, b.dataset.v!),
+    );
   });
   // al pasar a escritorio con la hoja abierta, se cierra sin aplicar
   angosto.addEventListener('change', () => !angosto.matches && hoja.open && hoja.close());
@@ -882,6 +987,20 @@ const GRUPOS = [
   .temas a.apagado {
     opacity: 0.3;
     pointer-events: none;
+  }
+  /* en escritorio caben los doce temas de una vez, repartidos a lo ancho */
+  @media (min-width: 960px) {
+    .temas {
+      justify-content: space-between;
+      padding-inline: calc(var(--gutter) - 0.35rem);
+    }
+    .temas a {
+      gap: 0.3rem;
+      padding-inline: 0.35rem;
+    }
+    .temas span {
+      font-size: 0.84rem;
+    }
   }
   /* ───── filtros (desde 960 px): una fila que aplica al instante ───── */
   .filtros {
@@ -1373,6 +1492,148 @@ const GRUPOS = [
     text-decoration-color: var(--shu);
     text-underline-offset: 0.2em;
   }
+
+  /* ───── buscador, en la barra pegada arriba ───── */
+  .buscar {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    height: 2rem;
+    border: 1px solid var(--ink);
+    border-radius: 99px;
+    background: var(--paper);
+  }
+  .buscar:focus-within {
+    outline: 2px solid var(--shu);
+    outline-offset: 2px;
+  }
+  .buscar > svg {
+    flex: none;
+    width: 0.85rem;
+    height: 0.85rem;
+    margin-left: var(--px);
+    color: var(--ink-soft);
+  }
+  .buscar input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0 0.5rem;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    /* 16 px: con menos, el iPhone hace zoom al escribir */
+    font-size: 1rem;
+    outline: none;
+  }
+  .buscar input::placeholder {
+    color: var(--ink-soft);
+  }
+  .buscar input::-webkit-search-cancel-button {
+    display: none;
+  }
+  .buscar :is(.borrar, .cerrar-busqueda) {
+    position: relative;
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: var(--ink-soft);
+    font-size: 0.8rem;
+  }
+  /* se tocan en 44 px aunque se vean pequeños */
+  .buscar :is(.borrar, .cerrar-busqueda)::after,
+  .lupa::after {
+    content: '';
+    position: absolute;
+    inset: -0.4rem;
+  }
+  .buscar .borrar[hidden] {
+    display: none;
+  }
+  .lupa {
+    position: relative;
+    flex: none;
+    display: none;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 1px solid var(--ink);
+    border-radius: 50%;
+    background: var(--paper);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .lupa svg {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+  /* hay algo buscado: la lupa se rellena, como un menú con algo escogido */
+  .lupa.escogido {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  /* desde 1440 px: el campo va en la fila de filtros */
+  .filtros .buscar {
+    flex: 1 1 15rem;
+    min-width: 12rem;
+    max-width: 22rem;
+  }
+  .filtros .cerrar-busqueda {
+    display: none;
+  }
+  /* por debajo de 1440 px (y en el celular): la lupa abre el campo encima de su fila */
+  .filtros-cel {
+    position: relative;
+  }
+  .filtros-cel .lupa {
+    display: grid;
+  }
+  .filtros-cel .buscar {
+    position: absolute;
+    inset: 50% var(--gutter) auto;
+    translate: 0 -50%;
+    z-index: 1;
+    display: none;
+  }
+  .filtros-cel.buscando .buscar {
+    display: flex;
+  }
+  @media (max-width: 1439px) {
+    .filtros {
+      position: relative;
+    }
+    .filtros .lupa {
+      display: grid;
+    }
+    .filtros .buscar {
+      position: absolute;
+      inset: 50% var(--gutter) auto;
+      translate: 0 -50%;
+      z-index: 1;
+      max-width: none;
+      display: none;
+    }
+    .filtros.buscando .buscar {
+      display: flex;
+    }
+    .filtros .buscar .borrar {
+      display: none;
+    }
+    .filtros .cerrar-busqueda {
+      display: grid;
+    }
+  }
+
 
   /* ───── tema ───── */
   .tema {
