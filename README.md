@@ -26,7 +26,7 @@ No hay framework de interfaz: lo interactivo es TypeScript sin dependencias.
 | `/` | Lista | Portada, «boleto» del viaje con los pasajeros, índice, animación de entrada y llegadas al viaje |
 | `/cuando-ir` | Lista | El año en Tokio mes a mes, cuatro ventanas candidatas para votar, fechas a evitar |
 | `/requisitos` | Lista | Visa, rutas sin visa americana y checklist personal de papeles |
-| `/lugares` | Lista | Catálogo de 121 lugares y eventos por tema, con filtros, votos y propuestas del grupo |
+| `/lugares` | Lista | Catálogo de 183 lugares y eventos por tema, con filtros, votos y propuestas del grupo |
 | `/decisiones` | Lista | Los votos de todos cruzados: ventana que va ganando, meses, lugares fijos, posible reparto de días, papeles y lo que me falta |
 | Itinerario, Presupuesto, Apps | Pendientes | Aparecen en el índice como «Pronto» |
 
