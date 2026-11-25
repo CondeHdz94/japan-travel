@@ -197,7 +197,15 @@ export const desborde = (page: Page) =>
  * Sirve para comprobar que poner o quitar un sello no mueve nada.
  */
 export const plano = (page: Page, selector: string) =>
-  page.evaluate((sel) => {
+  page.evaluate(async (sel) => {
+    // El botón se encoge un instante al marcarlo (golpe) o tocarlo (scale): es dibujo, no mueve
+    // nada, pero medido a mitad parece un salto. Solo se espera eso; lo demás se mide como esté.
+    const delBoton = document.getAnimations().filter((a) => {
+      const nombre = a instanceof CSSAnimation ? a.animationName : a instanceof CSSTransition ? a.transitionProperty : '';
+      const e = (a.effect as KeyframeEffect | null)?.target;
+      return ['golpe', 'scale'].includes(nombre) && e?.matches('[data-poner]');
+    });
+    await Promise.allSettled(delBoton.map((a) => a.finished));
     // las franjas que se deslizan de lado (el año, los filtros) se devuelven al inicio
     for (const e of document.querySelectorAll('.scroll, .filtros, .temas')) e.scrollLeft = 0;
     const y = window.scrollY;
